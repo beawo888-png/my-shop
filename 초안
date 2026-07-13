@@ -3,15 +3,51 @@
   "children": [
     {
       "type": "frame",
-      "id": "bi8Au",
+      "id": "wangjing-desktop",
       "x": 0,
       "y": 0,
-      "name": "Frame",
+      "name": "판교왕징 홈페이지 데스크톱",
       "clip": true,
-      "width": 800,
-      "height": 600,
-      "fill": "#FFFFFF",
-      "layout": "none"
+      "width": 1440,
+      "height": 6820,
+      "fill": "#F6F0E5",
+      "layout": "none",
+      "children": [
+        { "type": "frame", "id": "desktop-header", "x": 0, "y": 0, "name": "상단 내비게이션", "width": 1440, "height": 92, "fill": "#17110F", "layout": "none" },
+        { "type": "frame", "id": "desktop-hero", "x": 0, "y": 92, "name": "대표 영역", "width": 1440, "height": 774, "fill": "#241A17", "layout": "none" },
+        { "type": "frame", "id": "desktop-trust", "x": 96, "y": 740, "name": "신뢰 정보", "width": 1248, "height": 126, "fill": "#17110F", "layout": "none" },
+        { "type": "frame", "id": "desktop-menu", "x": 0, "y": 866, "name": "대표 메뉴", "width": 1440, "height": 900, "fill": "#F6F0E5", "layout": "none" },
+        { "type": "frame", "id": "desktop-story", "x": 0, "y": 1766, "name": "왕징 이야기", "width": 1440, "height": 760, "fill": "#17110F", "layout": "none" },
+        { "type": "frame", "id": "desktop-group", "x": 0, "y": 2526, "name": "단체 모임", "width": 1440, "height": 760, "fill": "#F6F0E5", "layout": "none" },
+        { "type": "frame", "id": "desktop-reviews", "x": 0, "y": 3286, "name": "고객 리뷰", "width": 1440, "height": 700, "fill": "#17110F", "layout": "none" },
+        { "type": "frame", "id": "desktop-location", "x": 0, "y": 3986, "name": "지점 안내", "width": 1440, "height": 780, "fill": "#F6F0E5", "layout": "none" },
+        { "type": "frame", "id": "desktop-reserve", "x": 0, "y": 4766, "name": "예약 안내", "width": 1440, "height": 560, "fill": "#241A17", "layout": "none" },
+        { "type": "frame", "id": "desktop-footer", "x": 0, "y": 5326, "name": "푸터", "width": 1440, "height": 360, "fill": "#100B0A", "layout": "none" }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "wangjing-mobile",
+      "x": 1520,
+      "y": 0,
+      "name": "판교왕징 홈페이지 모바일",
+      "clip": true,
+      "width": 390,
+      "height": 6830,
+      "fill": "#F6F0E5",
+      "layout": "none",
+      "children": [
+        { "type": "frame", "id": "mobile-header", "x": 0, "y": 0, "name": "상단 내비게이션", "width": 390, "height": 72, "fill": "#17110F", "layout": "none" },
+        { "type": "frame", "id": "mobile-hero", "x": 0, "y": 72, "name": "대표 영역", "width": 390, "height": 720, "fill": "#241A17", "layout": "none" },
+        { "type": "frame", "id": "mobile-trust", "x": 20, "y": 700, "name": "신뢰 정보", "width": 350, "height": 280, "fill": "#17110F", "layout": "none" },
+        { "type": "frame", "id": "mobile-menu", "x": 0, "y": 980, "name": "대표 메뉴", "width": 390, "height": 1450, "fill": "#F6F0E5", "layout": "none" },
+        { "type": "frame", "id": "mobile-story", "x": 0, "y": 2430, "name": "왕징 이야기", "width": 390, "height": 820, "fill": "#17110F", "layout": "none" },
+        { "type": "frame", "id": "mobile-group", "x": 0, "y": 3250, "name": "단체 모임", "width": 390, "height": 900, "fill": "#F6F0E5", "layout": "none" },
+        { "type": "frame", "id": "mobile-reviews", "x": 0, "y": 4150, "name": "고객 리뷰", "width": 390, "height": 1080, "fill": "#17110F", "layout": "none" },
+        { "type": "frame", "id": "mobile-location", "x": 0, "y": 5230, "name": "지점 안내", "width": 390, "height": 820, "fill": "#F6F0E5", "layout": "none" },
+        { "type": "frame", "id": "mobile-reserve", "x": 0, "y": 6050, "name": "예약 안내", "width": 390, "height": 420, "fill": "#241A17", "layout": "none" },
+        { "type": "frame", "id": "mobile-footer", "x": 0, "y": 6470, "name": "푸터", "width": 390, "height": 360, "fill": "#100B0A", "layout": "none" }
+      ]
     }
   ],
   "fileToken": "4786e8a5-4364-43b4-bd9b-87ed94eaa636"
