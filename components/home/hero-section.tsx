@@ -3,7 +3,7 @@ import { SITE, TRUST_ITEMS } from "@/lib/site-content";
 
 export function HeroSection() {
   return (
-    <section className="hero" aria-labelledby="hero-title">
+    <section className="hero" id="top" aria-labelledby="hero-title">
       <Image
         className="hero__image"
         src="/images/wangjing/hero-skewers.png"

@@ -59,3 +59,12 @@ test("external actions use safe links and accessible labels", async () => {
   assert.match(source, /네이버 예약/);
   assert.match(source, /전화/);
 });
+
+test("mobile menu exposes its state and target", async () => {
+  const header = await read("components/home/site-header.tsx");
+  assert.match(header, /^"use client";/m);
+  assert.match(header, /aria-expanded=\{open\}/);
+  assert.match(header, /aria-controls="mobile-navigation"/);
+  assert.match(header, /id="mobile-navigation"/);
+  assert.match(header, /setOpen\(false\)/);
+});
