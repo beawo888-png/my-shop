@@ -62,6 +62,7 @@ img {
   position: sticky;
   top: 0;
   z-index: 50;
+  isolation: isolate;
   min-height: 92px;
   padding: 0 max(5vw, 24px);
   display: flex;
@@ -78,22 +79,23 @@ img {
   min-height: 48px;
   display: inline-flex;
   align-items: center;
-  gap: 13px;
-  font-family: var(--font-serif);
-  font-size: 1.25rem;
-  font-weight: 700;
-  white-space: nowrap;
+  flex: 0 0 auto;
 }
 
-.wordmark span {
-  width: 42px;
-  height: 42px;
-  display: inline-grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--red);
-  color: var(--paper);
-  font-size: 1rem;
+.brand-logo {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  mix-blend-mode: screen;
+}
+
+.brand-logo--header {
+  width: clamp(150px, 15vw, 190px);
+}
+
+.brand-logo--footer {
+  width: min(260px, 100%);
 }
 
 .desktop-nav {
@@ -550,6 +552,7 @@ img {
 }
 
 .site-footer {
+  isolation: isolate;
   padding: 4.5rem max(5vw, 20px) 3rem;
   display: grid;
   grid-template-columns: 1.2fr 1fr auto;
@@ -558,22 +561,14 @@ img {
   color: var(--paper);
 }
 
-.site-footer__brand span {
-  margin-right: 0.75rem;
-  color: var(--gold);
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-}
-
-.site-footer__brand strong {
-  font-family: var(--font-serif);
-  font-size: 1.3rem;
-}
-
 .site-footer__brand p,
 .site-footer address {
   color: rgba(255, 248, 236, 0.58);
   font-style: normal;
+}
+
+.site-footer__brand p {
+  margin-top: 1rem;
 }
 
 .site-footer nav {
@@ -667,14 +662,12 @@ img {
     padding-inline: 20px;
   }
 
-  .wordmark {
-    font-size: 1.05rem;
+  .brand-logo--header {
+    width: 132px;
   }
 
-  .wordmark span {
-    width: 36px;
-    height: 36px;
-    font-size: 0.88rem;
+  .brand-logo--footer {
+    width: min(220px, 100%);
   }
 
   .header-booking {

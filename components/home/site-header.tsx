@@ -2,6 +2,7 @@
 
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { BrandLogo } from "@/components/home/brand-logo";
 import { NAV_ITEMS, SITE } from "@/lib/site-content";
 
 export function SiteHeader() {
@@ -9,9 +10,16 @@ export function SiteHeader() {
 
   return (
     <header className="site-header">
-      <a className="wordmark" href="#top" aria-label="판교왕징 처음으로">
-        <span>{SITE.hanja}</span>
-        {SITE.name}
+      <a
+        className="wordmark"
+        href="#top"
+        aria-label="왕징양다리양꼬치 처음으로"
+      >
+        <BrandLogo
+          className="brand-logo--header"
+          sizes="(max-width: 767px) 132px, 190px"
+          preload
+        />
       </a>
       <nav className="desktop-nav" aria-label="주요 메뉴">
         {NAV_ITEMS.map((item) => (

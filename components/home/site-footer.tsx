@@ -1,11 +1,14 @@
+import { BrandLogo } from "@/components/home/brand-logo";
 import { SITE } from "@/lib/site-content";
 
 export function SiteFooter() {
   return (
     <footer className="site-footer">
       <div className="site-footer__brand">
-        <span>{SITE.hanja}</span>
-        <strong>{SITE.name}</strong>
+        <BrandLogo
+          className="brand-logo--footer"
+          sizes="(max-width: 767px) 220px, 260px"
+        />
         <p>불향으로 기억되는 판교의 중국 양고기 다이닝</p>
       </div>
       <address>
@@ -21,7 +24,7 @@ export function SiteFooter() {
         </a>
       </nav>
       <p className="site-footer__copyright">
-        © 2026 판교왕징. All rights reserved.
+        © 2026 왕징양다리양꼬치. All rights reserved.
       </p>
     </footer>
   );

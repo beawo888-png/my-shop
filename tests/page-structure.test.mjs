@@ -91,3 +91,27 @@ test("layout declares Korean language and Wangjing metadata", async () => {
   assert.match(layout, /판교왕징 \| 판교 양꼬치·중국 양고기 다이닝/);
   assert.match(layout, /대왕판교로606번길/);
 });
+
+test("header and footer use the approved Wangjing logo", async () => {
+  const [brandLogo, header, footer, css] = await Promise.all([
+    read("components/home/brand-logo.tsx"),
+    read("components/home/site-header.tsx"),
+    read("components/home/site-footer.tsx"),
+    read("app/globals.css"),
+  ]);
+
+  assert.match(brandLogo, /from "next\/image"/);
+  assert.match(brandLogo, /src="\/images\/wangjing\/wangjing-logo\.jpg"/);
+  assert.match(brandLogo, /width=\{1339\}/);
+  assert.match(brandLogo, /height=\{451\}/);
+  assert.match(brandLogo, /alt="왕징양다리양꼬치"/);
+  assert.match(header, /BrandLogo/);
+  assert.match(header, /brand-logo--header/);
+  assert.match(header, /aria-label="왕징양다리양꼬치 처음으로"/);
+  assert.doesNotMatch(header, /SITE\.(?:hanja|name)/);
+  assert.match(footer, /BrandLogo/);
+  assert.match(footer, /brand-logo--footer/);
+  assert.doesNotMatch(footer, /SITE\.(?:hanja|name)/);
+  assert.match(footer, /© 2026 왕징양다리양꼬치\. All rights reserved\./);
+  assert.match(css, /\.brand-logo\s*\{[\s\S]*?mix-blend-mode: screen;/);
+});
