@@ -68,3 +68,26 @@ test("mobile menu exposes its state and target", async () => {
   assert.match(header, /id="mobile-navigation"/);
   assert.match(header, /setOpen\(false\)/);
 });
+
+test("global styles contain brand tokens and responsive contracts", async () => {
+  const css = await read("app/globals.css");
+  for (const token of [
+    "--ink: #17110f",
+    "--cream: #f6f0e5",
+    "--gold: #c5a15a",
+    "--red: #8f1d1d",
+  ]) {
+    assert.match(css.toLowerCase(), new RegExp(token));
+  }
+  assert.match(css, /@media \(max-width: 767px\)/);
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
+  assert.match(css, /\.mobile-booking/);
+  assert.match(css, /position: fixed/);
+});
+
+test("layout declares Korean language and Wangjing metadata", async () => {
+  const layout = await read("app/layout.tsx");
+  assert.match(layout, /lang="ko"/);
+  assert.match(layout, /판교왕징 \| 판교 양꼬치·중국 양고기 다이닝/);
+  assert.match(layout, /대왕판교로606번길/);
+});
