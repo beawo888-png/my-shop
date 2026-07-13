@@ -16,6 +16,7 @@ const assetNames = [
   "lantern-interior.jpg",
   "storefront.jpg",
   "feast.jpg",
+  "wangjing-logo.jpg",
 ];
 
 test("all approved Wangjing images exist", async () => {
@@ -41,7 +42,7 @@ test("Pencil source contains approved desktop and mobile frames", async () => {
     assert.deepEqual(
       frame.children.map((child) => child.name),
       [
-        "상단 내비게이션",
+        "상단 내비게이션 · 왕징양다리양꼬치 로고 적용",
         "대표 영역",
         "신뢰 정보",
         "대표 메뉴",
@@ -50,7 +51,7 @@ test("Pencil source contains approved desktop and mobile frames", async () => {
         "고객 리뷰",
         "지점 안내",
         "예약 안내",
-        "푸터",
+        "푸터 · 왕징양다리양꼬치 로고 적용",
       ],
     );
   }
