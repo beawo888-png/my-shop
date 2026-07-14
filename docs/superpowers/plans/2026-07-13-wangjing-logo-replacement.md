@@ -11,7 +11,7 @@
 ## Global Constraints
 
 - Use the supplied source file exactly: `D:\왕징\왕징양다리양꼬치 세로 로고.jpg` (1339×451).
-- Keep the existing header background `rgba(23, 17, 15, 0.97)` and footer background `#100b0a` unchanged.
+- Preserve the existing header color as solid `#17110f` via `var(--ink)` so the opaque JPG cannot flatten a semi-transparent backdrop; keep the footer background `#100b0a` unchanged.
 - Replace the header and footer visual wordmarks only; keep body copy that mentions 판교 or 왕징.
 - Set the copyright to `© 2026 왕징양다리양꼬치. All rights reserved.`.
 - Update `초안` before application code because it is the project’s Pencil source of truth.
@@ -258,7 +258,7 @@ Replace the copyright element with:
 
 - [ ] **Step 5: Add responsive logo styling and remove obsolete styles**
 
-Add `isolation: isolate;` to both `.site-header` and `.site-footer`. Replace the existing `.wordmark`, `.wordmark span`, `.site-footer__brand span`, and `.site-footer__brand strong` rules with:
+Set the `.site-header` background to `var(--ink)`, add `isolation: isolate;` to both `.site-header` and `.site-footer`, and replace the existing `.wordmark`, `.wordmark span`, `.site-footer__brand span`, and `.site-footer__brand strong` rules with:
 
 ```css
 .wordmark {

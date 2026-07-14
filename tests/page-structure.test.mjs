@@ -114,4 +114,8 @@ test("header and footer use the approved Wangjing logo", async () => {
   assert.doesNotMatch(footer, /SITE\.(?:hanja|name)/);
   assert.match(footer, /© 2026 왕징양다리양꼬치\. All rights reserved\./);
   assert.match(css, /\.brand-logo\s*\{[\s\S]*?mix-blend-mode: screen;/);
+
+  const headerRule = css.match(/\.site-header\s*\{[^}]*\}/)?.[0] ?? "";
+  assert.match(headerRule, /isolation: isolate;/);
+  assert.match(headerRule, /background: var\(--ink\);/);
 });
