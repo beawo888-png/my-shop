@@ -56,7 +56,10 @@ test("site content defines Moran and Pangyo booking choices in order", () => {
     assert.ok(source.includes(value), `booking data should include ${value}`);
   }
 
-  assert.ok(source.indexOf(moranUrl) < source.lastIndexOf(pangyoUrl));
+  const bookingStart = source.indexOf("export const BOOKING_LOCATIONS");
+  const moranIndex = source.indexOf('id: "moran"', bookingStart);
+  const pangyoIndex = source.indexOf('id: "pangyo"', bookingStart);
+  assert.ok(moranIndex >= 0 && moranIndex < pangyoIndex);
 });
 ```
 
