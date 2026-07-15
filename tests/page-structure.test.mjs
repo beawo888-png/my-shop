@@ -156,3 +156,23 @@ test("header and footer use the approved Wangjing logo", async () => {
   assert.match(headerRule, /isolation: isolate;/);
   assert.match(headerRule, /background: var\(--ink\);/);
 });
+
+test("hero renders the approved autoplaying promotional video", async () => {
+  const hero = await read("components/home/hero-section.tsx");
+
+  assert.match(hero, /className="hero__poster"/);
+  assert.match(hero, /<video[\s\S]*className="hero__video"/);
+  assert.match(hero, /autoPlay/);
+  assert.match(hero, /muted/);
+  assert.match(hero, /loop/);
+  assert.match(hero, /playsInline/);
+  assert.match(hero, /preload="metadata"/);
+  assert.match(hero, /poster="\/images\/wangjing\/hero-skewers\.png"/);
+  assert.match(hero, /aria-hidden="true"/);
+  assert.match(hero, /tabIndex=\{-1\}/);
+  assert.match(
+    hero,
+    /<source\s+src="\/videos\/wangjing\/lamb-leg-promo\.mp4"\s+type="video\/mp4"/,
+  );
+  assert.doesNotMatch(hero, /<video[\s\S]*?controls/);
+});

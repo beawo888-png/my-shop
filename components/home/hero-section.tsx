@@ -5,13 +5,29 @@ export function HeroSection() {
   return (
     <section className="hero" id="top" aria-labelledby="hero-title">
       <Image
-        className="hero__image"
+        className="hero__poster"
         src="/images/wangjing/hero-skewers.png"
-        alt="숯불 위에서 구워지는 판교왕징 양꼬치"
+        alt="숯불 위에서 구워지는 왕징양다리양꼬치 대표 메뉴"
         fill
         priority
         sizes="100vw"
       />
+      <video
+        className="hero__video"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        poster="/images/wangjing/hero-skewers.png"
+        aria-hidden="true"
+        tabIndex={-1}
+      >
+        <source
+          src="/videos/wangjing/lamb-leg-promo.mp4"
+          type="video/mp4"
+        />
+      </video>
       <div className="hero__overlay" />
       <div className="hero__content">
         <p className="eyebrow">PANGYO · CHINESE LAMB DINING</p>

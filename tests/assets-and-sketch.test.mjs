@@ -58,3 +58,10 @@ test("Pencil source contains approved desktop and mobile frames", async () => {
   }
 
 });
+
+test("approved Wangjing promotional video exists", async () => {
+  const video = await readFile(
+    new URL("../public/videos/wangjing/lamb-leg-promo.mp4", import.meta.url),
+  );
+  assert.ok(video.byteLength > 1_000_000, "promotional MP4 should not be empty");
+});
