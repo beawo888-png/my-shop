@@ -190,18 +190,22 @@ img {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
   pointer-events: none;
 }
 
 .hero__poster {
   z-index: -3;
-  object-position: center 48%;
+  object-fit: cover;
+  object-position: center;
+  filter: blur(18px);
+  transform: scale(1.08);
 }
 
 .hero__video {
   z-index: -2;
+  object-fit: contain;
   object-position: center;
+  background: rgba(16, 11, 10, 0.18);
 }
 
 .hero__overlay {
@@ -786,7 +790,7 @@ img {
 
   .hero__poster,
   .hero__video {
-    object-position: 58% center;
+    object-position: center;
   }
 
   .hero__overlay {
@@ -936,6 +940,12 @@ img {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .hero__poster {
+    filter: none;
+    transform: none;
+    object-fit: contain;
   }
 
   .hero__video {
