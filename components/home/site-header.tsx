@@ -1,12 +1,36 @@
 "use client";
 
-import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { ChevronDown, Menu, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { BrandLogo } from "@/components/home/brand-logo";
-import { NAV_ITEMS, SITE } from "@/lib/site-content";
+import { BOOKING_LOCATIONS, NAV_ITEMS } from "@/lib/site-content";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const bookingMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!bookingOpen) return;
+
+    const closeOnPointerDown = (event: PointerEvent) => {
+      if (!bookingMenuRef.current?.contains(event.target as Node)) {
+        setBookingOpen(false);
+      }
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setBookingOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", closeOnPointerDown);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOnPointerDown);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [bookingOpen]);
 
   return (
     <header className="site-header">
@@ -28,14 +52,37 @@ export function SiteHeader() {
           </a>
         ))}
       </nav>
-      <a
-        className="button button--primary header-booking"
-        href={SITE.bookingUrl}
-        target="_blank"
-        rel="noreferrer"
-      >
-        네이버 예약
-      </a>
+      <div className="header-booking" ref={bookingMenuRef}>
+        <button
+          className="button button--primary header-booking__trigger"
+          type="button"
+          aria-haspopup="true"
+          aria-expanded={bookingOpen}
+          aria-controls="booking-branch-menu"
+          onClick={() => setBookingOpen((value) => !value)}
+        >
+          네이버 예약
+          <ChevronDown aria-hidden="true" />
+        </button>
+        <nav
+          className="header-booking__menu"
+          id="booking-branch-menu"
+          aria-label="예약 지점 선택"
+          hidden={!bookingOpen}
+        >
+          {BOOKING_LOCATIONS.map((booking) => (
+            <a
+              href={booking.url}
+              key={booking.id}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => setBookingOpen(false)}
+            >
+              {booking.label}
+            </a>
+          ))}
+        </nav>
+      </div>
       <button
         className="menu-toggle"
         type="button"
@@ -61,14 +108,20 @@ export function SiteHeader() {
             {item.label}
           </a>
         ))}
-        <a
-          href={SITE.bookingUrl}
-          target="_blank"
-          rel="noreferrer"
-          onClick={() => setOpen(false)}
-        >
-          네이버 예약
-        </a>
+        <div className="mobile-nav__booking">
+          <p>네이버 예약</p>
+          {BOOKING_LOCATIONS.map((booking) => (
+            <a
+              href={booking.url}
+              key={booking.id}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => setOpen(false)}
+            >
+              {booking.label}
+            </a>
+          ))}
+        </div>
       </nav>
     </header>
   );

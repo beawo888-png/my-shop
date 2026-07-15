@@ -70,6 +70,27 @@ test("mobile menu exposes its state and target", async () => {
   assert.match(header, /setOpen\(false\)/);
 });
 
+test("header offers accessible Moran and Pangyo booking choices", async () => {
+  const [header, css] = await Promise.all([
+    read("components/home/site-header.tsx"),
+    read("app/globals.css"),
+  ]);
+
+  assert.match(header, /BOOKING_LOCATIONS/);
+  assert.match(header, /const \[bookingOpen, setBookingOpen\] = useState\(false\)/);
+  assert.match(header, /aria-expanded=\{bookingOpen\}/);
+  assert.match(header, /aria-controls="booking-branch-menu"/);
+  assert.match(header, /id="booking-branch-menu"/);
+  assert.match(header, /event\.key === "Escape"/);
+  assert.match(header, /document\.addEventListener\("pointerdown"/);
+  assert.match(header, /BOOKING_LOCATIONS\.map/g);
+  assert.match(header, /className="mobile-nav__booking"/);
+  assert.match(css, /\.header-booking__menu/);
+  assert.match(css, /\.mobile-nav__booking/);
+  assert.match(css, /min-height:\s*48px/);
+  assert.match(css, /font-size:\s*1rem/);
+});
+
 test("global styles contain brand tokens and responsive contracts", async () => {
   const css = await read("app/globals.css");
   for (const token of [
