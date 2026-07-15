@@ -17,6 +17,31 @@ test("site content contains verified business details", () => {
   assert.match(source, /대왕판교로606번길 10/);
 });
 
+test("site content defines Moran and Pangyo booking choices in order", () => {
+  assert.match(source, /export const BOOKING_LOCATIONS/);
+
+  const moranUrl =
+    "https://booking.naver.com/booking/6/bizes/721603";
+  const pangyoUrl =
+    "https://booking.naver.com/booking/6/bizes/970819";
+
+  for (const value of [
+    'id: "moran"',
+    'label: "모란본점 예약"',
+    moranUrl,
+    'id: "pangyo"',
+    'label: "판교점 예약"',
+    pangyoUrl,
+  ]) {
+    assert.ok(source.includes(value), `booking data should include ${value}`);
+  }
+
+  const bookingStart = source.indexOf("export const BOOKING_LOCATIONS");
+  const moranIndex = source.indexOf('id: "moran"', bookingStart);
+  const pangyoIndex = source.indexOf('id: "pangyo"', bookingStart);
+  assert.ok(moranIndex >= 0 && moranIndex < pangyoIndex);
+});
+
 test("site content defines both Wangjing locations", () => {
   assert.match(source, /export const LOCATIONS/);
   assert.match(source, /\{ label: "지점 안내", href: "#location" \}/);

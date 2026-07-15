@@ -1,4 +1,9 @@
 export type NavItem = { label: string; href: `#${string}` };
+export type BookingLocation = {
+  id: "moran" | "pangyo";
+  label: string;
+  url: string;
+};
 export type TrustItem = { value: string; label: string };
 export type MenuItem = {
   name: string;
@@ -34,6 +39,19 @@ export const SITE = {
   mapUrl:
     "https://map.naver.com/p/search/경기 성남시 분당구 대왕판교로606번길 10",
 } as const;
+
+export const BOOKING_LOCATIONS: BookingLocation[] = [
+  {
+    id: "moran",
+    label: "모란본점 예약",
+    url: "https://booking.naver.com/booking/6/bizes/721603",
+  },
+  {
+    id: "pangyo",
+    label: "판교점 예약",
+    url: SITE.bookingUrl,
+  },
+];
 
 export const LOCATIONS: Location[] = [
   {
