@@ -47,7 +47,12 @@ export function SiteHeader() {
       </a>
       <nav className="desktop-nav" aria-label="주요 메뉴">
         {NAV_ITEMS.map((item) => (
-          <a href={item.href} key={item.href}>
+          <a
+            href={item.href}
+            key={item.href}
+            target={item.newTab ? "_blank" : undefined}
+            rel={item.newTab ? "noreferrer" : undefined}
+          >
             {item.label}
           </a>
         ))}
@@ -103,6 +108,8 @@ export function SiteHeader() {
           <a
             href={item.href}
             key={item.href}
+            target={item.newTab ? "_blank" : undefined}
+            rel={item.newTab ? "noreferrer" : undefined}
             onClick={() => setOpen(false)}
           >
             {item.label}

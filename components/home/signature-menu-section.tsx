@@ -8,12 +8,20 @@ export function SignatureMenuSection() {
       id="menu"
       aria-labelledby="menu-title"
     >
-      <div className="section__heading">
+      <div className="section__heading section__heading--actions">
         <div>
           <p className="eyebrow eyebrow--red">SIGNATURE MENU</p>
           <h2 id="menu-title">왕징에서 먼저 맛봐야 할 요리</h2>
           <p>불향 가득한 양고기와 정통 중국 요리를 함께 즐겨보세요.</p>
         </div>
+        <a
+          className="button button--outline-dark signature-menu__all"
+          href="/menu"
+          target="_blank"
+          rel="noreferrer"
+        >
+          전체 메뉴 보기
+        </a>
       </div>
       <div className="menu-grid">
         {MENU_ITEMS.map((item) => (

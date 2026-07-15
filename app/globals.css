@@ -1275,3 +1275,22 @@ img {
     width: 100%;
   }
 }
+
+.section__heading--actions {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.signature-menu__all {
+  flex: 0 0 auto;
+  font-size: 1rem;
+}
+
+@media (max-width: 767px) {
+  .section__heading--actions {
+    align-items: start;
+    flex-direction: column;
+  }
+}

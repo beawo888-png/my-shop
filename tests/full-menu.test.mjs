@@ -80,3 +80,30 @@ test("full menu page renders metadata, five groups, and conversion links", async
     /\.full-menu-[^{]*\{[^}]*font-size:\s*(?:0\.[0-9]+rem|1[0-5]px)/,
   );
 });
+
+test("all three full-menu entry points open /menu in a safe new tab", async () => {
+  const [content, header, signature] = await Promise.all([
+    read("lib/site-content.ts"),
+    read("components/home/site-header.tsx"),
+    read("components/home/signature-menu-section.tsx"),
+  ]);
+
+  assert.match(
+    content,
+    /\{ label: "대표 메뉴", href: "\/menu", newTab: true \}/,
+  );
+  assert.equal(
+    header.match(/target=\{item\.newTab \? "_blank" : undefined\}/g)
+      ?.length,
+    2,
+  );
+  assert.equal(
+    header.match(/rel=\{item\.newTab \? "noreferrer" : undefined\}/g)
+      ?.length,
+    2,
+  );
+  assert.match(signature, /href="\/menu"/);
+  assert.match(signature, /target="_blank"/);
+  assert.match(signature, /rel="noreferrer"/);
+  assert.match(signature, />\s*전체 메뉴 보기\s*</);
+});

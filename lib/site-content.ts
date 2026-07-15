@@ -1,4 +1,8 @@
-export type NavItem = { label: string; href: `#${string}` };
+export type NavItem = {
+  label: string;
+  href: string;
+  newTab?: boolean;
+};
 export type BookingLocation = {
   id: "moran" | "pangyo";
   label: string;
@@ -85,7 +89,7 @@ export const LOCATIONS: Location[] = [
 ];
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: "대표 메뉴", href: "#menu" },
+  { label: "대표 메뉴", href: "/menu", newTab: true },
   { label: "왕징 이야기", href: "#story" },
   { label: "단체 모임", href: "#group" },
   { label: "고객 리뷰", href: "#reviews" },
