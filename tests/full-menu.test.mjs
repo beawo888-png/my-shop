@@ -44,3 +44,39 @@ test("Pangyo menu data records its source and checked date", async () => {
   );
   assert.match(source, /2026년 7월 15일/);
 });
+
+test("full menu page renders metadata, five groups, and conversion links", async () => {
+  const [page, css] = await Promise.all([
+    read("app/menu/page.tsx"),
+    read("app/globals.css"),
+  ]);
+
+  for (const value of [
+    "판교점 전체 메뉴 | 왕징양다리양꼬치",
+    "https://xn--vr0bn4e2wh79mca68ih9mf4j.com/menu",
+    "PANGYO_MENU_GROUPS.map",
+    "PANGYO_MENU_COUNT",
+    "PANGYO_MENU_CHECKED_AT",
+    "메뉴와 가격은 매장 운영 상황에 따라 변경될 수 있습니다",
+    "https://booking.naver.com/booking/6/bizes/970819",
+    "https://map.naver.com/v5/entry/place/1873196958",
+  ]) {
+    assert.ok(page.includes(value), "menu page should include " + value);
+  }
+
+  assert.match(page, /<h1[^>]*>판교점 전체 메뉴<\/h1>/);
+  assert.match(page, /<h2/);
+  assert.match(page, /target="_blank"/g);
+  assert.match(page, /rel="noreferrer"/g);
+  assert.match(css, /\.full-menu-page/);
+  assert.match(css, /\.full-menu-section__items/);
+  assert.match(css, /grid-template-columns:\s*repeat\(2/);
+  assert.match(
+    css,
+    /@media \(max-width: 767px\)[\s\S]*?\.full-menu-section__items[\s\S]*?grid-template-columns:\s*1fr/,
+  );
+  assert.doesNotMatch(
+    css,
+    /\.full-menu-[^{]*\{[^}]*font-size:\s*(?:0\.[0-9]+rem|1[0-5]px)/,
+  );
+});
