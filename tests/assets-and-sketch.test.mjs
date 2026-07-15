@@ -17,6 +17,7 @@ const assetNames = [
   "storefront.jpg",
   "feast.jpg",
   "wangjing-logo.jpg",
+  "moran-storefront.png",
 ];
 
 test("all approved Wangjing images exist", async () => {
@@ -55,4 +56,5 @@ test("Pencil source contains approved desktop and mobile frames", async () => {
       ],
     );
   }
+
 });

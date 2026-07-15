@@ -49,6 +49,7 @@ test("external actions use safe links and accessible labels", async () => {
     [
       "hero-section.tsx",
       "location-section.tsx",
+      "location-card.tsx",
       "reservation-banner.tsx",
       "mobile-booking-bar.tsx",
     ].map((name) => read(`components/home/${name}`)),
@@ -90,6 +91,42 @@ test("layout declares Korean language and Wangjing metadata", async () => {
   assert.match(layout, /lang="ko"/);
   assert.match(layout, /판교왕징 \| 판교 양꼬치·중국 양고기 다이닝/);
   assert.match(layout, /대왕판교로606번길/);
+});
+
+test("location section renders two data-driven branch cards", async () => {
+  const [section, card, css] = await Promise.all([
+    read("components/home/location-section.tsx"),
+    read("components/home/location-card.tsx"),
+    read("app/globals.css"),
+  ]);
+
+  assert.match(section, /import \{ LOCATIONS \}/);
+  assert.match(section, /import \{ LocationCard \}/);
+  assert.match(section, /LOCATIONS\.map/);
+  assert.match(section, /두 곳에서 만나요/);
+  assert.match(section, /href=\{location\.mapUrl\}/);
+  assert.match(section, /target="_blank"/);
+  assert.match(section, /rel="noreferrer"/);
+  assert.match(section, /네이버 플레이스 열기/);
+  assert.doesNotMatch(section, /#location-/);
+
+  assert.match(card, /from "next\/image"/);
+  assert.match(card, /id=\{`location-\$\{location\.id\}`\}/);
+  assert.match(card, /location\.phoneHref/);
+  assert.match(card, /location\.mapUrl/);
+  assert.match(card, /target="_blank"/);
+  assert.match(card, /rel="noreferrer"/);
+  assert.match(card, /네이버 플레이스/);
+
+  assert.match(
+    css,
+    /\.location-grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2/,
+  );
+  assert.match(
+    css,
+    /@media \(max-width: 767px\)[\s\S]*?\.location-grid\s*\{[\s\S]*?grid-template-columns:\s*1fr/,
+  );
+  assert.match(css, /\.location-jump\s*\{[\s\S]*?min-height:\s*48px/);
 });
 
 test("header and footer use the approved Wangjing logo", async () => {
