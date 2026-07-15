@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { BrandLogo } from "@/components/home/brand-logo";
 import {
   PANGYO_MENU_CHECKED_AT,
@@ -29,15 +30,15 @@ export default function MenuPage() {
     <div className="full-menu-page">
       <header className="full-menu-header">
         <div className="full-menu-header__inner">
-          <a href="/" aria-label="왕징양다리양꼬치 홈페이지로 이동">
+          <Link href="/" aria-label="왕징양다리양꼬치 홈페이지로 이동">
             <BrandLogo
               className="brand-logo--menu"
               sizes="(max-width: 767px) 112px, 176px"
             />
-          </a>
-          <a className="full-menu-home-link" href="/">
+          </Link>
+          <Link className="full-menu-home-link" href="/">
             홈으로 돌아가기
-          </a>
+          </Link>
         </div>
       </header>
 

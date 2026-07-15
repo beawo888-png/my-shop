@@ -107,3 +107,10 @@ test("all three full-menu entry points open /menu in a safe new tab", async () =
   assert.match(signature, /rel="noreferrer"/);
   assert.match(signature, />\s*전체 메뉴 보기\s*</);
 });
+
+test("full menu page uses Next Link for same-tab home navigation", async () => {
+  const page = await read("app/menu/page.tsx");
+  assert.match(page, /import Link from "next\/link"/);
+  assert.equal(page.match(/<Link\b/g)?.length, 2);
+  assert.doesNotMatch(page, /<a[^>]+href="\/"/);
+});
