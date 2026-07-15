@@ -177,23 +177,21 @@ test("hero renders the approved autoplaying promotional video", async () => {
   assert.doesNotMatch(hero, /<video[\s\S]*?controls/);
 });
 
-test("hero shows the complete video over a blurred poster backdrop", async () => {
+test("hero video fills the background and respects reduced motion", async () => {
   const css = await read("app/globals.css");
 
   assert.match(
     css,
-    /\.hero__poster\s*\{[\s\S]*?object-fit:\s*cover;[\s\S]*?object-position:\s*center;[\s\S]*?filter:\s*blur\(18px\);[\s\S]*?transform:\s*scale\(1\.08\);/,
+    /\.hero__poster,\s*\.hero__video\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?object-fit:\s*cover;[\s\S]*?pointer-events:\s*none;/,
+  );
+  assert.match(css, /\.hero__video\s*\{[\s\S]*?z-index:\s*-2;/);
+  assert.match(css, /\.hero__poster\s*\{[\s\S]*?z-index:\s*-3;/);
+  assert.match(
+    css,
+    /@media \(max-width: 767px\)[\s\S]*?\.hero__poster,\s*\.hero__video\s*\{[\s\S]*?object-position:\s*58% center;/,
   );
   assert.match(
     css,
-    /\.hero__video\s*\{[\s\S]*?object-fit:\s*contain;[\s\S]*?object-position:\s*center;/,
-  );
-  assert.match(
-    css,
-    /@media \(max-width: 767px\)[\s\S]*?\.hero__poster,\s*\.hero__video\s*\{[\s\S]*?object-position:\s*center;/,
-  );
-  assert.match(
-    css,
-    /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.hero__poster\s*\{[\s\S]*?filter:\s*none;[\s\S]*?transform:\s*none;[\s\S]*?object-fit:\s*contain;[\s\S]*?\.hero__video\s*\{[\s\S]*?display:\s*none;/,
+    /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.hero__video\s*\{[\s\S]*?display:\s*none;/,
   );
 });
