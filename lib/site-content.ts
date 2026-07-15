@@ -8,6 +8,20 @@ export type MenuItem = {
   alt: string;
 };
 export type Review = { quote: string; category: string; date: string };
+export type Location = {
+  id: "moran" | "pangyo";
+  areaLabel: string;
+  shortName: string;
+  name: string;
+  image: string;
+  imageAlt: string;
+  imagePosition: string;
+  address: string;
+  transit: string;
+  phoneDisplay: string;
+  phoneHref: `tel:${string}`;
+  mapUrl: string;
+};
 
 export const SITE = {
   name: "판교왕징",
@@ -20,6 +34,37 @@ export const SITE = {
   mapUrl:
     "https://map.naver.com/p/search/경기 성남시 분당구 대왕판교로606번길 10",
 } as const;
+
+export const LOCATIONS: Location[] = [
+  {
+    id: "moran",
+    areaLabel: "MORAN",
+    shortName: "모란본점",
+    name: "왕징양다리양꼬치 모란본점",
+    image: "/images/wangjing/moran-storefront.png",
+    imageAlt: "왕징양다리양꼬치 모란본점 외관과 입구",
+    imagePosition: "center 52%",
+    address: "경기 성남시 중원구 둔촌대로151번길 48 성슈퍼빌 102동 101호",
+    transit: "모란역 4번 출구에서 215m",
+    phoneDisplay: "0507-1377-5688",
+    phoneHref: "tel:050713775688",
+    mapUrl: "https://map.naver.com/v5/entry/place/1938356292",
+  },
+  {
+    id: "pangyo",
+    areaLabel: "PANGYO",
+    shortName: "판교점",
+    name: "왕징양다리양꼬치 판교점",
+    image: "/images/wangjing/storefront.jpg",
+    imageAlt: "왕징양다리양꼬치 판교점 외관과 간판",
+    imagePosition: "center",
+    address: "경기 성남시 분당구 대왕판교로606번길 10, 205호·206호",
+    transit: "판교역 4번 출구에서 266m",
+    phoneDisplay: "0507-1313-5688",
+    phoneHref: "tel:050713135688",
+    mapUrl: "https://map.naver.com/v5/entry/place/1873196958",
+  },
+];
 
 export const NAV_ITEMS: NavItem[] = [
   { label: "대표 메뉴", href: "#menu" },
