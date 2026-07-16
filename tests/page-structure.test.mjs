@@ -53,6 +53,27 @@ test("homepage reviews section links to the branch selector", async () => {
   assert.match(section, /id="reviews"/);
 });
 
+test("reviews page renders two safe Naver review choices", async () => {
+  const [page, card] = await Promise.all([
+    read("app/reviews/page.tsx"),
+    read("components/reviews/review-location-card.tsx"),
+  ]);
+
+  assert.match(page, /export const metadata: Metadata/);
+  assert.match(
+    page,
+    /https:\/\/xn--vr0bn4e2wh79mca68ih9mf4j\.com\/reviews/,
+  );
+  assert.match(page, /LOCATIONS\.map/);
+  assert.match(page, /<ReviewLocationCard/);
+  assert.match(page, /지점별 고객 리뷰/);
+  assert.match(card, /href=\{location\.reviewUrl\}/);
+  assert.match(card, /target="_blank"/);
+  assert.match(card, /rel="noreferrer"/);
+  assert.match(card, /\$\{location\.shortName\} 네이버 플레이스 리뷰 열기/);
+  assert.match(card, /네이버 플레이스 리뷰 보기/);
+});
+
 test("external actions use safe links and accessible labels", async () => {
   const files = await Promise.all(
     [
