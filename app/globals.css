@@ -1147,37 +1147,68 @@ img {
 
 .full-menu-section__items {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 40px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px 24px;
   list-style: none;
 }
 
-.full-menu-item {
-  min-height: 72px;
-  padding-block: 14px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 16px;
-  border-bottom: 1px solid #ded2c5;
+.full-menu-card {
+  min-width: 0;
+  overflow: hidden;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 14px 32px rgba(36, 26, 23, 0.08);
 }
 
-.full-menu-item h3 {
-  font-size: 1rem;
-  line-height: 1.45;
+.full-menu-card__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #eee4d7;
+  border-bottom: 1px solid var(--line);
 }
 
-.full-menu-item p {
-  margin-top: 5px;
+.full-menu-card__image {
+  width: 100%;
+  height: 100%;
+}
+
+.full-menu-card__image--cover {
+  object-fit: cover;
+}
+
+.full-menu-card__image--contain {
+  object-fit: contain;
+  padding: 12px;
+  background: #f1e7d9;
+}
+
+.full-menu-card__body {
+  min-height: 184px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+}
+
+.full-menu-card h3 {
+  font-size: 1.375rem;
+  line-height: 1.35;
+}
+
+.full-menu-card p {
+  margin-top: 10px;
   color: #796b61;
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
-.full-menu-item strong {
+.full-menu-card strong {
+  margin-top: auto;
+  padding-top: 20px;
   color: var(--red);
   font-size: 1.125rem;
-  white-space: nowrap;
+  line-height: 1.35;
 }
 
 .full-menu-footer {
@@ -1227,6 +1258,12 @@ img {
   outline-offset: 4px;
 }
 
+@media (max-width: 1199px) {
+  .full-menu-section__items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 767px) {
   .full-menu-shell,
   .full-menu-header__inner {
@@ -1261,6 +1298,15 @@ img {
 
   .full-menu-section__items {
     grid-template-columns: 1fr;
+  }
+
+  .full-menu-card h3 {
+    font-size: 1.125rem;
+  }
+
+  .full-menu-card__body {
+    min-height: 170px;
+    padding: 20px;
   }
 
   .full-menu-footer {

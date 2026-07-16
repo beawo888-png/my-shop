@@ -143,7 +143,14 @@ test("full menu page renders metadata, four groups, and conversion links", async
   assert.match(page, /rel="noreferrer"/g);
   assert.match(css, /\.full-menu-page/);
   assert.match(css, /\.full-menu-section__items/);
-  assert.match(css, /grid-template-columns:\s*repeat\(2/);
+  assert.match(
+    css,
+    /\.full-menu-section__items\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3/,
+  );
+  assert.match(
+    css,
+    /@media \(max-width: 1199px\)[\s\S]*?\.full-menu-section__items[\s\S]*?grid-template-columns:\s*repeat\(2/,
+  );
   assert.match(
     css,
     /@media \(max-width: 767px\)[\s\S]*?\.full-menu-section__items[\s\S]*?grid-template-columns:\s*1fr/,
