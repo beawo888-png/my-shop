@@ -8,7 +8,7 @@ const read = (path) =>
 test("every declared menu image is a non-empty local asset", async () => {
   const source = await read("lib/menu-content.ts");
   const files = [
-    ...source.matchAll(/menuItem\([^\n]+, "([a-z0-9-]+\.(?:jpg|png))"(?:, "(?:cover|contain)")?\)/g),
+    ...source.matchAll(/menuItem\([^\n]+, "([a-z0-9-]+\.(?:jpg|png))"(?:, "(?:cover|contain)")?(?:, "highball")?\)/g),
   ].map((match) => match[1]);
   assert.equal(files.length, 44);
   for (const file of new Set(files)) {
@@ -132,4 +132,30 @@ test("photo menu uses approved 3-2-1 grid, fit modes, and readable type", async 
     css,
     /\.full-menu-[^{]*\{[^}]*font-size:\s*(?:0\.[0-9]+rem|1[0-5]px)/,
   );
+});
+
+test("highballs use supplied images, fixed prices, order, and subsection", async () => {
+  const source = await read("lib/menu-content.ts");
+  const expected = [
+    ["산토리하이볼", "8,000원", "suntory-highball.png"],
+    ["제임슨하이볼", "8,000원", "jameson-highball.png"],
+    ["짐빔하이볼", "7,000원", "jim-beam-highball.png"],
+    ["커티삭하이볼", "6,000원", "cutty-sark-highball.png"],
+    ["봄베이하이볼", "8,000원", "bombay-highball.png"],
+    ["연태하이볼", "7,000원", "yantai-highball.png"],
+  ];
+
+  const positions = expected.map(([name, price, file]) => {
+    const line = source
+      .split("\n")
+      .find((row) => row.includes(`menuItem("${name}"`));
+    assert.ok(line?.includes(`"${price}"`), `${name} should keep ${price}`);
+    assert.ok(
+      line?.includes(`"${file}", "contain", "highball"`),
+      `${name} should use ${file} in the highball subsection`,
+    );
+    return source.indexOf(line);
+  });
+
+  assert.deepEqual(positions, [...positions].sort((a, b) => a - b));
 });

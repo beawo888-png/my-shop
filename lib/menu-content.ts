@@ -1,4 +1,5 @@
 export type MenuImageFit = "cover" | "contain";
+export type MenuSubsection = "highball";
 
 export type FullMenuItem = {
   name: string;
@@ -7,6 +8,7 @@ export type FullMenuItem = {
   imageSrc: string;
   imageAlt: string;
   imageFit: MenuImageFit;
+  subsection?: MenuSubsection;
 };
 
 export type FullMenuGroup = {
@@ -28,6 +30,7 @@ const menuItem = (
   description: string,
   imageFile: string,
   imageFit: MenuImageFit = "cover",
+  subsection?: MenuSubsection,
 ): FullMenuItem => ({
   name,
   price,
@@ -35,6 +38,7 @@ const menuItem = (
   imageSrc: `/images/wangjing/menu/${imageFile}`,
   imageAlt: `${name} 메뉴 사진`,
   imageFit,
+  subsection,
 });
 
 export const PANGYO_MENU_SOURCE_URL =
@@ -110,7 +114,6 @@ export const PANGYO_MENU_GROUPS: FullMenuGroup[] = [
     description: "양고기와 어울리는 고량주와 시원한 한 잔",
     fallbackImageSrc: "/images/wangjing/menu/chinese-liquor-toast.jpg",
     items: [
-      menuItem("커티삭하이볼", "6,000원", "커티삭 위스키로 만든 시원한 하이볼", "cutty-sark-highball.jpg", "contain"),
       menuItem("연태구냥 500ml 34도", "40,000원", "은은한 과실 향이 특징인 중국 백주", "yantai-guniang-500ml.jpg", "contain"),
       menuItem("연태구냥 250ml 34도", "20,000원", "부드러운 향을 가볍게 즐기는 연태구냥", "yantai-guniang-250ml.jpg", "contain"),
       menuItem("연태구냥 125ml 34도", "12,000원", "한 상에 곁들이기 좋은 작은 용량의 연태구냥", "yantai-guniang-125ml.jpg", "contain"),
@@ -120,11 +123,22 @@ export const PANGYO_MENU_GROUPS: FullMenuGroup[] = [
       menuItem("노주탄 500ml 33도", "30,000원", "진한 향과 긴 여운의 중국 백주", "noju-tan-500ml.jpg", "contain"),
       menuItem("칭다오 맥주 640ml 4.7도", "7,000원", "양꼬치와 잘 어울리는 청량한 맥주", "tsingtao-beer-640ml.jpg", "contain"),
       menuItem("하얼빈 맥주 500ml 4.3도", "7,000원", "깔끔하고 시원한 중국 맥주", "harbin-beer-500ml.jpg", "contain"),
-      menuItem("산토리하이볼", "8,000원", "산뜻하고 깔끔하게 즐기는 위스키 하이볼", "cutty-sark-highball.jpg", "contain"),
-      menuItem("봄베이하이볼", "8,000원", "진의 향긋함을 살린 청량한 하이볼", "cutty-sark-highball.jpg", "contain"),
-      menuItem("짐빔하이볼", "7,000원", "버번의 고소한 풍미를 담은 하이볼", "cutty-sark-highball.jpg", "contain"),
-      menuItem("제임슨하이볼", "8,000원", "부드러운 아이리시 위스키 하이볼", "cutty-sark-highball.jpg", "contain"),
-      menuItem("연태하이볼", "7,000원", "연태구냥의 향을 산뜻하게 즐기는 하이볼", "cutty-sark-highball.jpg", "contain"),
+      menuItem("산토리하이볼", "8,000원", "산뜻하고 깔끔하게 즐기는 위스키 하이볼", "suntory-highball.png", "contain", "highball"),
+      menuItem("제임슨하이볼", "8,000원", "부드러운 아이리시 위스키 하이볼", "jameson-highball.png", "contain", "highball"),
+      menuItem("짐빔하이볼", "7,000원", "버번의 고소한 풍미를 담은 하이볼", "jim-beam-highball.png", "contain", "highball"),
+      menuItem("커티삭하이볼", "6,000원", "커티삭 위스키로 만든 시원한 하이볼", "cutty-sark-highball.png", "contain", "highball"),
+      menuItem("봄베이하이볼", "8,000원", "진의 향긋함을 살린 청량한 하이볼", "bombay-highball.png", "contain", "highball"),
+      menuItem("연태하이볼", "7,000원", "연태구냥의 향을 산뜻하게 즐기는 하이볼", "yantai-highball.png", "contain", "highball"),
     ],
   },
 ];
+
+export type PangyoMenuGroupId = FullMenuGroup["id"];
+
+export const PANGYO_MENU_GROUP_IDS = PANGYO_MENU_GROUPS.map(
+  (group) => group.id,
+) satisfies PangyoMenuGroupId[];
+
+export function getPangyoMenuGroup(id: string) {
+  return PANGYO_MENU_GROUPS.find((group) => group.id === id);
+}

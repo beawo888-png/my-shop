@@ -51,7 +51,7 @@ test("all menu rows define local accessible images and group fallbacks", async (
     ),
   ];
   const itemLinePattern =
-    /^\s+menuItem\("[^"]+", "[^"]+", "[^"]+", "([^"]+)"(?:, "(contain)")?\),$/;
+    /^\s+menuItem\("[^"]+", "[^"]+", "[^"]+", "([^"]+)"(?:, "(contain)")?(?:, "(highball)")?\),$/;
   const imageFilePattern =
     /^[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|png)$/;
   let foodItemCount = 0;
@@ -62,7 +62,7 @@ test("all menu rows define local accessible images and group fallbacks", async (
     for (const line of itemLines) {
       const itemMatch = line.match(itemLinePattern);
       assert.ok(itemMatch, "invalid menu item image arguments: " + line.trim());
-      const [, imageFile, imageFit] = itemMatch;
+      const [, imageFile, imageFit, subsection] = itemMatch;
       assert.match(
         imageFile,
         imageFilePattern,
@@ -71,9 +71,14 @@ test("all menu rows define local accessible images and group fallbacks", async (
       if (groupId === "drinks") {
         drinkItemCount += 1;
         assert.equal(imageFit, "contain", "drink must explicitly use contain");
+        assert.ok(
+          subsection === undefined || subsection === "highball",
+          "drink subsection must be highball when present",
+        );
       } else {
         foodItemCount += 1;
         assert.equal(imageFit, undefined, "food must use the default cover fit");
+        assert.equal(subsection, undefined, "food must not use a subsection");
       }
     }
   }
