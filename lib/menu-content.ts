@@ -10,7 +10,12 @@ export type FullMenuItem = {
 };
 
 export type FullMenuGroup = {
-  id: "lamb-skewers" | "chinese-dishes" | "meals" | "drinks";
+  id:
+    | "signature-lamb-leg"
+    | "lamb-skewers"
+    | "chinese-dishes"
+    | "meals"
+    | "drinks";
   title: string;
   description: string;
   fallbackImageSrc: string;
@@ -39,13 +44,21 @@ export const PANGYO_MENU_COUNT = 44;
 
 export const PANGYO_MENU_GROUPS: FullMenuGroup[] = [
   {
-    id: "lamb-skewers",
-    title: "양고기·꼬치",
-    description: "불향과 육즙을 즐기는 왕징의 대표 메뉴",
+    id: "signature-lamb-leg",
+    title: "시그니처 양다리",
+    description: "400도 숯불로 완성한 왕징의 대표 양다리구이",
     fallbackImageSrc: "/images/wangjing/menu/lamb-leg.jpg",
     items: [
-      menuItem("비쥬얼 쇼크! 육즙 팡팡 양다리", "90,000원", "통양다리를 천천히 구워 즐기는 왕징 대표 메뉴", "lamb-leg.jpg"),
-      menuItem("비쥬얼 쇼크! 육즙 팡팡 양다리", "80,000원", "육즙과 불향을 풍성하게 즐기는 통양다리", "lamb-leg.jpg"),
+      menuItem("400도 숯불로 완성한 겉바속촉 양다리구이 (대)", "90,000원", "통양다리를 천천히 구워 즐기는 왕징 대표 메뉴", "lamb-leg.jpg"),
+      menuItem("400도 숯불로 완성한 겉바속촉 양다리구이 (중)", "80,000원", "육즙과 불향을 풍성하게 즐기는 통양다리", "lamb-leg.jpg"),
+    ],
+  },
+  {
+    id: "lamb-skewers",
+    title: "양꼬치 &세트메뉴",
+    description: "불향과 육즙을 즐기는 왕징의 양꼬치와 세트 메뉴",
+    fallbackImageSrc: "/images/wangjing/menu/lamb-leg.jpg",
+    items: [
       menuItem("고급양갈비", "30,000원", "부드러운 육질과 진한 풍미의 양갈비", "premium-lamb-chops.jpg"),
       menuItem("생양꼬치", "17,000원", "담백한 양고기 본연의 맛을 살린 꼬치", "fresh-lamb-skewers.jpg"),
       menuItem("양념양꼬치", "18,000원", "왕징 특제 양념으로 풍미를 더한 양꼬치", "marinated-lamb-skewers.jpg"),

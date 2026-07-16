@@ -5,7 +5,7 @@ import { test } from "node:test";
 const read = (path) =>
   readFile(new URL("../" + path, import.meta.url), "utf8").catch(() => "");
 
-test("Pangyo menu data contains 44 items in four approved groups", async () => {
+test("Pangyo menu data contains 44 items in five approved groups", async () => {
   const source = await read("lib/menu-content.ts");
   const itemCalls = source.match(/^\s+menuItem\(/gm) ?? [];
   assert.equal(itemCalls.length, 44);
@@ -15,14 +15,17 @@ test("Pangyo menu data contains 44 items in four approved groups", async () => {
     ),
   );
   assert.deepEqual(groupCounts, {
-    "lamb-skewers": 7,
+    "signature-lamb-leg": 2,
+    "lamb-skewers": 5,
     "chinese-dishes": 16,
     meals: 6,
     drinks: 15,
   });
   for (const value of [
+    'id: "signature-lamb-leg"',
+    'title: "시그니처 양다리"',
     'id: "lamb-skewers"',
-    'title: "양고기·꼬치"',
+    'title: "양꼬치 &세트메뉴"',
     'id: "chinese-dishes"',
     'title: "중국요리·탕"',
     'id: "meals"',
@@ -80,7 +83,7 @@ test("all menu rows define local accessible images and group fallbacks", async (
   assert.equal(foodItemCount + drinkItemCount, 44);
 
   const fallbackLines = source.match(/^    fallbackImageSrc:.*$/gm) ?? [];
-  assert.equal(fallbackLines.length, 4);
+  assert.equal(fallbackLines.length, 5);
   for (const line of fallbackLines) {
     assert.match(
       line,
@@ -90,21 +93,39 @@ test("all menu rows define local accessible images and group fallbacks", async (
   }
 });
 
-test("Pangyo menu data preserves both lamb-leg prices without invented sizes", async () => {
+test("Pangyo menu data splits signature lamb legs from skewers and sets", async () => {
   const source = await read("lib/menu-content.ts");
-  assert.equal(
-    source.match(/menuItem\("비쥬얼 쇼크! 육즙 팡팡 양다리"/g)?.length,
-    2,
+  const signatureStart = source.indexOf('title: "시그니처 양다리"');
+  const skewersStart = source.indexOf('title: "양꼬치 &세트메뉴"');
+  const chineseDishesStart = source.indexOf('title: "중국요리·탕"');
+
+  assert.ok(signatureStart >= 0);
+  assert.ok(skewersStart > signatureStart);
+  assert.ok(chineseDishesStart > skewersStart);
+
+  const signatureGroup = source.slice(signatureStart, skewersStart);
+  const skewersGroup = source.slice(skewersStart, chineseDishesStart);
+
+  assert.match(
+    signatureGroup,
+    /menuItem\("400도 숯불로 완성한 겉바속촉 양다리구이 \(대\)", "90,000원"/,
   );
   assert.match(
-    source,
-    /menuItem\("비쥬얼 쇼크! 육즙 팡팡 양다리", "90,000원"/,
+    signatureGroup,
+    /menuItem\("400도 숯불로 완성한 겉바속촉 양다리구이 \(중\)", "80,000원"/,
   );
-  assert.match(
-    source,
-    /menuItem\("비쥬얼 쇼크! 육즙 팡팡 양다리", "80,000원"/,
-  );
-  assert.doesNotMatch(source, /대형|소형|큰 사이즈|작은 사이즈/);
+  assert.equal(signatureGroup.match(/menuItem\(/g)?.length, 2);
+
+  for (const name of [
+    "고급양갈비",
+    "생양꼬치",
+    "양념양꼬치",
+    "양갈비살꼬치",
+    "새우꼬치",
+  ]) {
+    assert.ok(skewersGroup.includes(`menuItem("${name}"`));
+  }
+  assert.equal(skewersGroup.match(/menuItem\(/g)?.length, 5);
 });
 
 test("Pangyo menu data records its source and checked date", async () => {
@@ -116,7 +137,7 @@ test("Pangyo menu data records its source and checked date", async () => {
   assert.match(source, /2026년 7월 15일/);
 });
 
-test("full menu page renders metadata, four groups, and conversion links", async () => {
+test("full menu page renders metadata, five groups, and conversion links", async () => {
   const [page, css] = await Promise.all([
     read("app/menu/page.tsx"),
     read("app/globals.css"),
