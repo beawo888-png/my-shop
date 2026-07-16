@@ -40,9 +40,54 @@ test("all menu rows define local accessible images and group fallbacks", async (
   const source = await read("lib/menu-content.ts");
   assert.match(source, /imageSrc: `\/images\/wangjing\/menu\/\$\{imageFile\}`/);
   assert.match(source, /imageAlt: `\$\{name\} 메뉴 사진`/);
-  assert.match(source, /imageFit,/);
-  assert.equal(source.match(/^    fallbackImageSrc:/gm)?.length, 4);
-  assert.doesNotMatch(source, /imageSrc:\s*"https?:\/\//);
+  assert.match(source, /imageFit: MenuImageFit = "cover"/);
+
+  const groups = [
+    ...source.matchAll(
+      /id: "([^"]+)"[\s\S]*?items: \[([\s\S]*?)\r?\n    \],/g,
+    ),
+  ];
+  const itemLinePattern =
+    /^\s+menuItem\("[^"]+", "[^"]+", "[^"]+", "([^"]+)"(?:, "(contain)")?\),$/;
+  const imageFilePattern =
+    /^[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|png)$/;
+  let foodItemCount = 0;
+  let drinkItemCount = 0;
+
+  for (const [, groupId, items] of groups) {
+    const itemLines = items.match(/^\s+menuItem\(.*\),$/gm) ?? [];
+    for (const line of itemLines) {
+      const itemMatch = line.match(itemLinePattern);
+      assert.ok(itemMatch, "invalid menu item image arguments: " + line.trim());
+      const [, imageFile, imageFit] = itemMatch;
+      assert.match(
+        imageFile,
+        imageFilePattern,
+        "invalid menu image filename: " + imageFile,
+      );
+      if (groupId === "drinks") {
+        drinkItemCount += 1;
+        assert.equal(imageFit, "contain", "drink must explicitly use contain");
+      } else {
+        foodItemCount += 1;
+        assert.equal(imageFit, undefined, "food must use the default cover fit");
+      }
+    }
+  }
+
+  assert.equal(foodItemCount, 29);
+  assert.equal(drinkItemCount, 18);
+  assert.equal(foodItemCount + drinkItemCount, 47);
+
+  const fallbackLines = source.match(/^    fallbackImageSrc:.*$/gm) ?? [];
+  assert.equal(fallbackLines.length, 4);
+  for (const line of fallbackLines) {
+    assert.match(
+      line,
+      /^    fallbackImageSrc: "\/images\/wangjing\/menu\/[a-z0-9]+(?:-[a-z0-9]+)*\.(?:jpg|png)",$/,
+      "invalid local menu fallback: " + line.trim(),
+    );
+  }
 });
 
 test("Pangyo menu data preserves both lamb-leg prices without invented sizes", async () => {
