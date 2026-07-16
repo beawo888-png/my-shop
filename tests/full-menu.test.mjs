@@ -142,15 +142,13 @@ test("Pangyo menu data records its source and checked date", async () => {
   assert.match(source, /2026년 7월 15일/);
 });
 
-test("full menu page renders metadata, five groups, and conversion links", async () => {
+test("category menu page renders one group and conversion links", async () => {
   const [page, css] = await Promise.all([
-    read("app/menu/page.tsx"),
+    read("components/menu/category-menu-page.tsx"),
     read("app/globals.css"),
   ]);
 
   for (const value of [
-    "판교점 전체 메뉴 | 왕징양다리양꼬치",
-    "https://xn--vr0bn4e2wh79mca68ih9mf4j.com/menu",
     "PANGYO_MENU_GROUPS.map",
     "PANGYO_MENU_COUNT",
     "PANGYO_MENU_CHECKED_AT",
@@ -161,10 +159,10 @@ test("full menu page renders metadata, five groups, and conversion links", async
     assert.ok(page.includes(value), "menu page should include " + value);
   }
 
-  assert.match(page, /<h1[^>]*>판교점 전체 메뉴<\/h1>/);
+  assert.match(page, /<h1[^>]*>\{group\.title\}<\/h1>/);
   assert.match(page, /<h2/);
-  assert.match(page, /44개 메뉴/);
   assert.doesNotMatch(page, /점심특선|47개 메뉴|47 MENUS|52개 메뉴/);
+  assert.equal(page.match(/group\.items\.map/g)?.length, 1);
   assert.match(page, /target="_blank"/g);
   assert.match(page, /rel="noreferrer"/g);
   assert.match(css, /\.full-menu-page/);
@@ -215,8 +213,29 @@ test("all three full-menu entry points open /menu in a safe new tab", async () =
 });
 
 test("full menu page uses Next Link for same-tab home navigation", async () => {
-  const page = await read("app/menu/page.tsx");
+  const page = await read("components/menu/category-menu-page.tsx");
   assert.match(page, /import Link from "next\/link"/);
-  assert.equal(page.match(/<Link\b/g)?.length, 2);
+  assert.ok((page.match(/<Link\b/g)?.length ?? 0) >= 3);
   assert.doesNotMatch(page, /<a[^>]+href="\/"/);
+});
+
+test("menu uses independent category routes", async () => {
+  const [indexPage, categoryPage, component] = await Promise.all([
+    read("app/menu/page.tsx"),
+    read("app/menu/[category]/page.tsx"),
+    read("components/menu/category-menu-page.tsx"),
+  ]);
+
+  assert.match(indexPage, /redirect\("\/menu\/signature-lamb-leg"\)/);
+  assert.match(categoryPage, /params: Promise<\{ category: string \}>/);
+  assert.match(categoryPage, /generateStaticParams/);
+  assert.match(categoryPage, /getPangyoMenuGroup\(category\)/);
+  assert.match(categoryPage, /if \(!group\) notFound\(\)/);
+  assert.match(component, /href=\{`\/menu\/\$\{menuGroup\.id\}`\}/);
+  assert.match(
+    component,
+    /aria-current=\{menuGroup\.id === group\.id \? "page" : undefined\}/,
+  );
+  assert.doesNotMatch(component, /href=\{"#menu-/);
+  assert.equal(component.match(/PANGYO_MENU_GROUPS\.map/g)?.length, 1);
 });

@@ -98,7 +98,7 @@ test("remaining Chinese drinks use matching photos and removed drinks are absent
 
 test("menu page renders photo cards and JSON-LD from the same 44-item source", async () => {
   const [page, structured] = await Promise.all([
-    read("app/menu/page.tsx"),
+    read("components/menu/category-menu-page.tsx"),
     read("lib/menu-structured-data.ts"),
   ]);
   assert.match(page, /import \{ FullMenuCard \}/);
@@ -110,7 +110,9 @@ test("menu page renders photo cards and JSON-LD from the same 44-item source", a
   assert.match(structured, /"@type": "Menu"/);
   assert.match(structured, /"@type": "MenuSection"/);
   assert.match(structured, /"@type": "MenuItem"/);
-  assert.match(structured, /PANGYO_MENU_GROUPS\.map/);
+  assert.match(structured, /groups = PANGYO_MENU_GROUPS/);
+  assert.match(structured, /groups\.map/);
+  assert.match(structured, /new URL\(path, siteUrl\)/);
   assert.match(structured, /item\.imageSrc/);
   assert.match(
     structured,

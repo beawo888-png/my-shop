@@ -2,13 +2,16 @@ import { PANGYO_MENU_GROUPS } from "@/lib/menu-content";
 
 const siteUrl = "https://xn--vr0bn4e2wh79mca68ih9mf4j.com";
 
-export function buildPangyoMenuStructuredData() {
+export function buildPangyoMenuStructuredData(
+  groups = PANGYO_MENU_GROUPS,
+  path = "/menu",
+) {
   return {
     "@context": "https://schema.org",
     "@type": "Menu",
     name: "왕징양다리양꼬치 판교점 전체 메뉴",
-    url: `${siteUrl}/menu`,
-    hasMenuSection: PANGYO_MENU_GROUPS.map((group) => ({
+    url: new URL(path, siteUrl).toString(),
+    hasMenuSection: groups.map((group) => ({
       "@type": "MenuSection",
       name: group.title,
       description: group.description,
