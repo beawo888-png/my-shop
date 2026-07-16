@@ -39,18 +39,55 @@ test("menu card renders image, description, price, and fallback behavior", async
   assert.match(image, /setCurrentSrc\(fallbackSrc\)/);
 });
 
-test("menu catalog uses 28 food assets and six approved drink representatives", async () => {
+test("each Chinese spirit uses its own matching local product photo", async () => {
   const source = await read("lib/menu-content.ts");
-  const drinkFiles = [
-    "chinese-liquor-toast.jpg",
+  const chineseLiquorImages = new Map([
+    ["연태구냥 500ml 34도", "yantai-guniang-500ml.jpg"],
+    ["연태구냥 250ml 34도", "yantai-guniang-250ml.jpg"],
+    ["연태구냥 125ml 34도", "yantai-guniang-125ml.jpg"],
+    ["설원 450ml 30도", "seolwon-450ml.jpg"],
+    ["설원 250ml 30도", "seolwon-250ml.jpg"],
+    ["공부가주 500ml 33도", "gongbu-gaju-500ml.jpg"],
+    ["노주탄 500ml 33도", "noju-tan-500ml.jpg"],
+    ["이과두주 125ml 56도", "erguotou-125ml.jpg"],
+    ["컵술 고량주 100ml 38도", "cup-gaoliang-100ml.jpg"],
+  ]);
+
+  assert.equal(new Set(chineseLiquorImages.values()).size, 9);
+  for (const [name, file] of chineseLiquorImages) {
+    const itemLine = source
+      .split("\n")
+      .find((line) => line.includes(`menuItem("${name}"`));
+    assert.ok(
+      itemLine?.includes(`"${file}", "contain")`),
+      `${name} should use ${file} with contain`,
+    );
+  }
+
+  for (const file of [
     "chinese-liquor-pour-dark.jpg",
     "chinese-liquor-pour-clear.jpg",
-    "beer-cheers-table.jpg",
-    "beer-cheers-close.jpg",
-    "cutty-sark-highball.jpg",
-  ];
-  for (const file of drinkFiles) assert.ok(source.includes(file));
-  assert.doesNotMatch(source, /새우튀김|양꼬치 꿔바로우|점심특선|\.mp4/);
+  ]) {
+    assert.equal(
+      source.match(new RegExp(file.replace(".", "\\."), "g"))?.length ?? 0,
+      0,
+      `${file} should no longer be assigned to a menu item`,
+    );
+  }
+
+  assert.equal(
+    source.match(/chinese-liquor-toast\.jpg/g)?.length,
+    1,
+    "the toast photo should remain only as the drinks fallback",
+  );
+
+  for (const unchanged of [
+    'menuItem("칭다오 맥주 640ml 4.7도", "7,000원", "양꼬치와 잘 어울리는 청량한 맥주", "beer-cheers-table.jpg", "contain")',
+    'menuItem("하얼빈 맥주 500ml 4.3도", "7,000원", "깔끔하고 시원한 중국 맥주", "beer-cheers-close.jpg", "contain")',
+    'menuItem("타이거 맥주 640ml 5도", "7,000원", "산뜻한 탄산감의 라거 맥주", "beer-cheers-table.jpg", "contain")',
+  ]) {
+    assert.ok(source.includes(unchanged));
+  }
 });
 
 test("menu page renders photo cards and JSON-LD from the same 47-item source", async () => {
