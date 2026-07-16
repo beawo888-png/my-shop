@@ -74,6 +74,20 @@ test("reviews page renders two safe Naver review choices", async () => {
   assert.match(card, /네이버 플레이스 리뷰 보기/);
 });
 
+test("reviews page uses a responsive two-to-one column layout", async () => {
+  const css = await read("app/globals.css");
+  assert.match(
+    css,
+    /\.reviews-page__grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2/,
+  );
+  assert.match(
+    css,
+    /@media \(max-width: 767px\)[\s\S]*?\.reviews-page__grid[\s\S]*?grid-template-columns:\s*1fr/,
+  );
+  assert.match(css, /\.reviews__action/);
+  assert.match(css, /\.review-location-card/);
+});
+
 test("external actions use safe links and accessible labels", async () => {
   const files = await Promise.all(
     [
