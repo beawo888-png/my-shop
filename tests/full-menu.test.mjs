@@ -162,7 +162,7 @@ test("category menu page renders one group and conversion links", async () => {
   assert.match(page, /<h1[^>]*>\{group\.title\}<\/h1>/);
   assert.match(page, /<h2/);
   assert.doesNotMatch(page, /점심특선|47개 메뉴|47 MENUS|52개 메뉴/);
-  assert.equal(page.match(/group\.items\.map/g)?.length, 1);
+  assert.equal(page.match(/group\.items\.filter/g)?.length, 2);
   assert.match(page, /target="_blank"/g);
   assert.match(page, /rel="noreferrer"/g);
   assert.match(css, /\.full-menu-page/);
@@ -238,4 +238,29 @@ test("menu uses independent category routes", async () => {
   );
   assert.doesNotMatch(component, /href=\{"#menu-/);
   assert.equal(component.match(/PANGYO_MENU_GROUPS\.map/g)?.length, 1);
+});
+
+test("drinks place a responsive highball subsection last", async () => {
+  const [component, css] = await Promise.all([
+    read("components/menu/category-menu-page.tsx"),
+    read("app/globals.css"),
+  ]);
+
+  assert.match(component, /item\.subsection !== "highball"/);
+  assert.match(component, /item\.subsection === "highball"/);
+  assert.match(component, />하이볼<\/h2>/);
+  assert.match(component, /full-menu-section__items--highballs/);
+  assert.match(css, /\.full-menu-categories a\[aria-current="page"\]/);
+  assert.match(
+    css,
+    /\.full-menu-section__items--highballs[\s\S]*?repeat\(3/,
+  );
+  assert.match(
+    css,
+    /@media \(max-width: 1199px\)[\s\S]*?\.full-menu-section__items--highballs[\s\S]*?repeat\(2/,
+  );
+  assert.match(
+    css,
+    /@media \(max-width: 767px\)[\s\S]*?\.full-menu-section__items--highballs[\s\S]*?grid-template-columns:\s*1fr/,
+  );
 });

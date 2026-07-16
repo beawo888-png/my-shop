@@ -21,6 +21,12 @@ export function CategoryMenuPage({ group }: CategoryMenuPageProps) {
     [group],
     `/menu/${group.id}`,
   );
+  const regularItems = group.items.filter(
+    (item) => item.subsection !== "highball",
+  );
+  const highballItems = group.items.filter(
+    (item) => item.subsection === "highball",
+  );
 
   return (
     <div className="full-menu-page">
@@ -81,7 +87,7 @@ export function CategoryMenuPage({ group }: CategoryMenuPageProps) {
               <p>{group.description}</p>
             </div>
             <ul className="full-menu-section__items">
-              {group.items.map((item, index) => (
+              {regularItems.map((item, index) => (
                 <FullMenuCard
                   item={item}
                   fallbackImageSrc={group.fallbackImageSrc}
@@ -89,6 +95,26 @@ export function CategoryMenuPage({ group }: CategoryMenuPageProps) {
                 />
               ))}
             </ul>
+            {highballItems.length > 0 ? (
+              <section
+                className="full-menu-subsection"
+                aria-labelledby="highball-title"
+              >
+                <div className="full-menu-subsection__heading">
+                  <h2 id="highball-title">하이볼</h2>
+                  <p>각 브랜드의 개성을 시원하게 즐기는 하이볼 메뉴</p>
+                </div>
+                <ul className="full-menu-section__items full-menu-section__items--highballs">
+                  {highballItems.map((item, index) => (
+                    <FullMenuCard
+                      item={item}
+                      fallbackImageSrc={group.fallbackImageSrc}
+                      key={`${group.id}-highball-${item.name}-${item.price}-${index}`}
+                    />
+                  ))}
+                </ul>
+              </section>
+            ) : null}
           </section>
         </div>
       </main>
