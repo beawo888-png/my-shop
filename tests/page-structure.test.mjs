@@ -44,6 +44,15 @@ test("section components expose the approved anchor IDs", async () => {
   }
 });
 
+test("homepage reviews section links to the branch selector", async () => {
+  const section = await read("components/home/reviews-section.tsx");
+  assert.match(section, /import Link from "next\/link"/);
+  assert.match(section, /href="\/reviews"/);
+  assert.match(section, /지점별 고객 리뷰 보기/);
+  assert.doesNotMatch(section, /REVIEWS\.map|review-card|blockquote/);
+  assert.match(section, /id="reviews"/);
+});
+
 test("external actions use safe links and accessible labels", async () => {
   const files = await Promise.all(
     [
