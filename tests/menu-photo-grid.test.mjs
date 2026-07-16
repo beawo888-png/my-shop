@@ -18,6 +18,27 @@ test("every declared menu image is a non-empty local asset", async () => {
   }
 });
 
+test("menu card renders image, description, price, and fallback behavior", async () => {
+  const [card, image] = await Promise.all([
+    read("components/menu/full-menu-card.tsx"),
+    read("components/menu/full-menu-image.tsx"),
+  ]);
+  assert.match(card, /<FullMenuImage/);
+  assert.match(card, /<h3>\{item\.name\}<\/h3>/);
+  assert.match(card, /<p>\{item\.description\}<\/p>/);
+  assert.match(card, /<strong>\{item\.price\}<\/strong>/);
+  assert.match(card, /style=\{\{ position: "relative" \}\}/);
+  assert.match(image, /^"use client";/);
+  assert.match(image, /import Image from "next\/image"/);
+  assert.match(image, /alt=\{alt\}/);
+  assert.match(image, /fill/);
+  assert.match(image, /sizes=/);
+  assert.doesNotMatch(image, /\b(?:loading|preload|priority)=/);
+  assert.match(image, /onError=/);
+  assert.match(image, /if \(currentSrc !== fallbackSrc\)/);
+  assert.match(image, /setCurrentSrc\(fallbackSrc\)/);
+});
+
 test("menu catalog uses 28 food assets and six approved drink representatives", async () => {
   const source = await read("lib/menu-content.ts");
   const drinkFiles = [
