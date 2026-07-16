@@ -118,6 +118,11 @@ test("menu page renders photo cards and JSON-LD from the same 44-item source", a
     structured,
     /item\.price\.replace\("원", ""\)\.replaceAll\(",", ""\)/,
   );
+  assert.match(
+    structured,
+    /groups\.length === 1 \? `\$\{groups\[0\]\.title\} 메뉴`/,
+  );
+  assert.match(structured, /name: menuName/);
 });
 
 test("photo menu uses approved 3-2-1 grid, fit modes, and readable type", async () => {

@@ -6,10 +6,13 @@ export function buildPangyoMenuStructuredData(
   groups = PANGYO_MENU_GROUPS,
   path = "/menu",
 ) {
+  const menuName =
+    groups.length === 1 ? `${groups[0].title} 메뉴` : "왕징양다리양꼬치 판교점 전체 메뉴";
+
   return {
     "@context": "https://schema.org",
     "@type": "Menu",
-    name: "왕징양다리양꼬치 판교점 전체 메뉴",
+    name: menuName,
     url: new URL(path, siteUrl).toString(),
     hasMenuSection: groups.map((group) => ({
       "@type": "MenuSection",
