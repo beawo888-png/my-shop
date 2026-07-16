@@ -135,4 +135,3 @@ export const GROUP_FEATURES = [
   "건물 내 주차 가능",
   "유아 의자 · 남녀 화장실 구분",
 ] as const;
-
