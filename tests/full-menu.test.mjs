@@ -137,6 +137,8 @@ test("full menu page renders metadata, four groups, and conversion links", async
 
   assert.match(page, /<h1[^>]*>판교점 전체 메뉴<\/h1>/);
   assert.match(page, /<h2/);
+  assert.match(page, /47개 메뉴/);
+  assert.doesNotMatch(page, /점심특선|52개 메뉴/);
   assert.match(page, /target="_blank"/g);
   assert.match(page, /rel="noreferrer"/g);
   assert.match(css, /\.full-menu-page/);

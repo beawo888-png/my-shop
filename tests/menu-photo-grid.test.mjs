@@ -52,3 +52,25 @@ test("menu catalog uses 28 food assets and six approved drink representatives", 
   for (const file of drinkFiles) assert.ok(source.includes(file));
   assert.doesNotMatch(source, /새우튀김|양꼬치 꿔바로우|점심특선|\.mp4/);
 });
+
+test("menu page renders photo cards and JSON-LD from the same 47-item source", async () => {
+  const [page, structured] = await Promise.all([
+    read("app/menu/page.tsx"),
+    read("lib/menu-structured-data.ts"),
+  ]);
+  assert.match(page, /import \{ FullMenuCard \}/);
+  assert.match(page, /<FullMenuCard/);
+  assert.match(page, /fallbackImageSrc=\{group\.fallbackImageSrc\}/);
+  assert.match(page, /buildPangyoMenuStructuredData/);
+  assert.match(page, /type="application\/ld\+json"/);
+  assert.match(page, /replace\(\/<\/g, "\\\\u003c"\)/);
+  assert.match(structured, /"@type": "Menu"/);
+  assert.match(structured, /"@type": "MenuSection"/);
+  assert.match(structured, /"@type": "MenuItem"/);
+  assert.match(structured, /PANGYO_MENU_GROUPS\.map/);
+  assert.match(structured, /item\.imageSrc/);
+  assert.match(
+    structured,
+    /item\.price\.replace\("원", ""\)\.replaceAll\(",", ""\)/,
+  );
+});

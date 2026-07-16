@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BrandLogo } from "@/components/home/brand-logo";
+import { FullMenuCard } from "@/components/menu/full-menu-card";
 import {
   PANGYO_MENU_CHECKED_AT,
   PANGYO_MENU_COUNT,
   PANGYO_MENU_GROUPS,
 } from "@/lib/menu-content";
+import { buildPangyoMenuStructuredData } from "@/lib/menu-structured-data";
 
 const canonical = "https://xn--vr0bn4e2wh79mca68ih9mf4j.com/menu";
 const bookingUrl = "https://booking.naver.com/booking/6/bizes/970819";
@@ -14,11 +16,11 @@ const placeUrl = "https://map.naver.com/v5/entry/place/1873196958";
 export const metadata: Metadata = {
   title: "판교점 전체 메뉴 | 왕징양다리양꼬치",
   description:
-    "왕징양다리양꼬치 판교점의 양다리, 양꼬치, 중국요리, 식사, 점심특선과 주류 52개 메뉴 및 가격을 확인하세요.",
+    "왕징양다리양꼬치 판교점의 양다리, 양꼬치, 중국요리, 식사와 주류 47개 메뉴 및 가격을 사진과 함께 확인하세요.",
   alternates: { canonical },
   openGraph: {
     title: "판교점 전체 메뉴 | 왕징양다리양꼬치",
-    description: "판교점의 양고기와 중국요리 52개 메뉴 및 가격 안내",
+    description: "판교점의 양고기와 중국요리 47개 메뉴 및 가격 안내",
     url: canonical,
     locale: "ko_KR",
     type: "website",
@@ -26,8 +28,16 @@ export const metadata: Metadata = {
 };
 
 export default function MenuPage() {
+  const menuStructuredData = buildPangyoMenuStructuredData();
+
   return (
     <div className="full-menu-page">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(menuStructuredData).replace(/</g, "\\u003c"),
+        }}
+      />
       <header className="full-menu-header">
         <div className="full-menu-header__inner">
           <Link href="/" aria-label="왕징양다리양꼬치 홈페이지로 이동">
@@ -45,11 +55,11 @@ export default function MenuPage() {
       <main>
         <section className="full-menu-hero" aria-labelledby="full-menu-title">
           <div className="full-menu-shell">
-            <p className="full-menu-eyebrow">PANGYO · FULL MENU</p>
+            <p className="full-menu-eyebrow">PANGYO · 47 MENUS</p>
             <h1 id="full-menu-title">판교점 전체 메뉴</h1>
             <p className="full-menu-hero__description">
-              양다리와 꼬치부터 중국요리, 식사, 점심특선, 주류까지 한눈에
-              확인하세요.
+              양다리와 꼬치부터 중국요리, 식사, 주류까지 47개 메뉴를 사진과
+              함께 확인하세요.
             </p>
             <p className="full-menu-checked">
               네이버 플레이스 등록 메뉴 {PANGYO_MENU_COUNT}개 ·{" "}
@@ -84,24 +94,11 @@ export default function MenuPage() {
               </div>
               <ul className="full-menu-section__items">
                 {group.items.map((item, index) => (
-                  <li
-                    className="full-menu-item"
-                    key={
-                      group.id +
-                      "-" +
-                      item.name +
-                      "-" +
-                      item.price +
-                      "-" +
-                      index
-                    }
-                  >
-                    <div>
-                      <h3>{item.name}</h3>
-                      {item.description ? <p>{item.description}</p> : null}
-                    </div>
-                    <strong>{item.price}</strong>
-                  </li>
+                  <FullMenuCard
+                    item={item}
+                    fallbackImageSrc={group.fallbackImageSrc}
+                    key={`${group.id}-${item.name}-${item.price}-${index}`}
+                  />
                 ))}
               </ul>
             </section>
