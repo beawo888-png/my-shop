@@ -5,9 +5,21 @@ import { test } from "node:test";
 const read = (path) =>
   readFile(new URL("../" + path, import.meta.url), "utf8").catch(() => "");
 
-test("Pangyo menu data contains 52 items in five approved groups", async () => {
+test("Pangyo menu data contains 47 items in four approved groups", async () => {
   const source = await read("lib/menu-content.ts");
-  assert.equal(source.match(/\{ name: "[^"]+", price:/g)?.length, 52);
+  const itemCalls = source.match(/^\s+menuItem\(/gm) ?? [];
+  assert.equal(itemCalls.length, 47);
+  const groupCounts = Object.fromEntries(
+    [...source.matchAll(/id: "([^"]+)"[\s\S]*?items: \[([\s\S]*?)\n    \],/g)].map(
+      ([, id, items]) => [id, items.match(/menuItem\(/g)?.length ?? 0],
+    ),
+  );
+  assert.deepEqual(groupCounts, {
+    "lamb-skewers": 7,
+    "chinese-dishes": 16,
+    meals: 6,
+    drinks: 18,
+  });
   for (const value of [
     'id: "lamb-skewers"',
     'title: "양고기·꼬치"',
@@ -15,24 +27,38 @@ test("Pangyo menu data contains 52 items in five approved groups", async () => {
     'title: "중국요리·탕"',
     'id: "meals"',
     'title: "식사·면·디저트"',
-    'id: "lunch"',
-    'title: "점심특선"',
     'id: "drinks"',
     'title: "주류·하이볼"',
   ]) {
     assert.ok(source.includes(value), "missing menu group value: " + value);
   }
-  assert.match(source, /PANGYO_MENU_COUNT = 52/);
+  assert.doesNotMatch(source, /id: "lunch"|점심특선|홍소로우\+야채덮밥/);
+  assert.match(source, /PANGYO_MENU_COUNT = 47/);
+});
+
+test("all menu rows define local accessible images and group fallbacks", async () => {
+  const source = await read("lib/menu-content.ts");
+  assert.match(source, /imageSrc: `\/images\/wangjing\/menu\/\$\{imageFile\}`/);
+  assert.match(source, /imageAlt: `\$\{name\} 메뉴 사진`/);
+  assert.match(source, /imageFit,/);
+  assert.equal(source.match(/^    fallbackImageSrc:/gm)?.length, 4);
+  assert.doesNotMatch(source, /imageSrc:\s*"https?:\/\//);
 });
 
 test("Pangyo menu data preserves both lamb-leg prices without invented sizes", async () => {
   const source = await read("lib/menu-content.ts");
   assert.equal(
-    source.match(/name: "비쥬얼 쇼크! 육즙 팡팡 양다리"/g)?.length,
+    source.match(/menuItem\("비쥬얼 쇼크! 육즙 팡팡 양다리"/g)?.length,
     2,
   );
-  assert.match(source, /price: "90,000원"/);
-  assert.match(source, /price: "80,000원"/);
+  assert.match(
+    source,
+    /menuItem\("비쥬얼 쇼크! 육즙 팡팡 양다리", "90,000원"/,
+  );
+  assert.match(
+    source,
+    /menuItem\("비쥬얼 쇼크! 육즙 팡팡 양다리", "80,000원"/,
+  );
   assert.doesNotMatch(source, /대형|소형|큰 사이즈|작은 사이즈/);
 });
 
@@ -45,7 +71,7 @@ test("Pangyo menu data records its source and checked date", async () => {
   assert.match(source, /2026년 7월 15일/);
 });
 
-test("full menu page renders metadata, five groups, and conversion links", async () => {
+test("full menu page renders metadata, four groups, and conversion links", async () => {
   const [page, css] = await Promise.all([
     read("app/menu/page.tsx"),
     read("app/globals.css"),
