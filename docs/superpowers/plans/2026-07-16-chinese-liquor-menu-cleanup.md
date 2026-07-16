@@ -23,7 +23,9 @@
 **Files:**
 - Create: `public/images/wangjing/menu/tsingtao-beer-640ml.jpg`
 - Create: `public/images/wangjing/menu/harbin-beer-500ml.jpg`
+- Modify: `app/menu/page.tsx`
 - Modify: `lib/menu-content.ts`
+- Modify: `tests/full-menu.test.mjs`
 - Modify: `tests/menu-photo-grid.test.mjs`
 - Delete: `public/images/wangjing/menu/erguotou-125ml.jpg`
 - Delete: `public/images/wangjing/menu/cup-gaoliang-100ml.jpg`
@@ -35,7 +37,7 @@
 
 - [ ] **Step 1: Write the failing test**
 
-Change the declared-image count from 47 to 44. Replace the existing `each Chinese spirit uses its own matching local product photo` test with:
+In `tests/full-menu.test.mjs`, change the expected total count from 47 to 44, the drinks group count from 18 to 15, and all expected `47개 메뉴` copy to `44개 메뉴`. In `tests/menu-photo-grid.test.mjs`, change the declared-image count from 47 to 44 and rename the JSON-LD test to refer to 44 items. Replace the existing `each Chinese spirit uses its own matching local product photo` test with:
 
 ```js
 test("remaining Chinese drinks use matching photos and removed drinks are absent", async () => {
@@ -123,6 +125,8 @@ Replace the five affected records in `lib/menu-content.ts` with exactly these tw
 
 Do not alter the surrounding records.
 
+Also set `PANGYO_MENU_COUNT` to `44`. In `app/menu/page.tsx`, replace the three static `47` references in metadata and hero copy with `44`, including `PANGYO · 44 MENUS`.
+
 - [ ] **Step 5: Delete the two dedicated assets for removed drinks**
 
 Run:
@@ -159,8 +163,8 @@ Run:
 ```powershell
 git diff --check
 git status --short
-git diff -- lib/menu-content.ts tests/menu-photo-grid.test.mjs
-git add -- lib/menu-content.ts tests/menu-photo-grid.test.mjs public/images/wangjing/menu/tsingtao-beer-640ml.jpg public/images/wangjing/menu/harbin-beer-500ml.jpg public/images/wangjing/menu/erguotou-125ml.jpg public/images/wangjing/menu/cup-gaoliang-100ml.jpg
+git diff -- app/menu/page.tsx lib/menu-content.ts tests/full-menu.test.mjs tests/menu-photo-grid.test.mjs
+git add -- app/menu/page.tsx lib/menu-content.ts tests/full-menu.test.mjs tests/menu-photo-grid.test.mjs public/images/wangjing/menu/tsingtao-beer-640ml.jpg public/images/wangjing/menu/harbin-beer-500ml.jpg public/images/wangjing/menu/erguotou-125ml.jpg public/images/wangjing/menu/cup-gaoliang-100ml.jpg docs/superpowers/plans/2026-07-16-chinese-liquor-menu-cleanup.md
 git commit -m "feat: update Chinese beer menu photos"
 ```
 

@@ -35,7 +35,7 @@ const menuItem = (
 export const PANGYO_MENU_SOURCE_URL =
   "https://m.place.naver.com/restaurant/1873196958/menu/list";
 export const PANGYO_MENU_CHECKED_AT = "2026년 7월 15일";
-export const PANGYO_MENU_COUNT = 47;
+export const PANGYO_MENU_COUNT = 44;
 
 export const PANGYO_MENU_GROUPS: FullMenuGroup[] = [
   {
@@ -105,11 +105,8 @@ export const PANGYO_MENU_GROUPS: FullMenuGroup[] = [
       menuItem("설원 250ml 30도", "15,000원", "부담 없이 나누기 좋은 설원 백주", "seolwon-250ml.jpg", "contain"),
       menuItem("공부가주 500ml 33도", "50,000원", "깊고 부드러운 향을 지닌 중국 명주", "gongbu-gaju-500ml.jpg", "contain"),
       menuItem("노주탄 500ml 33도", "30,000원", "진한 향과 긴 여운의 중국 백주", "noju-tan-500ml.jpg", "contain"),
-      menuItem("이과두주 125ml 56도", "5,000원", "힘 있는 풍미를 작은 잔으로 즐기는 고도주", "erguotou-125ml.jpg", "contain"),
-      menuItem("컵술 고량주 100ml 38도", "5,000원", "양꼬치와 가볍게 곁들이는 컵 고량주", "cup-gaoliang-100ml.jpg", "contain"),
-      menuItem("칭다오 맥주 640ml 4.7도", "7,000원", "양꼬치와 잘 어울리는 청량한 맥주", "beer-cheers-table.jpg", "contain"),
-      menuItem("하얼빈 맥주 500ml 4.3도", "7,000원", "깔끔하고 시원한 중국 맥주", "beer-cheers-close.jpg", "contain"),
-      menuItem("타이거 맥주 640ml 5도", "7,000원", "산뜻한 탄산감의 라거 맥주", "beer-cheers-table.jpg", "contain"),
+      menuItem("칭다오 맥주 640ml 4.7도", "7,000원", "양꼬치와 잘 어울리는 청량한 맥주", "tsingtao-beer-640ml.jpg", "contain"),
+      menuItem("하얼빈 맥주 500ml 4.3도", "7,000원", "깔끔하고 시원한 중국 맥주", "harbin-beer-500ml.jpg", "contain"),
       menuItem("산토리하이볼", "8,000원", "산뜻하고 깔끔하게 즐기는 위스키 하이볼", "cutty-sark-highball.jpg", "contain"),
       menuItem("봄베이하이볼", "8,000원", "진의 향긋함을 살린 청량한 하이볼", "cutty-sark-highball.jpg", "contain"),
       menuItem("짐빔하이볼", "7,000원", "버번의 고소한 풍미를 담은 하이볼", "cutty-sark-highball.jpg", "contain"),

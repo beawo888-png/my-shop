@@ -16,11 +16,11 @@ const placeUrl = "https://map.naver.com/v5/entry/place/1873196958";
 export const metadata: Metadata = {
   title: "판교점 전체 메뉴 | 왕징양다리양꼬치",
   description:
-    "왕징양다리양꼬치 판교점의 양다리, 양꼬치, 중국요리, 식사와 주류 47개 메뉴 및 가격을 사진과 함께 확인하세요.",
+    "왕징양다리양꼬치 판교점의 양다리, 양꼬치, 중국요리, 식사와 주류 44개 메뉴 및 가격을 사진과 함께 확인하세요.",
   alternates: { canonical },
   openGraph: {
     title: "판교점 전체 메뉴 | 왕징양다리양꼬치",
-    description: "판교점의 양고기와 중국요리 47개 메뉴 및 가격 안내",
+    description: "판교점의 양고기와 중국요리 44개 메뉴 및 가격 안내",
     url: canonical,
     locale: "ko_KR",
     type: "website",
@@ -55,10 +55,10 @@ export default function MenuPage() {
       <main>
         <section className="full-menu-hero" aria-labelledby="full-menu-title">
           <div className="full-menu-shell">
-            <p className="full-menu-eyebrow">PANGYO · 47 MENUS</p>
+            <p className="full-menu-eyebrow">PANGYO · 44 MENUS</p>
             <h1 id="full-menu-title">판교점 전체 메뉴</h1>
             <p className="full-menu-hero__description">
-              양다리와 꼬치부터 중국요리, 식사, 주류까지 47개 메뉴를 사진과
+              양다리와 꼬치부터 중국요리, 식사, 주류까지 44개 메뉴를 사진과
               함께 확인하세요.
             </p>
             <p className="full-menu-checked">

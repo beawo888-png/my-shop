@@ -5,10 +5,10 @@ import { test } from "node:test";
 const read = (path) =>
   readFile(new URL("../" + path, import.meta.url), "utf8").catch(() => "");
 
-test("Pangyo menu data contains 47 items in four approved groups", async () => {
+test("Pangyo menu data contains 44 items in four approved groups", async () => {
   const source = await read("lib/menu-content.ts");
   const itemCalls = source.match(/^\s+menuItem\(/gm) ?? [];
-  assert.equal(itemCalls.length, 47);
+  assert.equal(itemCalls.length, 44);
   const groupCounts = Object.fromEntries(
     [...source.matchAll(/id: "([^"]+)"[\s\S]*?items: \[([\s\S]*?)\n    \],/g)].map(
       ([, id, items]) => [id, items.match(/menuItem\(/g)?.length ?? 0],
@@ -18,7 +18,7 @@ test("Pangyo menu data contains 47 items in four approved groups", async () => {
     "lamb-skewers": 7,
     "chinese-dishes": 16,
     meals: 6,
-    drinks: 18,
+    drinks: 15,
   });
   for (const value of [
     'id: "lamb-skewers"',
@@ -33,7 +33,7 @@ test("Pangyo menu data contains 47 items in four approved groups", async () => {
     assert.ok(source.includes(value), "missing menu group value: " + value);
   }
   assert.doesNotMatch(source, /id: "lunch"|점심특선|홍소로우\+야채덮밥/);
-  assert.match(source, /PANGYO_MENU_COUNT = 47/);
+  assert.match(source, /PANGYO_MENU_COUNT = 44/);
 });
 
 test("all menu rows define local accessible images and group fallbacks", async () => {
@@ -76,8 +76,8 @@ test("all menu rows define local accessible images and group fallbacks", async (
   }
 
   assert.equal(foodItemCount, 29);
-  assert.equal(drinkItemCount, 18);
-  assert.equal(foodItemCount + drinkItemCount, 47);
+  assert.equal(drinkItemCount, 15);
+  assert.equal(foodItemCount + drinkItemCount, 44);
 
   const fallbackLines = source.match(/^    fallbackImageSrc:.*$/gm) ?? [];
   assert.equal(fallbackLines.length, 4);
@@ -137,8 +137,8 @@ test("full menu page renders metadata, four groups, and conversion links", async
 
   assert.match(page, /<h1[^>]*>판교점 전체 메뉴<\/h1>/);
   assert.match(page, /<h2/);
-  assert.match(page, /47개 메뉴/);
-  assert.doesNotMatch(page, /점심특선|52개 메뉴/);
+  assert.match(page, /44개 메뉴/);
+  assert.doesNotMatch(page, /점심특선|47개 메뉴|47 MENUS|52개 메뉴/);
   assert.match(page, /target="_blank"/g);
   assert.match(page, /rel="noreferrer"/g);
   assert.match(css, /\.full-menu-page/);

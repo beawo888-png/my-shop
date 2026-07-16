@@ -10,7 +10,7 @@ test("every declared menu image is a non-empty local asset", async () => {
   const files = [
     ...source.matchAll(/menuItem\([^\n]+, "([a-z0-9-]+\.(?:jpg|png))"(?:, "(?:cover|contain)")?\)/g),
   ].map((match) => match[1]);
-  assert.equal(files.length, 47);
+  assert.equal(files.length, 44);
   for (const file of new Set(files)) {
     const url = new URL(`../public/images/wangjing/menu/${file}`, import.meta.url);
     await access(url);
@@ -39,9 +39,9 @@ test("menu card renders image, description, price, and fallback behavior", async
   assert.match(image, /setCurrentSrc\(fallbackSrc\)/);
 });
 
-test("each Chinese spirit uses its own matching local product photo", async () => {
+test("remaining Chinese drinks use matching photos and removed drinks are absent", async () => {
   const source = await read("lib/menu-content.ts");
-  const chineseLiquorImages = new Map([
+  const chineseDrinkImages = new Map([
     ["연태구냥 500ml 34도", "yantai-guniang-500ml.jpg"],
     ["연태구냥 250ml 34도", "yantai-guniang-250ml.jpg"],
     ["연태구냥 125ml 34도", "yantai-guniang-125ml.jpg"],
@@ -49,12 +49,12 @@ test("each Chinese spirit uses its own matching local product photo", async () =
     ["설원 250ml 30도", "seolwon-250ml.jpg"],
     ["공부가주 500ml 33도", "gongbu-gaju-500ml.jpg"],
     ["노주탄 500ml 33도", "noju-tan-500ml.jpg"],
-    ["이과두주 125ml 56도", "erguotou-125ml.jpg"],
-    ["컵술 고량주 100ml 38도", "cup-gaoliang-100ml.jpg"],
+    ["칭다오 맥주 640ml 4.7도", "tsingtao-beer-640ml.jpg"],
+    ["하얼빈 맥주 500ml 4.3도", "harbin-beer-500ml.jpg"],
   ]);
 
-  assert.equal(new Set(chineseLiquorImages.values()).size, 9);
-  for (const [name, file] of chineseLiquorImages) {
+  assert.equal(new Set(chineseDrinkImages.values()).size, 9);
+  for (const [name, file] of chineseDrinkImages) {
     const itemLine = source
       .split("\n")
       .find((line) => line.includes(`menuItem("${name}"`));
@@ -62,6 +62,19 @@ test("each Chinese spirit uses its own matching local product photo", async () =
       itemLine?.includes(`"${file}", "contain")`),
       `${name} should use ${file} with contain`,
     );
+  }
+
+  for (const removedLine of [
+    'menuItem("이과두주 125ml 56도", "5,000원", "힘 있는 풍미를 작은 잔으로 즐기는 고도주", "erguotou-125ml.jpg", "contain")',
+    'menuItem("컵술 고량주 100ml 38도", "5,000원", "양꼬치와 가볍게 곁들이는 컵 고량주", "cup-gaoliang-100ml.jpg", "contain")',
+    'menuItem("타이거 맥주 640ml 5도", "7,000원", "산뜻한 탄산감의 라거 맥주", "beer-cheers-table.jpg", "contain")',
+  ]) {
+    assert.ok(!source.includes(removedLine), `${removedLine} should be removed`);
+  }
+
+  for (const file of ["erguotou-125ml.jpg", "cup-gaoliang-100ml.jpg"]) {
+    const url = new URL(`../public/images/wangjing/menu/${file}`, import.meta.url);
+    await assert.rejects(access(url), { code: "ENOENT" });
   }
 
   for (const file of [
@@ -81,16 +94,9 @@ test("each Chinese spirit uses its own matching local product photo", async () =
     "the toast photo should remain only as the drinks fallback",
   );
 
-  for (const unchanged of [
-    'menuItem("칭다오 맥주 640ml 4.7도", "7,000원", "양꼬치와 잘 어울리는 청량한 맥주", "beer-cheers-table.jpg", "contain")',
-    'menuItem("하얼빈 맥주 500ml 4.3도", "7,000원", "깔끔하고 시원한 중국 맥주", "beer-cheers-close.jpg", "contain")',
-    'menuItem("타이거 맥주 640ml 5도", "7,000원", "산뜻한 탄산감의 라거 맥주", "beer-cheers-table.jpg", "contain")',
-  ]) {
-    assert.ok(source.includes(unchanged));
-  }
 });
 
-test("menu page renders photo cards and JSON-LD from the same 47-item source", async () => {
+test("menu page renders photo cards and JSON-LD from the same 44-item source", async () => {
   const [page, structured] = await Promise.all([
     read("app/menu/page.tsx"),
     read("lib/menu-structured-data.ts"),
