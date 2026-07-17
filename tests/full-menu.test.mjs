@@ -212,6 +212,17 @@ test("all three full-menu entry points open /menu in a safe new tab", async () =
   assert.match(signature, />\s*전체 메뉴 보기\s*</);
 });
 
+test("shared header can root home section links from menu pages", async () => {
+  const header = await read("components/home/site-header.tsx");
+
+  assert.match(header, /type SiteHeaderProps = \{/);
+  assert.match(header, /sectionRoot\?: "" \| "\/"/);
+  assert.match(header, /sectionRoot = ""/);
+  assert.match(header, /item\.href\.startsWith\("#"\)/);
+  assert.match(header, /`\$\{sectionRoot\}\$\{item\.href\}`/);
+  assert.match(header, /href=\{sectionRoot === "\/" \? "\/" : "#top"\}/);
+});
+
 test("full menu page uses Next Link for same-tab home navigation", async () => {
   const page = await read("components/menu/category-menu-page.tsx");
   assert.match(page, /import Link from "next\/link"/);
