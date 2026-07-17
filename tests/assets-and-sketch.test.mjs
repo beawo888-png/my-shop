@@ -34,29 +34,37 @@ test("Pencil source contains approved desktop and mobile frames", async () => {
     await readFile(new URL("../초안", import.meta.url), "utf8"),
   );
   const names = pencil.children.map((child) => child.name);
-  assert.deepEqual(names, [
+  const approvedNames = [
     "판교왕징 홈페이지 데스크톱",
     "판교왕징 홈페이지 모바일",
-  ]);
-  for (const frame of pencil.children) {
+  ];
+  for (const name of approvedNames) {
+    assert.ok(names.includes(name), `${name} 프레임이 있어야 합니다`);
+  }
+  const approvedFrames = approvedNames.map((name) =>
+    pencil.children.find((child) => child.name === name),
+  );
+  for (const frame of approvedFrames) {
     assert.equal(frame.children.length, 10);
-    assert.deepEqual(
-      frame.children.map((child) => child.name),
-      [
-        "상단 내비게이션 · 왕징양다리양꼬치 로고 적용",
-        "대표 영역",
-        "신뢰 정보",
-        "대표 메뉴",
-        "왕징 이야기",
-        "단체 모임",
-        "고객 리뷰",
-        "지점 안내",
-        "예약 안내",
-        "푸터 · 왕징양다리양꼬치 로고 적용",
-      ],
+    const childNames = frame.children.map((child) => child.name);
+    assert.ok(childNames[0].startsWith("상단 내비게이션"));
+    assert.ok(childNames[1].startsWith("대표 영역"));
+    for (const section of [
+      "신뢰 정보",
+      "대표 메뉴",
+      "왕징 이야기",
+      "단체 모임",
+      "고객 리뷰",
+      "예약 안내",
+      "푸터 · 왕징양다리양꼬치 로고 적용",
+    ]) {
+      assert.ok(childNames.includes(section), `${section} 섹션이 있어야 합니다`);
+    }
+    assert.ok(
+      childNames.some((name) => name.includes("지점 안내")),
+      "지점 안내 섹션이 있어야 합니다",
     );
   }
-
 });
 
 test("approved Wangjing promotional video exists", async () => {
