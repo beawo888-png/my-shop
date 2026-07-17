@@ -5,7 +5,14 @@ import { useEffect, useRef, useState } from "react";
 import { BrandLogo } from "@/components/home/brand-logo";
 import { BOOKING_LOCATIONS, NAV_ITEMS } from "@/lib/site-content";
 
-export function SiteHeader() {
+type SiteHeaderProps = {
+  sectionRoot?: "" | "/";
+};
+
+export function SiteHeader({ sectionRoot = "" }: SiteHeaderProps) {
+  const resolveNavHref = (item: (typeof NAV_ITEMS)[number]) =>
+    item.href.startsWith("#") ? `${sectionRoot}${item.href}` : item.href;
+
   const [open, setOpen] = useState(false);
   const [bookingOpen, setBookingOpen] = useState(false);
   const bookingMenuRef = useRef<HTMLDivElement>(null);
@@ -36,7 +43,7 @@ export function SiteHeader() {
     <header className="site-header">
       <a
         className="wordmark"
-        href="#top"
+        href={sectionRoot === "/" ? "/" : "#top"}
         aria-label="왕징양다리양꼬치 처음으로"
       >
         <BrandLogo
@@ -48,7 +55,7 @@ export function SiteHeader() {
       <nav className="desktop-nav" aria-label="주요 메뉴">
         {NAV_ITEMS.map((item) => (
           <a
-            href={item.href}
+            href={resolveNavHref(item)}
             key={item.href}
             target={item.newTab ? "_blank" : undefined}
             rel={item.newTab ? "noreferrer" : undefined}
@@ -106,7 +113,7 @@ export function SiteHeader() {
       >
         {NAV_ITEMS.map((item) => (
           <a
-            href={item.href}
+            href={resolveNavHref(item)}
             key={item.href}
             target={item.newTab ? "_blank" : undefined}
             rel={item.newTab ? "noreferrer" : undefined}

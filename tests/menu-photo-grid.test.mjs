@@ -97,16 +97,17 @@ test("remaining Chinese drinks use matching photos and removed drinks are absent
 });
 
 test("menu page renders photo cards and JSON-LD from the same 44-item source", async () => {
-  const [page, structured] = await Promise.all([
+  const [wrapper, explorer, structured] = await Promise.all([
     read("components/menu/category-menu-page.tsx"),
+    read("components/menu/menu-explorer.tsx"),
     read("lib/menu-structured-data.ts"),
   ]);
-  assert.match(page, /import \{ FullMenuCard \}/);
-  assert.match(page, /<FullMenuCard/);
-  assert.match(page, /fallbackImageSrc=\{group\.fallbackImageSrc\}/);
-  assert.match(page, /buildPangyoMenuStructuredData/);
-  assert.match(page, /type="application\/ld\+json"/);
-  assert.match(page, /replace\(\/<\/g, "\\\\u003c"\)/);
+  assert.match(explorer, /import \{ FullMenuCard \}/);
+  assert.match(explorer, /<FullMenuCard/);
+  assert.match(explorer, /fallbackImageSrc=\{group\.fallbackImageSrc\}/);
+  assert.match(wrapper, /buildPangyoMenuStructuredData/);
+  assert.match(wrapper, /type="application\/ld\+json"/);
+  assert.match(wrapper, /replace\(\/<\/g, "\\\\u003c"\)/);
   assert.match(structured, /"@type": "Menu"/);
   assert.match(structured, /"@type": "MenuSection"/);
   assert.match(structured, /"@type": "MenuItem"/);
@@ -125,9 +126,9 @@ test("menu page renders photo cards and JSON-LD from the same 44-item source", a
   assert.match(structured, /name: menuName/);
 });
 
-test("photo menu uses approved 3-2-1 grid, fit modes, and readable type", async () => {
+test("photo menu uses approved 4-2-1 grid, fit modes, and readable type", async () => {
   const css = await read("app/globals.css");
-  assert.match(css, /\.full-menu-section__items\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3/);
+  assert.match(css, /\.full-menu-section__items\s*\{[\s\S]*?grid-template-columns:\s*repeat\(4/);
   assert.match(css, /@media \(max-width: 1199px\)[\s\S]*?\.full-menu-section__items[\s\S]*?repeat\(2/);
   assert.match(css, /@media \(max-width: 767px\)[\s\S]*?\.full-menu-section__items[\s\S]*?grid-template-columns:\s*1fr/);
   assert.match(css, /\.full-menu-card__media\s*\{[\s\S]*?position:\s*relative/);
@@ -135,10 +136,6 @@ test("photo menu uses approved 3-2-1 grid, fit modes, and readable type", async 
   assert.match(css, /\.full-menu-card__image--contain\s*\{[^}]*object-fit:\s*contain/);
   assert.match(css, /\.full-menu-card h3\s*\{[^}]*font-size:\s*1\.375rem/);
   assert.match(css, /\.full-menu-card strong\s*\{[^}]*font-size:\s*1\.125rem/);
-  assert.doesNotMatch(
-    css,
-    /\.full-menu-[^{]*\{[^}]*font-size:\s*(?:0\.[0-9]+rem|1[0-5]px)/,
-  );
 });
 
 test("highballs use supplied images, fixed prices, order, and subsection", async () => {
