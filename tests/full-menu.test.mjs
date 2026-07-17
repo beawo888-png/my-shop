@@ -142,27 +142,24 @@ test("Pangyo menu data records its source and checked date", async () => {
   assert.match(source, /2026년 7월 15일/);
 });
 
-test("category menu page renders one group and conversion links", async () => {
-  const [page, css] = await Promise.all([
+test("category menu page renders shared shell and explorer", async () => {
+  const [page, explorer, css] = await Promise.all([
     read("components/menu/category-menu-page.tsx"),
+    read("components/menu/menu-explorer.tsx"),
     read("app/globals.css"),
   ]);
 
   for (const value of [
-    "PANGYO_MENU_GROUPS.map",
     "PANGYO_MENU_COUNT",
     "PANGYO_MENU_CHECKED_AT",
-    "메뉴와 가격은 매장 운영 상황에 따라 변경될 수 있습니다",
-    "https://booking.naver.com/booking/6/bizes/970819",
-    "https://map.naver.com/v5/entry/place/1873196958",
+    "BOOKING_LOCATIONS",
   ]) {
     assert.ok(page.includes(value), "menu page should include " + value);
   }
 
-  assert.match(page, /<h1[^>]*>\{group\.title\}<\/h1>/);
-  assert.match(page, /<h2/);
-  assert.doesNotMatch(page, /점심특선|47개 메뉴|47 MENUS|52개 메뉴/);
-  assert.equal(page.match(/group\.items\.filter/g)?.length, 2);
+  assert.match(page, /<SiteHeader sectionRoot="\/" \/>/);
+  assert.match(page, /<MenuExplorer/);
+  assert.match(explorer, /<h2/);
   assert.match(page, /target="_blank"/g);
   assert.match(page, /rel="noreferrer"/g);
   assert.match(css, /\.full-menu-page/);
@@ -223,37 +220,54 @@ test("shared header can root home section links from menu pages", async () => {
   assert.match(header, /href=\{sectionRoot === "\/" \? "\/" : "#top"\}/);
 });
 
-test("full menu page uses Next Link for same-tab home navigation", async () => {
-  const page = await read("components/menu/category-menu-page.tsx");
-  assert.match(page, /import Link from "next\/link"/);
-  assert.ok((page.match(/<Link\b/g)?.length ?? 0) >= 3);
-  assert.doesNotMatch(page, /<a[^>]+href="\/"/);
-});
-
-test("menu uses independent category routes", async () => {
-  const [indexPage, categoryPage, component] = await Promise.all([
+test("menu index renders the explorer and category routes seed its initial group", async () => {
+  const [indexPage, categoryPage, wrapper, explorer] = await Promise.all([
     read("app/menu/page.tsx"),
     read("app/menu/[category]/page.tsx"),
     read("components/menu/category-menu-page.tsx"),
+    read("components/menu/menu-explorer.tsx"),
   ]);
 
-  assert.match(indexPage, /redirect\("\/menu\/signature-lamb-leg"\)/);
+  assert.doesNotMatch(indexPage, /redirect\(/);
+  assert.match(indexPage, /<CategoryMenuPage \/>/);
+  assert.match(categoryPage, /<CategoryMenuPage group=\{group\} \/>/);
   assert.match(categoryPage, /params: Promise<\{ category: string \}>/);
   assert.match(categoryPage, /generateStaticParams/);
   assert.match(categoryPage, /getPangyoMenuGroup\(category\)/);
   assert.match(categoryPage, /if \(!group\) notFound\(\)/);
-  assert.match(component, /href=\{`\/menu\/\$\{menuGroup\.id\}`\}/);
-  assert.match(
-    component,
-    /aria-current=\{menuGroup\.id === group\.id \? "page" : undefined\}/,
-  );
-  assert.doesNotMatch(component, /href=\{"#menu-/);
-  assert.equal(component.match(/PANGYO_MENU_GROUPS\.map/g)?.length, 1);
+  assert.match(wrapper, /<SiteHeader sectionRoot="\/" \/>/);
+  assert.match(wrapper, /initialGroupId=\{group\?\.id\}/);
+  assert.match(explorer, /^"use client";/);
+  assert.match(explorer, /useState<MenuBranchId>\("all"\)/);
+  assert.match(explorer, /useState\(initialGroupId \?\? "all"\)/);
+});
+
+test("menu explorer exposes rounded branch and category buttons", async () => {
+  const explorer = await read("components/menu/menu-explorer.tsx");
+
+  for (const label of ["전체메뉴", "모란본점", "판교점", "전체 분류"]) {
+    assert.ok(explorer.includes(label), `missing explorer label: ${label}`);
+  }
+  assert.match(explorer, /aria-label="지점별 메뉴 선택"/);
+  assert.match(explorer, /aria-label="메뉴 분류 선택"/);
+  assert.ok((explorer.match(/aria-pressed=/g)?.length ?? 0) >= 2);
+  assert.match(explorer, /setActiveBranch/);
+  assert.match(explorer, /setActiveGroupId/);
+  assert.ok(explorer.includes("등록된 메뉴가 없습니다"));
+});
+
+test("both branches share the same 44-item group source", async () => {
+  const explorer = await read("components/menu/menu-explorer.tsx");
+
+  assert.match(explorer, /const visibleGroups =/);
+  assert.match(explorer, /groups\.filter\(\(group\) => group\.id === activeGroupId\)/);
+  assert.doesNotMatch(explorer, /moranMenu|pangyoMenu|MORAN_MENU/);
+  assert.match(explorer, /visibleGroups\.reduce/);
 });
 
 test("drinks place a responsive highball subsection last", async () => {
   const [component, css] = await Promise.all([
-    read("components/menu/category-menu-page.tsx"),
+    read("components/menu/menu-explorer.tsx"),
     read("app/globals.css"),
   ]);
 
