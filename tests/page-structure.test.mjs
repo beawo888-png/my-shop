@@ -44,6 +44,50 @@ test("section components expose the approved anchor IDs", async () => {
   }
 });
 
+test("homepage reviews section links to the branch selector", async () => {
+  const section = await read("components/home/reviews-section.tsx");
+  assert.match(section, /import Link from "next\/link"/);
+  assert.match(section, /href="\/reviews"/);
+  assert.match(section, /지점별 고객 리뷰 보기/);
+  assert.doesNotMatch(section, /REVIEWS\.map|review-card|blockquote/);
+  assert.match(section, /id="reviews"/);
+});
+
+test("reviews page renders two safe Naver review choices", async () => {
+  const [page, card] = await Promise.all([
+    read("app/reviews/page.tsx"),
+    read("components/reviews/review-location-card.tsx"),
+  ]);
+
+  assert.match(page, /export const metadata: Metadata/);
+  assert.match(
+    page,
+    /https:\/\/xn--vr0bn4e2wh79mca68ih9mf4j\.com\/reviews/,
+  );
+  assert.match(page, /LOCATIONS\.map/);
+  assert.match(page, /<ReviewLocationCard/);
+  assert.match(page, /지점별 고객 리뷰/);
+  assert.match(card, /href=\{location\.reviewUrl\}/);
+  assert.match(card, /target="_blank"/);
+  assert.match(card, /rel="noreferrer"/);
+  assert.match(card, /\$\{location\.shortName\} 네이버 플레이스 리뷰 열기/);
+  assert.match(card, /네이버 플레이스 리뷰 보기/);
+});
+
+test("reviews page uses a responsive two-to-one column layout", async () => {
+  const css = await read("app/globals.css");
+  assert.match(
+    css,
+    /\.reviews-page__grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2/,
+  );
+  assert.match(
+    css,
+    /@media \(max-width: 767px\)[\s\S]*?\.reviews-page__grid[\s\S]*?grid-template-columns:\s*1fr/,
+  );
+  assert.match(css, /\.reviews__action/);
+  assert.match(css, /\.review-location-card/);
+});
+
 test("external actions use safe links and accessible labels", async () => {
   const files = await Promise.all(
     [

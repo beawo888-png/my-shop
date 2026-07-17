@@ -16,7 +16,6 @@ export type MenuItem = {
   image: string;
   alt: string;
 };
-export type Review = { quote: string; category: string; date: string };
 export type Location = {
   id: "moran" | "pangyo";
   areaLabel: string;
@@ -30,6 +29,7 @@ export type Location = {
   phoneDisplay: string;
   phoneHref: `tel:${string}`;
   mapUrl: string;
+  reviewUrl: string;
 };
 
 export const SITE = {
@@ -71,6 +71,8 @@ export const LOCATIONS: Location[] = [
     phoneDisplay: "0507-1377-5688",
     phoneHref: "tel:050713775688",
     mapUrl: "https://map.naver.com/v5/entry/place/1938356292",
+    reviewUrl:
+      "https://m.place.naver.com/restaurant/1938356292/review/visitor",
   },
   {
     id: "pangyo",
@@ -85,6 +87,8 @@ export const LOCATIONS: Location[] = [
     phoneDisplay: "0507-1313-5688",
     phoneHref: "tel:050713135688",
     mapUrl: "https://map.naver.com/v5/entry/place/1873196958",
+    reviewUrl:
+      "https://m.place.naver.com/restaurant/1873196958/review/visitor",
   },
 ];
 
@@ -92,7 +96,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "대표 메뉴", href: "/menu", newTab: true },
   { label: "왕징 이야기", href: "#story" },
   { label: "단체 모임", href: "#group" },
-  { label: "고객 리뷰", href: "#reviews" },
+  { label: "고객 리뷰", href: "/reviews" },
   { label: "지점 안내", href: "#location" },
 ];
 
@@ -131,23 +135,3 @@ export const GROUP_FEATURES = [
   "건물 내 주차 가능",
   "유아 의자 · 남녀 화장실 구분",
 ] as const;
-
-export const REVIEWS: Review[] = [
-  {
-    quote:
-      "양꼬치가 부드럽고 잡내 없이 맛있어요. 넓어서 회식 장소로도 좋았습니다.",
-    category: "음식 · 단체 모임",
-    date: "2026. 07",
-  },
-  {
-    quote: "판교역에서 가깝고 주차도 편해 가족들과 방문하기 좋았어요.",
-    category: "위치 · 주차",
-    date: "2026. 06",
-  },
-  {
-    quote:
-      "메뉴가 다양하고 직원분들이 친절하게 설명해 주셔서 즐겁게 먹었습니다.",
-    category: "서비스 · 메뉴",
-    date: "2026. 06",
-  },
-];

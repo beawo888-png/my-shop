@@ -70,6 +70,22 @@ test("site content defines both Wangjing locations", () => {
   assert.ok(moranIndex < pangyoIndex, "모란본점이 판교점보다 먼저 와야 합니다");
 });
 
+test("site content defines branch review links and review navigation", () => {
+  const moranReview =
+    "https://m.place.naver.com/restaurant/1938356292/review/visitor";
+  const pangyoReview =
+    "https://m.place.naver.com/restaurant/1873196958/review/visitor";
+
+  assert.match(source, /reviewUrl: string/);
+  assert.ok(source.includes(moranReview));
+  assert.ok(source.includes(pangyoReview));
+  assert.ok(source.indexOf(moranReview) < source.indexOf(pangyoReview));
+  assert.match(
+    source,
+    /\{ label: "고객 리뷰", href: "\/reviews" \}/,
+  );
+});
+
 test("site content defines the three approved signature menus", () => {
   for (const menu of ["양꼬치", "양갈비살꼬치", "꿔바로우"]) {
     assert.match(source, new RegExp(menu));

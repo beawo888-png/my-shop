@@ -1,4 +1,4 @@
-import { REVIEWS } from "@/lib/site-content";
+import Link from "next/link";
 
 export function ReviewsSection() {
   return (
@@ -9,22 +9,13 @@ export function ReviewsSection() {
     >
       <div className="section__heading section__heading--center">
         <p className="eyebrow eyebrow--gold">GUEST REVIEWS</p>
-        <h2 id="reviews-title">왕징을 찾은 분들의 이야기</h2>
-        <p>맛과 공간, 편안한 모임을 경험한 방문자들의 후기입니다.</p>
+        <h2 id="reviews-title">지점별 고객 리뷰</h2>
+        <p>모란본점과 판교점을 방문한 고객들의 실제 네이버 리뷰를 확인하세요.</p>
       </div>
-      <div className="review-grid">
-        {REVIEWS.map((review) => (
-          <article className="review-card" key={`${review.category}-${review.date}`}>
-            <div className="stars" aria-label="별점 5점">
-              <span aria-hidden="true">★★★★★</span>
-            </div>
-            <blockquote>“{review.quote}”</blockquote>
-            <div className="review-card__meta">
-              <span>{review.category}</span>
-              <time>{review.date}</time>
-            </div>
-          </article>
-        ))}
+      <div className="reviews__action">
+        <Link className="button button--primary" href="/reviews">
+          지점별 고객 리뷰 보기
+        </Link>
       </div>
     </section>
   );
