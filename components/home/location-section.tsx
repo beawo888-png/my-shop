@@ -12,10 +12,7 @@ export function LocationSection() {
         <header className="locations__header">
           <p className="eyebrow eyebrow--red">LOCATIONS</p>
           <h2 id="location-title">두 곳에서 만나요</h2>
-          <p>
-            가까운 왕징을 선택해 주소와 전화번호를 확인하고 네이버 플레이스로
-            바로 이동하세요.
-          </p>
+          <p>가까운 왕징을 선택해 주소와 전화번호를 확인하고 네이버·구글 지도로 바로 이동하세요.</p>
 
           <nav className="location-jumps" aria-label="지점 바로가기">
             {LOCATIONS.map((location) => (

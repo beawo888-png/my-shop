@@ -169,6 +169,7 @@ test("location section renders two data-driven branch cards", async () => {
   assert.match(section, /import \{ LocationCard \}/);
   assert.match(section, /LOCATIONS\.map/);
   assert.match(section, /두 곳에서 만나요/);
+  assert.match(section, /네이버·구글 지도로 바로 이동하세요/);
   assert.match(section, /href=\{location\.mapUrl\}/);
   assert.match(section, /target="_blank"/);
   assert.match(section, /rel="noreferrer"/);
