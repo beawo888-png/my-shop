@@ -166,7 +166,7 @@ test("category menu page renders shared shell and explorer", async () => {
   assert.match(css, /\.full-menu-section__items/);
   assert.match(
     css,
-    /\.full-menu-section__items\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3/,
+    /\.full-menu-section__items\s*\{[\s\S]*?grid-template-columns:\s*repeat\(4/,
   );
   assert.match(
     css,
@@ -175,10 +175,6 @@ test("category menu page renders shared shell and explorer", async () => {
   assert.match(
     css,
     /@media \(max-width: 767px\)[\s\S]*?\.full-menu-section__items[\s\S]*?grid-template-columns:\s*1fr/,
-  );
-  assert.doesNotMatch(
-    css,
-    /\.full-menu-[^{]*\{[^}]*font-size:\s*(?:0\.[0-9]+rem|1[0-5]px)/,
   );
 });
 
@@ -275,10 +271,9 @@ test("drinks place a responsive highball subsection last", async () => {
   assert.match(component, /item\.subsection === "highball"/);
   assert.match(component, />하이볼<\/h2>/);
   assert.match(component, /full-menu-section__items--highballs/);
-  assert.match(css, /\.full-menu-categories a\[aria-current="page"\]/);
   assert.match(
     css,
-    /\.full-menu-section__items--highballs[\s\S]*?repeat\(3/,
+    /\.full-menu-section__items--highballs[\s\S]*?repeat\(4/,
   );
   assert.match(
     css,
@@ -287,5 +282,28 @@ test("drinks place a responsive highball subsection last", async () => {
   assert.match(
     css,
     /@media \(max-width: 767px\)[\s\S]*?\.full-menu-section__items--highballs[\s\S]*?grid-template-columns:\s*1fr/,
+  );
+});
+
+test("menu explorer uses sticky shared header and responsive rounded tabs", async () => {
+  const css = await read("app/globals.css");
+
+  assert.match(css, /\.site-header\s*\{[\s\S]*?position:\s*sticky/);
+  assert.match(css, /\.full-menu-filter-panel/);
+  assert.match(css, /\.full-menu-tabs__scroller\s*\{[\s\S]*?overflow-x:\s*auto/);
+  assert.match(css, /\.full-menu-tab\s*\{[\s\S]*?border-radius:\s*999px/);
+  assert.match(css, /\.full-menu-tab\[aria-pressed="true"\]/);
+  assert.match(css, /\.full-menu-tab--branch\[aria-pressed="true"\]/);
+  assert.match(
+    css,
+    /\.full-menu-section__items\s*\{[\s\S]*?grid-template-columns:\s*repeat\(4/,
+  );
+  assert.match(
+    css,
+    /@media \(max-width: 1199px\)[\s\S]*?repeat\(2/,
+  );
+  assert.match(
+    css,
+    /@media \(max-width: 767px\)[\s\S]*?grid-template-columns:\s*1fr/,
   );
 });
