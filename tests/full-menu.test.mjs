@@ -149,11 +149,7 @@ test("category menu page renders shared shell and explorer", async () => {
     read("app/globals.css"),
   ]);
 
-  for (const value of [
-    "PANGYO_MENU_COUNT",
-    "PANGYO_MENU_CHECKED_AT",
-    "BOOKING_LOCATIONS",
-  ]) {
+  for (const value of ["PANGYO_MENU_CHECKED_AT", "BOOKING_LOCATIONS"]) {
     assert.ok(page.includes(value), "menu page should include " + value);
   }
 
@@ -234,20 +230,18 @@ test("menu index renders the explorer and category routes seed its initial group
   assert.match(wrapper, /<SiteHeader sectionRoot="\/" \/>/);
   assert.match(wrapper, /initialGroupId=\{group\?\.id\}/);
   assert.match(explorer, /^"use client";/);
-  assert.match(explorer, /useState<MenuBranchId>\("all"\)/);
   assert.match(explorer, /useState\(initialGroupId \?\? "all"\)/);
 });
 
-test("menu explorer exposes rounded branch and category buttons", async () => {
+test("menu explorer exposes the requested category buttons", async () => {
   const explorer = await read("components/menu/menu-explorer.tsx");
 
-  for (const label of ["전체메뉴", "모란본점", "판교점", "전체 분류"]) {
+  for (const label of ["전체메뉴", "44개 메뉴 · 모란본점 · 판교점", "시그니처 양다리", "양꼬치&세트메뉴", "중국요리", "식사", "주류&하이볼"]) {
     assert.ok(explorer.includes(label), `missing explorer label: ${label}`);
   }
-  assert.match(explorer, /aria-label="지점별 메뉴 선택"/);
   assert.match(explorer, /aria-label="메뉴 분류 선택"/);
-  assert.ok((explorer.match(/aria-pressed=/g)?.length ?? 0) >= 2);
-  assert.match(explorer, /setActiveBranch/);
+  assert.doesNotMatch(explorer, /MENU_BRANCHES|activeBranch|setActiveBranch|지점별 메뉴 선택/);
+  assert.match(explorer, /groups\.map/);
   assert.match(explorer, /setActiveGroupId/);
   assert.ok(explorer.includes("등록된 메뉴가 없습니다"));
 });
@@ -258,7 +252,7 @@ test("both branches share the same 44-item group source", async () => {
   assert.match(explorer, /const visibleGroups =/);
   assert.match(explorer, /groups\.filter\(\(group\) => group\.id === activeGroupId\)/);
   assert.doesNotMatch(explorer, /moranMenu|pangyoMenu|MORAN_MENU/);
-  assert.match(explorer, /visibleGroups\.reduce/);
+  assert.match(explorer, /MENU_CATEGORY_LABELS/);
 });
 
 test("drinks place a responsive highball subsection last", async () => {
@@ -293,7 +287,6 @@ test("menu explorer uses sticky shared header and responsive rounded tabs", asyn
   assert.match(css, /\.full-menu-tabs__scroller\s*\{[\s\S]*?overflow-x:\s*auto/);
   assert.match(css, /\.full-menu-tab\s*\{[\s\S]*?border-radius:\s*999px/);
   assert.match(css, /\.full-menu-tab\[aria-pressed="true"\]/);
-  assert.match(css, /\.full-menu-tab--branch\[aria-pressed="true"\]/);
   assert.match(
     css,
     /\.full-menu-section__items\s*\{[\s\S]*?grid-template-columns:\s*repeat\(4/,

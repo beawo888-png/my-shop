@@ -1021,12 +1021,6 @@ img {
   margin-inline: auto;
 }
 
-.full-menu-hero {
-  padding-block: 64px;
-  background: #241a17;
-  color: #fff8ec;
-}
-
 .full-menu-filter-panel {
   padding-block: 24px;
   display: grid;
@@ -1073,12 +1067,6 @@ img {
   color: var(--paper);
 }
 
-.full-menu-tab--branch[aria-pressed="true"] {
-  border-color: var(--red);
-  background: var(--red);
-  color: var(--paper);
-}
-
 .full-menu-eyebrow,
 .full-menu-checked {
   color: var(--gold);
@@ -1090,48 +1078,26 @@ img {
   letter-spacing: 0.18em;
 }
 
-.full-menu-hero h1 {
-  margin-top: 16px;
-  font-size: clamp(2.625rem, 5vw, 3.5rem);
+.full-menu-intro {
+  padding-block: 42px 24px;
+}
+
+.full-menu-intro h1 {
+  font-size: clamp(2.25rem, 4vw, 3.25rem);
   line-height: 1.2;
 }
 
-.full-menu-hero__description {
-  max-width: 760px;
-  margin-top: 18px;
-  color: rgba(255, 248, 236, 0.82);
-  font-size: 1.125rem;
-  line-height: 1.7;
-}
-
-.full-menu-hero .full-menu-checked {
-  margin-top: 18px;
+.full-menu-intro p {
+  margin-top: 14px;
+  color: var(--red);
+  font-size: 1rem;
+  font-weight: 800;
 }
 
 .full-menu-content {
   padding-block: 56px 96px;
   display: grid;
   gap: 64px;
-}
-
-.full-menu-results-heading {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 24px;
-}
-
-.full-menu-results-heading p,
-.full-menu-results-heading strong {
-  color: var(--red);
-  font-size: 0.875rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-}
-
-.full-menu-results-heading h2 {
-  margin-top: 8px;
-  font-size: 2rem;
 }
 
 .full-menu-empty {
@@ -1315,14 +1281,6 @@ img {
     width: min(100% - 40px, 1248px);
   }
 
-  .full-menu-hero {
-    padding-block: 48px;
-  }
-
-  .full-menu-hero h1 {
-    font-size: 2.625rem;
-  }
-
   .full-menu-filter-panel {
     padding-block: 18px;
   }
@@ -1339,12 +1297,6 @@ img {
   .full-menu-content {
     padding-block: 44px 72px;
     gap: 48px;
-  }
-
-  .full-menu-results-heading {
-    align-items: start;
-    flex-direction: column;
-    gap: 12px;
   }
 
   .full-menu-section__items {

@@ -4,62 +4,34 @@ import { useState } from "react";
 import { FullMenuCard } from "@/components/menu/full-menu-card";
 import type { FullMenuGroup } from "@/lib/menu-content";
 
-type MenuBranchId = "all" | "moran" | "pangyo";
-
-const MENU_BRANCHES: { id: MenuBranchId; label: string }[] = [
-  { id: "all", label: "전체메뉴" },
-  { id: "moran", label: "모란본점" },
-  { id: "pangyo", label: "판교점" },
-];
-
 type MenuExplorerProps = {
   groups: FullMenuGroup[];
   initialGroupId?: string;
 };
 
+const MENU_CATEGORY_LABELS: Record<string, string> = {
+  "signature-lamb-leg": "시그니처 양다리",
+  "lamb-skewers": "양꼬치&세트메뉴",
+  "chinese-dishes": "중국요리",
+  meals: "식사",
+  drinks: "주류&하이볼",
+};
+
 export function MenuExplorer({ groups, initialGroupId }: MenuExplorerProps) {
-  const [activeBranch, setActiveBranch] = useState<MenuBranchId>("all");
   const [activeGroupId, setActiveGroupId] = useState(initialGroupId ?? "all");
   const visibleGroups =
     activeGroupId === "all"
       ? groups
       : groups.filter((group) => group.id === activeGroupId);
-  const visibleCount = visibleGroups.reduce(
-    (total, group) => total + group.items.length,
-    0,
-  );
-  const branchLabel =
-    MENU_BRANCHES.find((branch) => branch.id === activeBranch)?.label ??
-    "전체메뉴";
-
   return (
     <section className="full-menu-explorer" aria-label="메뉴 탐색">
+      <header className="full-menu-intro full-menu-shell">
+        <h1>전체메뉴</h1>
+        <p>44개 메뉴 · 모란본점 · 판교점</p>
+      </header>
       <div className="full-menu-filter-panel">
-        <nav className="full-menu-tabs full-menu-shell" aria-label="지점별 메뉴 선택">
-          <div className="full-menu-tabs__scroller">
-            {MENU_BRANCHES.map((branch) => (
-              <button
-                className="full-menu-tab full-menu-tab--branch"
-                type="button"
-                key={branch.id}
-                aria-pressed={activeBranch === branch.id}
-                onClick={() => setActiveBranch(branch.id)}
-              >
-                {branch.label}
-              </button>
-            ))}
-          </div>
-        </nav>
         <nav className="full-menu-tabs full-menu-shell" aria-label="메뉴 분류 선택">
           <div className="full-menu-tabs__scroller">
-            <button
-              className="full-menu-tab full-menu-tab--category"
-              type="button"
-              aria-pressed={activeGroupId === "all"}
-              onClick={() => setActiveGroupId("all")}
-            >
-              전체 분류
-            </button>
             {groups.map((group) => (
               <button
                 className="full-menu-tab full-menu-tab--category"
@@ -68,7 +40,7 @@ export function MenuExplorer({ groups, initialGroupId }: MenuExplorerProps) {
                 aria-pressed={activeGroupId === group.id}
                 onClick={() => setActiveGroupId(group.id)}
               >
-                {group.title} {group.items.length}
+                {MENU_CATEGORY_LABELS[group.id] ?? group.title}
               </button>
             ))}
           </div>
@@ -76,13 +48,6 @@ export function MenuExplorer({ groups, initialGroupId }: MenuExplorerProps) {
       </div>
 
       <div className="full-menu-content full-menu-shell">
-        <div className="full-menu-results-heading">
-          <div>
-            <p>{branchLabel}</p>
-            <h2>{activeGroupId === "all" ? "전체 메뉴" : visibleGroups[0]?.title}</h2>
-          </div>
-          <strong>{visibleCount} MENUS · 두 지점 공통</strong>
-        </div>
         {visibleGroups.length === 0 ? (
           <p className="full-menu-empty">등록된 메뉴가 없습니다.</p>
         ) : (

@@ -2,7 +2,6 @@ import { SiteHeader } from "@/components/home/site-header";
 import { MenuExplorer } from "@/components/menu/menu-explorer";
 import {
   PANGYO_MENU_CHECKED_AT,
-  PANGYO_MENU_COUNT,
   PANGYO_MENU_GROUPS,
   type FullMenuGroup,
 } from "@/lib/menu-content";
@@ -21,14 +20,6 @@ export function CategoryMenuPage({ group }: CategoryMenuPageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(menuStructuredData).replace(/</g, "\\u003c") }} />
       <SiteHeader sectionRoot="/" />
       <main>
-        <section className="full-menu-hero" aria-labelledby="full-menu-title">
-          <div className="full-menu-shell">
-            <p className="full-menu-eyebrow">WANGJING · FULL MENU</p>
-            <h1 id="full-menu-title">전체 메뉴</h1>
-            <p className="full-menu-hero__description">{PANGYO_MENU_COUNT}개 메뉴 · 모란본점 · 판교점</p>
-            <p className="full-menu-checked">모란본점과 판교점 공통 메뉴 · {PANGYO_MENU_CHECKED_AT} 확인</p>
-          </div>
-        </section>
         <MenuExplorer groups={PANGYO_MENU_GROUPS} initialGroupId={group?.id} />
       </main>
       <footer className="full-menu-footer">
