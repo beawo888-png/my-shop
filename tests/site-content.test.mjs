@@ -70,6 +70,29 @@ test("site content defines both Wangjing locations", () => {
   assert.ok(moranIndex < pangyoIndex, "모란본점이 판교점보다 먼저 와야 합니다");
 });
 
+test("location data defines parking and Google directions for both branches", () => {
+  const moranGoogle =
+    "https://www.google.com/maps/dir/?api=1&destination=%EA%B2%BD%EA%B8%B0%20%EC%84%B1%EB%82%A8%EC%8B%9C%20%EC%A4%91%EC%9B%90%EA%B5%AC%20%EB%91%94%EC%B4%8C%EB%8C%80%EB%A1%9C151%EB%B2%88%EA%B8%B8%2048%20%EC%84%B1%EC%8A%88%ED%8D%BC%EB%B9%8C%20102%EB%8F%99%20101%ED%98%B8";
+  const pangyoGoogle =
+    "https://www.google.com/maps/dir/?api=1&destination=%EA%B2%BD%EA%B8%B0%20%EC%84%B1%EB%82%A8%EC%8B%9C%20%EB%B6%84%EB%8B%B9%EA%B5%AC%20%EB%8C%80%EC%99%95%ED%8C%90%EA%B5%90%EB%A1%9C606%EB%B2%88%EA%B8%B8%2010%2C%20205%ED%98%B8%C2%B7206%ED%98%B8";
+
+  assert.match(source, /parking: string/);
+  assert.match(source, /googleDirectionsUrl: string/);
+  assert.ok(
+    source.includes(
+      "가게 앞 주차장 4대 무료이용 또는 근처 모란공영주차장",
+    ),
+  );
+  assert.ok(
+    source.includes(
+      "판교 라스트리트(알파리움1타워) 주차장 (3시간 무료주차) 또는 근처 판교 공영주차장",
+    ),
+  );
+  assert.ok(source.includes(moranGoogle));
+  assert.ok(source.includes(pangyoGoogle));
+  assert.ok(source.indexOf(moranGoogle) < source.indexOf(pangyoGoogle));
+});
+
 test("site content defines branch review links and review navigation", () => {
   const moranReview =
     "https://m.place.naver.com/restaurant/1938356292/review/visitor";
