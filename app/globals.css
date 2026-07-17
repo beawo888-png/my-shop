@@ -1079,7 +1079,12 @@ img {
 }
 
 .full-menu-intro {
-  padding-block: 42px 24px;
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  padding: 42px max(24px, calc((100vw - 1248px) / 2)) 24px;
+  background: #241a17;
+  color: #fff8ec;
 }
 
 .full-menu-intro h1 {
@@ -1089,7 +1094,7 @@ img {
 
 .full-menu-intro p {
   margin-top: 14px;
-  color: var(--red);
+  color: #d6a446;
   font-size: 1rem;
   font-weight: 800;
 }
@@ -1279,6 +1284,11 @@ img {
 @media (max-width: 767px) {
   .full-menu-shell {
     width: min(100% - 40px, 1248px);
+  }
+
+  .full-menu-intro {
+    width: 100%;
+    padding-inline: 20px;
   }
 
   .full-menu-filter-panel {
