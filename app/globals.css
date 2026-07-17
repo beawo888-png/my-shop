@@ -615,7 +615,7 @@ img {
 .location-card__details > div {
   padding: 1rem 0;
   display: grid;
-  grid-template-columns: 88px minmax(0, 1fr);
+  grid-template-columns: 96px minmax(0, 1fr);
   gap: 0.75rem;
   border-bottom: 1px solid var(--line);
 }
@@ -623,6 +623,9 @@ img {
 .location-card__details dt {
   color: var(--red);
   font-weight: 900;
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+  white-space: nowrap;
 }
 
 .location-card__details dd {
@@ -637,22 +640,25 @@ img {
 
 .location-card__actions {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
 }
 
 .location-card__button {
   width: 100%;
+  border-radius: 10px;
 }
 
 .location-card__button--secondary {
   border-color: var(--ink);
-  background: transparent;
-  color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
 }
 
 .location-card__button--secondary:hover {
   border-color: var(--red);
-  color: var(--red);
+  background: var(--red);
+  color: var(--paper);
 }
 
 .reservation {

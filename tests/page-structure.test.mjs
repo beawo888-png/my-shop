@@ -179,7 +179,8 @@ test("location section renders two data-driven branch cards", async () => {
   assert.match(card, /from "next\/image"/);
   assert.match(card, /id=\{`location-\$\{location\.id\}`\}/);
   assert.match(card, /location\.phoneHref/);
-  assert.match(card, /<dt>주차장 이용방법<\/dt>/);
+  assert.match(card, /<dt>주차장<\/dt>/);
+  assert.doesNotMatch(card, /주차장 이용방법/);
   assert.match(card, /location\.parking/);
   assert.match(card, /className="location-card__actions"/);
   assert.match(card, /location\.mapUrl/);
@@ -202,15 +203,27 @@ test("location section renders two data-driven branch cards", async () => {
   assert.match(css, /\.location-jump\s*\{[\s\S]*?min-height:\s*48px/);
   assert.match(
     css,
-    /\.location-card__actions\s*\{[\s\S]*?display:\s*grid;[\s\S]*?gap:/,
+    /\.location-card__details > div\s*\{[\s\S]*?grid-template-columns:\s*96px minmax\(0, 1fr\)/,
   );
   assert.match(
     css,
-    /\.location-card__button\s*\{[\s\S]*?width:\s*100%/,
+    /\.location-card__details dt\s*\{[\s\S]*?letter-spacing:\s*-0\.01em;[\s\S]*?white-space:\s*nowrap;/,
   );
   assert.match(
     css,
-    /\.location-card__button--secondary\s*\{[\s\S]*?border-color:\s*var\(--ink\)/,
+    /\.location-card__actions\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/,
+  );
+  assert.match(
+    css,
+    /\.location-card__button\s*\{[\s\S]*?border-radius:\s*10px;/,
+  );
+  assert.match(
+    css,
+    /\.location-card__button--secondary\s*\{[\s\S]*?border-color:\s*var\(--ink\);[\s\S]*?background:\s*var\(--ink\);[\s\S]*?color:\s*var\(--paper\);/,
+  );
+  assert.match(
+    css,
+    /@media \(max-width: 767px\)[\s\S]*?\.location-card__details > div\s*\{[\s\S]*?grid-template-columns:\s*80px minmax\(0, 1fr\)/,
   );
 });
 

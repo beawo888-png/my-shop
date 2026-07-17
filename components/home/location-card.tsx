@@ -38,7 +38,7 @@ export function LocationCard({ location }: LocationCardProps) {
             </dd>
           </div>
           <div>
-            <dt>주차장 이용방법</dt>
+            <dt>주차장</dt>
             <dd>{location.parking}</dd>
           </div>
         </dl>
