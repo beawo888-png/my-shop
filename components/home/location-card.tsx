@@ -37,17 +37,32 @@ export function LocationCard({ location }: LocationCardProps) {
               <a href={location.phoneHref}>{location.phoneDisplay}</a>
             </dd>
           </div>
+          <div>
+            <dt>주차장 이용방법</dt>
+            <dd>{location.parking}</dd>
+          </div>
         </dl>
 
-        <a
-          className="button button--primary location-card__button"
-          href={location.mapUrl}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={`${location.shortName} 네이버 플레이스 열기`}
-        >
-          네이버 플레이스
-        </a>
+        <div className="location-card__actions">
+          <a
+            className="button button--primary location-card__button"
+            href={location.mapUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`${location.shortName} 네이버 길찾기 열기`}
+          >
+            네이버 길찾기
+          </a>
+          <a
+            className="button location-card__button location-card__button--secondary"
+            href={location.googleDirectionsUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`${location.shortName} 구글 길찾기 열기`}
+          >
+            구글 길찾기
+          </a>
+        </div>
       </div>
     </article>
   );

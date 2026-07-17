@@ -635,8 +635,24 @@ img {
   text-underline-offset: 4px;
 }
 
+.location-card__actions {
+  display: grid;
+  gap: 0.75rem;
+}
+
 .location-card__button {
   width: 100%;
+}
+
+.location-card__button--secondary {
+  border-color: var(--ink);
+  background: transparent;
+  color: var(--ink);
+}
+
+.location-card__button--secondary:hover {
+  border-color: var(--red);
+  color: var(--red);
 }
 
 .reservation {

@@ -178,10 +178,17 @@ test("location section renders two data-driven branch cards", async () => {
   assert.match(card, /from "next\/image"/);
   assert.match(card, /id=\{`location-\$\{location\.id\}`\}/);
   assert.match(card, /location\.phoneHref/);
+  assert.match(card, /<dt>주차장 이용방법<\/dt>/);
+  assert.match(card, /location\.parking/);
+  assert.match(card, /className="location-card__actions"/);
   assert.match(card, /location\.mapUrl/);
-  assert.match(card, /target="_blank"/);
-  assert.match(card, /rel="noreferrer"/);
-  assert.match(card, /네이버 플레이스/);
+  assert.match(card, /location\.googleDirectionsUrl/);
+  assert.match(card, /네이버 길찾기/);
+  assert.match(card, /구글 길찾기/);
+  assert.match(card, /\$\{location\.shortName\} 네이버 길찾기 열기/);
+  assert.match(card, /\$\{location\.shortName\} 구글 길찾기 열기/);
+  assert.equal(card.match(/target="_blank"/g)?.length, 2);
+  assert.equal(card.match(/rel="noreferrer"/g)?.length, 2);
 
   assert.match(
     css,
@@ -192,6 +199,18 @@ test("location section renders two data-driven branch cards", async () => {
     /@media \(max-width: 767px\)[\s\S]*?\.location-grid\s*\{[\s\S]*?grid-template-columns:\s*1fr/,
   );
   assert.match(css, /\.location-jump\s*\{[\s\S]*?min-height:\s*48px/);
+  assert.match(
+    css,
+    /\.location-card__actions\s*\{[\s\S]*?display:\s*grid;[\s\S]*?gap:/,
+  );
+  assert.match(
+    css,
+    /\.location-card__button\s*\{[\s\S]*?width:\s*100%/,
+  );
+  assert.match(
+    css,
+    /\.location-card__button--secondary\s*\{[\s\S]*?border-color:\s*var\(--ink\)/,
+  );
 });
 
 test("header and footer use the approved Wangjing logo", async () => {
