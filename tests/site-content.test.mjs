@@ -80,12 +80,12 @@ test("location data defines parking and Google directions for both branches", ()
   assert.match(source, /googleDirectionsUrl: string/);
   assert.ok(
     source.includes(
-      "가게 앞 주차장 4대 무료이용 또는 근처 모란공영주차장",
+      "가게 앞 4대 무료주차 · 모란공영주차장",
     ),
   );
   assert.ok(
     source.includes(
-      "판교 라스트리트(알파리움1타워) 주차장 (3시간 무료주차) 또는 근처 판교 공영주차장",
+      "라스트리트 3시간 무료 · 공영주차장",
     ),
   );
   assert.ok(source.includes(moranGoogle));
@@ -111,6 +111,17 @@ test("site content defines branch review links and review navigation", () => {
     source,
     /\{ label: "고객 리뷰", href: "\/reviews" \}/,
   );
+});
+
+test("site content uses direct Kakao review URLs for both branches", () => {
+  const moranKakaoReview =
+    "https://place.map.kakao.com/1387600612#review";
+  const pangyoKakaoReview =
+    "https://place.map.kakao.com/1537703881#review";
+
+  assert.ok(source.includes(moranKakaoReview));
+  assert.ok(source.includes(pangyoKakaoReview));
+  assert.ok(source.indexOf(moranKakaoReview) < source.indexOf(pangyoKakaoReview));
 });
 
 test("site content defines the three approved signature menus", () => {

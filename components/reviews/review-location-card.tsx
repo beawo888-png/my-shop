@@ -12,7 +12,7 @@ export function ReviewLocationCard({ location }: ReviewLocationCardProps) {
       <address>{location.address}</address>
       <div className="review-location-card__actions">
         <a
-          className="button review-location-card__button"
+          className="button review-location-card__button review-location-card__button--naver"
           href={location.reviewUrl}
           target="_blank"
           rel="noreferrer"
@@ -22,7 +22,7 @@ export function ReviewLocationCard({ location }: ReviewLocationCardProps) {
           <span>리뷰 보기</span>
         </a>
         <a
-          className="button review-location-card__button"
+          className="button review-location-card__button review-location-card__button--kakao"
           href={location.kakaoReviewUrl}
           target="_blank"
           rel="noreferrer"
@@ -32,7 +32,7 @@ export function ReviewLocationCard({ location }: ReviewLocationCardProps) {
           <span>리뷰 보기</span>
         </a>
         <a
-          className="button review-location-card__button"
+          className="button review-location-card__button review-location-card__button--google"
           href={location.googleReviewUrl}
           target="_blank"
           rel="noreferrer"

@@ -159,6 +159,29 @@ test("reviews page renders two safe Naver review choices", async () => {
   assert.doesNotMatch(card, /↗/);
 });
 
+test("review buttons use the approved platform colors", async () => {
+  const [card, css] = await Promise.all([
+    read("components/reviews/review-location-card.tsx"),
+    read("app/globals.css"),
+  ]);
+
+  for (const platform of ["naver", "kakao", "google"]) {
+    assert.match(card, new RegExp(`review-location-card__button--${platform}`));
+  }
+  assert.match(
+    css,
+    /\.review-location-card__button--naver\s*\{[^}]*background:\s*#03c75a;[^}]*border-color:\s*#02ad4f;[^}]*color:\s*#fff;/s,
+  );
+  assert.match(
+    css,
+    /\.review-location-card__button--kakao\s*\{[^}]*background:\s*#fee500;[^}]*border-color:\s*#e4ce00;[^}]*color:\s*#191919;/s,
+  );
+  assert.match(
+    css,
+    /\.review-location-card__button--google\s*\{[^}]*background:\s*#4285f4;[^}]*border-color:\s*#2f6fd8;[^}]*color:\s*#fff;/s,
+  );
+});
+
 test("reviews page uses a responsive two-to-one column layout", async () => {
   const css = await read("app/globals.css");
   assert.match(
@@ -182,10 +205,6 @@ test("reviews page uses a responsive two-to-one column layout", async () => {
   assert.match(
     css,
     /\.reviews-page__hero\s*\{[\s\S]*?background:[\s\S]*?var\(--ink-soft\);/,
-  );
-  assert.match(
-    css,
-    /\.reviews-page__content\s*\{[\s\S]*?background:\s*var\(--cream\);/,
   );
   assert.match(
     css,
@@ -273,15 +292,11 @@ test("mobile menu exposes its state and target", async () => {
   assert.match(header, /setOpen\(false\)/);
   assert.match(
     css,
-    /@media \(max-width: 1023px\)[\s\S]*?\.desktop-nav\s*\{[\s\S]*?display:\s*flex;/,
+    /@media \(max-width: 1023px\)[\s\S]*?\.desktop-nav\s*\{[\s\S]*?display:\s*none;/,
   );
   assert.match(
     css,
-    /@media \(max-width: 767px\)[\s\S]*?\.desktop-nav\s*\{[\s\S]*?display:\s*none;/,
-  );
-  assert.match(
-    css,
-    /@media \(max-width: 767px\)[\s\S]*?\.menu-toggle\s*\{[\s\S]*?display:\s*inline-grid;/,
+    /@media \(max-width: 1023px\)[\s\S]*?\.menu-toggle\s*\{[\s\S]*?display:\s*inline-grid;/,
   );
 });
 

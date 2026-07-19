@@ -111,7 +111,7 @@ test("home exposes two Restaurant entities and responsive SEO sections", async (
   );
   assert.match(
     css,
-    /@media \(max-width: 767px\)[\s\S]*?\.story__standard-card[\s\S]*?grid-template-columns:\s*1fr;/,
+    /@media \(max-width: 767px\)[\s\S]*?\.story__promise-grid[\s\S]*?grid-template-columns:\s*1fr;/,
   );
   assert.match(
     css,

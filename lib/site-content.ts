@@ -80,8 +80,7 @@ export const LOCATIONS: Location[] = [
     mapUrl: "https://map.naver.com/v5/entry/place/1938356292",
     reviewUrl:
       "https://m.place.naver.com/restaurant/1938356292/review/visitor",
-    kakaoReviewUrl:
-      "https://map.kakao.com/?q=왕징양다리양꼬치 모란본점",
+    kakaoReviewUrl: "https://place.map.kakao.com/1387600612#review",
     googleReviewUrl:
       "https://www.google.com/maps/search/?api=1&query=왕징양다리양꼬치 모란본점 경기 성남시 중원구 둔촌대로151번길 48",
   },
@@ -104,8 +103,7 @@ export const LOCATIONS: Location[] = [
     mapUrl: "https://map.naver.com/v5/entry/place/1873196958",
     reviewUrl:
       "https://m.place.naver.com/restaurant/1873196958/review/visitor",
-    kakaoReviewUrl:
-      "https://map.kakao.com/?q=왕징양다리양꼬치 판교점",
+    kakaoReviewUrl: "https://place.map.kakao.com/1537703881#review",
     googleReviewUrl:
       "https://www.google.com/maps/search/?api=1&query=왕징양다리양꼬치 판교점 경기 성남시 분당구 대왕판교로606번길 10",
   },
