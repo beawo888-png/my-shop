@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>자영업자를 위한 GEO &amp; AEO 완벽 가이드 — 완전판 전자책</title>
+<style>
+:root{
+  --bg:#0b1020; --bg2:#101830; --panel:#162140; --panel2:#1d2a50;
+  --line:#2a3a66; --ink:#eef3ff; --mute:#9fb0cf;
+  --gold:#ffcb5c; --gold2:#ffa726; --coral:#ff7e67;
+  --blue:#4da3ff; --green:#34d399; --red:#f87171; --purple:#a78bfa;
+  --orange:#fb923c; --cyan:#22d3ee; --pink:#f472b6; --lime:#a3e635;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'Pretendard','Noto Sans KR','Malgun Gothic',system-ui,sans-serif;line-height:1.85;-webkit-font-smoothing:antialiased;font-size:16px}
+.wrap{max-width:960px;margin:0 auto;padding:0 24px}
+.page{padding:90px 0;border-bottom:1px solid var(--line);position:relative}
+.page::before,.page::after{content:"";position:absolute;width:32px;height:32px;border:2px solid var(--gold);opacity:.35}
+.page::before{top:28px;left:28px;border-right:0;border-bottom:0}
+.page::after{bottom:28px;right:28px;border-left:0;border-top:0}
+
+/* COVER */
+.cover{min-height:100vh;background:
+  radial-gradient(ellipse at 30% 20%,rgba(255,126,103,.25),transparent 50%),
+  radial-gradient(ellipse at 70% 70%,rgba(77,163,255,.2),transparent 50%),
+  linear-gradient(180deg,#0b1020,#1a2547);
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:60px 24px}
+.cover-inner{max-width:820px}
+.cover .eyebrow{color:var(--gold);font-size:14px;letter-spacing:4px;font-weight:700;margin-bottom:30px}
+.cover h1{font-size:68px;margin:0;letter-spacing:-2px;font-weight:900;background:linear-gradient(135deg,#fff 0%,#ffcb5c 50%,#ff7e67 100%);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.1}
+.cover .amp{font-size:54px;opacity:.8;margin:0 10px}
+.cover .sub{color:#d0ddf5;font-size:26px;font-weight:600;margin:26px 0 14px;line-height:1.5}
+.cover .tagline{color:var(--gold);font-size:18px;font-weight:500;margin:20px 0}
+.cover .divider{width:140px;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:40px auto}
+.cover-icons{display:flex;gap:16px;justify-content:center;margin:40px 0 30px;flex-wrap:wrap}
+.cover-icons .ai{padding:10px 20px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);font-weight:700;font-size:14px;backdrop-filter:blur(10px)}
+.cover .author{color:var(--mute);font-size:14px;margin-top:30px}
+
+/* Part intro */
+.part-intro{background:linear-gradient(135deg,rgba(255,126,103,.1),rgba(77,163,255,.1));padding:80px 40px;border-radius:24px;text-align:center;margin:40px 0;border:1px solid var(--line)}
+.part-intro .part-num{font-size:14px;color:var(--gold);font-weight:800;letter-spacing:6px;margin-bottom:18px}
+.part-intro h2{font-size:48px;margin:0;font-weight:900;letter-spacing:-1px}
+.part-intro .desc{color:var(--mute);margin-top:14px;font-size:16px}
+
+/* Typography */
+h2.chapter{font-size:40px;margin:0 0 8px;font-weight:900;display:flex;align-items:center;gap:16px;letter-spacing:-1px;line-height:1.2}
+h2.chapter .cnum{display:inline-flex;width:60px;height:60px;border-radius:14px;background:linear-gradient(135deg,var(--gold2),var(--coral));align-items:center;justify-content:center;font-size:22px;color:#fff;font-weight:900;box-shadow:0 10px 30px rgba(255,126,103,.3);flex-shrink:0}
+.chapter-sub{color:var(--mute);font-size:17px;padding-left:14px;border-left:3px solid var(--gold);margin:16px 0 44px}
+
+h3{font-size:26px;margin:50px 0 18px;color:#fff;font-weight:800;letter-spacing:-0.5px;display:flex;align-items:center;gap:12px;line-height:1.3}
+h3 .sn{display:inline-flex;min-width:42px;height:34px;padding:0 10px;border-radius:8px;background:var(--panel2);border:1px solid var(--line);align-items:center;justify-content:center;font-size:13px;color:var(--gold);font-weight:800;flex-shrink:0}
+
+h4{font-size:20px;margin:30px 0 12px;color:var(--gold);font-weight:800}
+p{margin:14px 0;color:#e0eaff;font-size:16px;line-height:1.85}
+strong{color:#fff;font-weight:700}
+em{color:var(--gold);font-style:normal}
+blockquote{margin:24px 0;padding:22px 28px;background:linear-gradient(90deg,rgba(255,203,92,.08),transparent);border-left:4px solid var(--gold);border-radius:6px;color:#f5e8c4;font-style:italic;font-size:16px;line-height:1.8}
+
+/* Cards */
+.grid{display:grid;gap:18px;margin:26px 0}
+.grid-2{grid-template-columns:1fr 1fr}
+.grid-3{grid-template-columns:1fr 1fr 1fr}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:760px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;transition:transform .2s,border-color .2s}
+.card:hover{transform:translateY(-3px);border-color:var(--gold)}
+.card .ico{width:46px;height:46px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:22px;color:#fff;margin-bottom:12px}
+.card .t{font-weight:800;font-size:17px;color:#fff;margin-bottom:8px}
+.card .d{color:#c5d4ef;font-size:14.5px;line-height:1.65}
+.card.gold{border-left:5px solid var(--gold)}
+.card.blue{border-left:5px solid var(--blue)}
+.card.green{border-left:5px solid var(--green)}
+.card.red{border-left:5px solid var(--red)}
+.card.purple{border-left:5px solid var(--purple)}
+.card.coral{border-left:5px solid var(--coral)}
+
+/* 요약 박스 - 본문과 함께 쓰는 핵심 요약 */
+.summary-box{background:linear-gradient(135deg,rgba(255,203,92,.1),rgba(77,163,255,.08));border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:12px;padding:22px 26px;margin:28px 0;position:relative}
+.summary-box::before{content:"📍 핵심 요약";position:absolute;top:-12px;left:18px;background:var(--gold);color:#0b1020;padding:4px 14px;border-radius:999px;font-size:11px;font-weight:900;letter-spacing:1px}
+.summary-box ul{margin:8px 0 0;padding-left:20px}
+.summary-box li{margin:6px 0;color:#f0e7c8;font-size:15px}
+
+/* Timeline */
+.timeline-wrap{position:relative;margin:40px 0;padding-left:40px;border-left:3px solid var(--line)}
+.timeline-item{position:relative;padding:18px 0 18px 30px;margin-bottom:10px}
+.timeline-item::before{content:"";position:absolute;left:-52px;top:26px;width:22px;height:22px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px var(--bg),0 0 0 6px var(--gold)}
+.timeline-item .year{color:var(--gold);font-weight:800;font-size:14px;letter-spacing:1px}
+.timeline-item .title{font-size:22px;font-weight:800;color:#fff;margin:4px 0}
+.timeline-item .desc{color:var(--mute);font-size:15px}
+
+/* Callouts */
+.callout{padding:22px 26px;border-radius:14px;margin:24px 0;border:1px solid var(--line);background:var(--panel)}
+.callout.tip{background:linear-gradient(180deg,rgba(52,211,153,.1),rgba(52,211,153,.03));border-color:rgba(52,211,153,.4)}
+.callout.warn{background:linear-gradient(180deg,rgba(248,113,113,.1),rgba(248,113,113,.03));border-color:rgba(248,113,113,.4)}
+.callout.info{background:linear-gradient(180deg,rgba(77,163,255,.1),rgba(77,163,255,.03));border-color:rgba(77,163,255,.4)}
+.callout.gold{background:linear-gradient(180deg,rgba(255,203,92,.1),rgba(255,203,92,.03));border-color:rgba(255,203,92,.4)}
+.callout .head{font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:10px;font-size:16px}
+
+/* Hero quote */
+.hero-q{background:
+  radial-gradient(ellipse at 20% 50%,rgba(255,126,103,.15),transparent 60%),
+  radial-gradient(ellipse at 80% 50%,rgba(77,163,255,.15),transparent 60%),
+  linear-gradient(135deg,#1a2547,#2d1b4e);
+  padding:50px;border-radius:20px;text-align:center;margin:40px 0;border:1px solid var(--line)}
+.hero-q .q{font-size:26px;font-weight:800;color:#fff;line-height:1.5}
+.hero-q .q .hl{background:linear-gradient(135deg,var(--gold),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* Tables */
+.tbl-wrap{overflow-x:auto;margin:24px 0;border-radius:14px;border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;background:var(--panel);font-size:14.5px}
+th,td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--panel2);color:var(--gold);font-weight:800;font-size:13px;letter-spacing:.5px}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(77,163,255,.05)}
+.vs-table td:nth-child(2){background:rgba(248,113,113,.05)}
+.vs-table td:nth-child(3){background:rgba(52,211,153,.05)}
+
+/* Stats */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:28px 0}
+.stat{background:linear-gradient(135deg,var(--panel),var(--panel2));border-radius:16px;padding:26px 20px;text-align:center;border:1px solid var(--line)}
+.stat .num{font-size:42px;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.stat .lbl{color:var(--mute);font-size:13px;margin-top:8px}
+
+/* CITE */
+.cite-diagram{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:30px 0}
+@media(max-width:760px){.cite-diagram{grid-template-columns:1fr 1fr}}
+.cite-box{padding:26px 20px;border-radius:16px;position:relative;overflow:hidden;border:1px solid var(--line);background:var(--panel)}
+.cite-box .letter{position:absolute;top:-8px;right:-8px;font-size:90px;font-weight:900;opacity:.08;line-height:1}
+.cite-box .key{font-size:20px;font-weight:900;color:var(--gold);margin-bottom:8px}
+.cite-box .name{color:#fff;font-weight:800;margin-bottom:10px;font-size:16px}
+.cite-box .desc{color:var(--mute);font-size:13.5px;line-height:1.6}
+
+/* E-E-A-T */
+.eeat-row{display:grid;grid-template-columns:80px 1fr;gap:20px;align-items:center;padding:22px;background:var(--panel);border-radius:14px;margin:14px 0;border-left:5px solid var(--gold)}
+.eeat-row .big-letter{font-size:52px;font-weight:900;text-align:center;background:linear-gradient(135deg,var(--gold),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.eeat-row .content h4{margin:0 0 6px;color:#fff;font-size:18px}
+.eeat-row .content p{margin:0;color:var(--mute);font-size:14.5px}
+
+/* Code */
+.code-box{background:#0a0f1e;border:1px solid var(--line);border-radius:12px;padding:22px;margin:20px 0;font-family:'D2Coding','Consolas','Courier New',monospace;font-size:13.5px;line-height:1.7;color:#cfe0ff;overflow-x:auto;position:relative}
+.code-box::before{content:"JSON-LD";position:absolute;top:-10px;left:16px;background:var(--gold);color:#1a1a1a;padding:3px 12px;border-radius:999px;font-size:10px;font-weight:900;letter-spacing:1px;font-family:system-ui}
+.code-box .k{color:#ff9ec4}
+.code-box .s{color:#a3e635}
+.code-box .n{color:#22d3ee}
+.code-box .c{color:#64748b;font-style:italic}
+
+/* Q&A */
+.qa-item{background:var(--panel);border-radius:14px;padding:22px;margin:14px 0;border-left:4px solid var(--blue)}
+.qa-item .q{font-weight:800;color:var(--gold);font-size:16px;margin-bottom:10px}
+.qa-item .q::before{content:"Q. ";color:var(--coral)}
+.qa-item .a{color:#dce6fa;font-size:14.5px}
+.qa-item .a::before{content:"A. ";color:var(--green);font-weight:800}
+
+/* Before/After */
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:26px 0}
+@media(max-width:760px){.ba-grid{grid-template-columns:1fr}}
+.ba{padding:22px;border-radius:14px;border:1px solid var(--line)}
+.ba.before{background:linear-gradient(180deg,rgba(248,113,113,.08),rgba(248,113,113,.02));border-color:rgba(248,113,113,.4)}
+.ba.after{background:linear-gradient(180deg,rgba(52,211,153,.08),rgba(52,211,153,.02));border-color:rgba(52,211,153,.4)}
+.ba .label{display:inline-block;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:900;letter-spacing:1px;margin-bottom:12px}
+.ba.before .label{background:var(--red);color:#fff}
+.ba.after .label{background:var(--green);color:#0a0f1e}
+
+/* Checklist */
+.check{list-style:none;padding:0;margin:18px 0}
+.check li{padding:12px 16px 12px 44px;position:relative;background:var(--panel);border-radius:10px;margin:8px 0;font-size:14.5px;color:#dce6fa;line-height:1.7}
+.check li::before{content:"✓";position:absolute;left:16px;top:12px;color:var(--green);font-weight:900;font-size:18px}
+.check.cross li::before{content:"✕";color:var(--red)}
+
+/* TOC */
+.toc{background:linear-gradient(135deg,var(--panel),var(--panel2));border-radius:18px;padding:36px;border:1px solid var(--line)}
+.toc .part-label{color:var(--gold);font-weight:800;letter-spacing:3px;font-size:12px;margin:24px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.toc .part-label:first-child{margin-top:0}
+.toc ul{list-style:none;padding:0;margin:0}
+.toc li{padding:10px 0;color:#dce6fa;font-size:15px;display:flex;align-items:center;gap:12px}
+.toc li::before{content:"›";color:var(--gold);font-weight:900;font-size:20px}
+.toc a{color:inherit;text-decoration:none;border-bottom:1px dashed transparent}
+.toc a:hover{color:var(--gold);border-bottom-color:var(--gold)}
+
+/* Platform cards */
+.platform-card{display:grid;grid-template-columns:60px 1fr;gap:18px;padding:22px;background:var(--panel);border-radius:14px;margin:14px 0;border:1px solid var(--line)}
+.platform-card .logo{width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;color:#fff}
+.platform-card h4{margin:0 0 6px;color:#fff;font-size:18px}
+.platform-card p{margin:4px 0;font-size:14.5px;color:#cfdff5;line-height:1.7}
+.platform-card .tag{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;margin-right:6px;margin-top:6px}
+
+/* Roadmap */
+.roadmap{display:grid;gap:12px;margin:24px 0}
+.rm-item{display:grid;grid-template-columns:110px 1fr;gap:20px;padding:22px;background:var(--panel);border-radius:14px;border-left:4px solid var(--gold);align-items:center}
+.rm-item .day{font-size:12px;color:var(--gold);font-weight:800;letter-spacing:1px}
+.rm-item .day .big{font-size:28px;display:block;color:#fff;line-height:1}
+.rm-item .task h4{margin:0 0 6px;color:#fff;font-size:17px}
+.rm-item .task p{margin:0;color:var(--mute);font-size:14px}
+
+/* Score bar */
+.score-bar{background:var(--panel2);border-radius:8px;overflow:hidden;height:10px;margin:6px 0}
+.score-bar .fill{height:100%;background:linear-gradient(90deg,var(--coral),var(--gold),var(--green))}
+
+.foot{text-align:center;padding:80px 24px;background:var(--bg2);color:var(--mute);font-size:14px}
+.foot .contact{display:inline-block;text-align:left;margin:24px 0;padding:28px 36px;background:var(--panel);border-radius:16px;border:1px solid var(--line)}
+.foot .contact div{margin:6px 0}
+
+hr.soft{border:0;border-top:1px dashed var(--line);margin:36px 0}
+
+.badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;margin:2px 4px 2px 0}
+.b-gold{background:rgba(255,203,92,.15);color:var(--gold);border:1px solid rgba(255,203,92,.4)}
+.b-green{background:rgba(52,211,153,.15);color:#5de8b8;border:1px solid rgba(52,211,153,.4)}
+.b-red{background:rgba(248,113,113,.15);color:#ff9e9e;border:1px solid rgba(248,113,113,.4)}
+.b-blue{background:rgba(77,163,255,.15);color:#7cc0ff;border:1px solid rgba(77,163,255,.4)}
+.b-purple{background:rgba(167,139,250,.15);color:#c4b1ff;border:1px solid rgba(167,139,250,.4)}
+
+/* Glossary */
+.glo-cat{margin:34px 0 14px;padding:12px 18px;background:linear-gradient(90deg,rgba(255,203,92,.12),transparent);border-left:4px solid var(--gold);border-radius:6px}
+.glo-cat h4{margin:0;color:var(--gold);font-size:17px;letter-spacing:.3px}
+.glo-list{display:grid;gap:12px;margin:12px 0 30px}
+.glo-item{display:grid;grid-template-columns:200px 1fr;gap:18px;padding:16px 20px;background:var(--panel);border-radius:10px;border:1px solid var(--line);align-items:start}
+@media(max-width:760px){.glo-item{grid-template-columns:1fr}}
+.glo-term{font-weight:800;color:#fff;font-size:15px;line-height:1.5}
+.glo-term .en{display:block;font-size:12px;color:var(--mute);font-weight:500;margin-top:2px;font-family:'Consolas',monospace}
+.glo-def{color:#dce6fa;font-size:14.5px;line-height:1.7}
+.glo-def strong{color:var(--gold)}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<section class="cover">
+  <div class="cover-inner">
+    <div class="eyebrow">AI 시대, 매장을 바꾸는 새로운 검색 전략</div>
+    <h1>자영업자를 위한<br>GEO <span class="amp">&amp;</span> AEO<br>완벽 가이드</h1>
+    <div class="sub">ChatGPT, Claude, Gemini가<br>당신의 매장을 추천하게 만드는 법</div>
+    <div class="divider"></div>
+    <div class="cover-icons">
+      <div class="ai">🤖 ChatGPT</div>
+      <div class="ai">💎 Gemini</div>
+      <div class="ai">🧠 Claude</div>
+      <div class="ai">🔎 AI Overview</div>
+      <div class="ai">📍 네이버 플레이스</div>
+    </div>
+    <div class="tagline">"SEO의 시대는 저물고, GEO의 시대가 왔다"</div>
+    <div class="author">작성: 전승기 · 초판 2026년 3월 · <strong style="color:var(--gold)">완전판</strong> 2026년 4월</div>
+  </div>
+</section>
+
+<!-- PREFACE -->
+<section class="page wrap">
+  <h2 class="chapter"><span class="cnum">📖</span>머리말</h2>
+  <div class="chapter-sub">AI가 검색창이 된 시대, 자영업자는 어떻게 살아남을 것인가</div>
+
+  <p>여러분은 혹시 이런 경험을 해보신 적 있으신가요?</p>
+
+  <p>친구에게 "근처에 괜찮은 카페 있어?"라고 물어보는 대신, ChatGPT에 "강남역 근처 분위기 좋은 디저트 카페 추천해줘"라고 질문하는 것. 네이버에 "미용실 추천"을 검색하는 대신, AI에게 "남성 펌 잘하는 홍대 미용실 알려줘"라고 물어보는 것. <strong>이것이 바로 지금, 이 순간에도 일어나고 있는 검색 혁명입니다.</strong></p>
+
+  <p>2025년을 기점으로, 사람들의 정보 탐색 방식이 근본적으로 바뀌고 있습니다. 구글이나 네이버에 키워드를 입력하던 시대에서, AI에게 자연어로 질문하는 시대로 전환되고 있습니다. 한국은 전 세계에서 ChatGPT 유료 구독자 수 2위를 기록할 만큼, 이 변화의 최전선에 있습니다. 이 변화는 특히 자영업자 여러분에게 엄청난 기회이자 도전입니다.</p>
+
+  <div class="stat-grid">
+    <div class="stat"><div class="num">2위</div><div class="lbl">한국 ChatGPT 유료 구독자 순위</div></div>
+    <div class="stat"><div class="num">40%+</div><div class="lbl">AI 검색을 사용하는 한국 사용자</div></div>
+    <div class="stat"><div class="num">63%</div><div class="lbl">구글 검색의 제로클릭 비율</div></div>
+    <div class="stat"><div class="num">70%</div><div class="lbl">모바일 검색의 제로클릭 비율</div></div>
+  </div>
+
+  <p>이 책은 그 변화의 핵심인 <strong>GEO(Generative Engine Optimization, 생성형 엔진 최적화)</strong>와 <strong>AEO(Answer Engine Optimization, 답변 엔진 최적화)</strong>를 자영업자의 눈높이에서 쉽고 실용적으로 풀어낸 가이드북입니다. 복잡한 기술 용어는 최대한 쉬운 비유로 설명했고, 모든 전략에는 카페, 음식점, 미용실 등 실제 매장에서 바로 적용할 수 있는 구체적인 예시를 담았습니다.</p>
+
+  <p>IT 전문가가 아니더라도, 이 책을 따라가다 보면 자연스럽게 AI 시대의 마케팅 전략을 이해하고 실행할 수 있을 것입니다. ChatGPT가 여러분의 매장을 추천하는 그날까지, 이 책이 든든한 길잡이가 되길 바랍니다.</p>
+
+  <p style="text-align:right;color:var(--mute);margin-top:40px">2026년 3월</p>
+</section>
+
+<!-- TOC -->
+<section class="page wrap" id="toc">
+  <h2 class="chapter"><span class="cnum">🗂️</span>목차</h2>
+  <div class="chapter-sub">3부 · 11장 + 보충 자료 5부록</div>
+  <div class="toc">
+    <div class="part-label">PART 1 · 기본 개념 이해</div>
+    <ul>
+      <li><a href="#ch1">Chapter 1. 검색의 시대가 변하고 있다</a></li>
+      <li><a href="#ch2">Chapter 2. GEO란 무엇인가?</a></li>
+      <li><a href="#ch3">Chapter 3. AEO란 무엇인가?</a></li>
+      <li><a href="#ch4">Chapter 4. LLM은 어떻게 정보를 찾는가?</a></li>
+    </ul>
+    <div class="part-label">PART 2 · 왜 자영업자에게 GEO/AEO가 중요한가</div>
+    <ul>
+      <li><a href="#ch5">Chapter 5. 제로 클릭 시대의 도래</a></li>
+      <li><a href="#ch6">Chapter 6. AI 검색이 자영업 매장에 미치는 영향</a></li>
+      <li><a href="#ch7">Chapter 7. 기존 SEO와 GEO/AEO의 핵심 차이점</a></li>
+    </ul>
+    <div class="part-label">PART 3 · GEO 실전 전략</div>
+    <ul>
+      <li><a href="#ch8">Chapter 8. CITE 프레임워크 완벽 가이드</a></li>
+      <li><a href="#ch9">Chapter 9. AI가 선호하는 콘텐츠 구조 만들기</a></li>
+      <li><a href="#ch10">Chapter 10. 스키마 마크업 — AI의 언어로 말하기</a></li>
+      <li><a href="#ch11">Chapter 11. 브랜드 엔티티 구축하기</a></li>
+    </ul>
+    <div class="part-label">BONUS · 저자 보충 자료</div>
+    <ul>
+      <li><a href="#bonusA">부록 A. 30일 GEO/AEO 실행 로드맵</a></li>
+      <li><a href="#bonusB">부록 B. 업종별 실전 체크리스트</a></li>
+      <li><a href="#bonusC">부록 C. 네이버·카카오 로컬 최적화 심화</a></li>
+      <li><a href="#bonusD">부록 D. AI 시대 리뷰 관리 완벽 대응법</a></li>
+      <li><a href="#bonusE">부록 E. 나만의 GEO 점수 자가 진단표</a></li>
+      <li><a href="#bonusF">부록 F. 📖 용어 색인 (Glossary)</a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- PART 1 -->
+<section class="wrap">
+  <div class="part-intro">
+    <div class="part-num">PART 1</div>
+    <h2>기본 개념 이해</h2>
+    <div class="desc">검색 시장의 25년 변화 · GEO·AEO의 정의 · AI가 정보를 평가하는 원리</div>
+  </div>
+</section>
+
+<!-- CH1 -->
+<section class="page wrap" id="ch1">
+  <h2 class="chapter"><span class="cnum">1</span>검색의 시대가 변하고 있다</h2>
+  <div class="chapter-sub">야후 → 구글 → AI. 25년간의 변화는 자영업자의 홍보 방식을 완전히 바꿨다.</div>
+
+  <h3><span class="sn">1.1</span>검색 플랫폼의 진화: SEO에서 GEO까지</h3>
+
+  <p>지난 25년 동안 검색 시장은 급격한 변화를 겪었습니다. 1990년대 야후가 주도하던 시대에서 2000년대 구글의 등장, 그리고 지금의 AI 검색 시대에 이르기까지, 검색 기술의 진화는 자영업자의 매장을 홍보하는 방식을 완전히 바꿔놓았습니다. 이 변화를 정확히 이해하지 못하면 아무리 좋은 상품과 서비스도 고객에게 도달하기 어렵게 됩니다.</p>
+
+  <p><strong>야후 시대</strong>에는 디렉토리 등재가 핵심이었습니다. 사람들이 직접 카테고리를 선택하고 웹사이트를 등록하는 방식이었기 때문에, 자영업자들도 상대적으로 쉽게 고객을 찾을 수 있었습니다. 온라인 공간이 아직 작았기 때문에 누구나 검색에 노출될 기회가 있었던 것입니다.</p>
+
+  <p><strong>구글의 등장</strong>으로 상황이 급변했습니다. 페이지랭크 알고리즘을 기반으로 한 구글 검색은 사용자의 검색 의도를 분석하여 가장 관련성 높은 결과를 보여주는 방식으로 진화했습니다. 이것이 바로 SEO(검색 엔진 최적화) 시대의 시작입니다. 자영업자들은 온라인에 고품질의 콘텐츠를 발행하고, 백링크를 확보하며, 키워드를 최적화해야만 검색 결과 상위에 노출될 수 있게 된 것입니다.</p>
+
+  <p><strong>2015년부터 모바일 검색</strong>이 급증하면서 SEO는 더욱 복잡해졌습니다. 구글의 모바일 우선 인덱싱 정책으로 인해 모바일 환경에 최적화된 웹사이트가 필수가 되었고, 동시에 사용자들은 더 빠른 답변을 원하게 되었습니다. 이 시기에 AEO(대답 엔진 최적화)의 개념이 등장했습니다. 피처드 스니펫, 제로 클릭 검색이 늘어나면서 웹사이트로의 트래픽 자체가 감소하기 시작한 것입니다.</p>
+
+  <div class="timeline-wrap">
+    <div class="timeline-item">
+      <div class="year">1990년대</div>
+      <div class="title">🗂️ 디렉토리 시대 · 야후</div>
+      <div class="desc">사용자가 직접 카테고리 선택. 등재만 하면 노출.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">2000년대</div>
+      <div class="title">🔍 SEO 시대 · 구글</div>
+      <div class="desc">페이지랭크. 키워드·백링크·고품질 콘텐츠 경쟁.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">2015년~</div>
+      <div class="title">📱 모바일 + AEO 여명기</div>
+      <div class="desc">모바일 우선 인덱싱. 피처드 스니펫·제로클릭 등장.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">2022년</div>
+      <div class="title">🤖 ChatGPT 출시</div>
+      <div class="desc">생성형 AI 대중화. 검색 방식의 근본적 재편.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">2024년</div>
+      <div class="title">💎 AI Overview · GEO 시대</div>
+      <div class="desc">구글이 AI 종합 답변을 최상단 표시. 링크 클릭 소멸.</div>
+    </div>
+  </div>
+
+  <h3><span class="sn">1.2</span>AI 검색과 GEO의 등장</h3>
+
+  <p>2022년 ChatGPT의 출현과 2024년 구글 AI Overview의 출범으로 검색 시장에 새로운 변곡점이 생겼습니다. 이제 사용자들은 구글 링크를 클릭하는 대신, AI가 정제하여 제시하는 답변을 먼저 읽게 되었습니다. 이것이 <strong>GEO(생성형 AI 최적화) 시대의 시작</strong>입니다. GEO는 단순히 웹사이트를 최적화하는 것을 넘어, ChatGPT, Claude, Gemini 같은 생성형 AI 모델이 당신의 매장을 추천하도록 하는 전략을 의미합니다.</p>
+
+  <p>이 변화는 자영업자에게는 새로운 기회이자 동시에 새로운 위기입니다. 구글 검색에서 상위 노출되었던 기존 SEO 전략은 생성형 AI 시대에서는 더 이상 충분하지 않습니다. 왜냐하면 <strong>AI가 정보를 선택하는 기준은 구글과 완전히 다르기 때문</strong>입니다. AI는 신뢰도 높은 출처를 선호하고, 최신 정보를 더 신뢰하며, 실제 고객 리뷰와 평판을 중시합니다.</p>
+
+  <h3><span class="sn">1.3</span>한국 시장의 현황과 기회</h3>
+
+  <p>한국은 전 세계에서 가장 AI 검색 도입이 빠른 나라입니다. 국내 시장 조사에 따르면, 한국 사용자의 약 40% 이상이 이미 ChatGPT나 네이버 서치 AI 같은 생성형 AI를 검색 목적으로 사용하고 있습니다. 특히 젊은 세대일수록 이 비율이 높아지고 있으며, 이는 매년 증가하는 추세입니다.</p>
+
+  <p>더욱 중요한 것은 <strong>한국의 자영업자들이 이 변화에 아직 제대로 대응하지 못하고 있다</strong>는 점입니다. 대부분의 소상공인들은 여전히 구글 SEO나 네이버 검색 최적화에만 집중하고 있으며, AI 검색 시대에 필요한 신뢰도 구축, 평판 관리, AI-친화적 콘텐츠 전략에는 주목하지 않고 있습니다. 이것이 바로 당신의 기회입니다. 지금 GEO와 AEO를 준비하는 자영업자는 경쟁력이 거의 없는 이 분야에서 선도자가 될 수 있습니다.</p>
+
+  <div class="callout gold">
+    <div class="head">🎯 자영업자의 기회</div>
+    <strong>경쟁이 거의 없는 분야의 선도자</strong>가 될 수 있는 유일한 시기. 대기업은 AI 시대에 대한 구조적 약점이 있고, 작은 매장은 오히려 진정성으로 이길 수 있습니다.
+  </div>
+
+  <h3><span class="sn">1.4</span>자영업 매장에 미치는 구체적 영향</h3>
+
+  <p>"봄날의 커피"라는 동네 카페를 운영한다고 가정해봅시다. 기존 SEO 시대에는 "강남역 카페" 키워드로 검색 최상위에 노출되면 고객이 들어올 가능성이 높았습니다. 하지만 AI 검색 시대에는 사용자가 <strong>"ChatGPT, 나 강남역 근처에서 시원한 음료 마시고 싶어. 추천해줄 수 있어?"</strong>라고 물었을 때, AI가 당신의 카페를 선택지로 제시해야 합니다.</p>
+
+  <p>이것이 가능하려면 세 가지 조건이 필요합니다.</p>
+  <p><strong>첫째</strong>, AI의 학습 데이터에 당신의 매장에 대한 신뢰할 수 있는 정보가 포함되어야 합니다.<br>
+  <strong>둘째</strong>, Google My Business, 네이버 플레이스, 카카오맵 같은 플랫폼에서 당신의 평가와 평판이 우수해야 합니다.<br>
+  <strong>셋째</strong>, 당신의 웹사이트나 소셜 미디어가 AI가 선호하는 형식의 정보를 담고 있어야 합니다.</p>
+
+  <p>기존의 구글 SEO만으로는 이 세 조건을 모두 충족하기 어렵습니다.</p>
+
+  <h3><span class="sn">1.5</span>경쟁의 방정식이 바뀌었다</h3>
+
+  <p>가장 중요한 변화는 <strong>경쟁의 방정식이 완전히 뒤바뀌었다</strong>는 것입니다. SEO 시대에는 더 많은 백링크, 더 많은 키워드 최적화, 더 높은 도메인 권위가 이기는 전략이었습니다. 큰 자본과 마케팅 팀을 가진 업체가 유리했고, 개인 자영업자가 경쟁하기는 거의 불가능했습니다.</p>
+
+  <p>하지만 GEO 시대에는 다릅니다. AI가 중시하는 것은 당신의 매장에 대한 <strong>진정한 평판, 실제 고객의 리뷰, 그리고 최신의 정확한 정보</strong>입니다. 대기업의 대형 쇼핑몰보다 동네 빵집의 진정한 고객 평가가 더 높은 가치를 가질 수 있다는 뜻입니다. 작은 자영업자일수록, 오직 자신의 매장만을 운영하는 사람일수록 더 강력한 경쟁력을 갖게 되는 역설적 상황이 생긴 것입니다.</p>
+
+  <div class="grid grid-3">
+    <div class="card red">
+      <div class="ico" style="background:#f87171">💰</div>
+      <div class="t">SEO의 핵심</div>
+      <div class="d">클릭 많이 받기<br><strong>→ 큰 자본 필요</strong></div>
+    </div>
+    <div class="card gold">
+      <div class="ico" style="background:#ffa726">⭐</div>
+      <div class="t">GEO의 핵심</div>
+      <div class="d">진정한 평판 만들기<br><strong>→ 작은 매장이 유리</strong></div>
+    </div>
+    <div class="card green">
+      <div class="ico" style="background:#34d399">📋</div>
+      <div class="t">AEO의 핵심</div>
+      <div class="d">정확한 정보 제공하기<br><strong>→ 성실함이 무기</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- CH2 -->
+<section class="page wrap" id="ch2">
+  <h2 class="chapter"><span class="cnum">2</span>GEO란 무엇인가?</h2>
+  <div class="chapter-sub">Generative Engine Optimization — 생성형 AI가 당신의 매장을 추천하게 만드는 기술</div>
+
+  <h3><span class="sn">2.1</span>정의: 생성형 AI 최적화</h3>
+
+  <p>GEO는 Generative Engine Optimization의 약자로, 한국말로는 "생성형 AI 최적화"라고 합니다. 이것은 ChatGPT, Google Gemini, Claude, 그리고 앞으로 등장할 다양한 생성형 AI 모델들이 당신의 비즈니스, 제품, 서비스를 추천하도록 최적화하는 일련의 전략과 기법을 의미합니다.</p>
+
+  <p>GEO는 SEO(Search Engine Optimization)와 근본적으로 다릅니다. <strong>SEO는 검색 엔진의 크롤러가 당신의 웹페이지를 올바르게 이해하도록 최적화</strong>하는 것입니다. 반면 <strong>GEO는 대규모 언어 모델(LLM)이 학습한 데이터 속에서 당신의 매장을 신뢰할 수 있는 정보 출처로 인식하도록 만드는 것</strong>입니다. 두 가지는 전혀 다른 메커니즘이고, 따라서 전혀 다른 전략이 필요합니다.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>구분</th><th>SEO</th><th>GEO</th></tr></thead>
+      <tbody>
+        <tr><td><strong>대상</strong></td><td>검색 엔진 크롤러</td><td>대규모 언어 모델(LLM)</td></tr>
+        <tr><td><strong>목적</strong></td><td>웹페이지 정확한 인덱싱</td><td>신뢰 가능한 출처로 인식</td></tr>
+        <tr><td><strong>작동 원리</strong></td><td>키워드 매칭</td><td>의미 이해 + 학습 데이터</td></tr>
+        <tr><td><strong>핵심 자산</strong></td><td>백링크·도메인 권위</td><td>평판·일관성·최신성</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span class="sn">2.2</span>AI의 콘텐츠 선택 과정</h3>
+
+  <p>AI가 당신의 매장을 추천하기 위해서는 먼저 당신에 대한 정보를 <strong>"알아야"</strong> 합니다. 이것이 GEO의 첫 번째 단계입니다. AI는 인터넷 전체에서 수십억 개의 문서를 학습하여 만들어진 모델입니다. 당신의 비즈니스가 이 거대한 학습 데이터에 포함되어 있지 않으면, AI는 당신을 추천할 수 없습니다.</p>
+
+  <p>AI가 당신을 알게 되기 위한 주요 정보 출처는 다음과 같습니다.</p>
+  <p><strong>첫째</strong>는 Google My Business, 네이버 플레이스, 카카오맵 같은 지도 및 비즈니스 플랫폼입니다. 이 플랫폼들은 AI의 학습 데이터에 포함되는 가장 신뢰할 수 있는 출처입니다.<br>
+  <strong>둘째</strong>는 당신의 웹사이트 또는 블로그입니다.<br>
+  <strong>셋째</strong>는 언론 기사, 잡지, 신문 같은 미디어입니다.<br>
+  <strong>넷째</strong>는 고객 리뷰 플랫폼입니다.</p>
+
+  <p>AI가 당신을 추천하기 위해서는, 이 모든 출처에서 <strong>일관성 있는 정보</strong>가 필요합니다. 당신의 매장이 Google My Business에는 "밀가루 이야기 빵집"이라고 되어 있는데, 블로그에는 "밀가루 이야기 베이커리"라고 되어 있다면, AI는 혼란스러워합니다. 이 혼란이 바로 AI가 당신을 추천하지 못하게 만드는 요인입니다.</p>
+
+  <div class="grid grid-2">
+    <div class="card blue"><div class="ico" style="background:#4da3ff">📍</div><div class="t">1. 지도·비즈니스 플랫폼</div><div class="d">Google My Business, 네이버 플레이스, 카카오맵 — <strong>가장 신뢰도 높은 출처</strong></div></div>
+    <div class="card purple"><div class="ico" style="background:#a78bfa">🌐</div><div class="t">2. 웹사이트·블로그</div><div class="d">자체 발행 콘텐츠. 구체적·전문적·최신일수록 가치 상승</div></div>
+    <div class="card coral"><div class="ico" style="background:#ff7e67">📰</div><div class="t">3. 언론·미디어</div><div class="d">신문·잡지 기사. 제3자의 권위 있는 언급</div></div>
+    <div class="card green"><div class="ico" style="background:#34d399">⭐</div><div class="t">4. 고객 리뷰 플랫폼</div><div class="d">실제 경험 기반. AI가 가장 민감하게 반영</div></div>
+  </div>
+
+  <h3><span class="sn">2.3</span>CITE 프레임워크 — AI가 신뢰하는 4가지 요소</h3>
+
+  <p>생성형 AI 업체들과 마케팅 전문가들이 공통적으로 제시하는 GEO 프레임워크가 CITE입니다. 이것은 네 가지 핵심 요소의 첫 글자를 따온 것으로, 당신의 비즈니스가 AI에게 얼마나 신뢰할 수 있는지를 결정합니다.</p>
+
+  <h4>C — Content (콘텐츠)</h4>
+  <p>Content는 당신의 매장에 대한 명확하고 정확한 정보입니다. 이것은 단순히 "우리는 맛있는 커피를 판매합니다"라는 일반적인 문장이 아닙니다. <strong>AI가 원하는 콘텐츠는 구체적이고, 검증 가능하며, 최신의 정보</strong>입니다.</p>
+  <p>예를 들어, 봄날의 커피가 "에티오피아 야르가 체페 원두를 사용하며, 수온은 92도에서 96도 사이로 유지하고, 추출 시간은 28초에서 32초로 조정합니다"라는 구체적인 정보를 제공한다면, AI는 이것을 검증 가능한 전문적인 정보로 인식합니다. 이런 콘텐츠가 많을수록, AI가 당신을 신뢰할 확률이 높아집니다.</p>
+  <p>또한 콘텐츠는 정기적으로 업데이트되어야 합니다. 5년 전 사진이나 메뉴로 가득한 웹사이트는 AI에게 <em>"outdated"(구식)</em>라는 신호를 보냅니다. AI는 최신 정보를 선호하고, 오래된 정보는 신뢰하지 않습니다.</p>
+
+  <h4>I — Integrity (신뢰성)</h4>
+  <p>Integrity는 당신의 비즈니스가 제시하는 모든 정보가 일관성 있고 진정한지를 의미합니다. Google My Business의 영업 시간, 당신의 웹사이트의 영업 시간, 카카오맵에 표시된 영업 시간이 모두 다르다면? <strong>AI는 이것을 신뢰성 문제로 판단합니다.</strong></p>
+  <p>또한 고객 리뷰가 극도로 일관되게 긍정적이거나(예: 100개 리뷰 모두 5점), 또는 갑자기 대량의 1점 리뷰가 올라온다면, AI는 조작된 리뷰로 인식합니다. AI는 자연스러운 리뷰 분포를 신뢰합니다. <strong>평가가 4.2~4.7점 사이에 분포하고, 긍정과 부정의 의견이 섞여 있는 것이 더 진정하게 보입니다.</strong></p>
+  <p>신뢰성은 또한 당신이 거짓 정보를 제공하지 않는다는 것을 의미합니다. "우리는 미슐랭 가이드에 선정되었습니다"라는 거짓 정보가 인터넷 어딘가에 흘러다닌다면, 그 거짓 정보를 AI가 학습할 수 있습니다. AI는 이런 불일치를 감지합니다.</p>
+
+  <h4>T — Trust Signals (신뢰 신호)</h4>
+  <p>Trust Signals는 당신의 비즈니스가 신뢰할 수 있다는 것을 나타내는 <strong>외부의 증거</strong>입니다. 이것은 구글 평점, 네이버 평가, 언론 기사, 수상, 인증, 라이센스 같은 것들입니다.</p>
+  <p>"헤어스토리"라는 미용실의 경우, "이 미용실은 서울 강남구에 위치하며 4.8/5점 평가를 받고 있으며, 네이버 미용실 상위 1%로 선정되었으며, 고객 리뷰가 500개 이상 있으며, 실제 주소와 전화번호로 연결된다"는 모든 신뢰 신호가 있다면, AI는 이 미용실을 신뢰합니다.</p>
+  <p>신뢰 신호는 또한 당신의 비즈니스 분야에서의 <strong>전문성 표시</strong>입니다. 머리 깎기만 하는 미용실과 헤어 치료부터 두피 케어, 매직 펌 기법, 틴트까지 다양한 서비스에 대해 상세한 설명을 제공하는 미용실은 어느 것이 더 신뢰할 수 있어 보입니까? 명확히 후자입니다.</p>
+
+  <h4>E — Expertise (전문성)</h4>
+  <p>Expertise는 당신이 자신의 업종에서 <strong>진정한 전문가</strong>임을 보여주는 것입니다. 이것은 단순히 "우리는 경험이 많습니다"라고 말하는 것이 아닙니다. <strong>구체적인 지식, 기술, 사례</strong>를 통해 증명하는 것입니다.</p>
+  <p>"맛있는 한상"이라는 한정식 음식점을 운영한다면, 단순히 "한정식을 파는 음식점입니다"라고만 하면 안 됩니다. "우리는 모든 식재를 당일 아침 남대문시장에서 직접 구매하며, 된장은 경주의 100년 된 전통 집에서 공급받고, 주문 받은 후 주문 식으로 요리합니다"라는 구체적인 정보가 필요합니다. 이런 정보가 있을수록 AI는 당신을 전문가로 인식합니다.</p>
+
+  <div class="cite-diagram">
+    <div class="cite-box"><div class="letter">C</div><div class="key">C</div><div class="name">Content</div><div class="desc">구체적·검증 가능·최신의 정보</div></div>
+    <div class="cite-box"><div class="letter">I</div><div class="key">I</div><div class="name">Integrity</div><div class="desc">모든 플랫폼에서 일관된 정보</div></div>
+    <div class="cite-box"><div class="letter">T</div><div class="key">T</div><div class="name">Trust Signals</div><div class="desc">평점·리뷰·언론·수상·인증</div></div>
+    <div class="cite-box"><div class="letter">E</div><div class="key">E</div><div class="name">Expertise</div><div class="desc">구체적 지식·기술·사례로 증명</div></div>
+  </div>
+
+  <h3><span class="sn">2.4</span>자영업자를 위한 GEO 적용 로드맵</h3>
+
+  <p>이제 당신의 비즈니스에 GEO를 적용하기 위한 구체적 단계를 살펴봅시다. 이것은 복잡하지 않습니다. 차근차근 따라하면 누구나 할 수 있습니다.</p>
+
+  <div class="roadmap">
+    <div class="rm-item">
+      <div class="day"><span class="big">01</span>기본</div>
+      <div class="task"><h4>NAP 통일</h4><p>상호명·주소·전화번호·영업시간이 모든 플랫폼에서 동일</p></div>
+    </div>
+    <div class="rm-item">
+      <div class="day"><span class="big">02</span>강화</div>
+      <div class="task"><h4>상세 정보 추가</h4><p>상세한 서비스 설명·제품 사진·가격 정보</p></div>
+    </div>
+    <div class="rm-item">
+      <div class="day"><span class="big">03</span>고급</div>
+      <div class="task"><h4>전문 콘텐츠 발행</h4><p>개인 블로그/소셜에서 전문 콘텐츠 정기 발행</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CH3 -->
+<section class="page wrap" id="ch3">
+  <h2 class="chapter"><span class="cnum">3</span>AEO란 무엇인가?</h2>
+  <div class="chapter-sub">Answer Engine Optimization — 검색 결과 페이지 자체에서 답이 되는 전략</div>
+
+  <h3><span class="sn">3.1</span>정의: 대답 엔진 최적화</h3>
+
+  <p>AEO는 Answer Engine Optimization의 약자로, 한국말로는 "대답 엔진 최적화"라고 합니다. 이것은 검색 사용자가 검색 엔진에 물어본 질문에 대해 <strong>AI나 검색 엔진이 당신의 콘텐츠를 답변으로 선택하도록 최적화</strong>하는 기술입니다.</p>
+
+  <p>AEO는 SEO와 GEO 사이에 위치합니다. SEO는 "링크를 클릭하도록" 최적화하는 것이고, GEO는 "AI의 학습 데이터에 포함되도록" 최적화하는 것입니다. <strong>AEO는 "검색 결과 페이지 자체에서 답변을 보여주도록" 최적화하는 것</strong>입니다. 구글의 피처드 스니펫(Featured Snippet), "사람들이 또한 묻는 질문" 섹션, AI Overview 같은 것들에 당신의 콘텐츠가 나타나도록 하는 것입니다.</p>
+
+  <div class="grid grid-3">
+    <div class="card red"><div class="t" style="color:var(--red)">SEO</div><div class="d">링크를 <strong>클릭하도록</strong> 최적화</div></div>
+    <div class="card gold"><div class="t" style="color:var(--gold)">AEO</div><div class="d">검색 결과에서 <strong>답변이 되도록</strong> 최적화</div></div>
+    <div class="card green"><div class="t" style="color:var(--green)">GEO</div><div class="d">AI <strong>학습 데이터에 포함</strong>되도록 최적화</div></div>
+  </div>
+
+  <h3><span class="sn">3.2</span>피처드 스니펫(Featured Snippet)의 중요성</h3>
+
+  <p>피처드 스니펫은 구글 검색 결과의 맨 위에 나타나는 박스형 답변입니다. 누군가가 "에스프레소는 어떻게 만드나요?"라고 검색하면, 구글은 이 질문에 가장 잘 답한 웹페이지의 일부를 뽑아서 피처드 스니펫으로 표시합니다. 사용자는 이 짧은 답변을 읽고 만족하거나, 더 자세한 정보를 원하면 링크를 클릭합니다.</p>
+
+  <p>자영업자 입장에서 피처드 스니펫이 중요한 이유는 두 가지입니다.</p>
+  <p><strong>첫째, 당신의 웹사이트에 대한 클릭이 증가합니다.</strong> 피처드 스니펫에 나타난 웹사이트로의 클릭률은 일반 검색 결과의 3-4배 높습니다.<br>
+  <strong>둘째, AI가 당신의 정보를 신뢰할 수 있는 출처로 인식합니다.</strong> 구글도 신뢰하는 정보라는 뜻이기 때문입니다.</p>
+
+  <h3><span class="sn">3.3</span>제로 클릭 서치(Zero-Click Search)의 시대</h3>
+
+  <p>제로 클릭 서치는 사용자가 검색 결과 페이지에서 어떤 링크도 클릭하지 않은 채 필요한 답변을 얻는 현상입니다. <strong>2023년 기준으로 전체 구글 검색의 약 63%가 제로 클릭 검색</strong>입니다. 즉, 10명 중 6명이 당신의 웹사이트를 방문하지 않고도 답변을 얻는다는 뜻입니다.</p>
+
+  <p>이것이 자영업자에게는 위기처럼 보입니다. "그럼 누가 우리 웹사이트에 방문하냐?"고 묻게 됩니다. 하지만 다르게 생각해봅시다. 당신의 매장이 제로 클릭 검색의 답변으로 나타난다면? 사용자가 "강남역 근처 특색 있는 카페"라고 검색했을 때, AI가 "봄날의 커피는 에티오피아 원두를 사용하고 수온을 정밀하게 조절합니다"라는 당신의 정보를 보여준다면? <strong>이것도 당신의 가게에 대한 홍보입니다.</strong></p>
+
+  <p>실제로 제로 클릭 서치가 웹사이트 방문을 완전히 막는 것은 아닙니다. 오히려 충분히 흥미로운 정보라면, 사용자는 더 알고 싶어서 클릭합니다. 당신의 정보가 제로 클릭으로 노출되는 것 자체가 신뢰도 있는 정보라는 신호이고, 이것이 오히려 클릭으로 이어집니다.</p>
+
+  <div class="stat-grid">
+    <div class="stat"><div class="num">3~4배</div><div class="lbl">피처드 스니펫 클릭률 상승</div></div>
+    <div class="stat"><div class="num">63%</div><div class="lbl">전체 구글 검색 제로클릭</div></div>
+    <div class="stat"><div class="num">75~80%</div><div class="lbl">로컬 검색 제로클릭</div></div>
+  </div>
+
+  <h3><span class="sn">3.4</span>AI 답변 생성 원리</h3>
+
+  <p>ChatGPT나 Google Gemini 같은 생성형 AI가 사용자의 질문에 답변하는 과정을 이해해야 AEO를 제대로 할 수 있습니다. AI 답변 생성은 크게 세 단계로 이루어집니다.</p>
+
+  <h4>1단계: 정보 검색(Retrieval)</h4>
+  <p>AI는 사용자의 질문을 받으면, 먼저 이 질문과 관련된 정보를 찾습니다. 이것을 "정보 검색"이라고 합니다. ChatGPT는 실시간 인터넷 검색을 수행하며, Google Gemini는 구글의 인덱스를 사용합니다. 이 단계에서는 구글 검색과 비슷하게, 키워드 관련성, 페이지 권위성, 신뢰도가 고려됩니다.</p>
+
+  <h4>2단계: 정보 평가(Evaluation)</h4>
+  <p>AI는 검색된 정보 중에서 가장 신뢰할 수 있는 것들을 선별합니다. 이 단계에서 매우 중요한 것은 <strong>정보 출처</strong>입니다. 공식 웹사이트, 뉴스 매체, 학술 자료, 플랫폼 정보(Google My Business, 네이버 플레이스)는 높은 신뢰도를 받습니다. 반면 개인 블로그나 소셜 미디어는 낮은 신뢰도를 받습니다.</p>
+  <p>또한 <strong>정보의 일관성</strong>이 평가됩니다. 여러 출처에서 일관되게 나타나는 정보일수록 신뢰도가 높습니다. "봄날의 커피는 강남역 근처에 있고 에티오피아 원두를 사용한다"는 정보가 Google My Business, 커피 리뷰 사이트, 그리고 당신의 블로그에서 모두 일관되게 나타난다면, AI는 이것을 확신 있게 인식합니다.</p>
+
+  <h4>3단계: 답변 생성(Generation)</h4>
+  <p>AI는 평가된 정보를 바탕으로 자연스러운 문장으로 답변을 생성합니다. 이 단계에서는 정보의 정확성, 완전성, 그리고 사용자의 의도에 맞는 형식이 중요합니다. AI는 당신의 웹사이트에서 가져온 정보를 사용할 때 출처를 명시하고, 링크를 제공하는 경우도 있습니다.</p>
+
+  <h3><span class="sn">3.5</span>플랫폼별 AEO의 차이점</h3>
+
+  <p>AEO의 전략은 어느 플랫폼에서의 답변인지에 따라 달라집니다. 각 플랫폼은 서로 다른 정보 출처를 우선시하고, 다른 형식의 답변을 생성합니다.</p>
+
+  <div class="platform-card">
+    <div class="logo" style="background:linear-gradient(135deg,#4285F4,#34A853)">G</div>
+    <div>
+      <h4>Google 검색 (피처드 스니펫, AI Overview)</h4>
+      <p>구글은 자신의 인덱스에 이미 포함된 웹페이지를 우선시합니다. 따라서 구글에서 당신의 콘텐츠가 피처드 스니펫이나 AI Overview에 나타나려면, 먼저 <strong>구글 검색에서 상위권(1-5위)</strong>에 있어야 합니다. 동시에 당신의 콘텐츠 형식이 중요합니다. 리스트 형식, 테이블 형식, 단계별 설명 형식 같은 구조화된 콘텐츠가 피처드 스니펫으로 선택될 확률이 높습니다.</p>
+    </div>
+  </div>
+
+  <div class="platform-card">
+    <div class="logo" style="background:linear-gradient(135deg,#10a37f,#1a7f64)">C</div>
+    <div>
+      <h4>ChatGPT 검색</h4>
+      <p>ChatGPT는 실시간으로 인터넷을 검색하기 때문에, 구글 순위와는 별개로 당신의 정보를 찾을 수 있습니다. 다만 ChatGPT가 신뢰하는 출처는 구글과 다릅니다. <strong>뉴스 기사, 학술 논문, 공식 기관의 발표, 그리고 평판 좋은 매체</strong>가 우선시됩니다. 당신의 매장이 언론에 소개되거나, 업계 협회에서 인정받는다면, ChatGPT는 당신을 신뢰도 높은 정보원으로 취급합니다.</p>
+    </div>
+  </div>
+
+  <div class="platform-card">
+    <div class="logo" style="background:linear-gradient(135deg,#03C75A,#019D48)">N</div>
+    <div>
+      <h4>네이버/카카오 AI</h4>
+      <p>한국의 네이버와 카카오는 <strong>자체 플랫폼(네이버 플레이스, 카카오맵)의 정보를 최우선</strong>으로 활용합니다. 따라서 이들 플랫폼에서 당신의 정보를 완벽하게 작성하는 것이 가장 중요합니다. 리뷰, 사진, 메뉴, 영업시간이 모두 최신이고 정확해야 합니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CH4 -->
+<section class="page wrap" id="ch4">
+  <h2 class="chapter"><span class="cnum">4</span>LLM은 어떻게 정보를 찾는가?</h2>
+  <div class="chapter-sub">대규모 언어 모델의 작동 원리를 이해하면 GEO 전략이 명확해진다</div>
+
+  <h3><span class="sn">4.1</span>LLM 기초: 대규모 언어 모델의 작동 원리</h3>
+
+  <p>LLM(Large Language Model, 대규모 언어 모델)은 ChatGPT, Claude, Google Gemini, 그리고 수많은 다른 AI 모델의 기반입니다. LLM이 어떻게 정보를 찾고 선택하는지 이해하면, GEO와 AEO 전략을 훨씬 효과적으로 세울 수 있습니다.</p>
+
+  <p>LLM은 기본적으로 <strong>"패턴 인식 엔진"</strong>입니다. 이것은 수십억 개의 문서를 학습하여, 단어와 구문 사이의 패턴을 인식한 후, 이 패턴을 바탕으로 다음에 올 단어를 예측합니다. 예를 들어, LLM은 "봄날의 커피는"이라는 시작을 받으면, 수많은 학습 데이터에서 "봄날의 커피는"이라는 구절 다음에 무엇이 왔는지를 분석하여, 가장 확률 높은 다음 단어를 선택합니다.</p>
+
+  <p>이것은 검색 엔진이 작동하는 방식과 근본적으로 다릅니다. 검색 엔진은 <em>키워드를 매칭</em>합니다. 사용자가 "강남역 커피"라고 검색하면, 이 키워드가 포함된 웹페이지를 찾습니다. 하지만 <strong>LLM은 키워드를 매칭하지 않습니다</strong>. 대신 "강남역 근처에 어떤 특색 있는 커피가 있을까?"라는 <em>의미</em>를 이해하고, 이 의미와 연관된 정보를 광범위한 학습 데이터에서 찾습니다.</p>
+
+  <div class="callout info">
+    <div class="head">💡 핵심 차이</div>
+    <strong>검색엔진:</strong> "강남역 커피" = 이 키워드가 있는 페이지 찾기<br>
+    <strong>LLM:</strong> "강남역 근처 조용하고 커피 맛있는 곳?" = 이 <em>의도</em>에 부합하는 모든 정보를 종합
+  </div>
+
+  <h3><span class="sn">4.2</span>NER (Named Entity Recognition) — 고유명사 인식</h3>
+
+  <p>NER은 Named Entity Recognition의 약자로, LLM이 텍스트에서 <strong>"고유한 것"</strong>들을 인식하는 능력입니다. 예를 들어, "봄날의 커피는 강남역 근처에 있고 에티오피아 원두를 사용합니다"라는 문장을 읽을 때, LLM은 다음을 인식합니다.</p>
+
+  <div class="grid grid-4">
+    <div class="card blue"><div class="t">🏢 Organization</div><div class="d">봄날의 커피</div></div>
+    <div class="card coral"><div class="t">📍 Location</div><div class="d">강남역</div></div>
+    <div class="card green"><div class="t">🛍️ Product</div><div class="d">에티오피아 원두</div></div>
+    <div class="card purple"><div class="t">🏷️ Category</div><div class="d">카페</div></div>
+  </div>
+
+  <p>이 능력이 GEO에 매우 중요한 이유는, 당신의 매장이 관련 검색에서 <strong>"조직"으로 정확하게 인식되어야 AI가 당신을 추천할 수 있기 때문</strong>입니다. "봄날의 커피"가 일관되게 같은 위치, 같은 상품, 같은 설명과 함께 나타난다면, LLM은 이것을 신뢰도 높은 엔티티로 인식합니다.</p>
+
+  <h3><span class="sn">4.3</span>의미 분석(Semantic Analysis)과 문맥 이해</h3>
+
+  <p>LLM은 단순 키워드를 넘어 <strong>의미와 문맥</strong>을 이해합니다. "따뜻한 커피"와 "핫 커피"는 다른 단어이지만, LLM은 이 둘이 같은 의미임을 이해합니다. 또한 "봄날의 커피는 수용적이고 조용하다"라는 문장을 읽을 때, LLM은 이것을 긍정적인 평가로 인식합니다.</p>
+
+  <p>자영업 매장의 경우, 이것은 매우 중요한 의미를 가집니다. 당신의 고객이 "봄날의 커피는 정말 편안하고 따뜻한 분위기"라는 리뷰를 쓰면, LLM은 이 문장을 분석하여 <strong>"봄날의 커피 = 편안한 분위기"</strong>라는 의미적 연결을 만듭니다. 이런 의미적 연결이 많을수록, AI는 당신의 매장을 더 정확하게 이해합니다.</p>
+
+  <p>또한 문맥 이해는 당신의 콘텐츠가 다양한 표현으로 나타날 수 있게 해줍니다. "밀가루 이야기 빵집"에 대해 누군가는 "소규모 장인 빵집", 누군가는 "프리미엄 베이커리", 누군가는 "수제 빵"이라고 쓸 수 있습니다. LLM은 이 모든 표현이 같은 업체를 지칭할 수 있음을 이해합니다.</p>
+
+  <h3><span class="sn">4.4</span>E-E-A-T — AI가 신뢰하는 4대 요소</h3>
+
+  <p>Google은 2023년 검색 품질 평가 가이드라인을 업데이트하면서 "E-E-A-T"라는 개념을 강조했습니다. 이것은 <strong>Experience(경험), Expertise(전문성), Authoritativeness(권위), Trustworthiness(신뢰도)</strong>의 약자입니다. 이 네 가지 요소는 LLM이 정보를 평가할 때 가장 중요한 기준입니다.</p>
+
+  <h4>E1 — Experience (경험)</h4>
+  <p>Experience는 당신이 실제로 그것을 <strong>경험했거나 직접 해봤다</strong>는 것을 보여주는 것입니다. "헤어스토리라는 미용실에서 매일 20명의 고객을 대하며 10년간 헤어 스타일링을 해왔습니다"라는 것이 단순히 "헤어 스타일링을 합니다"보다 훨씬 높은 경험 신호입니다.</p>
+  <p>자영업자의 경우, 경험을 증명하는 가장 좋은 방법은 <strong>구체적인 사례</strong>입니다. "지난 1년간 500명 이상의 고객을 서빙했으며, 그들 중 80%가 재방문했습니다"라는 구체적 수치가 있으면, 이것이 강력한 경험 신호입니다.</p>
+
+  <h4>E2 — Expertise (전문성)</h4>
+  <p>Expertise는 당신의 분야에서 <strong>깊이 있는 지식</strong>을 가지고 있다는 것을 보여주는 것입니다. 커피 전문가라면, 단순히 "좋은 커피를 판다"가 아니라 "에티오피아, 케냐, 콜롬비아 원두의 특성을 이해하고, 각 원두에 맞는 추출 온도와 시간을 조정하며, 로스팅 일자별로 맛의 차이를 관리합니다"라는 구체적 지식을 보여야 합니다.</p>
+
+  <h4>A — Authoritativeness (권위)</h4>
+  <p>Authoritativeness는 <strong>업계나 고객들이 당신을 인정한다</strong>는 것입니다. 이것은 평판 점수, 언론 언급, 업계 상, 고객 리뷰 수 등으로 나타납니다. "미슐랭 가이드 추천 매장", "네이버 미용실 상위 1%", "트립어드바이저 5점" 같은 것들이 권위를 나타냅니다.</p>
+
+  <h4>T — Trustworthiness (신뢰도)</h4>
+  <p>Trustworthiness는 당신이 <strong>거짓말을 하지 않으며, 투명하고, 윤리적</strong>이라는 것을 보여주는 것입니다. 가격을 명확하게 표시하고, 숨겨진 비용이 없으며, 고객의 부정적 리뷰에도 성실하게 답변하고, 약속을 지킵니다.</p>
+
+  <div class="eeat-row"><div class="big-letter">E</div><div class="content"><h4>Experience · 경험</h4><p>"매일 20명 10년간" 같은 실제 체험 · 구체적 수치</p></div></div>
+  <div class="eeat-row"><div class="big-letter">E</div><div class="content"><h4>Expertise · 전문성</h4><p>원두별·로스팅 일자별 관리 같은 깊이 있는 지식</p></div></div>
+  <div class="eeat-row"><div class="big-letter">A</div><div class="content"><h4>Authoritativeness · 권위</h4><p>미슐랭·상위 1%·수상 — 외부의 인정</p></div></div>
+  <div class="eeat-row"><div class="big-letter">T</div><div class="content"><h4>Trustworthiness · 신뢰도</h4><p>투명성·숨은 비용 없음·부정 리뷰 성실 대응</p></div></div>
+
+  <h3><span class="sn">4.5</span>각 LLM별 특성과 최적화 전략</h3>
+
+  <p>모든 LLM이 정보를 동일하게 평가하지는 않습니다. 각 LLM은 학습 데이터, 설계 철학, 그리고 안전 기준이 다르기 때문에, 각각에 최적화된 전략이 필요합니다.</p>
+
+  <h4>ChatGPT (OpenAI)</h4>
+  <p>ChatGPT는 가장 널리 사용되는 LLM입니다. ChatGPT의 특징은 <strong>실시간 웹 검색을 수행하며, 최신 정보를 중시</strong>한다는 점입니다. 또한 ChatGPT는 사용자의 의도를 이해하는 데 매우 능숙하여, 간접적인 질문도 정확하게 해석합니다. "강남역 근처에 조용하고 커피가 맛있는 곳 있나?"라는 모호한 질문도 정확하게 이해합니다.</p>
+  <p><strong>ChatGPT 최적화 전략:</strong> 최신성이 중요합니다. 당신의 웹사이트나 블로그를 정기적으로 업데이트하세요. 또한 언론 노출이 중요합니다. 지역 신문, 블로거, YouTube 크리에이터 등이 당신의 매장을 언급할 때, ChatGPT는 이를 신뢰도 높은 정보로 인식합니다.</p>
+
+  <h4>Google Gemini</h4>
+  <p>Google Gemini는 구글이 개발한 LLM이며, 구글의 방대한 검색 인덱스를 활용합니다. Gemini의 특징은 <strong>구글 검색 순위를 강하게 반영</strong>한다는 점입니다. 즉, 구글 검색에서 상위에 있는 정보를 더 신뢰하고 우선시합니다.</p>
+  <p><strong>Google Gemini 최적화 전략:</strong> 전통적인 구글 SEO가 여전히 중요합니다. Google My Business를 완벽하게 작성하고, 구글 검색 순위를 높이며, Schema 마크업을 추가하여 구글이 당신의 정보를 정확하게 이해하도록 하세요.</p>
+
+  <h4>Claude (Anthropic)</h4>
+  <p>Claude는 <strong>안전성과 정직성을 강조</strong>하는 LLM입니다. Claude의 특징은 불확실성을 인정한다는 점입니다. 만약 Claude가 당신에 대해 확실하지 않으면, "이것에 대해 확실하지 않습니다"라고 말합니다. 따라서 Claude에게는 일관되고 신뢰할 수 있는 정보가 매우 중요합니다.</p>
+  <p><strong>Claude 최적화 전략:</strong> 정보의 일관성이 가장 중요합니다. 모든 플랫폼에서 동일한 정보를 제공하고, 정보를 자주 업데이트하며, 거짓 정보가 없도록 주의하세요. Claude는 투명성 있는 정보원을 신뢰합니다.</p>
+
+  <div class="summary-box">
+    <ul>
+      <li><strong>ChatGPT:</strong> 최신성 + 언론/블로거 언급</li>
+      <li><strong>Gemini:</strong> 구글 SEO + GMB + Schema 마크업</li>
+      <li><strong>Claude:</strong> 정보 일관성 + 투명성 + 잦은 업데이트</li>
+    </ul>
+  </div>
+</section>
+
+<!-- PART 2 -->
+<section class="wrap">
+  <div class="part-intro">
+    <div class="part-num">PART 2</div>
+    <h2>왜 자영업자에게 GEO/AEO가 중요한가</h2>
+    <div class="desc">제로 클릭 시대 · 업종별 영향 · SEO vs GEO/AEO 9대 차이점</div>
+  </div>
+</section>
+
+<!-- CH5 -->
+<section class="page wrap" id="ch5">
+  <h2 class="chapter"><span class="cnum">5</span>제로 클릭 시대의 도래</h2>
+  <div class="chapter-sub">10명 중 7~8명이 당신의 웹사이트를 방문하지 않는다</div>
+
+  <h3><span class="sn">5.1</span>통계로 보는 제로 클릭의 현실</h3>
+
+  <p>2024년 한 해 동안 수집된 검색 통계를 보면, 상황의 심각성이 명확해집니다. 전체 구글 검색의 약 <strong>63%가 제로 클릭 검색</strong>이며, 이 비율은 매년 증가하고 있습니다. 모바일 검색의 경우, 제로 클릭 비율이 무려 <strong>70%</strong>에 달합니다.</p>
+
+  <p>이것이 의미하는 바를 구체적으로 생각해봅시다. 만약 당신의 매장이 지난 한 달 동안 구글 검색으로부터 100명의 방문자를 받았다면, 실제로는 약 270명이 당신에 대한 정보를 찾았을 가능성이 높습니다. 하지만 그들 중 약 170명은 당신의 웹사이트에 방문하지 않았습니다. <strong>검색 결과 페이지에서 제시된 답변(스니펫, 평점, 리뷰, 등)으로 만족했기 때문</strong>입니다.</p>
+
+  <div class="grid grid-2">
+    <div class="card red"><div class="t">전체 구글 검색</div><div class="d"><span style="font-size:32px;color:var(--red);font-weight:900">63%</span> 제로 클릭 (2024)</div></div>
+    <div class="card red"><div class="t">모바일 검색</div><div class="d"><span style="font-size:32px;color:var(--red);font-weight:900">70%</span> 제로 클릭</div></div>
+    <div class="card red"><div class="t">로컬 검색</div><div class="d"><span style="font-size:32px;color:var(--red);font-weight:900">75~80%</span> 제로 클릭</div></div>
+    <div class="card gold"><div class="t">의미</div><div class="d"><strong>10명 중 7~8명이 웹사이트 방문하지 않음</strong></div></div>
+  </div>
+
+  <h3><span class="sn">5.2</span>AI Overview의 등장과 추가적 위협</h3>
+
+  <p>2024년 5월 구글이 <strong>"AI Overview"(이전명 SGE - Search Generative Experience)</strong>를 대대적으로 출시하면서, 제로 클릭은 더욱 심해졌습니다. AI Overview는 사용자의 질문에 대해 AI가 종합적으로 작성한 답변을 검색 결과의 맨 위에 표시합니다.</p>
+
+  <p>이제 사용자의 검색 흐름은 다음과 같습니다.</p>
+  <p>1) 검색어 입력 → 2) AI Overview 읽음 → 3) 필요하면 "더 보기" 링크 클릭</p>
+  <p>이전에는 최소한 검색 결과 리스트를 보고 선택했다면, 이제는 AI가 직접 제공하는 답변을 먼저 봅니다. <strong>자신의 매장이 이 AI 답변에 포함되지 않으면, 사용자는 당신을 알 수 없습니다.</strong></p>
+
+  <h3><span class="sn">5.3</span>로컬 비즈니스에 미치는 영향</h3>
+
+  <p>자영업 매장들은 특히 로컬 검색(지역 관련 검색)에서 제로 클릭의 영향을 크게 받습니다. 누군가가 "강남역 라면 맛있는 곳"이라고 검색할 때, AI Overview는 <strong>"강남역 근처의 인기 라면집 3곳"</strong>을 직접 나열합니다. 이 리스트에 포함되지 않으면, 당신의 라면집은 사용자가 "웹사이트를 방문"할 기회 자체를 잃습니다.</p>
+
+  <p>더욱 치명적인 것은, <strong>AI Overview에 포함된 정보가 정확하지 않을 수도 있다</strong>는 점입니다. 예를 들어, AI가 "맛있는 한상은 강남역에 위치합니다"라고 답했는데, 실제로는 3년 전에 이전한 후 현재 강북에 있다면? 사용자는 찾을 수 없습니다. 하지만 당신은 이것을 모르고 있을 수도 있습니다.</p>
+
+  <h3><span class="sn">5.4</span>제로 클릭 시대에서의 대응 전략</h3>
+
+  <p>제로 클릭 시대에서 살아남기 위해서는, <strong>"사람들이 당신을 클릭하기를 기대하지 말고, 클릭하기 전에 당신의 정보를 얻도록"</strong> 전략을 바꿔야 합니다. 구체적인 전략은 다음과 같습니다.</p>
+
+  <h4>1단계: 검색 결과 페이지에 당신의 정보 맞게 표시되게 하기</h4>
+  <p>제로 클릭 사용자가 보는 정보는 주로 Google My Business, 지도 정보, 리뷰입니다. 따라서 이 정보들이 정확하고 최신이어야 합니다. 매장 영업시간, 전화번호, 주소, 사진, 상위 3가지 상품/서비스, 평점과 리뷰수, 모두 정확해야 합니다.</p>
+
+  <h4>2단계: AI Overview에 포함되도록 최적화하기</h4>
+  <p>AI Overview에 당신의 정보가 포함되려면, 당신의 콘텐츠가 구글 검색 상위권에 있어야 합니다. 동시에 <strong>구조화된 형식</strong>이 중요합니다. "라면은 우리의 특색 요리인데, 이것은..." 같은 일반 문단보다는 "우리의 특색 메뉴: 1) 매운 우육 라면 2) 진하게 우려낸 육수 라면 3) 매콤한 마라 라면"과 같은 리스트 형식이 AI Overview에 포함될 확률이 높습니다.</p>
+
+  <h4>3단계: 리뷰 수와 평점 높이기</h4>
+  <p>제로 클릭 검색에서 사용자가 보는 정보 중 가장 중요한 것이 리뷰입니다. "<strong>★4.8 (리뷰 500개)</strong>" vs "★4.2 (리뷰 30개)" 중 어느 것을 클릭할까요? 리뷰 수와 평점이 높을수록, 사용자가 당신의 정보를 신뢰합니다. <strong>리뷰가 없거나 적다면, AI 시대에는 존재하지 않는 것과 같습니다.</strong></p>
+
+  <div class="summary-box">
+    <ul>
+      <li>① GMB 정보 100% 정확·최신 유지 → 검색 페이지 자체에서 설득</li>
+      <li>② 구조화된 리스트/표 형식으로 콘텐츠 작성 → AI Overview 포함</li>
+      <li>③ 리뷰 수·평점 집중 강화 → 제로 클릭 상태에서도 클릭 유도</li>
+    </ul>
+  </div>
+</section>
+
+<!-- CH6 -->
+<section class="page wrap" id="ch6">
+  <h2 class="chapter"><span class="cnum">6</span>AI 검색이 자영업 매장에 미치는 영향</h2>
+  <div class="chapter-sub">업종별로 타격의 크기가 다르다. 내 업종 생존 지도를 확인하라</div>
+
+  <h3><span class="sn">6.1</span>고객 여정의 변화(Customer Journey)</h3>
+
+  <p>AI 검색이 보편화되면서, 고객이 당신을 발견하는 경로 자체가 변했습니다. 기존의 전형적인 고객 여정은 다음과 같았습니다.</p>
+  <p><strong>[OLD]</strong> 검색 → 웹사이트 방문 → 정보 확인 → 방문 결정</p>
+  <p>하지만 AI 검색 시대의 고객 여정은 이렇습니다.</p>
+  <p><strong>[NEW]</strong> 질문(AI에) → 정보 확인 → 평점/리뷰 확인 → 방문 결정</p>
+
+  <p>이 변화의 의미를 정확하게 이해해야 합니다. 기존에는 고객이 당신의 웹사이트를 방문하면, 당신이 <strong>직접 당신의 이야기</strong>를 할 수 있었습니다. "우리의 특색은...", "우리의 철학은...", "우리의 가치는..."라고 말할 수 있었습니다. 하지만 AI 검색 시대에는 <strong>AI가 당신을 대신 설명</strong>합니다. 당신이 원하지 않는 방식으로.</p>
+
+  <p>"봄날의 커피"를 예로 들어봅시다. 당신의 웹사이트에서는 "우리는 에티오피아 야르가 체페 원두의 아로마를 최대한 살리기 위해 92도에서 96도 사이의 수온을 유지합니다"라고 정중하게 설명하고 싶습니다. 하지만 AI Overview에서는 단순히 <strong>"★4.6 (리뷰 200개) - 에티오피아 커피"</strong>라고만 표시됩니다. 당신의 정성스러운 설명은 사라지고, 수치와 키워드만 남습니다.</p>
+
+  <h3><span class="sn">6.2</span>업종별 영향: 누가 더 심하게 영향받는가?</h3>
+
+  <p>AI 검색의 영향은 모든 업종에 균등하지 않습니다. 어떤 업종은 더 심하게 영향받고, 어떤 업종은 오히려 기회가 됩니다.</p>
+
+  <h4 style="color:var(--red)">🔴 고영향 업종 — 위험도 높음</h4>
+
+  <p><strong>음식점:</strong> AI Overview는 "강남역 근처의 인기 한정식 3곳"이라고 바로 추천합니다. 당신이 이 3곳에 포함되지 않으면, 사용자는 찾지 못합니다. 리뷰 수와 평점이 절대적으로 중요합니다.</p>
+
+  <p><strong>미용실/헤어숍:</strong> 미용 서비스는 신뢰와 평판이 매우 중요합니다. AI가 당신을 추천할 때 가장 강력한 신호는 "고객 리뷰"입니다. 리뷰가 없으면 추천받지 못합니다.</p>
+
+  <p><strong>카페/바:</strong> 위치와 분위기가 중요한 업종입니다. AI Overview에서 "분위기 좋은 카페"가 무엇인지 결정되는 순간, 당신이 "분위기 좋은"이라는 평가를 받지 못하면 제외됩니다.</p>
+
+  <h4 style="color:var(--green)">🟢 저영향 업종 — 기회도 큼</h4>
+
+  <p><strong>특수한 서비스(예: 세무 상담, 변호사 상담):</strong> 이런 업종은 오직 한 명 또는 매우 적은 수의 서비스 제공자를 찾는 경우가 많습니다. AI는 "나에게 맞는 세무사"를 추천하는 과정에서 여러 선택지 대신 가장 신뢰도 높은 한 명을 추천합니다. 따라서 제로 클릭보다는 "직접 방문"으로 이어질 확률이 높습니다.</p>
+
+  <p><strong>독특한 제품(수제품, 한정판):</strong> 대체재가 적을수록, 고객은 당신의 정보를 더 자세히 알고 싶어합니다. AI Overview의 정보로는 부족하여, 클릭으로 이어질 확률이 높습니다.</p>
+
+  <div class="grid grid-3">
+    <div class="card red"><div class="t">🍽️ 음식점</div><div class="d"><strong>고위험</strong><br>Top 3 밖이면 소멸</div></div>
+    <div class="card red"><div class="t">💇 미용실</div><div class="d"><strong>고위험</strong><br>리뷰 = 생명</div></div>
+    <div class="card red"><div class="t">☕ 카페·바</div><div class="d"><strong>고위험</strong><br>"분위기" 평가 필수</div></div>
+    <div class="card green"><div class="t">📜 전문 서비스</div><div class="d"><strong>기회</strong><br>신뢰 1위 독점</div></div>
+    <div class="card green"><div class="t">🎨 수제·한정판</div><div class="d"><strong>기회</strong><br>대체재 적음</div></div>
+    <div class="card gold"><div class="t">💼 일반 서비스</div><div class="d"><strong>중간</strong><br>전략에 따라 갈림</div></div>
+  </div>
+
+  <h3><span class="sn">6.3</span>AI 추천 누락의 위험성: "당신이 없다"는 것이 얼마나 치명적인가?</h3>
+
+  <p>AI Overview에 당신이 포함되지 않는다는 것의 의미를 정확하게 이해해야 합니다. 이것은 단순히 "클릭 수가 줄어든다"는 수준이 아닙니다. 이것은 <strong>"당신이 존재하지 않는다"</strong>는 것과 같습니다.</p>
+
+  <p>예를 들어봅시다. 미용실 "헤어스토리"의 경우, 기존 SEO 시대에는 "강남역 미용실"이라는 검색에서 10위에 있어도, 클릭 수는 적지만 여전히 고객이 도달할 수 있었습니다. 하지만 AI 시대에는 AI가 <strong>"강남역 인기 미용실 3곳"</strong>을 정하는 순간, 4위는 존재하지 않는 것과 같습니다. 아무도 당신을 찾지 못합니다.</p>
+
+  <p>이 위험은 특히 <strong>새로운 가게나 작은 가게</strong>에게 심합니다. 기존의 구글 SEO에서는 충분히 오래 좋은 콘텐츠를 만들면, 결국 순위가 올라갑니다. 하지만 AI 추천은 더 이분적입니다. AI는 "이 3곳이 가장 좋다"고 결정하면, 나머지는 추천하지 않습니다. <strong>어떻게 당신을 추천 목록에 포함시킬 것인가?</strong> 그것이 바로 GEO/AEO 전략의 핵심입니다.</p>
+
+  <blockquote>
+    SEO 10위는 가끔이라도 클릭받았다.<br>
+    AI 시대의 4위는? <strong>아무도 찾지 못한다.</strong>
+  </blockquote>
+</section>
+
+<!-- CH7 -->
+<section class="page wrap" id="ch7">
+  <h2 class="chapter"><span class="cnum">7</span>기존 SEO와 GEO/AEO의 핵심 차이점</h2>
+  <div class="chapter-sub">9가지 핵심 차이. 이 표만 외워도 절반은 끝난다.</div>
+
+  <h3><span class="sn">7.1</span>9가지 핵심 차이점 비교</h3>
+
+  <h4>1. 정보 소스의 차이</h4>
+  <p><strong>SEO:</strong> 검색 엔진의 크롤러가 웹페이지를 읽고 인덱싱합니다. 당신의 웹사이트가 유일한 정보 소스입니다. 당신의 웹사이트가 검색 엔진에 노출되지 않으면, 당신은 존재하지 않습니다.</p>
+  <p><strong>GEO/AEO:</strong> AI는 웹페이지뿐만 아니라 Google My Business, 네이버 플레이스, 카카오맵, 블로그, 소셜 미디어, 뉴스 기사, 고객 리뷰 등 <strong>모든 정보를 종합</strong>합니다. 당신의 정보가 여러 곳에 분산되어 있어도, AI는 이것들을 연결하여 당신의 전체 상을 그립니다.</p>
+
+  <h4>2. 신뢰도 평가의 차이</h4>
+  <p><strong>SEO:</strong> 신뢰도는 주로 도메인 권위(Domain Authority)로 측정됩니다. 몇 개의 웹사이트에서 당신에게 링크했는가. 얼마나 오래된 도메인인가. 이 기준에서는 대기업과 오래된 업체가 항상 유리합니다.</p>
+  <p><strong>GEO/AEO:</strong> 신뢰도는 <strong>현재의 평판</strong>으로 측정됩니다. 지난 1년간의 고객 리뷰, 지난 3개월간의 업데이트 빈도, 현재의 평점, 얼마나 많은 사람이 당신에 대해 이야기했는가. 오래된 것보다 지금 현재의 신뢰가 중요합니다.</p>
+
+  <h4>3. 콘텐츠 형식의 차이</h4>
+  <p><strong>SEO:</strong> 웹페이지 형식이 가장 중요합니다. HTML, 이미지, 비디오가 포함된 전통적 웹페이지. 더 긴 콘텐츠(long-form content)가 더 높은 순위를 받았습니다.</p>
+  <p><strong>GEO/AEO:</strong> 형식은 덜 중요합니다. 대신 <strong>정보의 구조와 명확성</strong>이 중요합니다. 리스트, 테이블, 짧은 문장, 구조화된 데이터. "3000자 이상의 장문"보다 "5개의 명확한 포인트"가 더 높이 평가될 수 있습니다.</p>
+
+  <h4>4. 업데이트 주기의 차이</h4>
+  <p><strong>SEO:</strong> 콘텐츠를 한 번 잘 만들면, 여러 달 또는 여러 해 동안 효과가 지속됩니다. 한 번 검색 상위권에 올라가면, 지속적인 업데이트 없이도 위치를 유지할 수 있습니다.</p>
+  <p><strong>GEO/AEO:</strong> <strong>지속적인 업데이트가 필수</strong>입니다. Google My Business의 정보를 자주 업데이트하는 매장이, 절대 업데이트하지 않는 매장보다 훨씬 높이 평가됩니다. AI는 "최신성"을 매우 중시합니다.</p>
+
+  <h4>5. 경쟁 규모의 차이</h4>
+  <p><strong>SEO:</strong> 경쟁은 상대적입니다. "커피"라는 키워드에서 상위권에 올라가려면, 수백 개의 경쟁 웹사이트를 이겨야 합니다. 하지만 "강남역 봄날의 커피"라는 구체적인 키워드에서는 경쟁이 적습니다.</p>
+  <p><strong>GEO/AEO:</strong> 경쟁은 <strong>절대적</strong>입니다. "강남역 커피"라는 AI 추천에서 상위 3곳에 포함되려면, 실제로 가장 좋은 커피 중 하나여야 합니다. 아무리 SEO를 잘해도, 실제 평판이 나쁘면 포함되지 않습니다.</p>
+
+  <h4>6. 키워드의 중요도 차이</h4>
+  <p><strong>SEO:</strong> 키워드는 핵심입니다. "강남역 카페"라는 정확한 키워드를 당신의 웹페이지 제목, 첫 문단, 메타 설명에 포함시키면, 관련성이 높습니다.</p>
+  <p><strong>GEO/AEO:</strong> 키워드는 덜 중요합니다. AI는 <strong>의미를 이해</strong>합니다. "강남역 근처에서 조용하고 커피가 좋은 곳"이라는 질문에 "봄날의 커피"가 답변으로 나오는 것은, "강남역 카페"라는 정확한 키워드 때문이 아니라, 당신의 정보가 "강남역 + 조용함 + 좋은 커피"라는 의미와 매치되기 때문입니다.</p>
+
+  <h4>7. 페이지 속도의 중요도 차이</h4>
+  <p><strong>SEO:</strong> 웹페이지 속도는 검색 순위 요소입니다. 느린 웹사이트는 낮은 순위를 받습니다.</p>
+  <p><strong>GEO/AEO:</strong> 웹페이지 속도는 거의 중요하지 않습니다. AI가 당신을 추천할 때, 당신의 웹사이트 속도를 고려하지 않습니다. 대신 Google My Business 정보와 평판이 중요합니다.</p>
+
+  <h4>8. 링크의 중요도 차이</h4>
+  <p><strong>SEO:</strong> 백링크(다른 사이트에서 당신에게 링크하는 것)는 가장 중요한 순위 결정 요소입니다. 많은 좋은 사이트에서 당신에게 링크할수록 더 높은 순위를 받습니다.</p>
+  <p><strong>GEO/AEO:</strong> 백링크는 거의 중요하지 않습니다. 대신 <strong>"정보의 일관성"</strong>이 중요합니다. 10개의 웹사이트에서 "봄날의 커피는 강남역에 있다"고 일관되게 언급하는 것이, 100개의 무작위 링크보다 훨씬 가치 있습니다.</p>
+
+  <h4>9. 주요 고려 요소의 차이</h4>
+  <p><strong>SEO:</strong> 검색 엔진이 당신의 웹페이지를 얼마나 잘 이해하는가. 크롤링 가능한가, 인덱싱되는가, 구조화된 데이터가 있는가.</p>
+  <p><strong>GEO/AEO:</strong> AI가 당신의 비즈니스를 얼마나 <strong>신뢰</strong>하는가. 당신의 정보는 일관성이 있는가, 최신인가, 고객들이 당신을 신뢰하는가, 당신은 전문가인가.</p>
+
+  <div class="tbl-wrap">
+    <table class="vs-table">
+      <thead><tr><th width="14%">구분</th><th width="43%">SEO (구 시대)</th><th width="43%">GEO/AEO (신 시대)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>① 정보 소스</strong></td><td>웹페이지 (내 사이트만)</td><td>GMB·플레이스·블로그·SNS·기사·리뷰 종합</td></tr>
+        <tr><td><strong>② 신뢰도</strong></td><td>도메인 권위(오래·크기)</td><td>현재 평판(리뷰·업데이트)</td></tr>
+        <tr><td><strong>③ 형식</strong></td><td>긴 글(long-form)</td><td>리스트·테이블·구조화</td></tr>
+        <tr><td><strong>④ 업데이트</strong></td><td>한 번 잘하면 지속</td><td>지속적 업데이트 필수</td></tr>
+        <tr><td><strong>⑤ 경쟁</strong></td><td>상대적(순위)</td><td>절대적(Top 3 or 탈락)</td></tr>
+        <tr><td><strong>⑥ 키워드</strong></td><td>핵심</td><td>의미 기반 이해</td></tr>
+        <tr><td><strong>⑦ 페이지 속도</strong></td><td>중요</td><td>거의 무관</td></tr>
+        <tr><td><strong>⑧ 백링크</strong></td><td>가장 중요</td><td>거의 무관 · <strong>정보 일관성</strong>이 대체</td></tr>
+        <tr><td><strong>⑨ 핵심 질문</strong></td><td>"얼마나 잘 최적화했나?"</td><td>"얼마나 진정한가?"</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span class="sn">7.2</span>E-E-A-T: 모든 것의 중심</h3>
+
+  <p>기존 SEO와 GEO/AEO의 가장 근본적인 차이는, <strong>SEO는 "얼마나 잘 최적화했는가"를 중시하고, GEO/AEO는 "얼마나 진정한가"를 중시한다</strong>는 것입니다. 이것이 바로 E-E-A-T라고 불리는 네 가지 요소의 가치입니다.</p>
+
+  <p>기존 SEO에서는 경험이 없어도, 전문성이 없어도, 권위가 없어도, 신뢰도가 낮아도, 키워드를 잘 최적화하고 백링크를 많이 확보하면 높은 순위를 받을 수 있었습니다. 하지만 GEO/AEO에서는 이것이 불가능합니다.</p>
+
+  <p>이것이 자영업자에게는 엄청난 기회입니다. 왜냐하면 <strong>당신의 가장 강력한 무기가 "진정성"이기 때문</strong>입니다.</p>
+  <ul>
+    <li>당신이 밀가루 이야기 빵집을 10년 운영했다면, 그것이 당신의 <strong>경험</strong>입니다.</li>
+    <li>당신이 스스로 모든 빵을 굽고 원료를 선택한다면, 그것이 당신의 <strong>전문성</strong>입니다.</li>
+    <li>고객들이 당신의 빵을 사랑한다면, 그것이 당신의 <strong>권위</strong>입니다.</li>
+  </ul>
+  <p>이 모든 것이 AI 시대에는 당신의 가장 강력한 자산입니다.</p>
+
+  <h3><span class="sn">7.3</span>자영업자에게 주어진 선택지</h3>
+
+  <p>이제 당신은 두 가지 선택지 중 하나를 선택해야 합니다.</p>
+
+  <p><strong>첫 번째는 기존의 SEO 전략을 계속 추구하는 것</strong>입니다. 이것은 여전히 어느 정도 효과가 있을 것입니다. 하지만 효과는 계속 줄어들 것입니다. 왜냐하면 AI 검색의 비율이 계속 증가하기 때문입니다.</p>
+
+  <p><strong>두 번째는 GEO/AEO 전략으로 전환하는 것</strong>입니다. 이것이 더 현명한 선택입니다. 왜냐하면 GEO/AEO는 단순히 "AI 시대를 대비하는 것"을 넘어, "당신의 비즈니스를 더 진정하고 신뢰할 수 있게 만드는 것"이기 때문입니다. 이것은 AI 시대에도, 그 이후에도 계속 가치 있을 것입니다.</p>
+
+  <p>특히 자영업자의 경우, GEO/AEO는 당신의 가장 강력한 무기가 될 수 있습니다. 대기업과 달리, 당신은 진정성을 가지고 있습니다. 당신은 고객과 직접 관계를 맺고 있습니다. 당신은 당신의 제품을 정말로 사랑합니다. <strong>이 모든 것이 AI 시대에는 검색 엔진 최적화보다 더 가치 있습니다.</strong></p>
+
+  <div class="hero-q">
+    <div class="q">
+      SEO는 <span class="hl">"얼마나 잘 최적화했는가"</span>를 묻는다.<br>
+      GEO/AEO는 <span class="hl">"얼마나 진정한가"</span>를 묻는다.
+    </div>
+  </div>
+
+  <ul class="check">
+    <li><strong>SEO의 시대는 저물고 있습니다:</strong> 클릭 기반 트래픽은 계속 감소 중</li>
+    <li><strong>GEO/AEO의 시대가 왔습니다:</strong> AI 추천은 정말 좋은 비즈니스를 선호</li>
+    <li><strong>자영업자에게는 기회입니다:</strong> 진정성 + 평판 = 경쟁력</li>
+  </ul>
+</section>
+
+<!-- PART 3 -->
+<section class="wrap">
+  <div class="part-intro">
+    <div class="part-num">PART 3</div>
+    <h2>GEO 실전 전략</h2>
+    <div class="desc">CITE 프레임워크 · 콘텐츠 구조 · 스키마 마크업 · 브랜드 엔티티</div>
+  </div>
+</section>
+
+<!-- CH8 -->
+<section class="page wrap" id="ch8">
+  <h2 class="chapter"><span class="cnum">8</span>CITE 프레임워크 완벽 가이드</h2>
+  <div class="chapter-sub">구글 AI가 인용할 확률을 극대화하는 4가지 기준</div>
+
+  <h3><span class="sn">8.1</span>CITE 프레임워크란?</h3>
+
+  <p>구글의 AI 알고리즘은 콘텐츠를 평가할 때 특정한 기준을 적용합니다. CITE 프레임워크는 이러한 기준을 네 가지로 체계화한 것입니다. 각 문자는 <strong>포괄성(Comprehensive), 독자적 데이터(Independent Data), 신뢰성(Trustworthiness), 엔티티 중심(Entity-Centric)</strong>을 의미합니다.</p>
+
+  <p>이 네 가지 요소를 모두 갖춘 콘텐츠는 구글의 생성형 AI 검색 결과에 인용될 확률이 매우 높습니다. 특히 자영업자가 운영하는 <strong>소규모 비즈니스일수록</strong> 이 프레임워크를 정확히 이해하고 적용하는 것이 경쟁력의 핵심입니다.</p>
+
+  <h3><span class="sn">8.2</span>C: 포괄성(Comprehensive)</h3>
+
+  <p>포괄성은 특정 주제에 대해 <strong>얼마나 깊이 있고 완전한 정보를 제공하는지</strong>를 의미합니다. 한국의 소규모 카페가 "에스프레소 추출"이라는 주제로 콘텐츠를 작성한다면, 단순히 추출 방법만 설명해서는 안 됩니다. 추출 시간, 물의 온도, 분쇄도, 탐핑 압력, 예상되는 맛의 변화, 흔한 실수, 해결 방법까지 모두 다루어야 합니다.</p>
+
+  <p>포괄성 높은 콘텐츠는 <strong>읽는 사람이 별도로 다른 정보를 찾아야 할 필요성을 최소화</strong>합니다.</p>
+
+  <h3><span class="sn">8.3</span>I: 독자적 데이터(Independent Data)</h3>
+
+  <p>독자적 데이터는 <strong>다른 곳에서 복사하지 않은 자신만의 정보</strong>입니다. 한국의 미용실이 "스케일링 시술 후 관리법"을 주제로 포스트를 작성할 때, 유명한 피부과 정보를 그대로 옮기기만 해서는 안 됩니다.</p>
+
+  <p>대신 <strong>실제 고객 100명을 대상으로 3개월간 추적 관찰한 결과, "스케일링 후 첫 주간에는 냉찜질과 진정 성분 에센스를 병행할 때 52% 더 빠른 피부 회복을 보였다"</strong>는 식의 자체 데이터를 제시해야 합니다. 이것이 구글 AI가 가장 높이 평가하는 요소입니다.</p>
+
+  <h3><span class="sn">8.4</span>T: 신뢰성(Trustworthiness)</h3>
+
+  <p>신뢰성은 저자와 웹사이트가 신뢰할 수 있는 정보원이라는 것을 증명하는 것입니다. 한국의 소규모 수입식품 쇼핑몰이 "올리브오일의 등급 구분"에 대해 글을 쓸 때, 단순히 자신의 경험만 서술해서는 신뢰성이 낮습니다.</p>
+
+  <p>대신 <strong>국제올리브이사회(IOC) 공식 기준, 한국 수입식품 검사 기준, 10년 경력의 수입 담당자로서의 경험</strong>을 함께 제시하면 신뢰성이 크게 높아집니다. 전자상거래법에 따른 <strong>사업자등록번호 공시, 명확한 반품 정책, 연락처 표시</strong>도 신뢰성의 중요한 요소입니다.</p>
+
+  <h3><span class="sn">8.5</span>E: 엔티티 중심(Entity-Centric)</h3>
+
+  <p>엔티티란 구글의 지식 그래프가 인식할 수 있는 <strong>명확한 개체, 즉 "누군가", "무언가", "어딘가"</strong>입니다. 한국의 개인 세무사가 "프리랜서 절세 전략"을 주제로 작성한 블로그 글이 있다면, 이 글은 "김OO 세무사"라는 엔티티와 연결되어야 합니다.</p>
+
+  <p>저자 프로필에 <strong>명확한 경력, 보유 자격증, 언론 출연 기록</strong>을 표시하고, 같은 저자가 작성한 다른 글들과 일관된 스타일과 주제로 연결되어야 합니다. 엔티티가 강해질수록 해당 인물이나 조직의 모든 콘텐츠가 더 높은 신뢰도로 평가됩니다.</p>
+
+  <div class="cite-diagram">
+    <div class="cite-box"><div class="letter">C</div><div class="key">C</div><div class="name">Comprehensive</div><div class="desc">포괄성 · 초보자부터 전문가까지</div></div>
+    <div class="cite-box"><div class="letter">I</div><div class="key">I</div><div class="name">Independent Data</div><div class="desc">독자적 데이터 · 나만의 통계·실험</div></div>
+    <div class="cite-box"><div class="letter">T</div><div class="key">T</div><div class="name">Trustworthiness</div><div class="desc">신뢰성 · 자격·경력·공시</div></div>
+    <div class="cite-box"><div class="letter">E</div><div class="key">E</div><div class="name">Entity-Centric</div><div class="desc">엔티티 중심 · 저자·브랜드 프로필</div></div>
+  </div>
+
+  <h3><span class="sn">8.6</span>CITE 프레임워크 실전 예시</h3>
+
+  <h4>Before (낮은 CITE 점수)</h4>
+  <p>한국의 요가 스튜디오가 "임신 중 요가"라는 주제로 작성한 글:</p>
+  <div class="ba before">
+    <div class="label">낮은 CITE</div>
+    <p>"임산부 요가는 좋습니다. 저희 스튜디오에서 하세요. 주 2회 하면 도움됩니다."</p>
+    <p style="color:var(--red);margin-top:10px">❌ 포괄성 없음 · 자체 데이터 없음 · 저자 불명 · 엔티티 없음</p>
+  </div>
+
+  <h4>After (높은 CITE 점수)</h4>
+  <p>같은 요가 스튜디오의 개선된 콘텐츠:</p>
+  <div class="ba after">
+    <div class="label">높은 CITE</div>
+    <p><strong>"임산부 요가 완벽 가이드 — 임신 주차별 안전 자세 12가지 · 피해야 할 자세 5가지 · 호흡법 3단계"</strong></p>
+    <p>[저자] 10년차 산전 요가 전문 강사 이○○ · 대한요가협회 산전 지도자 과정 수료 · 누적 수강 임산부 320명</p>
+    <p>[자체 데이터] 본 스튜디오 임산부 수강생 120명 설문: <strong>주 2회 이상 참여 시 출산 회복 속도 28% 향상</strong></p>
+    <p>[신뢰 근거] 대한산부인과학회 권고 자세 기준 · 본 스튜디오 산부인과 자문의 OOO 감수</p>
+  </div>
+
+  <h3><span class="sn">8.7</span>CITE 프레임워크 적용 체크리스트</h3>
+
+  <ul class="check">
+    <li><strong>포괄성(C):</strong> 해당 주제의 모든 중요 측면을 다루었는가? 초보자부터 전문가 수준까지?</li>
+    <li><strong>독자적(I):</strong> 내 비즈니스의 고유 데이터를 포함했는가? 고객 피드백, 내부 통계, 실험 결과?</li>
+    <li><strong>신뢰성(T):</strong> 저자의 경력, 자격증, 실적을 명확히 제시했는가? 법적 정보 공시 완료했는가?</li>
+    <li><strong>엔티티(E):</strong> 저자/브랜드 프로필을 완성했는가? 구글에서 쉽게 찾을 수 있는가?</li>
+    <li><strong>연쇄 효과:</strong> 한 글이 이 모든 요소를 갖출 때, 다른 글들도 더 높은 평가를 받는다.</li>
+  </ul>
+</section>
+
+<!-- CH9 -->
+<section class="page wrap" id="ch9">
+  <h2 class="chapter"><span class="cnum">9</span>AI가 선호하는 콘텐츠 구조</h2>
+  <div class="chapter-sub">의미적 구조 · Q&amp;A · 질문형 소제목 · 표와 리스트</div>
+
+  <h3><span class="sn">9.1</span>AI 시대의 콘텐츠 구조 변화</h3>
+
+  <p>과거 검색 엔진 최적화는 키워드 밀도와 백링크 개수를 중심으로 했습니다. 하지만 생성형 AI 시대에는 구글의 알고리즘이 콘텐츠의 <strong>"의미적 구조"</strong>를 분석합니다. 즉, 텍스트가 어떻게 배열되어 있는지, 정보 간의 논리적 관계가 어떤지, 사용자의 의도를 얼마나 명확히 해결하는지를 평가합니다.</p>
+
+  <p>한국의 온라인 쇼핑몰이 "겨울 스킨케어"라는 주제로 글을 쓸 때, 단순히 제품 나열이 아니라 <strong>"건성 피부", "지성 피부", "민감성 피부"</strong> 등 고객 유형별로 구조화된 정보를 제시해야 AI가 이를 높이 평가합니다.</p>
+
+  <h3><span class="sn">9.2</span>Q&amp;A 형식으로 콘텐츠 구조화하기</h3>
+
+  <p>Q&amp;A 형식은 <strong>AI 검색 결과에 가장 많이 인용되는 구조</strong>입니다. 사람들이 검색할 때 하는 질문을 정확히 파악하고, 각 질문에 대한 명확한 답변을 제시하면 됩니다.</p>
+
+  <p>예를 들어 "서울 강남구 한의원"을 검색하는 사람이 실제로 알고 싶은 것은 단순한 주소가 아니라 <strong>"어떤 질환을 잘 치료하는가?", "치료 기간은 얼마나 걸리는가?", "건강보험이 되는가?", "초진 비용은 얼마나 하는가?"</strong> 등입니다. 이 모든 질문에 대한 답을 명확히 제시하면 AI가 이 콘텐츠를 검색 결과 상단에 배치할 확률이 높아집니다.</p>
+
+  <div class="qa-item">
+    <div class="q">서울 강남 한의원을 찾는 사람이 실제로 알고 싶은 것은?</div>
+    <div class="a">주소가 아니다. "어떤 질환을 잘 치료?", "치료 기간?", "건강보험 적용?", "초진 비용?" — 이 질문들에 명확히 답하는 콘텐츠가 AI의 선택을 받는다.</div>
+  </div>
+
+  <h3><span class="sn">9.3</span>의미 기반 섹션 나누기</h3>
+
+  <p>콘텐츠를 섹션으로 나눌 때는 단순히 시각적으로 보기 좋게 하기 위해서가 아니라, 각 섹션이 <strong>명확한 의미</strong>를 가져야 합니다. "케이크 만드는 법"을 주제로 한다면, <strong>"재료", "조리 과정", "팁과 트러블슈팅", "변형 레시피", "보관 방법"</strong>으로 나누어야 합니다.</p>
+
+  <p>이렇게 나누면 AI가 "케이크 만들 때 우유 대신 뭘 써도 되나?"라는 질문에 <strong>"변형 레시피" 섹션을 직접 인용</strong>할 수 있게 됩니다. 이것이 의미 기반 섹션 나누기입니다.</p>
+
+  <h3><span class="sn">9.4</span>질문형 소제목 활용</h3>
+
+  <p>전통적인 콘텐츠는 <em>"방법론", "배경지식"</em> 같은 명사형 소제목을 사용했습니다. 하지만 AI 시대에는 <strong>"어떻게 하면 ...?", "왜 ...인가?", "언제 ...해야 하는가?"</strong> 같은 질문형 소제목이 더 효과적입니다.</p>
+
+  <p>AI가 사용자의 질문과 소제목을 <strong>자동으로 매칭</strong>하고, 해당 섹션을 직접 인용하기 때문입니다. 한국 부동산 에이전트가 "전세사기 예방법"을 주제로 글을 쓸 때, "전세사기란?"이라는 소제목보다 <strong>"어떤 계약서 조항이 위험한가?", "집을 전셋값으로 임차하기 전에 꼭 확인할 것은?"</strong>이라는 질문형 소제목이 훨씬 AI 친화적입니다.</p>
+
+  <div class="ba-grid">
+    <div class="ba before"><div class="label">명사형 (OLD)</div><h4>"방법론"<br>"배경지식"<br>"사례 연구"</h4></div>
+    <div class="ba after"><div class="label">질문형 (AI 친화)</div><h4>"어떻게 하면 ...?"<br>"왜 ...인가?"<br>"언제 ...해야?"</h4></div>
+  </div>
+
+  <h3><span class="sn">9.5</span>표와 리스트를 활용한 정보 시각화</h3>
+
+  <p>AI는 문단형 텍스트보다 <strong>구조화된 데이터</strong>를 더 잘 이해합니다. 표, 리스트, 체크박스 등을 적극 활용하면 AI가 콘텐츠를 분석하고 인용할 때 훨씬 정확도가 높아집니다.</p>
+
+  <p>"서울 강남 피부과 3곳 비교"라는 글을 쓸 때 문단으로 나열하는 것보다, <strong>진료시간, 대표 시술, 가격대, 추천 이유</strong>를 표로 정리하면 AI가 사용자의 특정 질문에 정확히 대답할 수 있게 됩니다.</p>
+
+  <h3><span class="sn">9.6</span>깊이(Depth) vs 넓이(Breadth)의 균형</h3>
+
+  <p>콘텐츠를 작성할 때는 <strong>깊이와 넓이 중 하나만 선택</strong>해야 합니다. "커피"라는 주제를 다룬다면, 깊이 있는 글은 "에스프레소 추출의 과학" 하나에 깊이 파고드는 것이고, 넓이 있는 글은 "에스프레소, 아메리카노, 라떼, 카푸치노의 차이"를 모두 다루는 것입니다.</p>
+
+  <p>AI는 두 가지 모두를 평가하지만, <strong>사용자 의도에 맞는 깊이</strong>를 선택해야 합니다. 이미 "에스프레소 추출"에 대한 깊은 글 5개가 있다면, 새 글은 "전 세계 커피 종류와 특징" 같은 넓은 주제로 작성하는 것이 좋습니다.</p>
+
+  <h3><span class="sn">9.7</span>토픽 클러스터링으로 경쟁력 강화</h3>
+
+  <p>토픽 클러스터링은 <strong>하나의 주요 주제(Pillar Topic) 주변에 관련된 소주제(Cluster Topic)들을 연결</strong>하는 기법입니다. 예를 들어 "한국 부동산 투자"라는 주요 주제 아래에 "전세 vs 월세 수익률 비교", "공실률을 줄이는 방법", "부동산 세금 절감", "신규 건설 아파트 vs 중고 아파트 선택" 등 10-20개의 소주제 글들을 연결합니다.</p>
+
+  <p>이렇게 하면 AI가 당신의 웹사이트를 <strong>"부동산 투자의 종합 정보원"</strong>으로 인식하게 되고, 관련된 모든 질문에서 당신의 콘텐츠가 우선적으로 인용됩니다.</p>
+
+  <div class="callout tip">
+    <div class="head">🏛️ Pillar + Cluster 구조 예시</div>
+    <strong>Pillar:</strong> "한국 부동산 투자"<br>
+    <strong>Cluster 10~20개:</strong><br>
+    • 전세 vs 월세 수익률 비교 · 공실률 줄이는 방법<br>
+    • 부동산 세금 절감 · 신규 vs 중고 아파트<br>
+    → AI가 <strong>"부동산 투자 종합 정보원"</strong>으로 인식
+  </div>
+</section>
+
+<!-- CH10 -->
+<section class="page wrap" id="ch10">
+  <h2 class="chapter"><span class="cnum">10</span>스키마 마크업 — AI의 언어</h2>
+  <div class="chapter-sub">HTML에 숨겨진 코드로 AI에게 정보를 정확히 전달하는 기술</div>
+
+  <h3><span class="sn">10.1</span>스키마 마크업이란?</h3>
+
+  <p>스키마 마크업(Schema Markup)은 <strong>HTML에 숨겨진 코드를 삽입하여 AI와 검색 엔진에게 당신의 정보가 무엇인지 정확히 알려주는 방식</strong>입니다. 인간의 눈에는 보이지 않지만, 컴퓨터는 이 코드를 읽고 "이것은 어떤 업체의 주소", "이것은 상품의 가격과 리뷰", "이것은 자주 묻는 질문"이라고 정확히 인식합니다.</p>
+
+  <p>한국의 작은 식당이 "된장찌개"라고 웹사이트에 적어놓아도 AI는 그것이 메뉴 이름인지, 광고인지, 단순 언급인지 불확실합니다. 하지만 스키마 마크업을 사용하면 <strong>"이것은 이 식당의 메뉴 항목이고, 가격은 OOO원"</strong>이라고 명확히 전달할 수 있습니다.</p>
+
+  <h3><span class="sn">10.2</span>스키마의 핵심 개념: 비유를 통한 이해</h3>
+
+  <p>스키마 마크업을 이해하는 가장 쉬운 방법은 <strong>"우편 주소"</strong>로 생각하는 것입니다. "서울시 강남구 테헤란로 123"이라고 적으면 사람이 읽을 수는 있지만, 우편 배달원은 정확한 위치를 모를 수 있습니다. 하지만 <strong>"시: 서울, 구: 강남, 도로명: 테헤란로, 번지: 123"</strong>으로 명확히 분류하면 누구나 정확한 위치를 찾을 수 있습니다.</p>
+
+  <p>스키마 마크업도 마찬가지입니다. "홍길동 미용실"이라는 텍스트보다 <strong>"이름: 홍길동, 사업종류: 미용실, 전화: 02-1234-5678, 주소: 서울 강남"</strong>으로 구조화하면 AI가 훨씬 정확히 이해합니다.</p>
+
+  <div class="ba-grid">
+    <div class="ba before">
+      <div class="label">일반 텍스트</div>
+      <p><strong>"서울시 강남구 테헤란로 123"</strong></p>
+      <p style="color:var(--mute);font-size:13px">사람은 읽지만 컴퓨터는 헷갈릴 수 있음</p>
+    </div>
+    <div class="ba after">
+      <div class="label">스키마 마크업</div>
+      <p><strong>시: 서울 / 구: 강남 / 도로명: 테헤란로 / 번지: 123</strong></p>
+      <p style="color:var(--mute);font-size:13px">어떤 컴퓨터도 정확히 이해</p>
+    </div>
+  </div>
+
+  <h3><span class="sn">10.3</span>LocalBusiness 스키마 마크업</h3>
+
+  <p><strong>LocalBusiness</strong>는 지역 기반 비즈니스(예: 카페, 미용실, 의원)가 가장 자주 사용하는 스키마입니다. 당신의 업체 이름, 주소, 전화번호, 영업시간, 가격, 리뷰까지 모두 구조화하여 제시합니다.</p>
+
+  <p>한국의 커피숍이 이 스키마를 제대로 적용하면, 구글 검색 결과에 <strong>"영업중" 상태, 별점, 예상 대기시간, 예약 버튼</strong>이 함께 표시됩니다. 이것이 바로 구글 AI가 당신의 비즈니스를 정확히 이해했다는 증거이며, 동시에 고객이 훨씬 쉽게 당신을 찾을 수 있다는 의미입니다.</p>
+
+  <div class="code-box">
+<span class="c">// 웹사이트 &lt;head&gt;에 삽입</span>
+&lt;script type=<span class="s">"application/ld+json"</span>&gt;
+{
+  <span class="k">"@context"</span>: <span class="s">"https://schema.org"</span>,
+  <span class="k">"@type"</span>: <span class="s">"CafeOrCoffeeShop"</span>,
+  <span class="k">"name"</span>: <span class="s">"봄날의 커피"</span>,
+  <span class="k">"image"</span>: <span class="s">"https://example.com/cafe.jpg"</span>,
+  <span class="k">"address"</span>: {
+    <span class="k">"@type"</span>: <span class="s">"PostalAddress"</span>,
+    <span class="k">"streetAddress"</span>: <span class="s">"테헤란로 123"</span>,
+    <span class="k">"addressLocality"</span>: <span class="s">"강남구"</span>,
+    <span class="k">"addressRegion"</span>: <span class="s">"서울"</span>,
+    <span class="k">"postalCode"</span>: <span class="s">"06142"</span>,
+    <span class="k">"addressCountry"</span>: <span class="s">"KR"</span>
+  },
+  <span class="k">"telephone"</span>: <span class="s">"+82-2-1234-5678"</span>,
+  <span class="k">"openingHours"</span>: <span class="s">"Mo-Fr 08:00-22:00, Sa-Su 09:00-23:00"</span>,
+  <span class="k">"priceRange"</span>: <span class="s">"₩₩"</span>,
+  <span class="k">"aggregateRating"</span>: {
+    <span class="k">"@type"</span>: <span class="s">"AggregateRating"</span>,
+    <span class="k">"ratingValue"</span>: <span class="n">4.7</span>,
+    <span class="k">"reviewCount"</span>: <span class="n">247</span>
+  }
+}
+&lt;/script&gt;
+  </div>
+
+  <h3><span class="sn">10.4</span>FAQ 스키마 마크업</h3>
+
+  <p>FAQ 스키마는 <strong>자주 묻는 질문들을 구조화</strong>하는 방식입니다. "시술 후 언제부터 세안할 수 있나?", "부작용은 없나?", "다음 방문 예약은 언제 가능한가?" 등의 질문과 답변을 AI가 쉽게 파악할 수 있게 합니다.</p>
+
+  <p>구글 생성형 AI 검색이 사용자의 질문에 답할 때, <strong>FAQ 스키마로 구조화된 답변을 직접 인용하는 경우가 많습니다</strong>. 특히 "자주 묻는 질문"이 10개 이상 있는 비즈니스(의료, 부동산, 교육 등)에서는 필수적입니다.</p>
+
+  <div class="code-box">
+{
+  <span class="k">"@context"</span>: <span class="s">"https://schema.org"</span>,
+  <span class="k">"@type"</span>: <span class="s">"FAQPage"</span>,
+  <span class="k">"mainEntity"</span>: [{
+    <span class="k">"@type"</span>: <span class="s">"Question"</span>,
+    <span class="k">"name"</span>: <span class="s">"시술 후 언제부터 세안할 수 있나요?"</span>,
+    <span class="k">"acceptedAnswer"</span>: {
+      <span class="k">"@type"</span>: <span class="s">"Answer"</span>,
+      <span class="k">"text"</span>: <span class="s">"시술 후 24시간은 물 접촉 피하고, 48시간 후부터 저자극 클렌저로 세안 가능합니다."</span>
+    }
+  }]
+}
+  </div>
+
+  <h3><span class="sn">10.5</span>Product 스키마 마크업</h3>
+
+  <p>Product 스키마는 <strong>전자상거래 사이트에 필수적</strong>입니다. 상품명, 가격, 재고 여부, 별점, 리뷰 개수, 상품 이미지 등을 구조화하면, AI가 당신의 상품을 다른 판매처의 상품과 비교하고 정확한 가격을 파악할 수 있습니다.</p>
+
+  <p>한국의 온라인 쇼핑몰이 "겨울 부츠"를 판매할 때 Product 스키마를 제대로 적용하면, 구글 쇼핑 검색 결과에 <strong>가격, 배송료, 리뷰 별점이 함께 표시</strong>되어 고객이 쉽게 비교할 수 있게 됩니다.</p>
+
+  <h3><span class="sn">10.6</span>비개발자를 위한 스키마 마크업 적용법</h3>
+
+  <p>스키마 마크업은 복잡한 코딩이 필요할 것 같지만, 현재는 많은 도구와 플러그인이 <strong>비개발자도 쉽게 적용</strong>할 수 있게 만들어놓았습니다.</p>
+
+  <p>워드프레스 사용자라면 <strong>"Yoast SEO" 또는 "Rank Math" 플러그인</strong>을 설치하고, 간단한 입력 양식에 정보를 넣으면 자동으로 스키마 코드가 생성됩니다. 웹사이트가 없다면 <strong>"구글 비즈니스 프로필"에 정보를 입력</strong>하면, 구글이 자동으로 스키마를 인식합니다. 소규모 비즈니스의 경우 "구글 비즈니스 스키마"만 제대로 해도 AI가 당신의 정보를 정확히 이해할 수 있습니다.</p>
+
+  <div class="grid grid-3">
+    <div class="card blue"><div class="ico" style="background:#4da3ff">🔧</div><div class="t">워드프레스</div><div class="d">Yoast SEO / Rank Math 플러그인 → 자동 생성</div></div>
+    <div class="card green"><div class="ico" style="background:#34d399">📍</div><div class="t">구글 비즈니스</div><div class="d">GMB 정보 입력만으로도 자동 스키마 인식</div></div>
+    <div class="card gold"><div class="ico" style="background:#ffa726">🧪</div><div class="t">검증 도구</div><div class="d">구글 "리치 결과 테스트"에 URL 입력</div></div>
+  </div>
+
+  <h3><span class="sn">10.7</span>스키마 마크업 검증하기</h3>
+
+  <p>스키마를 적용한 후에는 반드시 검증해야 합니다. 구글의 <strong>"리치 결과 테스트" 도구</strong>에 당신의 웹사이트 URL을 넣으면, 스키마가 제대로 인식되었는지 확인할 수 있습니다. 만약 에러가 나타나면, "필수 항목"이 누락되었다는 의미입니다.</p>
+
+  <p>예를 들어 LocalBusiness 스키마에서 "주소"가 없으면 AI가 당신의 비즈니스 위치를 파악할 수 없습니다. <strong>최소한 "이름", "주소", "전화번호", "영업시간"은 반드시 포함</strong>해야 합니다.</p>
+
+  <div class="callout warn">
+    <div class="head">⚠️ 스키마 최소 필수 항목</div>
+    LocalBusiness 스키마에서 <strong>이름·주소·전화번호·영업시간</strong>은 반드시 포함. 하나라도 빠지면 AI가 당신의 위치를 파악하지 못합니다.
+  </div>
+</section>
+
+<!-- CH11 -->
+<section class="page wrap" id="ch11">
+  <h2 class="chapter"><span class="cnum">11</span>브랜드 엔티티 구축하기</h2>
+  <div class="chapter-sub">구글 지식 그래프에 당신의 이름이 뜨는 그날까지</div>
+
+  <h3><span class="sn">11.1</span>브랜드 엔티티란?</h3>
+
+  <p>브랜드 엔티티는 구글의 지식 그래프에서 당신의 비즈니스, 상품, 또는 개인이 <strong>하나의 명확한 개체로 인식</strong>되는 상태입니다. 예를 들어 "김OO 한의사"라는 인물 엔티티가 강하면, <strong>그 사람이 쓴 모든 글, 나온 모든 뉴스 기사, 받은 모든 리뷰가 하나로 연결</strong>됩니다.</p>
+
+  <p>AI가 "강남 한의사"를 검색할 때 이 사람을 찾으면, 그의 경력, 환자 리뷰, 언론 출연 기록, 전문 분야까지 한눈에 보여줄 수 있습니다. 이것이 바로 강한 엔티티의 힘입니다. <strong>엔티티가 강할수록 모든 마케팅이 효율적이 됩니다.</strong></p>
+
+  <h3><span class="sn">11.2</span>엔티티를 정의하는 것의 중요성</h3>
+
+  <p>엔티티를 구축하려면 먼저 자신을 <strong>명확히 정의</strong>해야 합니다. "우리는 좋은 카페입니다"라는 정의는 너무 모호합니다.</p>
+
+  <p>대신 <strong>"서울 강남 테헤란로에 있는 스페셜티 커피 카페로, 중남미 직수입 원두를 사용하며, 바리스타 대회 입상자가 운영하고, 월 평균 650명의 단골을 보유한 프리미엄 카페"</strong>라는 식으로 구체적으로 정의해야 합니다.</p>
+
+  <p>이 정의가 모든 마케팅 채널에서 일관되게 전달되면, AI가 당신을 "프리미엄 스페셜티 커피"의 전문가로 인식하게 됩니다.</p>
+
+  <div class="ba-grid">
+    <div class="ba before">
+      <div class="label">모호한 정의</div>
+      <p>"우리는 좋은 카페입니다."</p>
+    </div>
+    <div class="ba after">
+      <div class="label">강한 엔티티 정의</div>
+      <p><strong>"서울 강남 테헤란로 스페셜티 커피 카페. 중남미 직수입 원두. 바리스타 대회 입상자 운영. 월 평균 650명 단골."</strong></p>
+    </div>
+  </div>
+
+  <h3><span class="sn">11.3</span>구글 비즈니스 프로필 최적화</h3>
+
+  <p>구글 비즈니스 프로필(Google Business Profile)은 <strong>로컬 엔티티 구축의 출발점</strong>입니다. 이곳에 입력한 모든 정보가 구글의 지식 그래프에 저장되고, 당신의 모든 콘텐츠, 리뷰, 언론 기사의 "신뢰성 점수"에 영향을 미칩니다.</p>
+
+  <p>상호명, 주소, 전화번호를 정확히 입력하는 것은 기본이고, <strong>"비즈니스 카테고리"를 가장 정확한 것으로 선택</strong>하고, "서비스 지역"을 명확히 하고, "영업시간"을 정확히 입력해야 합니다. 특히 <strong>"소개" 섹션에 당신의 비즈니스를 150자 이내로 명확히 정의</strong>하면, AI가 이를 엔티티 정의로 사용합니다.</p>
+
+  <h3><span class="sn">11.4</span>NAP 일관성의 중요성</h3>
+
+  <p>NAP는 <strong>Name(상호), Address(주소), Phone(전화)</strong>의 약자입니다. 구글이 당신의 엔티티를 인식할 때 가장 중요한 정보입니다.</p>
+
+  <p>문제는 한국의 많은 소규모 사업자들이 여러 플랫폼에서 정보를 일관되게 유지하지 않는다는 것입니다. 구글 비즈니스 프로필에는 "강남미용실", 네이버에는 "강남美용실", 인스타그램에는 "강남 미용실"이라고 다르게 입력하면, <strong>AI는 이것들이 같은 업체인지 다른 업체인지 혼동</strong>합니다.</p>
+
+  <p>NAP가 일관되지 않으면 엔티티가 분산되고, 결과적으로 <strong>리뷰, 평점, 신뢰도가 모두 낮아집니다</strong>.</p>
+
+  <div class="callout warn">
+    <div class="head">⚠️ 한국 자영업자의 흔한 실수</div>
+    구글: "<strong>강남미용실</strong>" / 네이버: "<strong>강남美용실</strong>" / 인스타: "<strong>강남 미용실</strong>"<br>
+    → AI는 <em>3개의 다른 업체</em>로 인식. 엔티티 분산 → 리뷰·평점·신뢰도 모두 하락.
+  </div>
+
+  <h3><span class="sn">11.5</span>지식 그래프에 표시되기</h3>
+
+  <p>지식 그래프는 <strong>구글 검색 결과 오른쪽에 나타나는 정보 카드</strong>입니다. 유명한 인물이나 브랜드를 검색하면 "설명", "이미지", "관련 항목"이 함께 표시되는데, 이것이 지식 그래프입니다.</p>
+
+  <p>한국의 작은 비즈니스도 일정 수준의 신뢰도를 갖추면 지식 그래프에 표시될 수 있습니다. 예를 들어 <strong>"홍길동 세무사" "홍길동 한의사"</strong> 같은 검색을 할 때, 충분히 구축된 엔티티라면 지식 그래프 카드가 나타날 수 있습니다. 이는 매우 높은 신뢰도와 권위를 나타냅니다.</p>
+
+  <div class="callout tip">
+    <div class="head">✨ 지식 그래프 진입 조건</div>
+    ① 위키피디아·위키데이터 언급 ② 공신력 있는 언론 기사 3건 이상<br>
+    ③ GMB 완벽 최적화 ④ NAP 일관성 + 일관된 엔티티 정의 다수 확산
+  </div>
+
+  <ul class="check">
+    <li>GMB 소개 150자 이내 엔티티 정의 고정</li>
+    <li>NAP 전 플랫폼 100% 통일</li>
+    <li>카테고리 가장 구체적으로 선택</li>
+    <li>같은 엔티티 정의를 블로그·SNS 바이오에 반복 노출</li>
+    <li>언론·블로거·유튜버 언급 연 3회 이상 목표</li>
+  </ul>
+</section>
+
+<!-- ============ BONUS ============ -->
+<section class="wrap">
+  <div class="part-intro" style="background:linear-gradient(135deg,rgba(255,203,92,.15),rgba(52,211,153,.15))">
+    <div class="part-num">BONUS</div>
+    <h2>저자가 보충한 실전 자료</h2>
+    <div class="desc">원저서에서 다루지 않은 실행 가이드·체크리스트·자가 진단표</div>
+  </div>
+</section>
+
+<!-- BONUS A -->
+<section class="page wrap" id="bonusA">
+  <h2 class="chapter"><span class="cnum">A</span>30일 GEO/AEO 실행 로드맵</h2>
+  <div class="chapter-sub">지금 이 순간부터 30일, 하루 30분으로 완성하는 AI 검색 최적화</div>
+
+  <h4>1주차 — 🏗️ 기반 다지기 (진단 &amp; NAP 통일)</h4>
+  <div class="roadmap">
+    <div class="rm-item"><div class="day"><span class="big">D1</span>DAY</div><div class="task"><h4>현재 상태 진단</h4><p>ChatGPT에 "[내 상호] 어떤 곳인지 알려줘" 질문 → 답변 스크린샷 보관</p></div></div>
+    <div class="rm-item"><div class="day"><span class="big">D2</span>DAY</div><div class="task"><h4>NAP 전수 조사</h4><p>모든 온라인 노출처(GMB·네이버·카카오·인스타·블로그) 상호/주소/전화 정리 엑셀</p></div></div>
+    <div class="rm-item"><div class="day"><span class="big">D3</span>DAY</div><div class="task"><h4>NAP 표준 확정</h4><p>공식 표기 1개 확정. 띄어쓰기·한자·영문까지 완전 통일</p></div></div>
+    <div class="rm-item"><div class="day"><span class="big">D4-7</span>DAY</div><div class="task"><h4>전 플랫폼 수정</h4><p>GMB·네이버플레이스·카카오맵·인스타 프로필 전부 표준형으로 업데이트</p></div></div>
+  </div>
+
+  <h4>2주차 — 📸 정보 강화 (사진·메뉴·설명)</h4>
+  <div class="roadmap">
+    <div class="rm-item"><div class="day"><span class="big">D8-10</span>DAY</div><div class="task"><h4>사진 15장 촬영</h4><p>외관·내부·대표 메뉴 5종·직원 작업 장면·고객 즐기는 모습 — 자연광 촬영</p></div></div>
+    <div class="rm-item"><div class="day"><span class="big">D11-12</span>DAY</div><div class="task"><h4>메뉴/서비스 상세 작성</h4><p>재료·가격·소요시간·추천 대상을 구체적으로. 전문 디테일 포함</p></div></div>
+    <div class="rm-item"><div class="day"><span class="big">D13-14</span>DAY</div><div class="task"><h4>GMB 소개 150자 완성</h4><p>위치 + 전문분야 + 차별점 + 인증/경력 축약</p></div></div>
+  </div>
+
+  <h4>3주차 — ✍️ 콘텐츠 제작 (FAQ·블로그)</h4>
+  <div class="roadmap">
+    <div class="rm-item"><div class="day"><span class="big">D15-17</span>DAY</div><div class="task"><h4>FAQ 20개 작성</h4><p>고객이 실제 묻는 질문 + 답변. 질문형 소제목 + 리스트 형식</p></div></div>
+    <div class="rm-item"><div class="day"><span class="big">D18-21</span>DAY</div><div class="task"><h4>대표 블로그 글 3편</h4><p>CITE 프레임워크 적용: 포괄성·자체 데이터·저자 신뢰·엔티티 연결</p></div></div>
+  </div>
+
+  <h4>4주차 — 🚀 확산 &amp; 검증</h4>
+  <div class="roadmap">
+    <div class="rm-item"><div class="day"><span class="big">D22-24</span>DAY</div><div class="task"><h4>리뷰 캠페인</h4><p>방문 고객에게 리뷰 요청 프로세스 구축. QR 명함·테이블 스티커</p></div></div>
+    <div class="rm-item"><div class="day"><span class="big">D25-27</span>DAY</div><div class="task"><h4>지역 미디어 콘택트</h4><p>지역 블로거·유튜버 2~3명 접촉. 체험 제공 + 언급 유도</p></div></div>
+    <div class="rm-item"><div class="day"><span class="big">D28-30</span>DAY</div><div class="task"><h4>재진단 &amp; 개선</h4><p>ChatGPT 재질문 → D1 답변과 비교. 변화 분석 → 다음 달 계획</p></div></div>
+  </div>
+</section>
+
+<!-- BONUS B -->
+<section class="page wrap" id="bonusB">
+  <h2 class="chapter"><span class="cnum">B</span>업종별 실전 체크리스트</h2>
+  <div class="chapter-sub">카페 · 음식점 · 미용실 — 지금 바로 체크</div>
+
+  <h3><span class="sn">☕</span>카페 GEO 체크리스트</h3>
+  <ul class="check">
+    <li>원두 원산지·블렌드 비율·로스팅 일자 공개</li>
+    <li>대표 메뉴 3종 추출 레시피(수온·시간·분쇄도) 블로그 포스팅</li>
+    <li>계절 메뉴 월 1회 업데이트 (AI 최신성 신호)</li>
+    <li>"강남 디저트 카페" "조용한 작업 카페" 같은 <strong>문맥 키워드</strong>를 소개·리뷰 응답에 자연스럽게</li>
+    <li>콘센트 좌석 수 · WiFi 속도 · 화장실 유무 명시</li>
+    <li>인스타 릴스 주 2회 (음료 제조 과정·원두 스토리)</li>
+  </ul>
+
+  <h3><span class="sn">🍽️</span>음식점 GEO 체크리스트</h3>
+  <ul class="check">
+    <li>메뉴별 대표 재료 원산지 공개 (남대문시장 직구매 등)</li>
+    <li>알레르기 정보·비건 옵션·매운 정도 명시</li>
+    <li>예약 가능 여부 + 대기 시간 실시간 업데이트</li>
+    <li>주차 정보·대중교통 접근성·유아동반 가능 여부</li>
+    <li>단체석·룸·야외석 유무와 인원 수</li>
+    <li>셰프/사장 스토리 블로그 1편 (경력·철학·전문성)</li>
+  </ul>
+
+  <h3><span class="sn">💇</span>미용실 GEO 체크리스트</h3>
+  <ul class="check">
+    <li>디자이너별 프로필 (경력·대회·전문 시술)</li>
+    <li>시술별 소요 시간·가격 범위 구체 공개</li>
+    <li>시술 전·후 사진 갤러리 30장 이상</li>
+    <li>"매직 펌 전문" "남성 커트 전문" 같은 <strong>엣지 포지셔닝</strong> 1줄</li>
+    <li>예약 방법 3가지 이상 안내 (전화·네이버·카카오톡)</li>
+    <li>사후 관리법 FAQ 10개 이상</li>
+  </ul>
+</section>
+
+<!-- BONUS C -->
+<section class="page wrap" id="bonusC">
+  <h2 class="chapter"><span class="cnum">C</span>네이버·카카오 로컬 최적화 심화</h2>
+  <div class="chapter-sub">구글만 중시하다간 한국 자영업은 망한다. 한국형 실전</div>
+
+  <h3><span class="sn">C.1</span>네이버 스마트플레이스 7대 최적화</h3>
+  <ol>
+    <li><strong>업체명은 공식 상호 그대로.</strong> 지역명·키워드 끼워넣기 금지 (패널티)</li>
+    <li><strong>업종 카테고리는 가장 구체적으로.</strong> "카페" ❌ → "스페셜티 카페" ✅</li>
+    <li><strong>대표 사진 10장 필수</strong>, 총 30장 이상 권장. 가로형 3:2 비율</li>
+    <li><strong>메뉴/상품 사진마다 설명</strong>(가격·재료) 첨부</li>
+    <li><strong>영업시간·휴무일 실시간 업데이트</strong>. 공휴일 별도 설정</li>
+    <li><strong>톡톡/예약 기능 활성화</strong> → 검색 노출 가산점</li>
+    <li><strong>스마트 콜</strong>로 전화 데이터 수집 → 네이버 내부 신뢰도 상승</li>
+  </ol>
+
+  <h3><span class="sn">C.2</span>카카오맵 + 카카오채널 연계</h3>
+  <div class="callout tip">
+    <div class="head">🔗 연계의 힘</div>
+    카카오맵 정보만 있으면 1차원. <strong>카카오채널 연동</strong> → 예약·문의·이벤트가 한 번에. 카카오 내부 알고리즘이 "활성 업체"로 가중치 부여.
+  </div>
+
+  <h3><span class="sn">C.3</span>네이버 블로그 SEO + GEO 이중 활용</h3>
+  <ul class="check">
+    <li>블로그 글 첫 문단에 <strong>지역명 + 업종 + 핵심 가치</strong> 포함 (예: "강남 테헤란로 스페셜티 카페 봄날의 커피")</li>
+    <li>소제목은 질문형(H2 태그) — AI가 인용하기 좋은 구조</li>
+    <li>글 하단에 <strong>지도 임베드 + 영업정보 표</strong> 필수</li>
+    <li>주 2회 이상 발행 → 네이버 인덱싱 + AI 최신성 동시 확보</li>
+    <li>이웃 맞추기 50명 이상 → 블로그 지수 D3 이상 진입 목표</li>
+  </ul>
+
+  <h3><span class="sn">C.4</span>네이버 영수증 리뷰의 치명적 중요성</h3>
+  <blockquote>
+    네이버 영수증 리뷰 1개 = 블로그 리뷰 10개의 가치.<br>
+    실제 방문 증빙이 있어 <strong>AI가 가장 신뢰하는 리뷰 유형</strong>.
+  </blockquote>
+</section>
+
+<!-- BONUS D -->
+<section class="page wrap" id="bonusD">
+  <h2 class="chapter"><span class="cnum">D</span>AI 시대 리뷰 관리 완벽 대응</h2>
+  <div class="chapter-sub">리뷰는 AI의 눈이다. 이것 하나로 AI 추천이 갈린다</div>
+
+  <h3><span class="sn">D.1</span>리뷰 수집 파이프라인 설계</h3>
+  <div class="grid grid-3">
+    <div class="card blue"><div class="ico" style="background:var(--blue)">1</div><div class="t">타이밍</div><div class="d">서비스 종료 직후 30분 이내 (감동이 살아있을 때)</div></div>
+    <div class="card green"><div class="ico" style="background:var(--green)">2</div><div class="t">채널</div><div class="d">QR 명함 → 네이버/카카오 리뷰로 원클릭</div></div>
+    <div class="card gold"><div class="ico" style="background:var(--gold2)">3</div><div class="t">유인</div><div class="d">다음 방문 5% 할인 쿠폰 (단, "좋은 리뷰 조건" 금지)</div></div>
+  </div>
+
+  <h3><span class="sn">D.2</span>부정 리뷰 대응의 3원칙</h3>
+  <div class="grid grid-2">
+    <div class="card red">
+      <div class="t">❌ 하지 말아야 할 것</div>
+      <div class="d">• 감정적 반박<br>• 삭제 요청 반복<br>• 고객 신상 언급<br>• "거짓말이다" 주장</div>
+    </div>
+    <div class="card green">
+      <div class="t">✅ 해야 할 것</div>
+      <div class="d">• <strong>24시간 내 답변</strong> (AI가 응답 속도도 본다)<br>• 사실 인정 + 개선 약속 + 재방문 초대<br>• 구체적 개선 내역 명시<br>• 차분한 전문가 톤</div>
+    </div>
+  </div>
+
+  <h3><span class="sn">D.3</span>긍정 리뷰도 반드시 답글</h3>
+  <div class="callout info">
+    <div class="head">🎯 긍정 리뷰 답글 템플릿</div>
+    "① 방문 감사 인사 → ② 고객이 언급한 구체 포인트 리플렉션 → ③ 매장의 디테일 추가 언급(GEO 키워드 자연 삽입) → ④ 다음 방문 초대"
+  </div>
+
+  <h3><span class="sn">D.4</span>리뷰 분포 자연스럽게 유지하는 법</h3>
+  <p>모두 5점짜리 리뷰만 있으면 오히려 AI가 <strong>조작 의심</strong>. 자연스러운 분포(4.2~4.7)가 더 신뢰받습니다.</p>
+  <ul class="check">
+    <li>3~4점 리뷰에도 성실히 답글 → AI가 "투명한 비즈니스"로 인식</li>
+    <li>부정 리뷰 5% 미만 유지 목표</li>
+    <li>리뷰 수 월 10개 이상 지속 증가 → 최신성 신호</li>
+  </ul>
+</section>
+
+<!-- BONUS E -->
+<section class="page wrap" id="bonusE">
+  <h2 class="chapter"><span class="cnum">E</span>나만의 GEO 점수 자가 진단표</h2>
+  <div class="chapter-sub">지금 내 매장의 AI 검색 준비도를 숫자로 확인하라</div>
+
+  <p>각 항목을 0~5점으로 체크해보세요. 합계 60점 이상이면 상위 10% 수준.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th width="10%">범주</th><th width="65%">평가 항목</th><th width="25%">점수</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="3"><strong>🏷️<br>NAP</strong></td><td>모든 플랫폼에서 상호 정확히 일치</td><td><div class="score-bar"><div class="fill" style="width:80%"></div></div>0~5점</td></tr>
+        <tr><td>주소·전화번호 표기 100% 동일</td><td><div class="score-bar"><div class="fill" style="width:60%"></div></div>0~5점</td></tr>
+        <tr><td>영업시간 실시간 정확 (공휴일 포함)</td><td><div class="score-bar"><div class="fill" style="width:70%"></div></div>0~5점</td></tr>
+
+        <tr><td rowspan="3"><strong>📸<br>정보</strong></td><td>사진 30장 이상 + 주기적 교체</td><td><div class="score-bar"><div class="fill" style="width:40%"></div></div>0~5점</td></tr>
+        <tr><td>메뉴·서비스별 상세 설명</td><td><div class="score-bar"><div class="fill" style="width:50%"></div></div>0~5점</td></tr>
+        <tr><td>매장 소개 150자 이내 엔티티 정의</td><td><div class="score-bar"><div class="fill" style="width:30%"></div></div>0~5점</td></tr>
+
+        <tr><td rowspan="3"><strong>⭐<br>리뷰</strong></td><td>네이버·카카오 리뷰 50개 이상</td><td><div class="score-bar"><div class="fill" style="width:65%"></div></div>0~5점</td></tr>
+        <tr><td>평점 4.3 이상 + 자연스러운 분포</td><td><div class="score-bar"><div class="fill" style="width:75%"></div></div>0~5점</td></tr>
+        <tr><td>모든 리뷰에 24시간 내 답글</td><td><div class="score-bar"><div class="fill" style="width:20%"></div></div>0~5점</td></tr>
+
+        <tr><td rowspan="3"><strong>✍️<br>콘텐츠</strong></td><td>블로그/SNS 주 2회 이상 발행</td><td><div class="score-bar"><div class="fill" style="width:45%"></div></div>0~5점</td></tr>
+        <tr><td>FAQ 10개 이상 구조화된 형식</td><td><div class="score-bar"><div class="fill" style="width:25%"></div></div>0~5점</td></tr>
+        <tr><td>업종 전문 콘텐츠(레시피·노하우)</td><td><div class="score-bar"><div class="fill" style="width:55%"></div></div>0~5점</td></tr>
+
+        <tr><td rowspan="3"><strong>🏛️<br>엔티티</strong></td><td>운영자/대표 프로필 명확 (경력·자격)</td><td><div class="score-bar"><div class="fill" style="width:35%"></div></div>0~5점</td></tr>
+        <tr><td>언론·블로거·유튜버 노출 연 3회 이상</td><td><div class="score-bar"><div class="fill" style="width:15%"></div></div>0~5점</td></tr>
+        <tr><td>스키마 마크업 또는 GMB 고급 설정 완료</td><td><div class="score-bar"><div class="fill" style="width:20%"></div></div>0~5점</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid grid-3" style="margin-top:30px">
+    <div class="card red"><div class="t" style="color:var(--red)">0~30점</div><div class="d"><strong>위험 구간</strong><br>AI 추천 불가. 30일 로드맵 즉시 실행</div></div>
+    <div class="card gold"><div class="t" style="color:var(--gold)">31~60점</div><div class="d"><strong>성장 구간</strong><br>기반은 있음. 콘텐츠·리뷰 집중 강화</div></div>
+    <div class="card green"><div class="t" style="color:var(--green)">61~75점</div><div class="d"><strong>상위 구간</strong><br>업계 선도. 엔티티 강화로 완성</div></div>
+  </div>
+
+  <div class="hero-q" style="margin-top:50px">
+    <div class="q">
+      오늘 점수가 낮아도 괜찮다.<br>
+      <span class="hl">한 달 뒤 5점 오르면, AI가 당신을 발견한다.</span>
+    </div>
+  </div>
+</section>
+
+<!-- BONUS F · Glossary -->
+<section class="page wrap" id="bonusF">
+  <h2 class="chapter"><span class="cnum">F</span>용어 색인 (Glossary)</h2>
+  <div class="chapter-sub">이 책에 등장한 모든 전문 용어를 한눈에. 모르는 단어가 나올 때마다 여기로 돌아오세요.</div>
+
+  <!-- AI/검색 용어 -->
+  <div class="glo-cat"><h4>🤖 AI · 검색 기본 용어</h4></div>
+  <div class="glo-list">
+    <div class="glo-item"><div class="glo-term">GEO<span class="en">Generative Engine Optimization</span></div><div class="glo-def"><strong>생성형 엔진 최적화.</strong> ChatGPT·Gemini·Claude 같은 생성형 AI가 당신의 매장을 "추천하도록" 만드는 전략. SEO와 달리 AI의 <em>학습 데이터·신뢰도·평판</em>을 타깃으로 함.</div></div>
+    <div class="glo-item"><div class="glo-term">AEO<span class="en">Answer Engine Optimization</span></div><div class="glo-def"><strong>답변 엔진 최적화.</strong> 검색 결과 페이지 자체에서 당신의 콘텐츠가 <em>"답변"</em>으로 선택되도록 최적화. 피처드 스니펫·AI Overview·FAQ 박스 진입이 목표.</div></div>
+    <div class="glo-item"><div class="glo-term">SEO<span class="en">Search Engine Optimization</span></div><div class="glo-def"><strong>검색 엔진 최적화.</strong> 구글·네이버 같은 전통 검색 엔진의 <em>순위 상위권</em>에 웹페이지를 올리는 기법. 키워드·백링크·도메인 권위가 핵심.</div></div>
+    <div class="glo-item"><div class="glo-term">LLM<span class="en">Large Language Model</span></div><div class="glo-def"><strong>대규모 언어 모델.</strong> ChatGPT·Claude·Gemini의 기반 기술. 수십억 개 문서를 학습해 단어·문맥 사이의 <em>패턴</em>을 인식하고 다음 단어를 예측하는 AI 엔진.</div></div>
+    <div class="glo-item"><div class="glo-term">AI Overview<span class="en">구 SGE, Search Generative Experience</span></div><div class="glo-def">구글이 2024년 5월 대대적으로 출시한 기능. 사용자의 질문에 대해 <strong>AI가 종합 작성한 답변을 검색 결과 최상단에 표시</strong>. 이 박스 안에 포함되지 않으면 노출 기회가 급감.</div></div>
+    <div class="glo-item"><div class="glo-term">Featured Snippet<span class="en">피처드 스니펫</span></div><div class="glo-def">구글 검색 결과 최상단에 나타나는 <strong>박스형 발췌 답변</strong>. 일반 검색 결과의 <em>3~4배 높은 클릭률</em>을 기록. 리스트·표·단계별 설명 형식이 선정 확률 높음.</div></div>
+    <div class="glo-item"><div class="glo-term">Zero-Click Search<span class="en">제로 클릭 검색</span></div><div class="glo-def">사용자가 검색 결과 페이지에서 <strong>어떤 링크도 클릭하지 않고 답을 얻는 현상</strong>. 2024년 구글 검색의 63%, 로컬 검색은 75~80%. 자영업자에겐 치명적 위협이자 기회.</div></div>
+  </div>
+
+  <!-- 프레임워크 -->
+  <div class="glo-cat"><h4>🏛️ 신뢰·평가 프레임워크</h4></div>
+  <div class="glo-list">
+    <div class="glo-item"><div class="glo-term">CITE 프레임워크<span class="en">Comprehensive · Independent · Trustworthy · Entity-Centric</span></div><div class="glo-def">구글 AI가 콘텐츠를 인용할지 결정하는 4대 기준. <strong>C</strong>=포괄성 · <strong>I</strong>=독자적 데이터 · <strong>T</strong>=신뢰성 · <strong>E</strong>=엔티티 중심. 네 요소 모두 갖춘 글이 AI 인용 1순위.</div></div>
+    <div class="glo-item"><div class="glo-term">E-E-A-T<span class="en">Experience · Expertise · Authoritativeness · Trustworthiness</span></div><div class="glo-def">Google이 2023년 검색 품질 가이드라인에서 강조한 4대 요소. <strong>경험 · 전문성 · 권위 · 신뢰도</strong>. AI 시대엔 키워드 최적화보다 이 네 가지가 더 중요.</div></div>
+    <div class="glo-item"><div class="glo-term">NAP 일관성<span class="en">Name · Address · Phone Consistency</span></div><div class="glo-def">상호·주소·전화번호가 모든 플랫폼(GMB·네이버·카카오·인스타)에서 <strong>100% 동일</strong>해야 한다는 원칙. 불일치 시 AI가 "여러 업체로 혼동"하여 엔티티가 분산됨.</div></div>
+  </div>
+
+  <!-- 구조/데이터 -->
+  <div class="glo-cat"><h4>📋 구조·데이터 용어</h4></div>
+  <div class="glo-list">
+    <div class="glo-item"><div class="glo-term">Schema Markup<span class="en">스키마 마크업</span></div><div class="glo-def">HTML에 숨겨진 코드를 삽입해 AI·검색엔진에게 <strong>"이 정보가 무엇인지"</strong>를 명확히 알려주는 방식. 우편 주소를 "시/구/도로명/번지"로 쪼개는 것과 같은 원리.</div></div>
+    <div class="glo-item"><div class="glo-term">JSON-LD<span class="en">JavaScript Object Notation for Linked Data</span></div><div class="glo-def">구글이 권장하는 <strong>스키마 마크업 작성 형식</strong>. &lt;script type="application/ld+json"&gt; 안에 구조화된 데이터를 JSON 형태로 기입.</div></div>
+    <div class="glo-item"><div class="glo-term">LocalBusiness Schema</div><div class="glo-def">지역 기반 업체(카페·미용실·의원)를 위한 <strong>대표 스키마 타입</strong>. 이름·주소·전화·영업시간·평점 등을 구조화. 최소 필수 항목은 <em>이름·주소·전화·영업시간</em>.</div></div>
+    <div class="glo-item"><div class="glo-term">FAQ Schema</div><div class="glo-def">자주 묻는 질문(Q&amp;A)을 구조화하는 스키마. <strong>AI Overview가 가장 많이 직접 인용</strong>하는 형식. 의료·부동산·교육 업종은 필수.</div></div>
+    <div class="glo-item"><div class="glo-term">Knowledge Graph<span class="en">지식 그래프</span></div><div class="glo-def">구글 검색 결과 우측에 나타나는 <strong>정보 카드</strong>. "인물·장소·브랜드"의 공식 프로필 역할. 작은 비즈니스도 엔티티가 강해지면 여기에 표시될 수 있음.</div></div>
+    <div class="glo-item"><div class="glo-term">Brand Entity<span class="en">브랜드 엔티티</span></div><div class="glo-def">구글 지식 그래프에서 하나의 <strong>명확한 개체</strong>로 인식되는 상태. "김OO 세무사" 엔티티가 강하면 그의 모든 글·뉴스·리뷰가 자동 연결됨.</div></div>
+    <div class="glo-item"><div class="glo-term">Topic Clustering<span class="en">토픽 클러스터링</span></div><div class="glo-def">하나의 <strong>주요 주제(Pillar)</strong> 주변에 관련 <strong>소주제(Cluster) 10~20개</strong>를 연결하는 콘텐츠 설계 기법. AI가 당신을 "종합 정보원"으로 인식하게 만듦.</div></div>
+  </div>
+
+  <!-- 기술 -->
+  <div class="glo-cat"><h4>⚙️ AI 작동 원리 용어</h4></div>
+  <div class="glo-list">
+    <div class="glo-item"><div class="glo-term">NER<span class="en">Named Entity Recognition · 고유명사 인식</span></div><div class="glo-def">LLM이 텍스트에서 <strong>"조직·위치·상품·카테고리"</strong> 같은 고유한 개체를 자동 인식하는 기술. 일관된 NER 인식이 엔티티 신뢰도의 출발점.</div></div>
+    <div class="glo-item"><div class="glo-term">Semantic Analysis<span class="en">의미 분석</span></div><div class="glo-def">LLM이 <strong>단순 키워드가 아닌 "의미"를 이해</strong>하는 능력. "따뜻한 커피 = 핫 커피"처럼 다른 단어도 같은 뜻임을 파악. 콘텐츠 키워드 스터핑이 무의미해진 이유.</div></div>
+    <div class="glo-item"><div class="glo-term">AI 답변 3단계<span class="en">Retrieval · Evaluation · Generation</span></div><div class="glo-def">생성형 AI가 답변하는 과정. ① <strong>Retrieval</strong>(정보 검색) ② <strong>Evaluation</strong>(출처·일관성 평가) ③ <strong>Generation</strong>(자연어 답변 생성). 각 단계마다 다른 최적화 전략 필요.</div></div>
+    <div class="glo-item"><div class="glo-term">PageRank<span class="en">페이지랭크</span></div><div class="glo-def">구글 창업 초기의 핵심 알고리즘. <strong>백링크의 양과 질</strong>로 페이지의 중요도를 계산. SEO의 근간이었으나 GEO 시대엔 비중 축소.</div></div>
+    <div class="glo-item"><div class="glo-term">Indexing<span class="en">인덱싱</span></div><div class="glo-def">검색 엔진 크롤러가 웹페이지를 <strong>읽고 데이터베이스에 저장</strong>하는 과정. 인덱싱되지 않으면 검색 결과에 절대 나타나지 않음.</div></div>
+    <div class="glo-item"><div class="glo-term">Crawler<span class="en">크롤러 · Spider · Bot</span></div><div class="glo-def">검색 엔진이 웹을 자동으로 순회하며 <strong>페이지를 수집하는 프로그램</strong>. 구글봇, 네이버봇 등. 크롤링 가능한 구조여야 인덱싱됨.</div></div>
+    <div class="glo-item"><div class="glo-term">Domain Authority<span class="en">도메인 권위</span></div><div class="glo-def">웹사이트가 얼마나 <strong>"신뢰할 만한 도메인"</strong>인지 나타내는 점수. 도메인 나이·백링크 양·트래픽이 요소. 전통 SEO에선 핵심, GEO에선 비중 낮음.</div></div>
+    <div class="glo-item"><div class="glo-term">Backlink<span class="en">백링크</span></div><div class="glo-def">다른 웹사이트가 <strong>내 사이트로 연결하는 링크</strong>. SEO 시대 최고 신호였으나 GEO 시대엔 "정보 일관성"이 그 자리를 대체.</div></div>
+  </div>
+
+  <!-- 플랫폼 -->
+  <div class="glo-cat"><h4>📍 플랫폼 · 도구 용어</h4></div>
+  <div class="glo-list">
+    <div class="glo-item"><div class="glo-term">GMB / GBP<span class="en">Google My Business / Google Business Profile</span></div><div class="glo-def">구글의 <strong>로컬 비즈니스 등록 서비스</strong>. 상호·주소·전화·영업시간·사진·리뷰 관리. GEO의 출발점이자 가장 신뢰도 높은 정보 출처.</div></div>
+    <div class="glo-item"><div class="glo-term">네이버 스마트플레이스</div><div class="glo-def">네이버의 <strong>한국판 GMB</strong>. 네이버 지도·검색 노출에 직접 영향. 업체명에 키워드 끼워넣기는 <em>패널티 대상</em>.</div></div>
+    <div class="glo-item"><div class="glo-term">영수증 리뷰<span class="en">네이버 영수증 리뷰</span></div><div class="glo-def">실제 결제 영수증 기반으로 작성되는 리뷰. <strong>블로그 리뷰 10개보다 가치 있는 "진짜 방문" 증빙</strong>. AI가 가장 신뢰하는 리뷰 유형.</div></div>
+    <div class="glo-item"><div class="glo-term">Rich Results Test<span class="en">리치 결과 테스트</span></div><div class="glo-def">구글이 제공하는 <strong>스키마 마크업 검증 도구</strong>. URL 입력만으로 오류·누락 확인. 스키마 적용 후 반드시 검증 필수.</div></div>
+    <div class="glo-item"><div class="glo-term">Yoast SEO / Rank Math</div><div class="glo-def">워드프레스용 <strong>SEO·스키마 플러그인</strong>. 코딩 없이 입력 양식에만 정보를 넣으면 스키마 코드 자동 생성.</div></div>
+  </div>
+
+  <!-- 마케팅 -->
+  <div class="glo-cat"><h4>🎯 마케팅 · 전략 용어</h4></div>
+  <div class="glo-list">
+    <div class="glo-item"><div class="glo-term">Customer Journey<span class="en">고객 여정</span></div><div class="glo-def">고객이 브랜드를 처음 인지해 구매까지 이르는 전 과정. <strong>AI 시대엔 "검색 → 클릭"이 "AI 질문 → 답변 확인"으로 변화.</strong></div></div>
+    <div class="glo-item"><div class="glo-term">Pillar Topic / Cluster Topic</div><div class="glo-def"><strong>Pillar</strong>=주요 주제(예: "부동산 투자") / <strong>Cluster</strong>=하위 관련 글(예: "전세 vs 월세"). 토픽 클러스터링의 구성 요소.</div></div>
+    <div class="glo-item"><div class="glo-term">Trust Signal<span class="en">신뢰 신호</span></div><div class="glo-def">외부에서 확인 가능한 <strong>신뢰의 증거</strong>. 평점·리뷰·수상·언론 보도·인증·라이센스 등. 많을수록 AI가 당신을 신뢰.</div></div>
+    <div class="glo-item"><div class="glo-term">Independent Data<span class="en">독자적 데이터</span></div><div class="glo-def">다른 곳에서 복붙하지 않은 <strong>나만의 통계·실험·관찰 결과</strong>. "고객 100명 추적 결과 52% 회복 속도 향상" 같은 자체 데이터가 CITE의 I.</div></div>
+  </div>
+
+  <div class="callout gold" style="margin-top:40px">
+    <div class="head">💡 사용 팁</div>
+    본문을 읽다가 모르는 용어가 나오면 브라우저의 <strong>Ctrl+F</strong>로 이 색인 페이지에서 검색하세요. 대부분의 용어가 <em>영문 풀네임 + 한국어 설명 + 실전 의미</em>로 정리되어 있습니다.
+  </div>
+</section>
+
+<!-- Epilogue -->
+<section class="page wrap">
+  <h2 class="chapter"><span class="cnum">🎯</span>에필로그 — 진정성의 시대</h2>
+  <div class="chapter-sub">AI 시대에 작은 매장이 이기는 단 하나의 이유</div>
+
+  <blockquote>
+    <strong>SEO의 시대는 저물고 있다.</strong> 클릭 기반 트래픽은 계속 감소한다.<br>
+    <strong>GEO/AEO의 시대가 왔다.</strong> AI 추천은 정말 좋은 비즈니스를 선호한다.<br>
+    <strong>자영업자에게는 기회다.</strong> 진정성 + 평판 = 경쟁력.
+  </blockquote>
+
+  <p>AI 시대의 역설은, 기술이 고도화될수록 <strong>사람의 진심이 더 중요해진다</strong>는 점입니다. AI는 훌륭한 필터링 기계입니다. 진정하지 않은 것, 과장된 것, 일관되지 않은 것을 귀신같이 걸러냅니다.</p>
+
+  <p>이 책을 끝까지 읽으신 여러분은 이제 아실 겁니다. GEO/AEO의 핵심은 <em>기술</em>이 아니라 <em>태도</em>라는 것을. 꾸준히 쌓고, 정직하게 운영하고, 고객과 진심으로 관계 맺는 그 당연한 것들이 — AI 시대엔 가장 강력한 무기가 됩니다.</p>
+
+  <div class="hero-q">
+    <div class="q">
+      ChatGPT가 당신의 매장을 추천하는 그날,<br>
+      그것은 <span class="hl">기술의 승리가 아니라 진정성의 승리</span>일 것입니다.
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div>자영업자를 위한 GEO &amp; AEO 완벽 가이드 · 완전판</div>
+  <div>원작 · 전승기 | 더장사머니아카데미 이사 | 초판 2026년 3월</div>
+  <div class="contact">
+    <div><strong>📧</strong> eoehdlftla77@gmail.com</div>
+    <div><strong>📚</strong> AI 전자책 시리즈 · 05_AI활용_콘텐츠</div>
+    <div style="margin-top:10px;color:var(--gold)"><strong>※ 본 전자책은 교육 목적으로 제작되었으며, 무단 복제 및 배포를 금합니다.</strong></div>
+  </div>
+  <div style="margin-top:20px;opacity:.5;font-size:12px">HTML 완전판 재구성: 2026-04-15 · 원본 본문 100% 복원 + 시각화 + 보충 자료 5부록</div>
+</footer>
+
+</body>
+</html>

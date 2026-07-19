@@ -8,11 +8,20 @@ import { SignatureMenuSection } from "@/components/home/signature-menu-section";
 import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
 import { StorySection } from "@/components/home/story-section";
+import { buildSiteRestaurantStructuredData } from "@/lib/site-structured-data";
 
 export default function Home() {
+  const structuredData = buildSiteRestaurantStructuredData();
+
   return (
     <>
-      <SiteHeader />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+        }}
+      />
+      <SiteHeader home />
       <main>
         <HeroSection />
         <SignatureMenuSection />

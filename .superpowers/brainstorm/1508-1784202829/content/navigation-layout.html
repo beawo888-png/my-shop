@@ -1,0 +1,62 @@
+<h2>메뉴 카테고리를 누른 뒤 보이는 방식</h2>
+<p class="subtitle">두 방식 모두 긴 세로 스크롤 대신 선택한 카테고리만 바로 보여줍니다.</p>
+
+<div class="cards">
+  <div class="card" data-choice="instant-tabs" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-header">A · 한 화면에서 즉시 전환</div>
+        <div class="mockup-body">
+          <div class="mock-nav">시그니처　양꼬치　중국요리　식사　<strong>주류·하이볼</strong></div>
+          <div style="padding:18px 10px 8px">
+            <div class="label">선택된 메뉴</div>
+            <h3>주류·하이볼</h3>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+              <div class="placeholder">고량주</div>
+              <div class="placeholder">고량주</div>
+              <div class="placeholder">맥주</div>
+            </div>
+            <div style="margin-top:18px" class="label">하이볼 · 맨 아래 3 × 2</div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px">
+              <div class="placeholder">산토리</div><div class="placeholder">제임슨</div><div class="placeholder">짐빔</div>
+              <div class="placeholder">커티삭</div><div class="placeholder">봄베이</div><div class="placeholder">연태</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. 즉시 전환 탭</h3>
+      <p>카테고리를 누르면 같은 주소에서 내용만 즉시 교체됩니다. 가장 빠르고 자연스럽습니다.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="separate-pages" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-header">B · 카테고리별 새 주소</div>
+        <div class="mockup-body">
+          <div class="mock-nav">← 전체 메뉴　　<strong>주류·하이볼</strong></div>
+          <div style="padding:18px 10px 8px">
+            <div class="label">/menu/drinks</div>
+            <h3>주류·하이볼</h3>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+              <div class="placeholder">고량주</div>
+              <div class="placeholder">고량주</div>
+              <div class="placeholder">맥주</div>
+            </div>
+            <div style="margin-top:18px" class="label">하이볼 · 맨 아래 3 × 2</div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px">
+              <div class="placeholder">산토리</div><div class="placeholder">제임슨</div><div class="placeholder">짐빔</div>
+              <div class="placeholder">커티삭</div><div class="placeholder">봄베이</div><div class="placeholder">연태</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. 카테고리별 독립 화면</h3>
+      <p>카테고리마다 별도 주소로 이동합니다. 뒤로 가기와 메뉴별 링크 공유가 분명합니다.</p>
+    </div>
+  </div>
+</div>

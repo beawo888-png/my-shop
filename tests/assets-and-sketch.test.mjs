@@ -73,3 +73,17 @@ test("approved Wangjing promotional video exists", async () => {
   );
   assert.ok(video.byteLength > 1_000_000, "promotional MP4 should not be empty");
 });
+
+test("all four signature autoplay videos exist", async () => {
+  for (const name of [
+    "signature-01.mp4",
+    "signature-02.mp4",
+    "signature-03.mp4",
+    "signature-04.mp4",
+  ]) {
+    const video = await readFile(
+      new URL(`../public/videos/signature/${name}`, import.meta.url),
+    );
+    assert.ok(video.byteLength > 1_000, `${name} should not be empty`);
+  }
+});

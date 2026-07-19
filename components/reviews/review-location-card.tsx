@@ -10,15 +10,38 @@ export function ReviewLocationCard({ location }: ReviewLocationCardProps) {
       <p className="review-location-card__eyebrow">{location.areaLabel}</p>
       <h2>{location.shortName}</h2>
       <address>{location.address}</address>
-      <a
-        className="button button--primary"
-        href={location.reviewUrl}
-        target="_blank"
-        rel="noreferrer"
-        aria-label={`${location.shortName} 네이버 플레이스 리뷰 열기`}
-      >
-        네이버 플레이스 리뷰 보기 ↗
-      </a>
+      <div className="review-location-card__actions">
+        <a
+          className="button review-location-card__button"
+          href={location.reviewUrl}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`${location.shortName} 네이버 플레이스 리뷰 열기`}
+        >
+          <span>네이버 플레이스</span>
+          <span>리뷰 보기</span>
+        </a>
+        <a
+          className="button review-location-card__button"
+          href={location.kakaoReviewUrl}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`${location.shortName} 카카오맵 리뷰 열기`}
+        >
+          <span>카카오맵</span>
+          <span>리뷰 보기</span>
+        </a>
+        <a
+          className="button review-location-card__button"
+          href={location.googleReviewUrl}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`${location.shortName} 구글 리뷰 열기`}
+        >
+          <span>구글</span>
+          <span>리뷰 보기</span>
+        </a>
+      </div>
     </article>
   );
 }

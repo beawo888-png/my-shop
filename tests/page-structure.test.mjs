@@ -44,6 +44,75 @@ test("section components expose the approved anchor IDs", async () => {
   }
 });
 
+test("group branch details keep labels on one line and round only their actions", async () => {
+  const [groupDining, css] = await Promise.all([
+    read("components/home/group-dining-section.tsx"),
+    read("app/globals.css"),
+  ]);
+
+  for (const label of ["오시는길", "추천모임", "대표메뉴", "주차안내"]) {
+    assert.ok(groupDining.includes(`label: "${label}"`));
+  }
+  assert.match(
+    css,
+    /\.group-seo__branch-card dt\s*\{[^}]*white-space:\s*nowrap;/s,
+  );
+  assert.match(
+    css,
+    /\.group-seo__actions \.button\s*\{[^}]*border-radius:\s*8px;/s,
+  );
+});
+
+test("homepage signature section renders four native autoplay videos", async () => {
+  const section = await read("components/home/signature-menu-section.tsx");
+
+  for (const videoName of [
+    "signature-01.mp4",
+    "signature-02.mp4",
+    "signature-03.mp4",
+    "signature-04.mp4",
+  ]) {
+    assert.match(section, new RegExp(`/videos/signature/${videoName}`));
+  }
+
+  assert.match(section, /className="signature-video-grid"/);
+  assert.match(section, /SIGNATURE_VIDEOS\.map/);
+  assert.match(section, /<video/);
+  assert.match(section, /src=\{video\.src\}/);
+  assert.match(section, /aria-label=\{video\.title\}/);
+  assert.match(section, /autoPlay/);
+  assert.match(section, /muted/);
+  assert.match(section, /loop/);
+  assert.match(section, /playsInline/);
+  assert.match(section, /preload="metadata"/);
+  assert.doesNotMatch(section, /<iframe|instagram\.com\/p\/|MENU_ITEMS\.map|menu-card__image/);
+});
+
+test("homepage Instagram videos use a responsive four-two-one column layout", async () => {
+  const css = await read("app/globals.css");
+
+  assert.match(
+    css,
+    /\.signature-video-grid\s*\{[^}]*grid-template-columns:\s*repeat\(4,\s*minmax\(0,\s*1fr\)\);/,
+  );
+  assert.match(
+    css,
+    /@media \(max-width: 1023px\)[\s\S]*?\.signature-video-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\);/,
+  );
+  assert.match(
+    css,
+    /@media \(max-width: 767px\)[\s\S]*?\.signature-video-grid\s*\{[^}]*grid-template-columns:\s*1fr;/,
+  );
+  assert.match(
+    css,
+    /\.signature-video-card__frame\s*\{[^}]*aspect-ratio:/,
+  );
+  assert.match(
+    css,
+    /\.signature-video-card__frame video\s*\{[^}]*width:\s*100%;[^}]*height:\s*100%;[^}]*object-fit:\s*cover;/,
+  );
+});
+
 test("homepage reviews section links to the branch selector", async () => {
   const section = await read("components/home/reviews-section.tsx");
   assert.match(section, /import Link from "next\/link"/);
@@ -66,12 +135,28 @@ test("reviews page renders two safe Naver review choices", async () => {
   );
   assert.match(page, /LOCATIONS\.map/);
   assert.match(page, /<ReviewLocationCard/);
+  assert.match(page, /import \{ SiteHeader \} from "@\/components\/home\/site-header"/);
+  assert.match(page, /<SiteHeader sectionRoot="\/" \/>/);
+  assert.doesNotMatch(page, /reviews-page__header|brand-logo--menu/);
   assert.match(page, /지점별 고객 리뷰/);
+  assert.match(page, /className="reviews-page__lead"/);
   assert.match(card, /href=\{location\.reviewUrl\}/);
+  assert.match(card, /href=\{location\.kakaoReviewUrl\}/);
+  assert.match(card, /href=\{location\.googleReviewUrl\}/);
   assert.match(card, /target="_blank"/);
   assert.match(card, /rel="noreferrer"/);
+  assert.match(card, /className="review-location-card__actions"/);
   assert.match(card, /\$\{location\.shortName\} 네이버 플레이스 리뷰 열기/);
-  assert.match(card, /네이버 플레이스 리뷰 보기/);
+  assert.match(
+    card,
+    /<span>네이버 플레이스<\/span>[\s\S]*?<span>리뷰 보기<\/span>/,
+  );
+  assert.match(
+    card,
+    /<span>카카오맵<\/span>[\s\S]*?<span>리뷰 보기<\/span>/,
+  );
+  assert.match(card, /<span>구글<\/span>[\s\S]*?<span>리뷰 보기<\/span>/);
+  assert.doesNotMatch(card, /↗/);
 });
 
 test("reviews page uses a responsive two-to-one column layout", async () => {
@@ -86,6 +171,77 @@ test("reviews page uses a responsive two-to-one column layout", async () => {
   );
   assert.match(css, /\.reviews__action/);
   assert.match(css, /\.review-location-card/);
+  assert.match(
+    css,
+    /\.site-header\s*\{[\s\S]*?position:\s*sticky;[\s\S]*?top:\s*0;[\s\S]*?z-index:\s*50;/,
+  );
+  assert.match(
+    css,
+    /\.reviews-page\s*\{[\s\S]*?background:\s*var\(--cream\);/,
+  );
+  assert.match(
+    css,
+    /\.reviews-page__hero\s*\{[\s\S]*?background:[\s\S]*?var\(--ink-soft\);/,
+  );
+  assert.match(
+    css,
+    /\.reviews-page__content\s*\{[\s\S]*?background:\s*var\(--cream\);/,
+  );
+  assert.match(
+    css,
+    /\.review-location-card\s*\{[\s\S]*?min-height:\s*260px;/,
+  );
+  assert.match(
+    css,
+    /\.review-location-card__actions\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\);/,
+  );
+  assert.match(
+    css,
+    /\.review-location-card__button\s*\{[\s\S]*?border-radius:\s*10px;/,
+  );
+  assert.match(
+    css,
+    /\.reviews-page__lead\s*\{[\s\S]*?white-space:\s*nowrap;/,
+  );
+  assert.match(
+    css,
+    /\.review-location-card__button\s*\{[\s\S]*?flex-direction:\s*column;[\s\S]*?align-items:\s*center;[\s\S]*?background:\s*#e7e1da;[\s\S]*?border-color:\s*#cfc5ba;[\s\S]*?color:\s*var\(--ink-soft\);/,
+  );
+  assert.match(
+    css,
+    /\.review-location-card__button span\s*\{[\s\S]*?white-space:\s*nowrap;/,
+  );
+  assert.match(
+    css,
+    /@media \(max-width: 767px\)[\s\S]*?\.review-location-card__actions\s*\{[\s\S]*?grid-template-columns:\s*1fr;/,
+  );
+  assert.match(
+    css,
+    /@media \(max-width: 767px\)[\s\S]*?\.reviews-page__lead\s*\{[\s\S]*?white-space:\s*normal;/,
+  );
+});
+
+test("home header uses a larger logo without changing other pages", async () => {
+  const [page, header, reviews, css] = await Promise.all([
+    read("app/page.tsx"),
+    read("components/home/site-header.tsx"),
+    read("app/reviews/page.tsx"),
+    read("app/globals.css"),
+  ]);
+
+  assert.match(page, /<SiteHeader home \/>/);
+  assert.match(header, /home\?: boolean/);
+  assert.match(header, /site-header--home/);
+  assert.match(header, /\(max-width: 767px\) 170px, 250px/);
+  assert.doesNotMatch(reviews, /<SiteHeader home/);
+  assert.match(
+    css,
+    /\.site-header--home \.brand-logo--header\s*\{[^}]*width:\s*clamp\(200px,\s*19vw,\s*250px\);/,
+  );
+  assert.match(
+    css,
+    /@media \(max-width: 767px\)[\s\S]*?\.site-header--home \.brand-logo--header\s*\{[^}]*width:\s*170px;/,
+  );
 });
 
 test("external actions use safe links and accessible labels", async () => {
@@ -106,12 +262,27 @@ test("external actions use safe links and accessible labels", async () => {
 });
 
 test("mobile menu exposes its state and target", async () => {
-  const header = await read("components/home/site-header.tsx");
+  const [header, css] = await Promise.all([
+    read("components/home/site-header.tsx"),
+    read("app/globals.css"),
+  ]);
   assert.match(header, /^"use client";/m);
   assert.match(header, /aria-expanded=\{open\}/);
   assert.match(header, /aria-controls="mobile-navigation"/);
   assert.match(header, /id="mobile-navigation"/);
   assert.match(header, /setOpen\(false\)/);
+  assert.match(
+    css,
+    /@media \(max-width: 1023px\)[\s\S]*?\.desktop-nav\s*\{[\s\S]*?display:\s*flex;/,
+  );
+  assert.match(
+    css,
+    /@media \(max-width: 767px\)[\s\S]*?\.desktop-nav\s*\{[\s\S]*?display:\s*none;/,
+  );
+  assert.match(
+    css,
+    /@media \(max-width: 767px\)[\s\S]*?\.menu-toggle\s*\{[\s\S]*?display:\s*inline-grid;/,
+  );
 });
 
 test("header offers accessible Moran and Pangyo booking choices", async () => {
@@ -291,5 +462,29 @@ test("hero video fills the background and respects reduced motion", async () => 
   assert.match(
     css,
     /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.hero__video\s*\{[\s\S]*?display:\s*none;/,
+  );
+});
+
+test("hero uses the two-location copy without overlay actions or summary cards", async () => {
+  const [hero, css] = await Promise.all([
+    read("components/home/hero-section.tsx"),
+    read("app/globals.css"),
+  ]);
+
+  assert.match(hero, /WANGJING · PREMIUM CHINESE LAMB DINING/);
+  assert.match(hero, /불향으로 완성한 양고기,/);
+  assert.match(hero, /중요한 자리를 위한 왕징/);
+  assert.match(
+    hero,
+    /성남 판교·모란에서 만나는 품격있는 양고기전문점\.[\s\S]*회식부터 가족모임까지 편안하게 준비 해 드립니다\./,
+  );
+  assert.doesNotMatch(hero, /PANGYO · CHINESE LAMB DINING/);
+  assert.doesNotMatch(hero, /hero__actions/);
+  assert.doesNotMatch(hero, /trust-bar/);
+  assert.doesNotMatch(hero, /TRUST_ITEMS/);
+  assert.match(css, /\.hero\s*\{[^}]*min-height:\s*730px;/s);
+  assert.match(
+    css,
+    /@media \(max-width: 767px\)[\s\S]*?\.hero\s*\{[^}]*min-height:\s*740px;/,
   );
 });

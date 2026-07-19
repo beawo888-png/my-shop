@@ -54,7 +54,7 @@ export const PANGYO_MENU_GROUPS: FullMenuGroup[] = [
     fallbackImageSrc: "/images/wangjing/menu/lamb-leg.jpg",
     items: [
       menuItem("400도 숯불로 완성한 겉바속촉 양다리구이 (대)", "90,000원", "통양다리를 천천히 구워 즐기는 왕징 대표 메뉴", "lamb-leg.jpg"),
-      menuItem("400도 숯불로 완성한 겉바속촉 양다리구이 (중)", "80,000원", "육즙과 불향을 풍성하게 즐기는 통양다리", "lamb-leg.jpg"),
+      menuItem("400도 숯불로 완성한 겉바속촉 양다리구이 (중)", "80,000원", "왕징양다리양꼬치의 대표 통양다리구이로, 400도 숯불에서 정성껏 구워 겉은 바삭하고 속은 촉촉하게 완성합니다. 풍부한 육즙과 진한 불향을 즐길 수 있어 판교·모란 가족외식, 회식, 단체모임 예약 메뉴로 추천합니다.", "lamb-leg.jpg"),
     ],
   },
   {
@@ -63,11 +63,11 @@ export const PANGYO_MENU_GROUPS: FullMenuGroup[] = [
     description: "불향과 육즙을 즐기는 왕징의 양꼬치와 세트 메뉴",
     fallbackImageSrc: "/images/wangjing/menu/lamb-leg.jpg",
     items: [
-      menuItem("고급양갈비", "30,000원", "부드러운 육질과 진한 풍미의 양갈비", "premium-lamb-chops.jpg"),
-      menuItem("생양꼬치", "17,000원", "담백한 양고기 본연의 맛을 살린 꼬치", "fresh-lamb-skewers.jpg"),
-      menuItem("양념양꼬치", "18,000원", "왕징 특제 양념으로 풍미를 더한 양꼬치", "marinated-lamb-skewers.jpg"),
-      menuItem("양갈비살꼬치", "18,000원", "쫄깃하고 고소한 양갈비살 꼬치", "lamb-rib-skewers.jpg"),
-      menuItem("새우꼬치", "18,000원", "탱글한 새우를 노릇하게 구운 꼬치", "shrimp-skewers.png"),
+      menuItem("고급양갈비", "30,000원", "고급양갈비는 부드러운 육질과 진한 육향을 즐길 수 있는 숯불 양고기 메뉴입니다. 노릇하게 구워지는 고소한 지방과 촉촉한 육즙이 어우러져 판교역 데이트나 모란역 회식 메뉴로 잘 어울립니다.", "premium-lamb-chops.jpg"),
+      menuItem("생양꼬치", "17,000원", "생양꼬치는 양고기 본연의 담백함과 고소한 육즙을 살린 왕징양다리양꼬치의 기본 꼬치 메뉴입니다. 숯불에 노릇하게 구운 뒤 쯔란을 곁들이면 은은한 불향과 깔끔한 풍미를 즐길 수 있습니다.", "fresh-lamb-skewers.jpg"),
+      menuItem("양념양꼬치", "18,000원", "양념양꼬치는 왕징 특제 양념으로 감칠맛을 더한 숯불 꼬치입니다. 달콤하고 짭조름한 양념이 부드러운 양고기에 배어 있어 양고기를 처음 접하는 고객이나 술안주 메뉴를 찾는 분에게 추천합니다.", "marinated-lamb-skewers.jpg"),
+      menuItem("양갈비살꼬치", "18,000원", "양갈비살꼬치는 쫄깃한 식감과 고소한 지방의 풍미가 특징인 숯불 꼬치입니다. 씹을수록 진한 육즙과 불향이 살아나 풍미가 강한 양고기를 선호하는 고객에게 잘 맞습니다.", "lamb-rib-skewers.jpg"),
+      menuItem("새우꼬치", "18,000원", "새우꼬치는 탱글한 새우를 숯불에 노릇하게 구워 담백한 단맛과 은은한 불향을 살린 메뉴입니다. 양고기 중심의 식사에 해산물의 산뜻한 풍미를 더하고 싶을 때 선택하기 좋습니다.", "shrimp-skewers.png"),
     ],
   },
   {
@@ -88,10 +88,10 @@ export const PANGYO_MENU_GROUPS: FullMenuGroup[] = [
       menuItem("지삼선", "18,000원", "가지·감자·피망을 감칠맛 나게 볶은 요리", "di-san-xian.jpg"),
       menuItem("건두부볶음", "16,000원", "쫄깃한 건두부와 채소를 볶은 요리", "stir-fried-tofu-skin.jpg"),
       menuItem("오이무침", "12,000원", "아삭한 오이를 산뜻하게 무친 곁들임", "cucumber-salad.jpg"),
-      menuItem("즈란양고기", "28,000원", "쯔란 향을 입혀 볶아낸 양고기", "cumin-lamb.jpg"),
+      menuItem("쯔란양고기", "28,000원", "쯔란양고기는 부드러운 양고기를 쯔란과 향신료에 볶아 고소하고 이국적인 향을 살린 중국식 양고기 요리입니다. 진한 양고기 풍미와 알싸한 향신료를 좋아하는 고객에게 추천합니다.", "cumin-lamb.jpg"),
       menuItem("마라샹궈", "32,000원", "다채로운 재료를 마라 양념에 볶은 요리", "mala-xiang-guo.jpg"),
       menuItem("건두부무침", "16,000원", "건두부와 채소를 새콤하게 무친 냉채", "tofu-skin-salad.jpg"),
-      menuItem("양탕", "15,000원", "양고기의 깊고 따뜻한 맛을 담은 국물", "lamb-soup.jpg"),
+      menuItem("양탕", "15,000원", "왕징양다리양꼬치의 양탕은 양고기를 깊고 따뜻하게 끓여낸 중국식 국물 요리입니다. 진한 육향과 부드러운 고기가 어우러져 판교점·모란점에서 술안주나 가족식사 마무리 메뉴로 즐기기 좋습니다.", "lamb-soup.jpg"),
     ],
   },
   {

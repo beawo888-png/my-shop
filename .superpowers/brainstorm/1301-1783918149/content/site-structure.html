@@ -1,0 +1,71 @@
+<style>
+  .compare-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:26px}
+  .structure{border:2px solid #e5dfd4;border-radius:18px;overflow:hidden;background:#fff;cursor:pointer;transition:.18s;box-shadow:0 8px 24px rgba(30,20,16,.06)}
+  .structure:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(30,20,16,.12)}
+  .structure.selected{border-color:#a92e25;box-shadow:0 0 0 3px rgba(169,46,37,.17)}
+  .browser{background:#171513;color:#f8f2e7;min-height:392px}
+  .browser-bar{height:31px;background:#2a2522;display:flex;align-items:center;padding:0 11px;gap:5px}
+  .dot{width:7px;height:7px;border-radius:50%;background:#8e7a68}.dot:nth-child(1){background:#9f332b}.dot:nth-child(2){background:#c39957}.dot:nth-child(3){background:#5c7f69}
+  .site-nav{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid rgba(216,181,111,.22);font-size:10px;font-weight:800}
+  .site-nav span:last-child{background:#a92e25;padding:6px 9px;border-radius:5px}
+  .hero-box{height:92px;padding:15px;display:flex;flex-direction:column;justify-content:flex-end;background:radial-gradient(circle at 84% 30%,#6e2721 0,transparent 34%),linear-gradient(140deg,#171513,#381a18)}
+  .hero-box strong{font-size:17px;line-height:1.25}.hero-box small{color:#d6bd89;margin-top:5px;font-size:8px}
+  .section-block{margin:9px 11px;border:1px solid rgba(216,181,111,.20);border-radius:7px;padding:10px;background:#211d1a}
+  .section-block b{font-size:10px;color:#d8b56f}.section-block p{font-size:8px;color:#c4bbb2;margin:4px 0 0;line-height:1.4}
+  .split-links{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:9px 11px}
+  .page-link{border:1px solid rgba(216,181,111,.25);border-radius:7px;padding:10px 8px;background:#211d1a;font-size:9px;color:#f6ead7;min-height:39px}
+  .page-link em{display:block;font-style:normal;font-size:7px;color:#9d9188;margin-top:3px}
+  .mini-home{margin:9px 11px;border-radius:7px;padding:9px;background:#211d1a}
+  .mini-home .row{height:18px;border-radius:4px;background:#392622;margin:5px 0}.mini-home .row.hot{background:#8e2a23}.mini-home .row.gold{background:#5a472d}
+  .details{padding:17px 18px 20px}.details h3{margin:0 0 7px;font-size:18px}.details p{font-size:12px;line-height:1.55;color:#64605d;margin:0 0 10px}
+  .scores{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.score{border-radius:7px;background:#f5f1ea;padding:7px 4px;text-align:center;font-size:9px;color:#62594e}.score strong{display:block;color:#8f2b23;font-size:12px;margin-bottom:2px}
+  .rec{display:inline-block;background:#a92e25;color:#fff;font-size:9px;font-weight:800;padding:5px 8px;border-radius:999px;margin-bottom:7px}
+  @media(max-width:900px){.compare-grid{grid-template-columns:1fr}.browser{min-height:350px}}
+</style>
+
+<h2>사이트 구조 3가지 비교</h2>
+<p class="subtitle">예약 전환, 정보 관리, SEO·GEO 확장성을 함께 비교해 주세요.</p>
+
+<div class="compare-grid">
+  <div class="structure card" data-choice="one-page" onclick="toggleSelect(this)">
+    <div class="browser">
+      <div class="browser-bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
+      <div class="site-nav"><span>王京</span><span>예약</span></div>
+      <div class="hero-box"><strong>불과 시간으로<br>완성한 양고기</strong><small>아래로 내려 모든 내용을 확인</small></div>
+      <div class="section-block"><b>브랜드 이야기</b><p>왕징의 철학과 양고기 전문성</p></div>
+      <div class="section-block"><b>대표 메뉴</b><p>양다리 · 양꼬치 · 중국 요리</p></div>
+      <div class="section-block"><b>단체석과 매장</b><p>회식 · 주차 · 판교역 접근</p></div>
+      <div class="section-block"><b>FAQ · 예약</b><p>한 페이지의 마지막 전환</p></div>
+    </div>
+    <div class="details"><h3>A. 한 페이지형</h3><p>한 번의 스크롤로 모든 정보를 전달합니다. 빠르지만 검색용 상세 콘텐츠를 늘리기 어렵습니다.</p><div class="scores"><div class="score"><strong>높음</strong>첫 방문 전환</div><div class="score"><strong>낮음</strong>SEO 확장</div><div class="score"><strong>쉬움</strong>관리</div></div></div>
+  </div>
+
+  <div class="structure card" data-choice="multi-page" onclick="toggleSelect(this)">
+    <div class="browser">
+      <div class="browser-bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
+      <div class="site-nav"><span>王京</span><span>전체 메뉴</span></div>
+      <div class="hero-box"><strong>중국 양고기 문화의<br>새로운 기준</strong><small>주제별 독립 페이지</small></div>
+      <div class="split-links">
+        <div class="page-link">브랜드<em>/brand</em></div><div class="page-link">전체 메뉴<em>/menu</em></div>
+        <div class="page-link">양다리 이야기<em>/lamb-leg</em></div><div class="page-link">단체 회식<em>/group</em></div>
+        <div class="page-link">매장 안내<em>/location</em></div><div class="page-link">FAQ<em>/faq</em></div>
+        <div class="page-link">소식<em>/stories</em></div><div class="page-link">예약<em>/reserve</em></div>
+      </div>
+    </div>
+    <div class="details"><h3>B. 다중 페이지형</h3><p>각 검색 의도마다 깊은 페이지를 만듭니다. SEO·GEO에는 강하지만 첫 방문자가 길을 잃을 수 있습니다.</p><div class="scores"><div class="score"><strong>보통</strong>첫 방문 전환</div><div class="score"><strong>최고</strong>SEO 확장</div><div class="score"><strong>복잡</strong>관리</div></div></div>
+  </div>
+
+  <div class="structure card" data-choice="hybrid" onclick="toggleSelect(this)">
+    <div class="browser">
+      <div class="browser-bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
+      <div class="site-nav"><span>王京</span><span>네이버 예약</span></div>
+      <div class="hero-box"><strong>판교에서 만나는<br>대륙의 깊은 풍미</strong><small>핵심은 홈에서, 근거는 상세 페이지에서</small></div>
+      <div class="mini-home"><div class="row hot"></div><div class="row"></div><div class="row gold"></div><div class="row"></div></div>
+      <div class="split-links">
+        <div class="page-link">전체 메뉴<em>가격·사진·재료</em></div><div class="page-link">단체 회식<em>인원·좌석·문의</em></div>
+        <div class="page-link">왕징 이야기<em>전문성·근거</em></div><div class="page-link">FAQ·소식<em>AI 답변·최신성</em></div>
+      </div>
+    </div>
+    <div class="details"><span class="rec">추천</span><h3>C. 혼합형</h3><p>홈에서 예약까지 설득하고, 상세 페이지가 검색과 AI 인용에 필요한 깊이를 담당합니다.</p><div class="scores"><div class="score"><strong>최고</strong>첫 방문 전환</div><div class="score"><strong>높음</strong>SEO 확장</div><div class="score"><strong>균형</strong>관리</div></div></div>
+  </div>
+</div>

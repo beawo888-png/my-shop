@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { SITE, TRUST_ITEMS } from "@/lib/site-content";
 
 export function HeroSection() {
   return (
@@ -30,36 +29,15 @@ export function HeroSection() {
       </video>
       <div className="hero__overlay" />
       <div className="hero__content">
-        <p className="eyebrow">PANGYO · CHINESE LAMB DINING</p>
+        <p className="eyebrow">WANGJING · PREMIUM CHINESE LAMB DINING</p>
         <h1 id="hero-title">
           불향으로 완성한 양고기,
           <br /> 중요한 자리를 위한 왕징
         </h1>
         <p className="hero__lead">
-          판교역 가까이에서 만나는 품격 있는 중국 양고기 요리.
-          <br /> 회식부터 가족 모임까지 편안하게 준비해 드립니다.
+          성남 판교·모란에서 만나는 품격있는 양고기전문점.
+          <br /> 회식부터 가족모임까지 편안하게 준비 해 드립니다.
         </p>
-        <div className="hero__actions">
-          <a
-            className="button button--primary"
-            href={SITE.bookingUrl}
-            target="_blank"
-            rel="noreferrer"
-          >
-            네이버 예약
-          </a>
-          <a className="button button--outline" href="#group">
-            단체 모임 안내
-          </a>
-        </div>
-      </div>
-      <div className="trust-bar" aria-label="매장 주요 정보">
-        {TRUST_ITEMS.map((item) => (
-          <div className="trust-item" key={item.value}>
-            <strong>{item.value}</strong>
-            <span>{item.label}</span>
-          </div>
-        ))}
       </div>
     </section>
   );

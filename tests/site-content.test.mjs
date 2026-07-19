@@ -49,13 +49,13 @@ test("site content defines both Wangjing locations", () => {
   for (const value of [
     "왕징양다리양꼬치 모란본점",
     "경기 성남시 중원구 둔촌대로151번길 48 성슈퍼빌 102동 101호",
-    "모란역 4번 출구에서 215m",
+    "모란역 4번 출구에서 215m 도보 5분",
     "0507-1377-5688",
     "tel:050713775688",
     "https://map.naver.com/v5/entry/place/1938356292",
     "왕징양다리양꼬치 판교점",
     "경기 성남시 분당구 대왕판교로606번길 10, 205호·206호",
-    "판교역 4번 출구에서 266m",
+    "판교역 4번 출구에서 266m 도보 5분",
     "0507-1313-5688",
     "tel:050713135688",
     "https://map.naver.com/v5/entry/place/1873196958",
@@ -100,6 +100,10 @@ test("site content defines branch review links and review navigation", () => {
     "https://m.place.naver.com/restaurant/1873196958/review/visitor";
 
   assert.match(source, /reviewUrl: string/);
+  assert.match(source, /kakaoReviewUrl: string/);
+  assert.match(source, /googleReviewUrl: string/);
+  assert.equal(source.match(/kakaoReviewUrl:/g)?.length, 3);
+  assert.equal(source.match(/googleReviewUrl:/g)?.length, 3);
   assert.ok(source.includes(moranReview));
   assert.ok(source.includes(pangyoReview));
   assert.ok(source.indexOf(moranReview) < source.indexOf(pangyoReview));

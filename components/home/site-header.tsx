@@ -7,9 +7,10 @@ import { BOOKING_LOCATIONS, NAV_ITEMS } from "@/lib/site-content";
 
 type SiteHeaderProps = {
   sectionRoot?: "" | "/";
+  home?: boolean;
 };
 
-export function SiteHeader({ sectionRoot = "" }: SiteHeaderProps) {
+export function SiteHeader({ sectionRoot = "", home = false }: SiteHeaderProps) {
   const resolveNavHref = (item: (typeof NAV_ITEMS)[number]) =>
     item.href.startsWith("#") ? `${sectionRoot}${item.href}` : item.href;
 
@@ -40,7 +41,7 @@ export function SiteHeader({ sectionRoot = "" }: SiteHeaderProps) {
   }, [bookingOpen]);
 
   return (
-    <header className="site-header">
+    <header className={home ? "site-header site-header--home" : "site-header"}>
       <a
         className="wordmark"
         href={sectionRoot === "/" ? "/" : "#top"}
@@ -48,7 +49,7 @@ export function SiteHeader({ sectionRoot = "" }: SiteHeaderProps) {
       >
         <BrandLogo
           className="brand-logo--header"
-          sizes="(max-width: 767px) 132px, 190px"
+          sizes={home ? "(max-width: 767px) 170px, 250px" : "(max-width: 767px) 132px, 190px"}
           preload
         />
       </a>

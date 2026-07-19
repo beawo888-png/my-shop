@@ -1,5 +1,21 @@
-import Image from "next/image";
-import { MENU_ITEMS } from "@/lib/site-content";
+const SIGNATURE_VIDEOS = [
+  {
+    src: "/videos/signature/signature-01.mp4",
+    title: "왕징 시그니처 요리 영상 1",
+  },
+  {
+    src: "/videos/signature/signature-02.mp4",
+    title: "왕징 시그니처 요리 영상 2",
+  },
+  {
+    src: "/videos/signature/signature-03.mp4",
+    title: "왕징 시그니처 요리 영상 3",
+  },
+  {
+    src: "/videos/signature/signature-04.mp4",
+    title: "왕징 시그니처 요리 영상 4",
+  },
+] as const;
 
 export function SignatureMenuSection() {
   return (
@@ -23,23 +39,19 @@ export function SignatureMenuSection() {
           전체 메뉴 보기
         </a>
       </div>
-      <div className="menu-grid">
-        {MENU_ITEMS.map((item) => (
-          <article className="menu-card" key={item.name}>
-            <div className="menu-card__image">
-              <Image
-                src={item.image}
-                alt={item.alt}
-                fill
-                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
+      <div className="signature-video-grid">
+        {SIGNATURE_VIDEOS.map((video) => (
+          <article className="signature-video-card" key={video.src}>
+            <div className="signature-video-card__frame">
+              <video
+                src={video.src}
+                aria-label={video.title}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
               />
-            </div>
-            <div className="menu-card__body">
-              <div className="menu-card__title">
-                <h3>{item.name}</h3>
-                <strong>{item.price}</strong>
-              </div>
-              <p>{item.description}</p>
             </div>
           </article>
         ))}
