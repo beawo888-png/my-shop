@@ -717,11 +717,20 @@ img {
   padding: 0.45rem 0.7rem;
   display: inline-flex;
   align-items: center;
+  gap: 0.45rem;
   border: 1px solid rgba(255, 248, 236, 0.18);
   border-radius: 999px;
   color: rgba(255, 248, 236, 0.82);
   font-size: 0.72rem;
+  white-space: nowrap;
   transition: border-color 180ms ease, color 180ms ease, background 180ms ease;
+}
+
+.site-footer__social-icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  display: block;
 }
 
 .site-footer__socials a:hover {

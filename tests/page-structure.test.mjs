@@ -476,6 +476,23 @@ test("reference footer renders the approved four-column information layout", asy
   );
 });
 
+test("footer social links render recognizable platform brand icons", async () => {
+  const [footer, css] = await Promise.all([
+    read("components/home/site-footer.tsx"),
+    read("app/globals.css"),
+  ]);
+
+  assert.match(footer, /function SocialIcon/);
+  for (const platform of ["instagram", "youtube", "kakao", "tiktok"]) {
+    assert.match(footer, new RegExp(`icon: "${platform}"`));
+    assert.match(footer, new RegExp(`case "${platform}"`));
+  }
+  assert.match(footer, /<SocialIcon platform=\{social\.icon\} \/>/);
+  assert.match(footer, /aria-hidden="true"/);
+  assert.match(css, /\.site-footer__social-icon\s*\{[\s\S]*?width:\s*18px;[\s\S]*?height:\s*18px;/);
+  assert.match(css, /\.site-footer__socials a\s*\{[\s\S]*?white-space:\s*nowrap;/);
+});
+
 test("hero renders the approved autoplaying promotional video", async () => {
   const hero = await read("components/home/hero-section.tsx");
 

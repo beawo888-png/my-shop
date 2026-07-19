@@ -6,24 +6,90 @@ const SOCIAL_LINKS = [
   {
     label: "인스타그램",
     shortLabel: "Instagram",
+    icon: "instagram",
     href: "https://www.instagram.com/wangjingyangdali_official/",
   },
   {
     label: "유튜브",
     shortLabel: "YouTube",
+    icon: "youtube",
     href: "https://www.youtube.com/@wangjing_lamb",
   },
   {
     label: "카카오맵",
     shortLabel: "Kakao",
+    icon: "kakao",
     href: "https://place.map.kakao.com/1387600612",
   },
   {
     label: "틱톡",
     shortLabel: "TikTok",
+    icon: "tiktok",
     href: "https://www.tiktok.com/@wangjing_lamb",
   },
 ] as const;
+
+type SocialPlatform = (typeof SOCIAL_LINKS)[number]["icon"];
+
+function SocialIcon({ platform }: { platform: SocialPlatform }) {
+  switch (platform) {
+    case "instagram":
+      return (
+        <svg
+          className="site-footer__social-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient id="instagram-gradient" x1="2" y1="22" x2="22" y2="2">
+              <stop offset="0" stopColor="#ffb000" />
+              <stop offset="0.48" stopColor="#f02b68" />
+              <stop offset="1" stopColor="#7b35c8" />
+            </linearGradient>
+          </defs>
+          <rect width="24" height="24" rx="6" fill="url(#instagram-gradient)" />
+          <rect x="5.5" y="5.5" width="13" height="13" rx="4" fill="none" stroke="#fff" strokeWidth="1.8" />
+          <circle cx="12" cy="12" r="3.1" fill="none" stroke="#fff" strokeWidth="1.8" />
+          <circle cx="16.7" cy="7.5" r="1" fill="#fff" />
+        </svg>
+      );
+    case "youtube":
+      return (
+        <svg
+          className="site-footer__social-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <rect y="4.5" width="24" height="15" rx="4.5" fill="#ff0033" />
+          <path d="M10 8.4 16 12l-6 3.6Z" fill="#fff" />
+        </svg>
+      );
+    case "kakao":
+      return (
+        <svg
+          className="site-footer__social-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="12" fill="#fee500" />
+          <path d="M12 6.4c-4 0-7.2 2.5-7.2 5.6 0 2 1.4 3.8 3.5 4.8l-.9 3.1 3.7-2.3h.9c4 0 7.2-2.5 7.2-5.6S16 6.4 12 6.4Z" fill="#191919" />
+        </svg>
+      );
+    case "tiktok":
+      return (
+        <svg
+          className="site-footer__social-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="12" fill="#090909" />
+          <path d="M14.2 5.1c.5 2.4 1.8 3.8 4.2 4.1v2.4a8 8 0 0 1-4.1-1.2v4.8a4.8 4.8 0 1 1-4.8-4.8h.7v2.5a2.3 2.3 0 1 0 1.7 2.3V5.1Z" fill="#25f4ee" transform="translate(-.7 .35)" />
+          <path d="M14.2 5.1c.5 2.4 1.8 3.8 4.2 4.1v2.4a8 8 0 0 1-4.1-1.2v4.8a4.8 4.8 0 1 1-4.8-4.8h.7v2.5a2.3 2.3 0 1 0 1.7 2.3V5.1Z" fill="#fe2c55" transform="translate(.7 -.35)" />
+          <path d="M14.2 5.1c.5 2.4 1.8 3.8 4.2 4.1v2.4a8 8 0 0 1-4.1-1.2v4.8a4.8 4.8 0 1 1-4.8-4.8h.7v2.5a2.3 2.3 0 1 0 1.7 2.3V5.1Z" fill="#fff" />
+        </svg>
+      );
+  }
+}
 
 export function SiteFooter() {
   const moran = LOCATIONS[0];
@@ -44,6 +110,7 @@ export function SiteFooter() {
                 rel="noreferrer"
                 aria-label={`${social.label} 새 창에서 열기`}
               >
+                <SocialIcon platform={social.icon} />
                 {social.shortLabel}
               </a>
             ))}
