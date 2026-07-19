@@ -413,7 +413,7 @@ test("location section renders two data-driven branch cards", async () => {
   );
 });
 
-test("header and footer use the approved Wangjing logo", async () => {
+test("header uses the approved logo and footer uses the Wangjing brand name", async () => {
   const [brandLogo, header, footer, css] = await Promise.all([
     read("components/home/brand-logo.tsx"),
     read("components/home/site-header.tsx"),
@@ -430,15 +430,50 @@ test("header and footer use the approved Wangjing logo", async () => {
   assert.match(header, /brand-logo--header/);
   assert.match(header, /aria-label="왕징양다리양꼬치 처음으로"/);
   assert.doesNotMatch(header, /SITE\.(?:hanja|name)/);
-  assert.match(footer, /BrandLogo/);
-  assert.match(footer, /brand-logo--footer/);
-  assert.doesNotMatch(footer, /SITE\.(?:hanja|name)/);
-  assert.match(footer, /© 2026 왕징양다리양꼬치\. All rights reserved\./);
+  assert.match(footer, /<h2 id="footer-brand">왕징양다리양꼬치<\/h2>/);
+  assert.match(footer, /© 2026 왕징양다리양꼬치 메뉴\/가격은/);
   assert.match(css, /\.brand-logo\s*\{[\s\S]*?mix-blend-mode: screen;/);
 
   const headerRule = css.match(/\.site-header\s*\{[^}]*\}/)?.[0] ?? "";
   assert.match(headerRule, /isolation: isolate;/);
   assert.match(headerRule, /background: var\(--ink\);/);
+});
+
+test("reference footer renders the approved four-column information layout", async () => {
+  const [footer, css] = await Promise.all([
+    read("components/home/site-footer.tsx"),
+    read("app/globals.css"),
+  ]);
+
+  const brandIndex = footer.indexOf('className="site-footer__brand"');
+  const moranIndex = footer.indexOf("MORAN");
+  const pangyoIndex = footer.indexOf("PANGYO");
+  const navIndex = footer.indexOf('className="site-footer__nav"');
+
+  assert.match(footer, /<footer id="footer" className="site-footer">/);
+  assert.ok(brandIndex >= 0);
+  assert.ok(brandIndex < moranIndex);
+  assert.ok(moranIndex < pangyoIndex);
+  assert.ok(pangyoIndex < navIndex);
+  assert.match(footer, /PREMIUM CHINESE LAMB DINING/);
+  assert.match(footer, /https:\/\/www\.instagram\.com\/wangjingyangdali_official\//);
+  assert.match(footer, /https:\/\/www\.youtube\.com\/@wangjing_lamb/);
+  assert.match(footer, /https:\/\/place\.map\.kakao\.com\/1387600612/);
+  assert.match(footer, /https:\/\/www\.tiktok\.com\/@wangjing_lamb/);
+  assert.match(footer, /href=\{moran\.phoneHref\}/);
+  assert.match(footer, /href=\{pangyo\.phoneHref\}/);
+  assert.match(footer, /href="\/menu"/);
+  assert.match(footer, /href="\/#group"/);
+  assert.match(footer, /href="\/#reservation"/);
+  assert.match(
+    footer,
+    /왕징양다리양꼬치 메뉴\/가격은 매장 상황에 따라 다를 수 있습니다\./,
+  );
+  assert.match(footer, /@wangjingyangdali_official/);
+  assert.match(
+    css,
+    /\.site-footer__main\s*\{[\s\S]*?grid-template-columns:\s*1\.15fr 1fr 1fr 0\.8fr;/,
+  );
 });
 
 test("hero renders the approved autoplaying promotional video", async () => {
