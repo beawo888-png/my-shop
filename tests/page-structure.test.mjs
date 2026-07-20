@@ -481,7 +481,7 @@ test("desktop header booking trigger uses the approved compact size", async () =
 
   assert.match(
     css,
-    /\.header-booking__trigger\s*\{[\s\S]*?min-height:\s*48px;[\s\S]*?padding:\s*0 1\.25rem;[\s\S]*?font-size:\s*0\.95rem;/,
+    /\.button\.header-booking__trigger\s*\{[\s\S]*?min-height:\s*48px;[\s\S]*?padding:\s*0 1\.25rem;[\s\S]*?font-size:\s*0\.95rem;/,
   );
   assert.match(
     css,
