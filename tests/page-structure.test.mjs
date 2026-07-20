@@ -476,6 +476,19 @@ test("reference footer renders the approved four-column information layout", asy
   );
 });
 
+test("desktop header booking trigger uses the approved compact size", async () => {
+  const css = await read("app/globals.css");
+
+  assert.match(
+    css,
+    /\.header-booking__trigger\s*\{[\s\S]*?min-height:\s*48px;[\s\S]*?padding:\s*0 1\.25rem;[\s\S]*?font-size:\s*0\.95rem;/,
+  );
+  assert.match(
+    css,
+    /\.header-booking__trigger svg\s*\{[\s\S]*?width:\s*16px;[\s\S]*?height:\s*16px;/,
+  );
+});
+
 test("footer social links render recognizable platform brand icons", async () => {
   const [footer, css] = await Promise.all([
     read("components/home/site-footer.tsx"),

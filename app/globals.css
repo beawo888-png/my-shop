@@ -134,13 +134,16 @@ img {
 }
 
 .header-booking__trigger {
+  min-height: 48px;
+  padding: 0 1.25rem;
   gap: 0.55rem;
+  font-size: 0.95rem;
   cursor: pointer;
 }
 
 .header-booking__trigger svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   transition: transform 180ms ease;
 }
 
