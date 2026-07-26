@@ -33,7 +33,9 @@ export function createVisitEvent(input: {
   return {
     createdAt: input.now ?? new Date(),
     path: normalizedPath(input.pathname),
-    userAgent: input.userAgent.slice(0, MAX_USER_AGENT_LENGTH),
+    userAgent: input.userAgent
+      .replace(/[\u0000-\u001f\u007f]/g, "")
+      .slice(0, MAX_USER_AGENT_LENGTH),
     referrer: sanitizedReferrer(input.referrer),
     botId: input.bot.botId,
     botName: input.bot.botName,

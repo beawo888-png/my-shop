@@ -8,6 +8,17 @@ type LoginLimitReader = {
   getActiveFailureCount(sourceHash: string, now: Date): Promise<number>;
 };
 
+export type LoginLimitRepository = LoginLimitReader & {
+  recordFailure(sourceHash: string, now: Date): Promise<void>;
+  clear(sourceHash: string): Promise<void>;
+};
+
+type LoginLimitEnv = {
+  NODE_ENV?: string;
+  AI_VISIT_STORAGE?: string;
+  DATABASE_URL?: string;
+};
+
 function databaseUrl(): string {
   const value = process.env.DATABASE_URL;
   if (!value) throw new Error("DATABASE_URL is not configured");
@@ -21,8 +32,8 @@ export function hashLoginSource(rawIp: string, secret: string): string {
   return createHmac("sha256", secret).update(rawIp).digest("hex").slice(0, 16);
 }
 
-export const loginLimitRepository = {
-  async getActiveFailureCount(sourceHash: string, now: Date): Promise<number> {
+const databaseLoginLimitRepository: LoginLimitRepository = {
+  async getActiveFailureCount(sourceHash, now) {
     const sql = neon(databaseUrl());
     const rows = await sql`
       SELECT failure_count
@@ -32,7 +43,7 @@ export const loginLimitRepository = {
     return rows[0] ? Number(rows[0].failure_count) : 0;
   },
 
-  async recordFailure(sourceHash: string, now: Date): Promise<void> {
+  async recordFailure(sourceHash, now) {
     const sql = neon(databaseUrl());
     const expiresAt = new Date(now.getTime() + WINDOW_MS);
     await sql`
@@ -57,11 +68,47 @@ export const loginLimitRepository = {
     `;
   },
 
-  async clear(sourceHash: string): Promise<void> {
+  async clear(sourceHash) {
     const sql = neon(databaseUrl());
     await sql`DELETE FROM admin_login_limits WHERE source_hash = ${sourceHash}`;
   },
 };
+
+function inMemoryLoginLimitRepository(): LoginLimitRepository {
+  const failures = new Map<string, { count: number; expiresAt: number }>();
+  return {
+    async getActiveFailureCount(sourceHash, now) {
+      const value = failures.get(sourceHash);
+      if (!value || value.expiresAt <= now.getTime()) {
+        failures.delete(sourceHash);
+        return 0;
+      }
+      return value.count;
+    },
+    async recordFailure(sourceHash, now) {
+      const current = failures.get(sourceHash);
+      if (!current || current.expiresAt <= now.getTime()) {
+        failures.set(sourceHash, { count: 1, expiresAt: now.getTime() + WINDOW_MS });
+        return;
+      }
+      current.count += 1;
+    },
+    async clear(sourceHash) {
+      failures.delete(sourceHash);
+    },
+  };
+}
+
+export function createLoginLimitRepository(
+  env: LoginLimitEnv = process.env,
+): LoginLimitRepository {
+  if (env.NODE_ENV !== "production" && env.AI_VISIT_STORAGE === "file") {
+    return inMemoryLoginLimitRepository();
+  }
+  return databaseLoginLimitRepository;
+}
+
+export const loginLimitRepository = createLoginLimitRepository();
 
 export async function isLoginAllowed(
   sourceHash: string,

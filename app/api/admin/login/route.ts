@@ -69,9 +69,9 @@ export async function POST(request: Request) {
     response.cookies.set(ADMIN_SESSION_COOKIE, createSession(sessionSecret), {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 8 * 60 * 60,
+      sameSite: "strict",
+      path: "/admin",
+      maxAge: 12 * 60 * 60,
     });
     response.headers.set("Cache-Control", "no-store");
     return response;

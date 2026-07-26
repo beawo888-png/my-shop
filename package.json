@@ -10,7 +10,8 @@
     "test": "node --test tests/*.test.mjs && tsx --test tests/*.test.mts",
     "test:ts": "tsx --test tests/*.test.mts",
     "db:migrate": "node scripts/migrate-ai-visits.mjs",
-    "admin:secrets": "node scripts/generate-admin-secrets.mjs"
+    "admin:secrets": "node scripts/generate-admin-secrets.mjs",
+    "test:synthetic": "node scripts/synthetic-ai-visits.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

@@ -31,8 +31,11 @@ for (const pathname of [
   });
 }
 
-test("only GET requests are tracked", () => {
-  for (const method of ["HEAD", "POST", "PUT", "DELETE", "OPTIONS"]) {
+test("GET and HEAD public page requests are tracked", () => {
+  for (const method of ["GET", "HEAD"]) {
+    assert.equal(isTrackablePublicRequest({ method, pathname: "/" }), true);
+  }
+  for (const method of ["POST", "PUT", "DELETE", "OPTIONS"]) {
     assert.equal(isTrackablePublicRequest({ method, pathname: "/" }), false);
   }
 });

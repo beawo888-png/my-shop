@@ -6,7 +6,7 @@ export function isTrackablePublicRequest(input: {
   method: string;
   pathname: string;
 }): boolean {
-  if (input.method.toUpperCase() !== "GET") return false;
+  if (!new Set(["GET", "HEAD"]).has(input.method.toUpperCase())) return false;
   if (!input.pathname.startsWith("/")) return false;
   if (FILE_EXTENSION.test(input.pathname)) return false;
 

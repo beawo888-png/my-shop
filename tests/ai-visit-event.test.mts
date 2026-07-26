@@ -65,3 +65,16 @@ test("stored strings are length-limited", () => {
   assert.equal(event.userAgent.length, 512);
   assert.equal(event.referrer?.length, 2048);
 });
+
+test("stored user agents remove control characters", () => {
+  const event = createVisitEvent({
+    pathname: "/menu",
+    userAgent: "GPTBot/1.0\r\nInjected: value\u0000",
+    referrer: null,
+    bot,
+    now: new Date(),
+  });
+
+  assert.equal(event.userAgent, "GPTBot/1.0Injected: value");
+  assert.doesNotMatch(event.userAgent, /[\u0000-\u001f\u007f]/);
+});

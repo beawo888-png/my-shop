@@ -34,13 +34,13 @@ test("classified public GET schedules one privacy-safe record", async () => {
   });
 });
 
-test("human, excluded, and non-GET requests never schedule storage", () => {
+test("human, excluded, and non-page requests never schedule storage", () => {
   for (const input of [
     { ...base, userAgent: "Mozilla/5.0 Chrome/140" },
     { ...base, pathname: "/admin/ai-visits" },
     { ...base, pathname: "/api/data" },
     { ...base, pathname: "/image.jpg" },
-    { ...base, method: "HEAD" },
+    { ...base, method: "POST" },
   ]) {
     let scheduled = false;
     const handled = handleAiVisitRequest(input, {
@@ -51,6 +51,20 @@ test("human, excluded, and non-GET requests never schedule storage", () => {
     assert.equal(handled, false);
     assert.equal(scheduled, false);
   }
+});
+
+test("classified public HEAD schedules storage", () => {
+  let scheduled = false;
+  const handled = handleAiVisitRequest(
+    { ...base, method: "HEAD" },
+    {
+      schedule: () => { scheduled = true; },
+      record: async () => undefined,
+      now: () => new Date(),
+    },
+  );
+  assert.equal(handled, true);
+  assert.equal(scheduled, true);
 });
 
 test("scheduled recorder rejection is contained", async () => {

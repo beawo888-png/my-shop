@@ -11,8 +11,8 @@ export async function POST(request: Request) {
   response.cookies.set(ADMIN_SESSION_COOKIE, "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
+    sameSite: "strict",
+    path: "/admin",
     maxAge: 0,
   });
   response.headers.set("Cache-Control", "no-store");

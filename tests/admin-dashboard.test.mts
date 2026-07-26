@@ -48,6 +48,13 @@ test("login page posts only to the admin login endpoint", async () => {
   assert.match(page, /왕징 운영자 로그인/);
 });
 
+test("admin cookie is strict, scoped to admin and valid for twelve hours", async () => {
+  const route = await read("app/api/admin/login/route.ts");
+  assert.match(route, /sameSite:\s*["']strict["']/);
+  assert.match(route, /path:\s*["']\/admin["']/);
+  assert.match(route, /maxAge:\s*12\s*\*\s*60\s*\*\s*60/);
+});
+
 test("Pencil file contains desktop and mobile admin source frames", async () => {
   const sketch = JSON.parse(await read("초안"));
   const names = new Set(sketch.children.map((child: { name?: string }) => child.name));

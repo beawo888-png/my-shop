@@ -6,7 +6,7 @@ export type SessionPayload = {
   exp: number;
 };
 
-const SESSION_TTL_SECONDS = 8 * 60 * 60;
+const SESSION_TTL_SECONDS = 12 * 60 * 60;
 
 function validSecret(secret: string): boolean {
   return Buffer.byteLength(secret) >= 32;

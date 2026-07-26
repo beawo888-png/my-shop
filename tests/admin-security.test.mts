@@ -3,7 +3,11 @@ import { test } from "node:test";
 import { hashPassword, verifyPassword } from "../lib/admin/password";
 import { createSession, verifySession } from "../lib/admin/session";
 import { canonicalizeAdminPath, sanitizeAdminNext } from "../lib/admin/redirect";
-import { hashLoginSource, isLoginAllowed } from "../lib/admin/rate-limit";
+import {
+  createLoginLimitRepository,
+  hashLoginSource,
+  isLoginAllowed,
+} from "../lib/admin/rate-limit";
 
 const NOW = new Date("2026-07-26T12:00:00.000Z");
 
@@ -20,9 +24,13 @@ test("signed admin session rejects tampering and expiry", () => {
   const secret = "s".repeat(43);
   const token = createSession(secret, NOW);
   assert.equal(verifySession(token, secret, NOW)?.role, "admin");
+  assert.equal(
+    verifySession(token, secret, new Date(NOW.getTime() + 11 * 60 * 60 * 1000))?.role,
+    "admin",
+  );
   assert.equal(verifySession(`${token}x`, secret, NOW), null);
   assert.equal(
-    verifySession(token, secret, new Date(NOW.getTime() + 9 * 60 * 60 * 1000)),
+    verifySession(token, secret, new Date(NOW.getTime() + 13 * 60 * 60 * 1000)),
     null,
   );
   assert.equal(verifySession(token, "x".repeat(43), NOW), null);
@@ -81,4 +89,18 @@ test("login limiter blocks five active failures", async () => {
     getActiveFailureCount: async () => 5,
   };
   assert.equal(await isLoginAllowed("source", NOW, repository), false);
+});
+
+test("local file mode uses an in-memory login limiter without a database", async () => {
+  const repository = createLoginLimitRepository({
+    NODE_ENV: "development",
+    AI_VISIT_STORAGE: "file",
+  });
+  assert.equal(await repository.getActiveFailureCount("source", NOW), 0);
+  for (let index = 0; index < 5; index += 1) {
+    await repository.recordFailure("source", NOW);
+  }
+  assert.equal(await repository.getActiveFailureCount("source", NOW), 5);
+  await repository.clear("source");
+  assert.equal(await repository.getActiveFailureCount("source", NOW), 0);
 });
