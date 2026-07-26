@@ -15,8 +15,12 @@ export function classifyAiBot(userAgent: string | null): ClassifiedBot | null {
   );
 
   if (match) {
-    const { token: _token, ...classified } = match;
-    return classified;
+    return {
+      botId: match.botId,
+      botName: match.botName,
+      vendor: match.vendor,
+      purpose: match.purpose,
+    };
   }
 
   if (GENERIC_CRAWLER_SIGNAL.test(userAgent)) {

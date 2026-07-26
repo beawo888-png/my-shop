@@ -112,8 +112,30 @@
                   "height": 56,
                   "layout": "none",
                   "children": [
-                    { "type": "text", "id": "g-l1", "x": 96, "y": 2642, "name": "라벨", "fill": "#766C63", "content": "● 오시는 길", "fontFamily": "Inter", "fontSize": 15, "fontWeight": 800 },
-                    { "type": "text", "id": "g-v1", "x": 196, "y": 2642, "name": "값", "fill": "#766C63", "content": "판교역 4번 출구에서 266m", "fontFamily": "Inter", "fontSize": 15, "fontWeight": 500 }
+                    {
+                      "type": "text",
+                      "id": "g-l1",
+                      "x": 96,
+                      "y": 2642,
+                      "name": "라벨",
+                      "fill": "#766C63",
+                      "content": "● 오시는 길",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": 800
+                    },
+                    {
+                      "type": "text",
+                      "id": "g-v1",
+                      "x": 196,
+                      "y": 2642,
+                      "name": "값",
+                      "fill": "#766C63",
+                      "content": "판교역 4번 출구에서 266m",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": 500
+                    }
                   ]
                 },
                 {
@@ -126,8 +148,30 @@
                   "height": 56,
                   "layout": "none",
                   "children": [
-                    { "type": "text", "id": "g-l2", "x": 96, "y": 2702, "name": "라벨", "fill": "#766C63", "content": "♧ 추천 모임", "fontFamily": "Inter", "fontSize": 15, "fontWeight": 800 },
-                    { "type": "text", "id": "g-v2", "x": 196, "y": 2702, "name": "값", "fill": "#766C63", "content": "회식 · 비즈니스 미팅 · 가족모임 · 데이트", "fontFamily": "Inter", "fontSize": 15, "fontWeight": 500 }
+                    {
+                      "type": "text",
+                      "id": "g-l2",
+                      "x": 96,
+                      "y": 2702,
+                      "name": "라벨",
+                      "fill": "#766C63",
+                      "content": "♧ 추천 모임",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": 800
+                    },
+                    {
+                      "type": "text",
+                      "id": "g-v2",
+                      "x": 196,
+                      "y": 2702,
+                      "name": "값",
+                      "fill": "#766C63",
+                      "content": "회식 · 비즈니스 미팅 · 가족모임 · 데이트",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": 500
+                    }
                   ]
                 },
                 {
@@ -140,8 +184,30 @@
                   "height": 56,
                   "layout": "none",
                   "children": [
-                    { "type": "text", "id": "g-l3", "x": 96, "y": 2762, "name": "라벨", "fill": "#766C63", "content": "♢ 대표 메뉴", "fontFamily": "Inter", "fontSize": 15, "fontWeight": 800 },
-                    { "type": "text", "id": "g-v3", "x": 196, "y": 2762, "name": "값", "fill": "#766C63", "content": "통양다리구이 · 양꼬치 · 프리미엄 양갈비", "fontFamily": "Inter", "fontSize": 15, "fontWeight": 500 }
+                    {
+                      "type": "text",
+                      "id": "g-l3",
+                      "x": 96,
+                      "y": 2762,
+                      "name": "라벨",
+                      "fill": "#766C63",
+                      "content": "♢ 대표 메뉴",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": 800
+                    },
+                    {
+                      "type": "text",
+                      "id": "g-v3",
+                      "x": 196,
+                      "y": 2762,
+                      "name": "값",
+                      "fill": "#766C63",
+                      "content": "통양다리구이 · 양꼬치 · 프리미엄 양갈비",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": 500
+                    }
                   ]
                 },
                 {
@@ -154,8 +220,30 @@
                   "height": 56,
                   "layout": "none",
                   "children": [
-                    { "type": "text", "id": "g-l4", "x": 96, "y": 2822, "name": "라벨", "fill": "#766C63", "content": "▰ 주차 안내", "fontFamily": "Inter", "fontSize": 15, "fontWeight": 800 },
-                    { "type": "text", "id": "g-v4", "x": 196, "y": 2822, "name": "값", "fill": "#766C63", "content": "판교 라스트리트 주차장 (3시간 무료) 또는 근처 공영주차장", "fontFamily": "Inter", "fontSize": 15, "fontWeight": 500 }
+                    {
+                      "type": "text",
+                      "id": "g-l4",
+                      "x": 96,
+                      "y": 2822,
+                      "name": "라벨",
+                      "fill": "#766C63",
+                      "content": "▰ 주차 안내",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": 800
+                    },
+                    {
+                      "type": "text",
+                      "id": "g-v4",
+                      "x": 196,
+                      "y": 2822,
+                      "name": "값",
+                      "fill": "#766C63",
+                      "content": "판교 라스트리트 주차장 (3시간 무료) 또는 근처 공영주차장",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": 500
+                    }
                   ]
                 }
               ]
@@ -11664,6 +11752,982 @@
               ]
             }
           ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "admin-login-desktop",
+      "x": 10480,
+      "y": 1200,
+      "name": "관리자 로그인 데스크톱",
+      "metadata": {
+        "type": "admin-ui-spec",
+        "route": "/admin/login",
+        "viewport": "desktop"
+      },
+      "clip": true,
+      "width": 1440,
+      "height": 900,
+      "fill": "#17110F",
+      "layout": "vertical",
+      "alignItems": "center",
+      "justifyContent": "center",
+      "children": [
+        {
+          "type": "frame",
+          "id": "admin-login-desktopp",
+          "name": "관리자 로그인 패널",
+          "width": 440,
+          "height": 420,
+          "children": [
+            {
+              "type": "text",
+              "id": "admin-login-desktopey",
+              "name": "관리자 표시",
+              "fill": "#8F1D1D",
+              "content": "관리자 전용",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 14,
+              "fontWeight": "800"
+            },
+            {
+              "type": "text",
+              "id": "admin-login-desktopti",
+              "name": "로그인 제목",
+              "fill": "#17110F",
+              "content": "왕징 운영자 로그인",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 34,
+              "fontWeight": "800"
+            },
+            {
+              "type": "text",
+              "id": "admin-login-desktopde",
+              "name": "로그인 설명",
+              "fill": "#6B625D",
+              "content": "AI 어시스턴트 방문 현황은 운영자만 확인할 수 있습니다.",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 14,
+              "fontWeight": "500"
+            },
+            {
+              "type": "frame",
+              "id": "admin-login-desktopin",
+              "name": "비밀번호 입력",
+              "width": "fill_container",
+              "height": 54,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "admin-login-desktopph",
+                  "name": "입력 안내",
+                  "fill": "#6B625D",
+                  "content": "비밀번호",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 15,
+                  "fontWeight": "500"
+                }
+              ],
+              "fill": "#FFFFFF",
+              "stroke": "#DED2C5",
+              "strokeWidth": 1,
+              "padding": [
+                16,
+                18
+              ],
+              "alignItems": "center"
+            },
+            {
+              "type": "frame",
+              "id": "admin-login-desktopbt",
+              "name": "로그인 버튼",
+              "width": "fill_container",
+              "height": 54,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "admin-login-desktopbl",
+                  "name": "버튼 글자",
+                  "fill": "#FFFFFF",
+                  "content": "로그인",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 16,
+                  "fontWeight": "800"
+                }
+              ],
+              "fill": "#8F1D1D",
+              "padding": [
+                16,
+                18
+              ],
+              "alignItems": "center",
+              "justifyContent": "center"
+            },
+            {
+              "type": "text",
+              "id": "admin-login-desktopse",
+              "name": "보안 안내",
+              "fill": "#6B625D",
+              "content": "비밀번호와 방문 데이터는 일반 홈페이지에 표시되지 않습니다.",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 12,
+              "fontWeight": "500"
+            }
+          ],
+          "fill": "#F6F0E5",
+          "stroke": "#DED2C5",
+          "strokeWidth": 1,
+          "layout": "vertical",
+          "gap": 20,
+          "padding": 30
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "admin-dashboard-desktop",
+      "x": 10480,
+      "y": 2200,
+      "name": "AI 방문 관리자 대시보드 데스크톱",
+      "metadata": {
+        "type": "admin-ui-spec",
+        "route": "/admin/ai-visits",
+        "viewport": "desktop"
+      },
+      "clip": true,
+      "width": 1440,
+      "height": 1200,
+      "fill": "#F6F0E5",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "admin-dashboard-desktoph",
+          "name": "관리자 상단바",
+          "width": "fill_container",
+          "height": 82,
+          "children": [
+            {
+              "type": "text",
+              "id": "admin-dashboard-desktoplogo",
+              "name": "관리자 제목",
+              "fill": "#F6F0E5",
+              "content": "AI 어시스턴트별 방문",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 26,
+              "fontWeight": "800"
+            },
+            {
+              "type": "text",
+              "id": "admin-dashboard-desktopout",
+              "name": "로그아웃",
+              "fill": "#C5A15A",
+              "content": "로그아웃",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 14,
+              "fontWeight": "700"
+            }
+          ],
+          "fill": "#17110F",
+          "padding": [
+            20,
+            26
+          ],
+          "alignItems": "center",
+          "justifyContent": "space_between"
+        },
+        {
+          "type": "frame",
+          "id": "admin-dashboard-desktopb",
+          "name": "관리자 대시보드 본문",
+          "width": "fill_container",
+          "height": 1030,
+          "children": [
+            {
+              "type": "text",
+              "id": "admin-dashboard-desktoprange",
+              "name": "기간 안내",
+              "fill": "#6B625D",
+              "content": "최근 30일 · User-Agent 기준 · 실제 봇 신원을 보증하지 않음",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 14,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "admin-dashboard-desktopk",
+              "name": "데스크톱 KPI 행",
+              "width": "fill_container",
+              "height": 138,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "admin-dashboard-desktopk1",
+                  "name": "전체 AI/크롤러 방문 KPI 카드",
+                  "width": 300,
+                  "height": 138,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-desktopk1l",
+                      "name": "KPI 레이블",
+                      "fill": "#6B625D",
+                      "content": "전체 AI/크롤러 방문",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 15,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-desktopk1v",
+                      "name": "KPI 값",
+                      "fill": "#8F1D1D",
+                      "content": "0",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 38,
+                      "fontWeight": "800"
+                    }
+                  ],
+                  "fill": "#FFFFFF",
+                  "stroke": "#DED2C5",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 14,
+                  "padding": 22
+                },
+                {
+                  "type": "frame",
+                  "id": "admin-dashboard-desktopk2",
+                  "name": "검색 인덱싱 KPI 카드",
+                  "width": 300,
+                  "height": 138,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-desktopk2l",
+                      "name": "KPI 레이블",
+                      "fill": "#6B625D",
+                      "content": "검색 인덱싱",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 15,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-desktopk2v",
+                      "name": "KPI 값",
+                      "fill": "#C5A15A",
+                      "content": "0",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 38,
+                      "fontWeight": "800"
+                    }
+                  ],
+                  "fill": "#FFFFFF",
+                  "stroke": "#DED2C5",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 14,
+                  "padding": 22
+                },
+                {
+                  "type": "frame",
+                  "id": "admin-dashboard-desktopk3",
+                  "name": "학습 KPI 카드",
+                  "width": 300,
+                  "height": 138,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-desktopk3l",
+                      "name": "KPI 레이블",
+                      "fill": "#6B625D",
+                      "content": "학습",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 15,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-desktopk3v",
+                      "name": "KPI 값",
+                      "fill": "#17110F",
+                      "content": "0",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 38,
+                      "fontWeight": "800"
+                    }
+                  ],
+                  "fill": "#FFFFFF",
+                  "stroke": "#DED2C5",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 14,
+                  "padding": 22
+                },
+                {
+                  "type": "frame",
+                  "id": "admin-dashboard-desktopk4",
+                  "name": "실시간 인용 KPI 카드",
+                  "width": 300,
+                  "height": 138,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-desktopk4l",
+                      "name": "KPI 레이블",
+                      "fill": "#6B625D",
+                      "content": "실시간 인용",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 15,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-desktopk4v",
+                      "name": "KPI 값",
+                      "fill": "#8F1D1D",
+                      "content": "0",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 38,
+                      "fontWeight": "800"
+                    }
+                  ],
+                  "fill": "#FFFFFF",
+                  "stroke": "#DED2C5",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 14,
+                  "padding": 22
+                }
+              ],
+              "layout": "horizontal",
+              "gap": 18
+            },
+            {
+              "type": "frame",
+              "id": "admin-dashboard-desktoptb",
+              "name": "데스크톱 봇 방문 표",
+              "width": "fill_container",
+              "height": 390,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "admin-dashboard-desktoptbt",
+                  "name": "표 제목",
+                  "fill": "#17110F",
+                  "content": "봇별 방문",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 24,
+                  "fontWeight": "800"
+                },
+                {
+                  "type": "text",
+                  "id": "admin-dashboard-desktopth",
+                  "name": "표 머리글",
+                  "fill": "#6B625D",
+                  "content": "봇 이름     회사     목적     방문 수     최근 방문     많이 본 페이지     변화",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 14,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "frame",
+                  "id": "admin-dashboard-desktopline",
+                  "name": "표 구분선",
+                  "width": "fill_container",
+                  "height": 1,
+                  "children": [],
+                  "fill": "#DED2C5"
+                },
+                {
+                  "type": "text",
+                  "id": "admin-dashboard-desktopempty",
+                  "name": "빈 상태",
+                  "fill": "#6B625D",
+                  "content": "아직 기록된 AI 어시스턴트 방문이 없습니다.",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 15,
+                  "fontWeight": "500"
+                }
+              ],
+              "fill": "#FFFFFF",
+              "stroke": "#DED2C5",
+              "strokeWidth": 1,
+              "layout": "vertical",
+              "gap": 24,
+              "padding": 28
+            },
+            {
+              "type": "frame",
+              "id": "admin-dashboard-desktoppc",
+              "name": "데스크톱 목적 설명 카드",
+              "width": "fill_container",
+              "height": 190,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "admin-dashboard-desktopp1",
+                  "name": "검색 인덱싱 카드",
+                  "width": 410,
+                  "height": 150,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-desktopp1t",
+                      "name": "검색 인덱싱",
+                      "fill": "#C5A15A",
+                      "content": "검색 인덱싱",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 18,
+                      "fontWeight": "800"
+                    },
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-desktopp1d",
+                      "name": "설명",
+                      "fill": "#6B625D",
+                      "content": "검색 결과나 AI 검색 후보 페이지를 찾는 방문",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ],
+                  "fill": "#FFFFFF",
+                  "stroke": "#DED2C5",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 14,
+                  "padding": 22
+                },
+                {
+                  "type": "frame",
+                  "id": "admin-dashboard-desktopp2",
+                  "name": "학습 카드",
+                  "width": 410,
+                  "height": 150,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-desktopp2t",
+                      "name": "학습",
+                      "fill": "#17110F",
+                      "content": "학습",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 18,
+                      "fontWeight": "800"
+                    },
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-desktopp2d",
+                      "name": "설명",
+                      "fill": "#6B625D",
+                      "content": "모델 학습과 지식 수집 목적의 방문",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ],
+                  "fill": "#FFFFFF",
+                  "stroke": "#DED2C5",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 14,
+                  "padding": 22
+                },
+                {
+                  "type": "frame",
+                  "id": "admin-dashboard-desktopp3",
+                  "name": "실시간 인용 카드",
+                  "width": 410,
+                  "height": 150,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-desktopp3t",
+                      "name": "실시간 인용",
+                      "fill": "#8F1D1D",
+                      "content": "실시간 인용",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 18,
+                      "fontWeight": "800"
+                    },
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-desktopp3d",
+                      "name": "설명",
+                      "fill": "#6B625D",
+                      "content": "AI 답변과 출처 확인을 위해 들어오는 방문",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ],
+                  "fill": "#FFFFFF",
+                  "stroke": "#DED2C5",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 14,
+                  "padding": 22
+                }
+              ],
+              "layout": "horizontal",
+              "gap": 18
+            }
+          ],
+          "fill": "#F6F0E5",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": 40
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "admin-login-mobile",
+      "x": 12000,
+      "y": 1200,
+      "name": "관리자 로그인 모바일",
+      "metadata": {
+        "type": "admin-ui-spec",
+        "route": "/admin/login",
+        "viewport": "mobile"
+      },
+      "clip": true,
+      "width": 390,
+      "height": 760,
+      "fill": "#17110F",
+      "layout": "vertical",
+      "alignItems": "center",
+      "justifyContent": "center",
+      "children": [
+        {
+          "type": "frame",
+          "id": "admin-login-mobilep",
+          "name": "관리자 로그인 패널",
+          "width": 326,
+          "height": 420,
+          "children": [
+            {
+              "type": "text",
+              "id": "admin-login-mobileey",
+              "name": "관리자 표시",
+              "fill": "#8F1D1D",
+              "content": "관리자 전용",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 14,
+              "fontWeight": "800"
+            },
+            {
+              "type": "text",
+              "id": "admin-login-mobileti",
+              "name": "로그인 제목",
+              "fill": "#17110F",
+              "content": "왕징 운영자 로그인",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 28,
+              "fontWeight": "800"
+            },
+            {
+              "type": "text",
+              "id": "admin-login-mobilede",
+              "name": "로그인 설명",
+              "fill": "#6B625D",
+              "content": "AI 어시스턴트 방문 현황은 운영자만 확인할 수 있습니다.",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 14,
+              "fontWeight": "500"
+            },
+            {
+              "type": "frame",
+              "id": "admin-login-mobilein",
+              "name": "비밀번호 입력",
+              "width": "fill_container",
+              "height": 54,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "admin-login-mobileph",
+                  "name": "입력 안내",
+                  "fill": "#6B625D",
+                  "content": "비밀번호",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 15,
+                  "fontWeight": "500"
+                }
+              ],
+              "fill": "#FFFFFF",
+              "stroke": "#DED2C5",
+              "strokeWidth": 1,
+              "padding": [
+                16,
+                18
+              ],
+              "alignItems": "center"
+            },
+            {
+              "type": "frame",
+              "id": "admin-login-mobilebt",
+              "name": "로그인 버튼",
+              "width": "fill_container",
+              "height": 54,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "admin-login-mobilebl",
+                  "name": "버튼 글자",
+                  "fill": "#FFFFFF",
+                  "content": "로그인",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 16,
+                  "fontWeight": "800"
+                }
+              ],
+              "fill": "#8F1D1D",
+              "padding": [
+                16,
+                18
+              ],
+              "alignItems": "center",
+              "justifyContent": "center"
+            },
+            {
+              "type": "text",
+              "id": "admin-login-mobilese",
+              "name": "보안 안내",
+              "fill": "#6B625D",
+              "content": "비밀번호와 방문 데이터는 일반 홈페이지에 표시되지 않습니다.",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 12,
+              "fontWeight": "500"
+            }
+          ],
+          "fill": "#F6F0E5",
+          "stroke": "#DED2C5",
+          "strokeWidth": 1,
+          "layout": "vertical",
+          "gap": 20,
+          "padding": 30
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "admin-dashboard-mobile",
+      "x": 12000,
+      "y": 2050,
+      "name": "AI 방문 관리자 대시보드 모바일",
+      "metadata": {
+        "type": "admin-ui-spec",
+        "route": "/admin/ai-visits",
+        "viewport": "mobile"
+      },
+      "clip": true,
+      "width": 390,
+      "height": 1600,
+      "fill": "#F6F0E5",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "admin-dashboard-mobileh",
+          "name": "관리자 상단바",
+          "width": "fill_container",
+          "height": 82,
+          "children": [
+            {
+              "type": "text",
+              "id": "admin-dashboard-mobilelogo",
+              "name": "관리자 제목",
+              "fill": "#F6F0E5",
+              "content": "AI 어시스턴트별 방문",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 20,
+              "fontWeight": "800"
+            },
+            {
+              "type": "text",
+              "id": "admin-dashboard-mobileout",
+              "name": "로그아웃",
+              "fill": "#C5A15A",
+              "content": "로그아웃",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 14,
+              "fontWeight": "700"
+            }
+          ],
+          "fill": "#17110F",
+          "padding": [
+            20,
+            26
+          ],
+          "alignItems": "center",
+          "justifyContent": "space_between"
+        },
+        {
+          "type": "frame",
+          "id": "admin-dashboard-mobileb",
+          "name": "관리자 대시보드 본문",
+          "width": "fill_container",
+          "height": 1450,
+          "children": [
+            {
+              "type": "text",
+              "id": "admin-dashboard-mobilerange",
+              "name": "기간 안내",
+              "fill": "#6B625D",
+              "content": "최근 30일 · User-Agent 기준",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 13,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "admin-dashboard-mobilek",
+              "name": "모바일 KPI 목록",
+              "width": "fill_container",
+              "height": 620,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "admin-dashboard-mobilek1",
+                  "name": "전체 AI/크롤러 방문 KPI 카드",
+                  "width": "fill_container",
+                  "height": 138,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-mobilek1l",
+                      "name": "KPI 레이블",
+                      "fill": "#6B625D",
+                      "content": "전체 AI/크롤러 방문",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 15,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-mobilek1v",
+                      "name": "KPI 값",
+                      "fill": "#8F1D1D",
+                      "content": "0",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 38,
+                      "fontWeight": "800"
+                    }
+                  ],
+                  "fill": "#FFFFFF",
+                  "stroke": "#DED2C5",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 14,
+                  "padding": 22
+                },
+                {
+                  "type": "frame",
+                  "id": "admin-dashboard-mobilek2",
+                  "name": "검색 인덱싱 KPI 카드",
+                  "width": "fill_container",
+                  "height": 138,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-mobilek2l",
+                      "name": "KPI 레이블",
+                      "fill": "#6B625D",
+                      "content": "검색 인덱싱",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 15,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-mobilek2v",
+                      "name": "KPI 값",
+                      "fill": "#C5A15A",
+                      "content": "0",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 38,
+                      "fontWeight": "800"
+                    }
+                  ],
+                  "fill": "#FFFFFF",
+                  "stroke": "#DED2C5",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 14,
+                  "padding": 22
+                },
+                {
+                  "type": "frame",
+                  "id": "admin-dashboard-mobilek3",
+                  "name": "학습 KPI 카드",
+                  "width": "fill_container",
+                  "height": 138,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-mobilek3l",
+                      "name": "KPI 레이블",
+                      "fill": "#6B625D",
+                      "content": "학습",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 15,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-mobilek3v",
+                      "name": "KPI 값",
+                      "fill": "#17110F",
+                      "content": "0",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 38,
+                      "fontWeight": "800"
+                    }
+                  ],
+                  "fill": "#FFFFFF",
+                  "stroke": "#DED2C5",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 14,
+                  "padding": 22
+                },
+                {
+                  "type": "frame",
+                  "id": "admin-dashboard-mobilek4",
+                  "name": "실시간 인용 KPI 카드",
+                  "width": "fill_container",
+                  "height": 138,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-mobilek4l",
+                      "name": "KPI 레이블",
+                      "fill": "#6B625D",
+                      "content": "실시간 인용",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 15,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "admin-dashboard-mobilek4v",
+                      "name": "KPI 값",
+                      "fill": "#8F1D1D",
+                      "content": "0",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 38,
+                      "fontWeight": "800"
+                    }
+                  ],
+                  "fill": "#FFFFFF",
+                  "stroke": "#DED2C5",
+                  "strokeWidth": 1,
+                  "layout": "vertical",
+                  "gap": 14,
+                  "padding": 22
+                }
+              ],
+              "layout": "vertical",
+              "gap": 14
+            },
+            {
+              "type": "frame",
+              "id": "admin-dashboard-mobiletb",
+              "name": "모바일 봇 방문 표",
+              "width": "fill_container",
+              "height": 280,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "admin-dashboard-mobiletbt",
+                  "name": "표 제목",
+                  "fill": "#17110F",
+                  "content": "봇별 방문",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 20,
+                  "fontWeight": "800"
+                },
+                {
+                  "type": "text",
+                  "id": "admin-dashboard-mobileth",
+                  "name": "표 머리글",
+                  "fill": "#6B625D",
+                  "content": "봇 · 목적 · 방문 · 변화",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 13,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "admin-dashboard-mobileempty",
+                  "name": "빈 상태",
+                  "fill": "#6B625D",
+                  "content": "아직 기록된 AI 어시스턴트 방문이 없습니다.",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ],
+              "fill": "#FFFFFF",
+              "stroke": "#DED2C5",
+              "strokeWidth": 1,
+              "layout": "vertical",
+              "gap": 22,
+              "padding": 22
+            },
+            {
+              "type": "frame",
+              "id": "admin-dashboard-mobilepc",
+              "name": "모바일 목적 설명",
+              "width": "fill_container",
+              "height": 340,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "admin-dashboard-mobilep1",
+                  "name": "검색 인덱싱 설명",
+                  "fill": "#17110F",
+                  "content": "검색 인덱싱 · 검색 결과나 AI 검색 후보 페이지를 찾는 방문",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 13,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "admin-dashboard-mobilep2",
+                  "name": "학습 설명",
+                  "fill": "#17110F",
+                  "content": "학습 · 모델 학습과 지식 수집 목적의 방문",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 13,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "admin-dashboard-mobilep3",
+                  "name": "실시간 인용 설명",
+                  "fill": "#17110F",
+                  "content": "실시간 인용 · AI 답변과 출처 확인을 위한 방문",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 13,
+                  "fontWeight": "600"
+                }
+              ],
+              "fill": "#F6F0E5",
+              "stroke": "#DED2C5",
+              "strokeWidth": 1,
+              "layout": "vertical",
+              "gap": 24,
+              "padding": 22
+            }
+          ],
+          "fill": "#F6F0E5",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": 18
         }
       ]
     }

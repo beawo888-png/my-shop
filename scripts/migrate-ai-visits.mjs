@@ -37,7 +37,7 @@ try {
   `;
   await sql`CREATE INDEX IF NOT EXISTS admin_login_limits_expires_idx ON admin_login_limits (expires_at)`;
   console.log("AI visit analytics schema is ready");
-} catch (error) {
-  console.error("AI visit analytics migration failed");
+} catch {
+  console.error("AI visit database migration failed");
   process.exitCode = 1;
 }
