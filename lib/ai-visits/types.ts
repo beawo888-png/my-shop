@@ -24,3 +24,19 @@ export type AiVisitInsert = ClassifiedBot & {
 export type AiVisitRow = AiVisitInsert & {
   id?: number | string;
 };
+
+export type BotVisitSummary = ClassifiedBot & {
+  currentCount: number;
+  previousCount: number;
+  delta: number;
+  percentChange: number | null;
+  isNew: boolean;
+  lastVisitedAt: Date | null;
+  topPath: string | null;
+};
+
+export type VisitSummary = {
+  total: number;
+  byPurpose: Record<Purpose, number>;
+  bots: BotVisitSummary[];
+};
