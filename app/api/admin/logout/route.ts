@@ -1,13 +1,12 @@
 import { ADMIN_SESSION_COOKIE } from "@/lib/admin/require-admin";
+import { buildSameOriginUrl } from "@/lib/admin/request-origin";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const origin = request.headers.get("origin");
-  if (!origin || new URL(origin).origin !== new URL(request.url).origin) {
-    return new NextResponse("Forbidden", { status: 403 });
-  }
+  const redirectUrl = buildSameOriginUrl("/admin/login", request.headers, request.url);
+  if (!redirectUrl) return new NextResponse("Forbidden", { status: 403 });
 
-  const response = NextResponse.redirect(new URL("/admin/login", request.url), 303);
+  const response = NextResponse.redirect(redirectUrl, 303);
   response.cookies.set(ADMIN_SESSION_COOKIE, "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

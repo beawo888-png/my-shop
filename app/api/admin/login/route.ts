@@ -5,19 +5,10 @@ import {
   loginLimitRepository,
 } from "@/lib/admin/rate-limit";
 import { sanitizeAdminNext } from "@/lib/admin/redirect";
+import { buildSameOriginUrl, isSameOriginRequest } from "@/lib/admin/request-origin";
 import { verifyPassword } from "@/lib/admin/password";
 import { createSession } from "@/lib/admin/session";
 import { NextResponse } from "next/server";
-
-function sameOrigin(request: Request): boolean {
-  const origin = request.headers.get("origin");
-  if (!origin) return false;
-  try {
-    return new URL(origin).origin === new URL(request.url).origin;
-  } catch {
-    return false;
-  }
-}
 
 function clientAddress(request: Request): string {
   return (
@@ -28,14 +19,15 @@ function clientAddress(request: Request): string {
 }
 
 function loginRedirect(request: Request, next: string) {
-  const url = new URL("/admin/login", request.url);
+  const url = buildSameOriginUrl("/admin/login", request.headers, request.url);
+  if (!url) return new NextResponse("Forbidden", { status: 403 });
   url.searchParams.set("error", "invalid");
   url.searchParams.set("next", next);
   return NextResponse.redirect(url, 303);
 }
 
 export async function POST(request: Request) {
-  if (!sameOrigin(request)) {
+  if (!isSameOriginRequest(request.headers, request.url)) {
     return new NextResponse("Forbidden", { status: 403 });
   }
 
@@ -65,7 +57,9 @@ export async function POST(request: Request) {
     }
 
     await loginLimitRepository.clear(sourceHash);
-    const response = NextResponse.redirect(new URL(next, request.url), 303);
+    const redirectUrl = buildSameOriginUrl(next, request.headers, request.url);
+    if (!redirectUrl) return new NextResponse("Forbidden", { status: 403 });
+    const response = NextResponse.redirect(redirectUrl, 303);
     response.cookies.set(ADMIN_SESSION_COOKIE, createSession(sessionSecret), {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
