@@ -17,6 +17,12 @@ export const metadata: Metadata = {
     "모란 중국요리",
   ],
   alternates: { canonical: "/" },
+  verification: {
+    other: {
+      "naver-site-verification":
+        "d03494c18b6c877e56cbcf21fdccb87639bf62d8",
+    },
+  },
   openGraph: {
     title: "왕징양다리양꼬치 | 판교·모란 통양다리구이·양꼬치",
     description:

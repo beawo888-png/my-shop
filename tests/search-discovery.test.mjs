@@ -37,3 +37,13 @@ test("menu index declares its own canonical route", async () => {
     /alternates:\s*\{\s*canonical:\s*"\/menu"\s*\}/,
   );
 });
+
+test("root metadata publishes the Naver ownership verification token", async () => {
+  const layout = await read("app/layout.tsx");
+
+  assert.match(layout, /verification:\s*\{/);
+  assert.match(
+    layout,
+    /"naver-site-verification":\s*"d03494c18b6c877e56cbcf21fdccb87639bf62d8"/,
+  );
+});
