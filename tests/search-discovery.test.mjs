@@ -28,3 +28,12 @@ test("robots permits crawling and advertises the canonical sitemap", async () =>
     /https:\/\/xn--vr0bn4e2wh79mca68ih9mf4j\.com\/sitemap\.xml/,
   );
 });
+
+test("menu index declares its own canonical route", async () => {
+  const menuPage = await read("app/menu/page.tsx");
+
+  assert.match(
+    menuPage,
+    /alternates:\s*\{\s*canonical:\s*"\/menu"\s*\}/,
+  );
+});
