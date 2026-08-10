@@ -24,6 +24,9 @@
 .DS_Store
 *.pem
 
+# local reference material (not licensed for public redistribution)
+/2026-03-23_자영업자를_위한_GEO_AEO_완벽가이드북.html
+
 # debug
 npm-debug.log*
 yarn-debug.log*
