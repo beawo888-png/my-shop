@@ -19,7 +19,7 @@ export function BrandLogo({
       height={451}
       sizes={sizes}
       preload={preload}
-      alt="왕징양다리양꼬치"
+      alt=""
     />
   );
 }

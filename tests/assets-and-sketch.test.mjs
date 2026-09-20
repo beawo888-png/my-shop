@@ -115,3 +115,16 @@ test("Pencil source records all approved language selector states", async () => 
     }
   }
 });
+
+test("Pencil source records long translated tablet and mobile content layouts", async () => {
+  const pencil = JSON.parse(await readFile(new URL("../초안", import.meta.url), "utf8"));
+  for (const [name, width] of [["다국어 긴 문구 태블릿 · 910px", 910], ["다국어 긴 문구 모바일 · 390px", 390]]) {
+    const frame = pencil.children.find((child) => child.name === name);
+    assert.ok(frame, `${name} frame must exist`);
+    assert.equal(frame.width, width);
+    for (const label of ["Recommended occasions", "pre-wedding gatherings", "結婚報告の食事会", "婚前聚会"])
+      assert.ok(JSON.stringify(frame).includes(label), `${name} must illustrate ${label}`);
+    assert.ok(frame.children.some((child) => child.name.includes("레이블 위 · 값 아래")));
+    if (width === 390) assert.ok(frame.children.some((child) => child.name.includes("모임 타일 · 2열")));
+  }
+});

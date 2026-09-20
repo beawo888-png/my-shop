@@ -326,6 +326,14 @@ test("mobile menu exposes its state and target", async () => {
   );
 });
 
+test("translated content wraps naturally and stacks narrow detail rows", async () => {
+  const css = await read("app/globals.css");
+  assert.match(css, /div:is\(\[lang="en"\], \[lang="zh-CN"\], \[lang="ja"\]\)\s*\{[^}]*word-break:\s*normal;[^}]*overflow-wrap:\s*anywhere;/s);
+  assert.match(css, /div:is\(\[lang="en"\], \[lang="zh-CN"\], \[lang="ja"\]\) \.group-seo__branch-heading\s*\{[^}]*flex-wrap:\s*wrap;/s);
+  assert.match(css, /div:is\(\[lang="en"\], \[lang="zh-CN"\], \[lang="ja"\]\) \.group-seo__branch-card dl > div,[\s\S]*?\.location-card__details > div\s*\{[^}]*grid-template-columns:\s*1fr;/);
+  assert.match(css, /@media \(max-width: 767px\)\s*\{\s*\.group-seo__occasions\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/s);
+});
+
 test("tablet header keeps all primary navigation buttons visible in two rows", async () => {
   const [css, pencilSource] = await Promise.all([
     read("app/globals.css"),
@@ -540,7 +548,7 @@ test("header uses the approved logo and footer uses the Wangjing brand name", as
   assert.match(brandLogo, /src="\/images\/wangjing\/wangjing-logo\.jpg"/);
   assert.match(brandLogo, /width=\{1339\}/);
   assert.match(brandLogo, /height=\{451\}/);
-  assert.match(brandLogo, /alt="왕징양다리양꼬치"/);
+  assert.match(brandLogo, /alt=""/);
   assert.match(header, /BrandLogo/);
   assert.match(header, /brand-logo--header/);
   assert.match(header, /aria-label=\{copy\.homeAria\}/);

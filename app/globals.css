@@ -2359,3 +2359,43 @@ img {
     border-bottom: 0;
   }
 }
+
+/* Foreign homepage copy needs natural wrapping instead of Korean keep-all. */
+div:is([lang="en"], [lang="zh-CN"], [lang="ja"]) {
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
+div:is([lang="en"], [lang="zh-CN"], [lang="ja"]) .group-seo__branch-heading {
+  flex-wrap: wrap;
+}
+
+div:is([lang="en"], [lang="zh-CN"], [lang="ja"]) .group-seo__branch-top > div,
+div:is([lang="en"], [lang="zh-CN"], [lang="ja"]) .group-seo__feature-band div {
+  min-width: 0;
+}
+
+div:is([lang="en"], [lang="zh-CN"], [lang="ja"]) .group-seo__branch-card dl > div,
+div:is([lang="en"], [lang="zh-CN"], [lang="ja"]) .location-card__details > div {
+  grid-template-columns: max-content minmax(0, 1fr);
+}
+
+@media (max-width: 1100px) {
+  div:is([lang="en"], [lang="zh-CN"], [lang="ja"]) .group-seo__branch-top {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  div:is([lang="en"], [lang="zh-CN"], [lang="ja"]) .group-seo__branch-card dl > div,
+  div:is([lang="en"], [lang="zh-CN"], [lang="ja"]) .location-card__details > div {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+    padding-block: 0.75rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .group-seo__occasions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

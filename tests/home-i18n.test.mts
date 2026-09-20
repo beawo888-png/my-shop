@@ -31,6 +31,18 @@ test("foreign display-copy modules contain no accidental Hangul", () => {
   for (const locale of LOCALIZED_LOCALES) assert.doesNotMatch(JSON.stringify(HOME_COPY[locale]), /[가-힣]/);
 });
 
+test("foreign copy uses natural pre-wedding gathering terms", () => {
+  for (const [locale, preferred, literal] of [
+    ["en", "pre-wedding gatherings", /wedding-invitation gatherings/i],
+    ["zh", "婚前聚会", /婚礼请柬聚会/],
+    ["ja", "結婚報告の食事会", /結婚式招待状のお渡し会|結婚式の招待状を渡す集まり/],
+  ] as const) {
+    const source = JSON.stringify(HOME_COPY[locale]);
+    assert.ok(source.toLowerCase().includes(preferred), `${locale} should use ${preferred}`);
+    assert.doesNotMatch(source, literal);
+  }
+});
+
 for (const locale of LOCALIZED_LOCALES) {
   test(`${locale} display copy does not duplicate official road-name facts`, () => {
     assert.doesNotMatch(

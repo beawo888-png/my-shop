@@ -13134,6 +13134,535 @@
         }
       ]
     }
+  ,
+  {
+    "type": "frame",
+    "id": "locale-long-910",
+    "x": 4000,
+    "y": 8000,
+    "name": "다국어 긴 문구 태블릿 · 910px",
+    "width": 910,
+    "height": 1400,
+    "fill": "#F6F0E5",
+    "layout": "vertical",
+    "gap": 24,
+    "padding": 20,
+    "children": [
+      {
+        "type": "frame",
+        "id": "locale-long-910-header",
+        "name": "두 줄 내비게이션 · 긴 번역 줄바꿈",
+        "width": "fill_container",
+        "layout": "vertical",
+        "gap": 16,
+        "padding": 20,
+        "fill": "#17110F",
+        "children": [
+          {
+            "type": "text",
+            "id": "locale-long-910-brand",
+            "name": "brand",
+            "content": "王京 · English · 简体中文 · 日本語",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 20,
+            "fontWeight": "600",
+            "fill": "#C5A15A"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-910-nav",
+            "name": "nav",
+            "content": "Brand Story · Signature Menu · Locations\nGroup Dining · Frequently Asked Questions",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 16,
+            "fontWeight": "600",
+            "fill": "#FFF8EC"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "locale-long-910-heading",
+        "name": "heading",
+        "content": "Wangjing for your special occasions\n大切な集いの場、王京で\n重要相聚，尽在王京",
+        "textGrowth": "fixed-width",
+        "width": "fill_container",
+        "fontFamily": "Noto Sans KR",
+        "fontSize": 24,
+        "fontWeight": "600",
+        "fill": "#211A17"
+      },
+      {
+        "type": "frame",
+        "id": "locale-long-910-tiles",
+        "name": "모임 타일 · 자연 줄바꿈",
+        "width": "fill_container",
+        "layout": "vertical",
+        "gap": 12,
+        "children": [
+          {
+            "type": "frame",
+            "id": "locale-long-910-tile-row",
+            "name": "모임 타일 행",
+            "width": "fill_container",
+            "layout": "horizontal",
+            "gap": 12,
+            "children": [
+              {
+                "type": "text",
+                "id": "locale-long-910-tile-1",
+                "name": "tile-1",
+                "content": "pre-wedding gatherings",
+                "textGrowth": "fixed-width",
+                "width": "fill_container",
+                "fontFamily": "Noto Sans KR",
+                "fontSize": 16,
+                "fontWeight": "600",
+                "fill": "#211A17"
+              },
+              {
+                "type": "text",
+                "id": "locale-long-910-tile-2",
+                "name": "tile-2",
+                "content": "結婚報告の食事会\n婚前聚会",
+                "textGrowth": "fixed-width",
+                "width": "fill_container",
+                "fontFamily": "Noto Sans KR",
+                "fontSize": 16,
+                "fontWeight": "600",
+                "fill": "#211A17"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "frame",
+        "id": "locale-long-910-card",
+        "name": "지점 카드 · 레이블 위 · 값 아래",
+        "width": "fill_container",
+        "layout": "vertical",
+        "gap": 16,
+        "padding": 24,
+        "fill": "#FFF8EC",
+        "cornerRadius": 20,
+        "children": [
+          {
+            "type": "text",
+            "id": "locale-long-910-branch",
+            "name": "branch",
+            "content": "MORAN\nMoran Main Branch",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 28,
+            "fontWeight": "600",
+            "fill": "#211A17"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-910-label",
+            "name": "label",
+            "content": "Recommended occasions",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 17,
+            "fontWeight": "600",
+            "fill": "#211A17"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-910-value",
+            "name": "value",
+            "content": "Team dinners · Family meals · pre-wedding gatherings",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 16,
+            "fontWeight": "600",
+            "fill": "#766C63"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-910-label-ja",
+            "name": "label-ja",
+            "content": "おすすめの集まり",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 17,
+            "fontWeight": "600",
+            "fill": "#211A17"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-910-value-ja",
+            "name": "value-ja",
+            "content": "会社の会食・家族の食事・結婚報告の食事会",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 16,
+            "fontWeight": "600",
+            "fill": "#766C63"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-910-label-zh",
+            "name": "label-zh",
+            "content": "推荐聚会",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 17,
+            "fontWeight": "600",
+            "fill": "#211A17"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-910-value-zh",
+            "name": "value-zh",
+            "content": "公司聚餐・家庭用餐・婚前聚会",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 16,
+            "fontWeight": "600",
+            "fill": "#766C63"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-910-reserve",
+            "name": "reserve",
+            "content": "Reserve Moran Main Branch",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 17,
+            "fontWeight": "600",
+            "fill": "#8F1D1D"
+          }
+        ]
+      },
+      {
+        "type": "frame",
+        "id": "locale-long-910-location",
+        "name": "위치 정보 · 레이블 위 · 값 아래",
+        "width": "fill_container",
+        "layout": "vertical",
+        "gap": 12,
+        "padding": 24,
+        "fill": "#FFF8EC",
+        "children": [
+          {
+            "type": "text",
+            "id": "locale-long-910-station",
+            "name": "station",
+            "content": "Nearest station",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 17,
+            "fontWeight": "600",
+            "fill": "#211A17"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-910-station-value",
+            "name": "station-value",
+            "content": "215m from Moran Station Exit 4 · 5-minute walk",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 16,
+            "fontWeight": "600",
+            "fill": "#211A17"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-910-directions",
+            "name": "directions",
+            "content": "Open in Naver Map · Open in Google Maps",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 16,
+            "fontWeight": "600",
+            "fill": "#8F1D1D"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "frame",
+    "id": "locale-long-390",
+    "x": 5000,
+    "y": 8000,
+    "name": "다국어 긴 문구 모바일 · 390px",
+    "width": 390,
+    "height": 1400,
+    "fill": "#F6F0E5",
+    "layout": "vertical",
+    "gap": 24,
+    "padding": 20,
+    "children": [
+      {
+        "type": "frame",
+        "id": "locale-long-390-header",
+        "name": "두 줄 내비게이션 · 긴 번역 줄바꿈",
+        "width": "fill_container",
+        "layout": "vertical",
+        "gap": 16,
+        "padding": 20,
+        "fill": "#17110F",
+        "children": [
+          {
+            "type": "text",
+            "id": "locale-long-390-brand",
+            "name": "brand",
+            "content": "王京 · English · 简体中文 · 日本語",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 20,
+            "fontWeight": "600",
+            "fill": "#C5A15A"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-390-nav",
+            "name": "nav",
+            "content": "Brand Story · Signature Menu · Locations\nGroup Dining · Frequently Asked Questions",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 16,
+            "fontWeight": "600",
+            "fill": "#FFF8EC"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "locale-long-390-heading",
+        "name": "heading",
+        "content": "Wangjing for your special occasions\n大切な集いの場、王京で\n重要相聚，尽在王京",
+        "textGrowth": "fixed-width",
+        "width": "fill_container",
+        "fontFamily": "Noto Sans KR",
+        "fontSize": 24,
+        "fontWeight": "600",
+        "fill": "#211A17"
+      },
+      {
+        "type": "frame",
+        "id": "locale-long-390-tiles",
+        "name": "모임 타일 · 2열",
+        "width": "fill_container",
+        "layout": "vertical",
+        "gap": 12,
+        "children": [
+          {
+            "type": "frame",
+            "id": "locale-long-390-tile-row",
+            "name": "모임 타일 행",
+            "width": "fill_container",
+            "layout": "horizontal",
+            "gap": 12,
+            "children": [
+              {
+                "type": "text",
+                "id": "locale-long-390-tile-1",
+                "name": "tile-1",
+                "content": "pre-wedding gatherings",
+                "textGrowth": "fixed-width",
+                "width": "fill_container",
+                "fontFamily": "Noto Sans KR",
+                "fontSize": 16,
+                "fontWeight": "600",
+                "fill": "#211A17"
+              },
+              {
+                "type": "text",
+                "id": "locale-long-390-tile-2",
+                "name": "tile-2",
+                "content": "結婚報告の食事会\n婚前聚会",
+                "textGrowth": "fixed-width",
+                "width": "fill_container",
+                "fontFamily": "Noto Sans KR",
+                "fontSize": 16,
+                "fontWeight": "600",
+                "fill": "#211A17"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "frame",
+        "id": "locale-long-390-card",
+        "name": "지점 카드 · 레이블 위 · 값 아래",
+        "width": "fill_container",
+        "layout": "vertical",
+        "gap": 16,
+        "padding": 24,
+        "fill": "#FFF8EC",
+        "cornerRadius": 20,
+        "children": [
+          {
+            "type": "text",
+            "id": "locale-long-390-branch",
+            "name": "branch",
+            "content": "MORAN\nMoran Main Branch",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 28,
+            "fontWeight": "600",
+            "fill": "#211A17"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-390-label",
+            "name": "label",
+            "content": "Recommended occasions",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 17,
+            "fontWeight": "600",
+            "fill": "#211A17"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-390-value",
+            "name": "value",
+            "content": "Team dinners · Family meals · pre-wedding gatherings",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 16,
+            "fontWeight": "600",
+            "fill": "#766C63"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-390-label-ja",
+            "name": "label-ja",
+            "content": "おすすめの集まり",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 17,
+            "fontWeight": "600",
+            "fill": "#211A17"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-390-value-ja",
+            "name": "value-ja",
+            "content": "会社の会食・家族の食事・結婚報告の食事会",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 16,
+            "fontWeight": "600",
+            "fill": "#766C63"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-390-label-zh",
+            "name": "label-zh",
+            "content": "推荐聚会",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 17,
+            "fontWeight": "600",
+            "fill": "#211A17"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-390-value-zh",
+            "name": "value-zh",
+            "content": "公司聚餐・家庭用餐・婚前聚会",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 16,
+            "fontWeight": "600",
+            "fill": "#766C63"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-390-reserve",
+            "name": "reserve",
+            "content": "Reserve Moran Main Branch",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 17,
+            "fontWeight": "600",
+            "fill": "#8F1D1D"
+          }
+        ]
+      },
+      {
+        "type": "frame",
+        "id": "locale-long-390-location",
+        "name": "위치 정보 · 레이블 위 · 값 아래",
+        "width": "fill_container",
+        "layout": "vertical",
+        "gap": 12,
+        "padding": 24,
+        "fill": "#FFF8EC",
+        "children": [
+          {
+            "type": "text",
+            "id": "locale-long-390-station",
+            "name": "station",
+            "content": "Nearest station",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 17,
+            "fontWeight": "600",
+            "fill": "#211A17"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-390-station-value",
+            "name": "station-value",
+            "content": "215m from Moran Station Exit 4 · 5-minute walk",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 16,
+            "fontWeight": "600",
+            "fill": "#211A17"
+          },
+          {
+            "type": "text",
+            "id": "locale-long-390-directions",
+            "name": "directions",
+            "content": "Open in Naver Map · Open in Google Maps",
+            "textGrowth": "fixed-width",
+            "width": "fill_container",
+            "fontFamily": "Noto Sans KR",
+            "fontSize": 16,
+            "fontWeight": "600",
+            "fill": "#8F1D1D"
+          }
+        ]
+      }
+    ]
+  }
   ],
   "fileToken": "4786e8a5-4364-43b4-bd9b-87ed94eaa636"
 }
