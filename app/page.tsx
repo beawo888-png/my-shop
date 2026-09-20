@@ -1,4 +1,5 @@
 import { GroupDiningSection } from "@/components/home/group-dining-section";
+import { FaqSection } from "@/components/home/faq-section";
 import { HeroSection } from "@/components/home/hero-section";
 import { LocationSection } from "@/components/home/location-section";
 import { MobileBookingBar } from "@/components/home/mobile-booking-bar";
@@ -29,6 +30,7 @@ export default function Home() {
         <GroupDiningSection />
         <ReviewsSection />
         <LocationSection />
+        <FaqSection />
         <ReservationBanner />
       </main>
       <SiteFooter />

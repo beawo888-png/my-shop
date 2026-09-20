@@ -15,6 +15,7 @@ test("home page renders every approved section", async () => {
     "GroupDiningSection",
     "ReviewsSection",
     "LocationSection",
+    "FaqSection",
     "ReservationBanner",
     "MobileBookingBar",
     "SiteFooter",
@@ -31,6 +32,7 @@ test("section components expose the approved anchor IDs", async () => {
       "group-dining-section.tsx",
       "reviews-section.tsx",
       "location-section.tsx",
+      "faq-section.tsx",
     ].map((name) => read(`components/home/${name}`)),
   );
   for (const [index, id] of [
@@ -39,6 +41,7 @@ test("section components expose the approved anchor IDs", async () => {
     "group",
     "reviews",
     "location",
+    "faq",
   ].entries()) {
     assert.match(files[index], new RegExp(`id=["']${id}["']`));
   }
@@ -473,6 +476,34 @@ test("reference footer renders the approved four-column information layout", asy
   assert.match(
     css,
     /\.site-footer__main\s*\{[\s\S]*?grid-template-columns:\s*1\.15fr 1fr 1fr 0\.8fr;/,
+  );
+});
+
+test("FAQ section renders accessible independently controlled items", async () => {
+  const [page, section, item, css] = await Promise.all([
+    read("app/page.tsx"),
+    read("components/home/faq-section.tsx"),
+    read("components/home/faq-accordion-item.tsx"),
+    read("app/globals.css"),
+  ]);
+
+  assert.match(page, /import \{ FaqSection \}/);
+  assert.match(page, /<FaqSection \/>/);
+  assert.match(section, /FAQ_ITEMS\.map/);
+  assert.match(section, /<FaqAccordionItem/);
+  assert.match(section, /id="faq"/);
+  assert.match(section, /자주 묻는 질문/);
+  assert.match(item, /^"use client";/m);
+  assert.match(item, /useState\(false\)/);
+  assert.match(item, /type="button"/);
+  assert.match(item, /aria-expanded=\{open\}/);
+  assert.match(item, /aria-controls=\{panelId\}/);
+  assert.match(item, /hidden=\{!open\}/);
+  assert.match(item, /item\.answer\.map/);
+  assert.match(css, /\.faq-item__trigger\s*\{[\s\S]*?min-height:\s*72px;/);
+  assert.match(
+    css,
+    /@media \(max-width: 767px\)[\s\S]*?\.faq-item__trigger\s*\{[\s\S]*?min-height:\s*64px;/,
   );
 });
 
