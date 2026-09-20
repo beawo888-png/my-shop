@@ -6,9 +6,9 @@ const read = (path) =>
   readFile(new URL(`../${path}`, import.meta.url), "utf8").catch(() => "");
 
 test("home renders the approved brand story and four Wangjing promises", async () => {
-  const [story, siteContent] = await Promise.all([
+  const [story, koreanCopy] = await Promise.all([
     read("components/home/story-section.tsx"),
-    read("lib/site-content.ts"),
+    read("lib/home-i18n/ko.ts"),
   ]);
 
   for (const phrase of [
@@ -32,7 +32,7 @@ test("home renders the approved brand story and four Wangjing promises", async (
 
   assert.match(story, /WANGJING_PROMISES\.map/);
   assert.match(story, /className="story__promise-card"/);
-  assert.match(siteContent, /label: "브랜드 스토리", href: "#story"/);
+  assert.match(koreanCopy, /label: "브랜드 스토리", href: "#story"/);
 });
 
 test("home describes Pangyo and Moran dining intent with branch actions", async () => {

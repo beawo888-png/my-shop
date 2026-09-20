@@ -1,8 +1,3 @@
-export type NavItem = {
-  label: string;
-  href: string;
-  newTab?: boolean;
-};
 export type BookingLocation = {
   id: "moran" | "pangyo";
   label: string;
@@ -107,14 +102,6 @@ export const LOCATIONS: Location[] = [
     googleReviewUrl:
       "https://www.google.com/maps/search/?api=1&query=왕징양다리양꼬치 판교점 경기 성남시 분당구 대왕판교로606번길 10",
   },
-];
-
-export const NAV_ITEMS: NavItem[] = [
-  { label: "브랜드 스토리", href: "#story" },
-  { label: "대표 메뉴", href: "/menu", newTab: true },
-  { label: "지점 안내", href: "#location" },
-  { label: "단체 모임", href: "#group" },
-  { label: "자주 묻는 질문", href: "#faq" },
 ];
 
 export const TRUST_ITEMS: TrustItem[] = [

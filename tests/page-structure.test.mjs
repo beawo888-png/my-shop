@@ -139,7 +139,7 @@ test("reviews page renders two safe Naver review choices", async () => {
   assert.match(page, /LOCATIONS\.map/);
   assert.match(page, /<ReviewLocationCard/);
   assert.match(page, /import \{ SiteHeader \} from "@\/components\/home\/site-header"/);
-  assert.match(page, /<SiteHeader sectionRoot="\/" \/>/);
+  assert.match(page, /<SiteHeader homePath="\/" \/>/);
   assert.doesNotMatch(page, /reviews-page__header|brand-logo--menu/);
   assert.match(page, /지점별 고객 리뷰/);
   assert.match(page, /className="reviews-page__lead"/);
@@ -255,7 +255,7 @@ test("home header uses a larger logo without changing other pages", async () => 
   assert.match(header, /home\?: boolean/);
   assert.match(header, /site-header--home/);
   assert.match(header, /\(max-width: 767px\) 170px, 250px/);
-  assert.doesNotMatch(reviews, /<SiteHeader home/);
+  assert.doesNotMatch(reviews, /<SiteHeader\s+home(?:\s|\/>)/);
   assert.match(
     css,
     /\.site-header--home \.brand-logo--header\s*\{[^}]*width:\s*clamp\(200px,\s*19vw,\s*250px\);/,
@@ -333,25 +333,55 @@ test("tablet header keeps all primary navigation buttons visible in two rows", a
   );
 });
 
-test("header offers accessible Moran and Pangyo booking choices", async () => {
-  const [header, css] = await Promise.all([
+test("header exposes an accessible language selector and keeps mobile branch booking", async () => {
+  const [header, selector, css] = await Promise.all([
     read("components/home/site-header.tsx"),
+    read("components/home/language-selector.tsx"),
     read("app/globals.css"),
   ]);
 
-  assert.match(header, /BOOKING_LOCATIONS/);
-  assert.match(header, /const \[bookingOpen, setBookingOpen\] = useState\(false\)/);
-  assert.match(header, /aria-expanded=\{bookingOpen\}/);
-  assert.match(header, /aria-controls="booking-branch-menu"/);
-  assert.match(header, /id="booking-branch-menu"/);
-  assert.match(header, /event\.key === "Escape"/);
-  assert.match(header, /document\.addEventListener\("pointerdown"/);
-  assert.match(header, /BOOKING_LOCATIONS\.map/g);
-  assert.match(header, /className="mobile-nav__booking"/);
-  assert.match(css, /\.header-booking__menu/);
-  assert.match(css, /\.mobile-nav__booking/);
-  assert.match(css, /min-height:\s*48px/);
-  assert.match(css, /font-size:\s*1rem/);
+  assert.match(header, /<LanguageSelector locale=\{locale\}/);
+  assert.match(header, /mobile-nav__languages/);
+  assert.match(header, /HOME_LOCALES\.map/);
+  assert.match(header, /mobile-nav__booking/);
+  assert.match(header, /BOOKING_LOCATIONS\.map/);
+  assert.doesNotMatch(header, /header-booking__trigger/);
+  assert.match(selector, /aria-haspopup="true"/);
+  assert.match(selector, /aria-expanded=\{open\}/);
+  assert.match(selector, /aria-current=\{targetLocale === currentLocale \? "page" : undefined\}/);
+  assert.match(selector, /document\.addEventListener\("pointerdown"/);
+  assert.match(selector, /event\.key === "Escape"/);
+  assert.match(selector, /triggerRef\.current\?\.focus\(\)/);
+  assert.match(selector, /window\.location\.hash/);
+  assert.match(selector, /event\.metaKey/);
+  assert.match(selector, /event\.ctrlKey/);
+  assert.match(selector, /event\.shiftKey/);
+  assert.match(selector, /event\.altKey/);
+  assert.match(selector, /event\.button !== 0/);
+  assert.match(selector, /onAuxClick/);
+  assert.match(selector, /buildLocaleHref/);
+
+  for (const className of [
+    "language-selector",
+    "language-selector__trigger",
+    "language-selector__menu",
+    "mobile-nav__languages",
+  ]) {
+    assert.match(css, new RegExp(`\\.${className}`));
+  }
+  assert.match(css, /\.language-selector__trigger\s*\{[^}]*min-height:\s*48px;/s);
+  assert.match(
+    css,
+    /\.language-selector__trigger:hover,\s*\.language-selector__trigger:focus-visible\s*\{[^}]*color:\s*var\(--gold\);[^}]*border-color:\s*var\(--gold\);/s,
+  );
+  assert.match(
+    css,
+    /\.language-selector__menu a\[aria-current="page"\]\s*\{[^}]*color:\s*var\(--gold\);/s,
+  );
+  assert.match(
+    css,
+    /\.mobile-nav__languages a\[aria-current="page"\]\s*\{[^}]*color:\s*var\(--gold\);/s,
+  );
 });
 
 test("global styles contain brand tokens and responsive contracts", async () => {
@@ -461,7 +491,7 @@ test("header uses the approved logo and footer uses the Wangjing brand name", as
   assert.match(brandLogo, /alt="왕징양다리양꼬치"/);
   assert.match(header, /BrandLogo/);
   assert.match(header, /brand-logo--header/);
-  assert.match(header, /aria-label="왕징양다리양꼬치 처음으로"/);
+  assert.match(header, /aria-label=\{copy\.homeAria\}/);
   assert.doesNotMatch(header, /SITE\.(?:hanja|name)/);
   assert.match(footer, /<h2 id="footer-brand">왕징양다리양꼬치<\/h2>/);
   assert.match(footer, /© 2026 왕징양다리양꼬치 메뉴\/가격은/);
@@ -537,16 +567,16 @@ test("FAQ section renders accessible independently controlled items", async () =
   );
 });
 
-test("desktop header booking trigger uses the approved compact size", async () => {
+test("desktop language selector uses the approved compact size", async () => {
   const css = await read("app/globals.css");
 
   assert.match(
     css,
-    /\.button\.header-booking__trigger\s*\{[\s\S]*?min-height:\s*48px;[\s\S]*?padding:\s*0 1\.25rem;[\s\S]*?font-size:\s*0\.95rem;/,
+    /\.language-selector__trigger\s*\{[\s\S]*?min-height:\s*48px;[\s\S]*?padding:\s*0 1\.25rem;[\s\S]*?font-size:\s*0\.95rem;/,
   );
   assert.match(
     css,
-    /\.header-booking__trigger svg\s*\{[\s\S]*?width:\s*16px;[\s\S]*?height:\s*16px;/,
+    /\.language-selector__trigger svg\s*\{[\s\S]*?width:\s*16px;[\s\S]*?height:\s*16px;/,
   );
 });
 

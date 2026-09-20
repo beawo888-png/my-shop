@@ -18,7 +18,7 @@ export function CategoryMenuPage({ group }: CategoryMenuPageProps) {
   return (
     <div className="full-menu-page">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(menuStructuredData).replace(/</g, "\\u003c") }} />
-      <SiteHeader sectionRoot="/" />
+      <SiteHeader homePath="/" />
       <main>
         <MenuExplorer groups={PANGYO_MENU_GROUPS} initialGroupId={group?.id} />
       </main>

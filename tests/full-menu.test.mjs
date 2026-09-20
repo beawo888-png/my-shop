@@ -153,7 +153,7 @@ test("category menu page renders shared shell and explorer", async () => {
     assert.ok(page.includes(value), "menu page should include " + value);
   }
 
-  assert.match(page, /<SiteHeader sectionRoot="\/" \/>/);
+  assert.match(page, /<SiteHeader homePath="\/" \/>/);
   assert.match(page, /<MenuExplorer/);
   assert.match(explorer, /<h2/);
   assert.match(page, /target="_blank"/g);
@@ -175,14 +175,14 @@ test("category menu page renders shared shell and explorer", async () => {
 });
 
 test("all three full-menu entry points open /menu in a safe new tab", async () => {
-  const [content, header, signature] = await Promise.all([
-    read("lib/site-content.ts"),
+  const [koreanCopy, header, signature] = await Promise.all([
+    read("lib/home-i18n/ko.ts"),
     read("components/home/site-header.tsx"),
     read("components/home/signature-menu-section.tsx"),
   ]);
 
   assert.match(
-    content,
+    koreanCopy,
     /\{ label: "대표 메뉴", href: "\/menu", newTab: true \}/,
   );
   assert.equal(
@@ -205,11 +205,11 @@ test("shared header can root home section links from menu pages", async () => {
   const header = await read("components/home/site-header.tsx");
 
   assert.match(header, /type SiteHeaderProps = \{/);
-  assert.match(header, /sectionRoot\?: "" \| "\/"/);
-  assert.match(header, /sectionRoot = ""/);
+  assert.match(header, /homePath\?: string/);
+  assert.match(header, /homePath = "\/"/);
   assert.match(header, /item\.href\.startsWith\("#"\)/);
-  assert.match(header, /`\$\{sectionRoot\}\$\{item\.href\}`/);
-  assert.match(header, /href=\{sectionRoot === "\/" \? "\/" : "#top"\}/);
+  assert.match(header, /`\$\{home \? "" : homePath\}\$\{item\.href\}`/);
+  assert.match(header, /href=\{home \? "#top" : homePath\}/);
 });
 
 test("menu index renders the explorer and category routes seed its initial group", async () => {
@@ -227,7 +227,7 @@ test("menu index renders the explorer and category routes seed its initial group
   assert.match(categoryPage, /generateStaticParams/);
   assert.match(categoryPage, /getPangyoMenuGroup\(category\)/);
   assert.match(categoryPage, /if \(!group\) notFound\(\)/);
-  assert.match(wrapper, /<SiteHeader sectionRoot="\/" \/>/);
+  assert.match(wrapper, /<SiteHeader homePath="\/" \/>/);
   assert.match(wrapper, /initialGroupId=\{group\?\.id\}/);
   assert.match(explorer, /^"use client";/);
   assert.match(explorer, /useState\(initialGroupId \?\? "all"\)/);

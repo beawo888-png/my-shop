@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 export default function ReviewsPage() {
   return (
     <main className="reviews-page">
-      <SiteHeader sectionRoot="/" />
+      <SiteHeader homePath="/" />
 
       <section className="reviews-page__hero" aria-labelledby="reviews-page-title">
         <div className="reviews-page__shell">

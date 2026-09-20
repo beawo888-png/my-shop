@@ -1,51 +1,46 @@
 "use client";
 
-import { ChevronDown, Menu, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
 import { BrandLogo } from "@/components/home/brand-logo";
-import { BOOKING_LOCATIONS, NAV_ITEMS } from "@/lib/site-content";
+import {
+  LanguageSelector,
+  LocaleLink,
+} from "@/components/home/language-selector";
+import {
+  HOME_COPY,
+  HOME_LOCALES,
+  LOCALE_CONFIG,
+  type HomeCopy,
+  type HomeNavItem,
+  type Locale,
+} from "@/lib/home-i18n";
+import { BOOKING_LOCATIONS } from "@/lib/site-content";
 
 type SiteHeaderProps = {
-  sectionRoot?: "" | "/";
+  locale?: Locale;
+  copy?: HomeCopy["header"];
+  homePath?: string;
   home?: boolean;
 };
 
-export function SiteHeader({ sectionRoot = "", home = false }: SiteHeaderProps) {
-  const resolveNavHref = (item: (typeof NAV_ITEMS)[number]) =>
-    item.href.startsWith("#") ? `${sectionRoot}${item.href}` : item.href;
+export function SiteHeader({
+  locale = "ko",
+  copy = HOME_COPY.ko.header,
+  homePath = "/",
+  home = false,
+}: SiteHeaderProps) {
+  const resolveNavHref = (item: HomeNavItem) =>
+    item.href.startsWith("#") ? `${home ? "" : homePath}${item.href}` : item.href;
 
   const [open, setOpen] = useState(false);
-  const [bookingOpen, setBookingOpen] = useState(false);
-  const bookingMenuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!bookingOpen) return;
-
-    const closeOnPointerDown = (event: PointerEvent) => {
-      if (!bookingMenuRef.current?.contains(event.target as Node)) {
-        setBookingOpen(false);
-      }
-    };
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setBookingOpen(false);
-      }
-    };
-
-    document.addEventListener("pointerdown", closeOnPointerDown);
-    document.addEventListener("keydown", closeOnEscape);
-    return () => {
-      document.removeEventListener("pointerdown", closeOnPointerDown);
-      document.removeEventListener("keydown", closeOnEscape);
-    };
-  }, [bookingOpen]);
 
   return (
     <header className={home ? "site-header site-header--home" : "site-header"}>
       <a
         className="wordmark"
-        href={sectionRoot === "/" ? "/" : "#top"}
-        aria-label="왕징양다리양꼬치 처음으로"
+        href={home ? "#top" : homePath}
+        aria-label={copy.homeAria}
       >
         <BrandLogo
           className="brand-logo--header"
@@ -53,8 +48,8 @@ export function SiteHeader({ sectionRoot = "", home = false }: SiteHeaderProps) 
           preload
         />
       </a>
-      <nav className="desktop-nav" aria-label="주요 메뉴">
-        {NAV_ITEMS.map((item) => (
+      <nav className="desktop-nav" aria-label={copy.desktopNavAria}>
+        {copy.nav.map((item) => (
           <a
             href={resolveNavHref(item)}
             key={item.href}
@@ -65,43 +60,13 @@ export function SiteHeader({ sectionRoot = "", home = false }: SiteHeaderProps) 
           </a>
         ))}
       </nav>
-      <div className="header-booking" ref={bookingMenuRef}>
-        <button
-          className="button button--primary header-booking__trigger"
-          type="button"
-          aria-haspopup="true"
-          aria-expanded={bookingOpen}
-          aria-controls="booking-branch-menu"
-          onClick={() => setBookingOpen((value) => !value)}
-        >
-          네이버 예약
-          <ChevronDown aria-hidden="true" />
-        </button>
-        <nav
-          className="header-booking__menu"
-          id="booking-branch-menu"
-          aria-label="예약 지점 선택"
-          hidden={!bookingOpen}
-        >
-          {BOOKING_LOCATIONS.map((booking) => (
-            <a
-              href={booking.url}
-              key={booking.id}
-              target="_blank"
-              rel="noreferrer"
-              onClick={() => setBookingOpen(false)}
-            >
-              {booking.label}
-            </a>
-          ))}
-        </nav>
-      </div>
+      <LanguageSelector locale={locale} copy={copy} />
       <button
         className="menu-toggle"
         type="button"
         aria-expanded={open}
         aria-controls="mobile-navigation"
-        aria-label={open ? "메뉴 닫기" : "메뉴 열기"}
+        aria-label={open ? copy.closeMenuAria : copy.openMenuAria}
         onClick={() => setOpen((value) => !value)}
       >
         {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
@@ -109,10 +74,10 @@ export function SiteHeader({ sectionRoot = "", home = false }: SiteHeaderProps) 
       <nav
         className="mobile-nav"
         id="mobile-navigation"
-        aria-label="모바일 메뉴"
+        aria-label={copy.mobileNavAria}
         hidden={!open}
       >
-        {NAV_ITEMS.map((item) => (
+        {copy.nav.map((item) => (
           <a
             href={resolveNavHref(item)}
             key={item.href}
@@ -123,8 +88,23 @@ export function SiteHeader({ sectionRoot = "", home = false }: SiteHeaderProps) 
             {item.label}
           </a>
         ))}
+        <div className="mobile-nav__languages">
+          <p>{copy.languageGroupLabel}</p>
+          <div>
+            {HOME_LOCALES.map((targetLocale) => (
+              <LocaleLink
+                key={targetLocale}
+                targetLocale={targetLocale}
+                currentLocale={locale}
+                onSelect={() => setOpen(false)}
+              >
+                {LOCALE_CONFIG[targetLocale].label}
+              </LocaleLink>
+            ))}
+          </div>
+        </div>
         <div className="mobile-nav__booking">
-          <p>네이버 예약</p>
+          <p>{copy.bookingGroupLabel}</p>
           {BOOKING_LOCATIONS.map((booking) => (
             <a
               href={booking.url}
@@ -133,7 +113,7 @@ export function SiteHeader({ sectionRoot = "", home = false }: SiteHeaderProps) 
               rel="noreferrer"
               onClick={() => setOpen(false)}
             >
-              {booking.label}
+              {copy.bookingLabels[booking.id]}
             </a>
           ))}
         </div>

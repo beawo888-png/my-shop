@@ -44,7 +44,6 @@ test("site content defines Moran and Pangyo booking choices in order", () => {
 
 test("site content defines both Wangjing locations", () => {
   assert.match(source, /export const LOCATIONS/);
-  assert.match(source, /\{ label: "지점 안내", href: "#location" \}/);
 
   for (const value of [
     "왕징양다리양꼬치 모란본점",
@@ -93,7 +92,7 @@ test("location data defines parking and Google directions for both branches", ()
   assert.ok(source.indexOf(moranGoogle) < source.indexOf(pangyoGoogle));
 });
 
-test("site content defines branch review links without a review navigation tab", () => {
+test("site content defines branch review links", () => {
   const moranReview =
     "https://m.place.naver.com/restaurant/1938356292/review/visitor";
   const pangyoReview =
@@ -107,30 +106,6 @@ test("site content defines branch review links without a review navigation tab",
   assert.ok(source.includes(moranReview));
   assert.ok(source.includes(pangyoReview));
   assert.ok(source.indexOf(moranReview) < source.indexOf(pangyoReview));
-  const navStart = source.indexOf("export const NAV_ITEMS");
-  const navEnd = source.indexOf("export const TRUST_ITEMS", navStart);
-  assert.doesNotMatch(source.slice(navStart, navEnd), /고객 리뷰|\/reviews/);
-});
-
-test("site navigation uses the approved order and FAQ anchor", () => {
-  const navStart = source.indexOf("export const NAV_ITEMS");
-  const navEnd = source.indexOf("export const TRUST_ITEMS", navStart);
-  const navSource = source.slice(navStart, navEnd);
-  const expectedItems = [
-    '{ label: "브랜드 스토리", href: "#story" }',
-    '{ label: "대표 메뉴", href: "/menu", newTab: true }',
-    '{ label: "지점 안내", href: "#location" }',
-    '{ label: "단체 모임", href: "#group" }',
-    '{ label: "자주 묻는 질문", href: "#faq" }',
-  ];
-
-  let previousIndex = -1;
-  for (const item of expectedItems) {
-    const itemIndex = navSource.indexOf(item);
-    assert.ok(itemIndex > previousIndex, `${item} 순서가 올바라야 합니다`);
-    previousIndex = itemIndex;
-  }
-  assert.doesNotMatch(navSource, /고객 리뷰|\/reviews/);
 });
 
 test("site content uses direct Kakao review URLs for both branches", () => {
