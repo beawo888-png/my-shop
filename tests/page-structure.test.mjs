@@ -655,16 +655,25 @@ test("FAQ section renders accessible independently controlled items", async () =
   );
 });
 
-test("desktop language selector uses the approved compact size", async () => {
+test("desktop and mobile language menus use one vertical list", async () => {
   const css = await read("app/globals.css");
 
   assert.match(
     css,
-    /\.language-selector__trigger\s*\{[\s\S]*?min-height:\s*48px;[\s\S]*?padding:\s*0 1\.25rem;[\s\S]*?font-size:\s*0\.95rem;/,
+    /\.language-selector__trigger\s*\{[\s\S]*?min-height:\s*48px;[\s\S]*?padding:\s*0 0\.25rem;[\s\S]*?border:\s*0;/,
   );
   assert.match(
     css,
-    /\.language-selector__trigger svg\s*\{[\s\S]*?width:\s*16px;[\s\S]*?height:\s*16px;/,
+    /\.language-selector__menu\s*\{[\s\S]*?top:\s*100%;[\s\S]*?grid-template-columns:\s*1fr;[\s\S]*?padding:\s*0\.5rem 0;/,
+  );
+  assert.doesNotMatch(css, /\.language-selector__menu a \+ a\s*\{/);
+  assert.match(
+    css,
+    /\.mobile-nav__languages > div\s*\{[\s\S]*?display:\s*grid;[\s\S]*?grid-template-columns:\s*1fr;[\s\S]*?gap:\s*0;/,
+  );
+  assert.match(
+    css,
+    /\.mobile-nav__languages a\s*\{[\s\S]*?min-height:\s*48px;[\s\S]*?justify-content:\s*flex-start;[\s\S]*?border-left:\s*3px solid transparent;/,
   );
 });
 

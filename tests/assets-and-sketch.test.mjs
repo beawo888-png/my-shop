@@ -165,12 +165,18 @@ test("Pencil selectors match current labels, contrast, mobile columns and bookin
   const mobile = pencil.children.find((node) => node.id === "language-selector-mobile-open");
   const menu = mobile.children.find((node) => node.id.endsWith("-menu"));
   assert.equal(menu.layout, "vertical");
-  assert.equal(menu.children.length, 2);
-  for (const row of menu.children) {
-    assert.equal(row.layout, "horizontal");
-    assert.equal(row.children.length, 2);
+  assert.equal(menu.children.length, 4);
+  assert.deepEqual(
+    menu.children.map((item) => item.children[0].content),
+    ["한국어", "English", "简体中文", "日本語"],
+  );
+  for (const item of menu.children) {
+    assert.equal(item.layout, "horizontal");
+    assert.equal(item.width, "fill_container");
+    assert.equal(item.height, 52);
   }
-  assert.equal(menu.children[0].children[0].fill, "#17110F");
+  assert.equal(menu.children[0].fill, "#17110F");
+  assert.equal(menu.children[0].children[0].fill, "#C5A15A");
   assert.equal(menu.children[0].children[0].children[0].fill, "#C5A15A");
   const bookings = mobile.children.filter((node) => node.id.includes("-naver-"));
   assert.deepEqual(bookings.map((node) => node.id.split("-").at(-1)), ["moran", "pangyo"]);
