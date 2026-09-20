@@ -110,11 +110,11 @@ export const LOCATIONS: Location[] = [
 ];
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: "대표 메뉴", href: "/menu", newTab: true },
   { label: "브랜드 스토리", href: "#story" },
-  { label: "단체 모임", href: "#group" },
-  { label: "고객 리뷰", href: "/reviews" },
+  { label: "대표 메뉴", href: "/menu", newTab: true },
   { label: "지점 안내", href: "#location" },
+  { label: "단체 모임", href: "#group" },
+  { label: "자주 묻는 질문", href: "#faq" },
 ];
 
 export const TRUST_ITEMS: TrustItem[] = [
