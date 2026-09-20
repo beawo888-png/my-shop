@@ -100,7 +100,7 @@ export function LanguageSelector({
       <button
         className="language-selector__trigger"
         type="button"
-        aria-label={copy.languageMenuAria}
+        aria-label={`${LOCALE_CONFIG[locale].label} · ${copy.languageMenuAria}`}
         aria-haspopup="true"
         aria-expanded={open}
         aria-controls="language-menu"

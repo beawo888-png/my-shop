@@ -144,3 +144,35 @@ test("Pencil Korean tablet branch cards stack headings above images in two colum
     assert.equal(card.children[1].name, "지점 이미지 · 제목 아래");
   }
 });
+
+test("Pencil selectors match current labels, contrast, mobile columns and booking order", async () => {
+  const pencil = JSON.parse(await readFile(new URL("../초안", import.meta.url), "utf8"));
+  for (const id of ["language-selector-desktop-closed", "language-selector-desktop-open", "language-selector-tablet-open"]) {
+    const frame = pencil.children.find((node) => node.id === id);
+    const trigger = frame.children.find((node) => node.id.endsWith("-trigger"));
+    assert.match(trigger.content, /^한국어 [▾▴]$/);
+    assert.doesNotMatch(trigger.content, /언어 \/ Language/);
+    if (!id.endsWith("closed")) {
+      const menu = frame.children.find((node) => node.id.endsWith("-menu"));
+      const current = menu.children[0];
+      assert.equal(menu.fill, "#FFF8EC");
+      assert.equal(current.type, "frame");
+      assert.equal(current.fill, "#17110F");
+      assert.equal(current.children[0].fill, "#C5A15A");
+      assert.equal(current.children[0].content, "한국어");
+    }
+  }
+  const mobile = pencil.children.find((node) => node.id === "language-selector-mobile-open");
+  const menu = mobile.children.find((node) => node.id.endsWith("-menu"));
+  assert.equal(menu.layout, "vertical");
+  assert.equal(menu.children.length, 2);
+  for (const row of menu.children) {
+    assert.equal(row.layout, "horizontal");
+    assert.equal(row.children.length, 2);
+  }
+  assert.equal(menu.children[0].children[0].fill, "#17110F");
+  assert.equal(menu.children[0].children[0].children[0].fill, "#C5A15A");
+  const bookings = mobile.children.filter((node) => node.id.includes("-naver-"));
+  assert.deepEqual(bookings.map((node) => node.id.split("-").at(-1)), ["moran", "pangyo"]);
+  assert.ok(bookings[0].y < bookings[1].y);
+});

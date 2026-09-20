@@ -57,6 +57,7 @@ export const zhHomeCopy = {
   },
   reviews: { eyebrow: "顾客评价", title: "各门店顾客评价", description: "查看到访牡丹总店和板桥店的顾客在 Naver 上留下的真实评价。", action: "查看各门店评价" },
   locations: {
+    cardEyebrow: "门店",
     eyebrow: "门店指南", title: "两家门店，期待相见", description: "选择就近的王京门店，查看地址和电话，并直接打开 Naver 或 Google 地图。",
     jumpAria: "门店快捷入口", placeAria: "打开 Naver Place",
     labels: { address: "地址", transit: "附近车站", phone: "电话号码", parking: "停车场" },
@@ -95,6 +96,7 @@ export const zhHomeCopy = {
   reservation: { eyebrow: "预约", title: "今天的美好相聚，就在王京", description: "通过 Naver 预约，轻松告知用餐时间与人数。", naver: "Naver 预约", phone: "电话咨询", imageAlt: "摆满羊肉与中国菜的丰盛王京餐桌" },
   mobileBooking: { aria: "快速预约", linkAria: "打开 Naver 预约页面", label: "Naver 预约" },
   footer: {
+    tagline: "精品中式羊肉料理",
     brandName: "王京羊腿羊肉串", channelAria: "王京官方频道", newWindowAria: "在新窗口打开", navAria: "页脚导航", navTitle: "导航",
     menu: "招牌菜单", group: "团体聚餐", reservation: "预约",
     legal: "© 2026 王京羊腿羊肉串 菜单及价格可能因门店情况而有所不同。",

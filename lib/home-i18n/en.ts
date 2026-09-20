@@ -58,6 +58,7 @@ export const enHomeCopy = {
   },
   reviews: { eyebrow: "GUEST REVIEWS", title: "Guest reviews by branch", description: "Read genuine Naver reviews from guests who visited Moran Main Branch and Pangyo Branch.", action: "View reviews by branch" },
   locations: {
+    cardEyebrow: "LOCATION",
     eyebrow: "LOCATIONS", title: "Find us in two locations", description: "Choose your nearest Wangjing, check the address and phone number, and open Naver or Google Maps.",
     jumpAria: "Branch shortcuts", placeAria: "Open Naver Place",
     labels: { address: "Address", transit: "Nearest station", phone: "Phone", parking: "Parking" },
@@ -100,6 +101,7 @@ export const enHomeCopy = {
   reservation: { eyebrow: "RESERVATION", title: "Make today’s gathering special at Wangjing", description: "Tell us your preferred time and party size with Naver Reservation.", naver: "Naver Reservation", phone: "Call us", imageAlt: "A generous Wangjing table of lamb and Chinese dishes" },
   mobileBooking: { aria: "Quick reservation", linkAria: "Open Naver Reservation", label: "Naver Reservation" },
   footer: {
+    tagline: "PREMIUM CHINESE LAMB DINING",
     brandName: "Wangjing Lamb Leg & Skewers", channelAria: "Official Wangjing channels", newWindowAria: "Open in a new window", navAria: "Footer navigation", navTitle: "NAV",
     menu: "Signature Menu", group: "Group Dining", reservation: "Reservations",
     legal: "© 2026 Wangjing Lamb Leg & Skewers. Menu items and prices may vary depending on restaurant circumstances.",

@@ -22,7 +22,7 @@ export function LocationCard({ location, copy, labels }: LocationCardProps) {
       </div>
 
       <div className="location-card__body">
-        <p className="eyebrow eyebrow--red">{location.areaLabel} LOCATION</p>
+        <p className="eyebrow eyebrow--red">{location.areaLabel} {labels.cardEyebrow}</p>
         <h3>{copy.name}</h3>
 
         <dl className="location-card__details">
@@ -52,7 +52,7 @@ export function LocationCard({ location, copy, labels }: LocationCardProps) {
             href={location.mapUrl}
             target="_blank"
             rel="noreferrer"
-            aria-label={`${copy.shortName} ${labels.naverDirectionsAria}`}
+            aria-label={`${labels.naverDirections} · ${copy.shortName} · ${labels.naverDirectionsAria}`}
           >
             {labels.naverDirections}
           </a>
@@ -61,7 +61,7 @@ export function LocationCard({ location, copy, labels }: LocationCardProps) {
             href={location.googleDirectionsUrl}
             target="_blank"
             rel="noreferrer"
-            aria-label={`${copy.shortName} ${labels.googleDirectionsAria}`}
+            aria-label={`${labels.googleDirections} · ${copy.shortName} · ${labels.googleDirectionsAria}`}
           >
             {labels.googleDirections}
           </a>

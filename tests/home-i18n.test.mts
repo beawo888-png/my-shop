@@ -66,6 +66,49 @@ test("critical numeric business facts remain present in every locale", () => {
   }
 });
 
+test("footer and location supporting labels are localized in every locale", () => {
+  for (const [locale, tagline, cardEyebrow] of [
+    ["ko", "PREMIUM CHINESE LAMB DINING", "LOCATION"],
+    ["en", "PREMIUM CHINESE LAMB DINING", "LOCATION"],
+    ["zh", "精品中式羊肉料理", "门店"],
+    ["ja", "上質な中国式羊肉ダイニング", "店舗"],
+  ] as const) {
+    assert.equal(HOME_COPY[locale].footer.tagline, tagline);
+    assert.equal(HOME_COPY[locale].locations.cardEyebrow, cardEyebrow);
+  }
+});
+
+test("business facts stay in the correct branch and preparation fields", () => {
+  const numbers = (text: string) => (text.match(/\d[\d,]*/g) ?? []).map(value => Number(value.replaceAll(",", ""))).sort((a,b) => a-b);
+  for (const locale of HOME_LOCALES) {
+    const copy = HOME_COPY[locale];
+    const cases: [string, string, number[]][] = [
+      ["Moran transit", copy.branches.moran.transit, [4,5,215]],
+      ["Pangyo transit", copy.branches.pangyo.transit, [4,5,266]],
+      ["Moran parking", copy.branches.moran.parking, [4]],
+      ["Pangyo parking", copy.branches.pangyo.parking, [3]],
+      ["research", copy.story.promises[0].title, [600]],
+      ["aromatic ingredients/preparation", copy.story.promises[1].points[1], [15,24]],
+      ["aging", copy.story.promises[1].points[2], [48]],
+      ["first roast", copy.story.promises[2].points[0], [180]],
+      ["middle roast", copy.story.promises[2].points[1], [400]],
+      ["final roast", copy.story.promises[2].points[2], [180]],
+      ["roast time", copy.story.promises[3].title, [60]],
+      ["FAQ aging", copy.faq.items[0].answer.map(segment=>segment.text).join(""), [15,24,48]],
+      ["large size/servings/price", copy.faq.items[1].answer[1].text, [3,4,1700,90000]],
+      ["medium size/servings/price", copy.faq.items[1].answer[3].text, [2,3,1500,80000]],
+      ["FAQ cooking", copy.faq.items[1].answer[4].text, locale === "ja" ? [2,60,400] : [60,400]],
+      ["Moran capacity", copy.faq.items[2].answer[1].text, [46]],
+      ["Pangyo capacity", copy.faq.items[2].answer[3].text, [70]],
+      ["FAQ parking", copy.faq.items[3].answer.map(segment=>segment.text).join(""), [3,4]],
+    ];
+    for (const [field, value, expected] of cases) {
+      assert.deepEqual(numbers(value), expected, `${locale} ${field}`);
+      assert.throws(() => assert.deepEqual(numbers(value.replace(/\d/, "9")), expected), `${locale} ${field} must detect a mutated numeric fact`);
+    }
+  }
+});
+
 test("locale URL helper preserves only approved homepage hashes", () => {
   assert.equal(buildLocaleHref("ko", "#faq"), "/#faq");
   assert.equal(buildLocaleHref("en", "#group"), "/en#group");

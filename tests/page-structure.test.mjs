@@ -341,6 +341,30 @@ test("tablet branch headers stack for every locale while the branch grid stays t
   assert.doesNotMatch(css, /@media \(max-width: 1100px\)\s*\{(?:(?!@media)[\s\S])*\.group-seo__branch-grid/);
 });
 
+test("current language preserves gold with dark contrast", async () => {
+  const css = await read("app/globals.css");
+  assert.match(css, /\.language-selector__menu a\[aria-current="page"\]\s*\{[^}]*background:\s*var\(--ink\);[^}]*color:\s*var\(--gold\);/s);
+  assert.match(css, /\.mobile-nav__languages a\[aria-current="page"\]\s*\{[^}]*background:\s*var\(--ink\);[^}]*color:\s*var\(--gold\);/s);
+});
+
+test("language and map links have label-first accessible names", async () => {
+  const [selector, card] = await Promise.all([read("components/home/language-selector.tsx"), read("components/home/location-card.tsx")]);
+  assert.ok(selector.includes('aria-label={`${LOCALE_CONFIG[locale].label} · ${copy.languageMenuAria}`}'));
+  for (const provider of ["naver", "google"]) {
+    assert.ok(card.includes('aria-label={`${labels.' + provider + 'Directions} · ${copy.shortName} · ${labels.' + provider + 'DirectionsAria}`}'));
+  }
+});
+
+test("footer tagline and location eyebrow render typed translated copy", async () => {
+  const [footer, card, types] = await Promise.all([read("components/home/site-footer.tsx"), read("components/home/location-card.tsx"), read("lib/home-i18n/types.ts")]);
+  assert.match(footer, /<p>\{copy\.tagline\}<\/p>/);
+  assert.doesNotMatch(footer, /PREMIUM CHINESE LAMB DINING/);
+  assert.match(card, /\{location\.areaLabel\} \{labels\.cardEyebrow\}/);
+  assert.doesNotMatch(card, /\} LOCATION/);
+  assert.match(types, /tagline: string;/);
+  assert.match(types, /cardEyebrow: string;/);
+});
+
 test("tablet header keeps all primary navigation buttons visible in two rows", async () => {
   const [css, pencilSource] = await Promise.all([
     read("app/globals.css"),
@@ -498,8 +522,8 @@ test("location section renders two data-driven branch cards", async () => {
   assert.match(card, /location\.googleDirectionsUrl/);
   assert.match(card, /labels\.naverDirections/);
   assert.match(card, /labels\.googleDirections/);
-  assert.match(card, /\$\{copy\.shortName\} \$\{labels\.naverDirectionsAria\}/);
-  assert.match(card, /\$\{copy\.shortName\} \$\{labels\.googleDirectionsAria\}/);
+  assert.match(card, /\$\{labels\.naverDirections\} · \$\{copy\.shortName\} · \$\{labels\.naverDirectionsAria\}/);
+  assert.match(card, /\$\{labels\.googleDirections\} · \$\{copy\.shortName\} · \$\{labels\.googleDirectionsAria\}/);
   assert.match(card, /copy: BranchCopy/);
   assert.match(card, /labels: HomeCopy\["locations"\]/);
   assert.match(card, /location\.address/);
@@ -585,7 +609,7 @@ test("reference footer renders the approved four-column information layout", asy
   assert.ok(brandIndex < moranIndex);
   assert.ok(moranIndex < pangyoIndex);
   assert.ok(pangyoIndex < navIndex);
-  assert.match(footer, /PREMIUM CHINESE LAMB DINING/);
+  assert.match(footer, /\{copy\.tagline\}/);
   assert.match(footer, /https:\/\/www\.instagram\.com\/wangjingyangdali_official\//);
   assert.match(footer, /https:\/\/www\.youtube\.com\/@wangjing_lamb/);
   assert.match(footer, /https:\/\/place\.map\.kakao\.com\/1387600612/);

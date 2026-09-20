@@ -57,6 +57,7 @@ export const jaHomeCopy = {
   },
   reviews: { eyebrow: "お客様の口コミ", title: "店舗別のお客様の口コミ", description: "モラン本店とパンギョ店を訪れたお客様の、Naverに寄せられた実際の口コミをご覧ください。", action: "店舗別の口コミを見る" },
   locations: {
+    cardEyebrow: "店舗",
     eyebrow: "店舗案内", title: "2つの店舗でお待ちしています", description: "お近くの王京を選び、住所と電話番号を確認して、Naver・Googleマップを開けます。",
     jumpAria: "店舗へのショートカット", placeAria: "Naver Placeを開く",
     labels: { address: "住所", transit: "最寄り駅", phone: "電話番号", parking: "駐車場" },
@@ -95,6 +96,7 @@ export const jaHomeCopy = {
   reservation: { eyebrow: "ご予約", title: "今日の素敵な集まりを王京で", description: "Naver予約で、ご希望の時間と人数を簡単にお知らせください。", naver: "Naver予約", phone: "電話でのお問い合わせ", imageAlt: "羊肉と中国料理が豊かに並ぶ王京の食卓" },
   mobileBooking: { aria: "簡単予約", linkAria: "Naver予約ページを開く", label: "Naver予約" },
   footer: {
+    tagline: "上質な中国式羊肉ダイニング",
     brandName: "王京 羊もも肉・羊串", channelAria: "王京の公式チャンネル", newWindowAria: "新しいウィンドウで開く", navAria: "フッターメニュー", navTitle: "ナビゲーション",
     menu: "看板メニュー", group: "団体利用", reservation: "ご予約",
     legal: "© 2026 王京 羊もも肉・羊串 メニュー・価格は店舗の状況により異なる場合があります。",

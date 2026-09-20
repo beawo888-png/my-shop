@@ -206,6 +206,7 @@ img {
 }
 
 .language-selector__menu a[aria-current="page"] {
+  background: var(--ink);
   color: var(--gold);
   font-weight: 800;
 }
@@ -1046,6 +1047,7 @@ img {
   .mobile-nav__languages a:hover,
   .mobile-nav__languages a:focus-visible,
   .mobile-nav__languages a[aria-current="page"] {
+    background: var(--ink);
     color: var(--gold);
     border-color: var(--gold);
   }

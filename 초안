@@ -12812,7 +12812,8 @@
           "content": "한국어",
           "fontFamily": "Noto Sans KR",
           "fontSize": 16,
-          "fontWeight": "700"
+          "fontWeight": "700",
+          "opacity": 0
         },
         {
           "type": "text",
@@ -12856,8 +12857,8 @@
           "x": 1240,
           "y": 24,
           "name": "데스크톱 언어 트리거 · 우측 상단",
-          "fill": "#F6F0E5",
-          "content": "언어 / Language ▾",
+          "fill": "#C5A15A",
+          "content": "한국어 ▾",
           "fontFamily": "Noto Sans KR",
           "fontSize": 14,
           "fontWeight": "600"
@@ -12881,8 +12882,8 @@
           "x": 1240,
           "y": 24,
           "name": "데스크톱 언어 트리거 · 우측 상단",
-          "fill": "#B9935A",
-          "content": "언어 / Language ▴",
+          "fill": "#C5A15A",
+          "content": "한국어 ▴",
           "fontFamily": "Noto Sans KR",
           "fontSize": 14,
           "fontWeight": "700"
@@ -12894,53 +12895,101 @@
           "y": 72,
           "name": "데스크톱 언어 메뉴 · 크림 테두리",
           "width": 280,
-          "height": 300,
-          "fill": "#17110F",
+          "height": 220,
+          "fill": "#FFF8EC",
           "stroke": "#F6F0E5",
           "strokeWidth": 1,
           "layout": "vertical",
-          "gap": 18,
-          "padding": 24,
+          "gap": 0,
+          "padding": 6,
           "children": [
             {
-              "type": "text",
-              "id": "language-desktop-open-korean",
-              "name": "한국어 옵션",
-              "fill": "#B9935A",
-              "content": "한국어",
-              "fontFamily": "Noto Sans KR",
-              "fontSize": 18,
-              "fontWeight": "700"
+              "type": "frame",
+              "id": "language-desktop-open-korean-item",
+              "name": "현재 언어 · 금색 글자와 어두운 배경",
+              "width": "fill_container",
+              "height": 52,
+              "fill": "#17110F",
+              "layout": "horizontal",
+              "padding": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "language-desktop-open-korean",
+                  "name": "한국어 옵션",
+                  "fill": "#C5A15A",
+                  "content": "한국어",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 16,
+                  "fontWeight": "700"
+                }
+              ]
             },
             {
-              "type": "text",
-              "id": "language-desktop-open-english",
+              "type": "frame",
+              "id": "language-desktop-open-english-item",
               "name": "English 옵션",
-              "fill": "#F6F0E5",
-              "content": "English",
-              "fontFamily": "Noto Sans KR",
-              "fontSize": 18,
-              "fontWeight": "600"
+              "width": "fill_container",
+              "height": 52,
+              "fill": "#FFF8EC",
+              "layout": "horizontal",
+              "padding": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "language-desktop-open-english",
+                  "name": "English 옵션",
+                  "fill": "#211A17",
+                  "content": "English",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
             },
             {
-              "type": "text",
-              "id": "language-desktop-open-chinese",
+              "type": "frame",
+              "id": "language-desktop-open-chinese-item",
               "name": "简体中文 옵션",
-              "fill": "#F6F0E5",
-              "content": "简体中文",
-              "fontFamily": "Noto Sans KR",
-              "fontSize": 18,
-              "fontWeight": "600"
+              "width": "fill_container",
+              "height": 52,
+              "fill": "#FFF8EC",
+              "layout": "horizontal",
+              "padding": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "language-desktop-open-chinese",
+                  "name": "简体中文 옵션",
+                  "fill": "#211A17",
+                  "content": "简体中文",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
             },
             {
-              "type": "text",
-              "id": "language-desktop-open-japanese",
+              "type": "frame",
+              "id": "language-desktop-open-japanese-item",
               "name": "日本語 옵션",
-              "fill": "#F6F0E5",
-              "content": "日本語",
-              "fontFamily": "Noto Sans KR",
-              "fontSize": 18,
-              "fontWeight": "600"
+              "width": "fill_container",
+              "height": 52,
+              "fill": "#FFF8EC",
+              "layout": "horizontal",
+              "padding": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "language-desktop-open-japanese",
+                  "name": "日本語 옵션",
+                  "fill": "#211A17",
+                  "content": "日本語",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
             }
           ]
         }
@@ -12963,8 +13012,8 @@
           "x": 760,
           "y": 24,
           "name": "태블릿 언어 트리거 · 우측 상단",
-          "fill": "#B9935A",
-          "content": "언어 / Language ▴",
+          "fill": "#C5A15A",
+          "content": "한국어 ▴",
           "fontFamily": "Noto Sans KR",
           "fontSize": 14,
           "fontWeight": "700"
@@ -12976,53 +13025,101 @@
           "y": 72,
           "name": "태블릿 언어 메뉴 · 크림 테두리",
           "width": 220,
-          "height": 300,
-          "fill": "#17110F",
+          "height": 220,
+          "fill": "#FFF8EC",
           "stroke": "#F6F0E5",
           "strokeWidth": 1,
           "layout": "vertical",
-          "gap": 18,
-          "padding": 24,
+          "gap": 0,
+          "padding": 6,
           "children": [
             {
-              "type": "text",
-              "id": "language-tablet-open-korean",
-              "name": "한국어 옵션",
-              "fill": "#B9935A",
-              "content": "한국어",
-              "fontFamily": "Noto Sans KR",
-              "fontSize": 18,
-              "fontWeight": "700"
+              "type": "frame",
+              "id": "language-tablet-open-korean-item",
+              "name": "현재 언어 · 금색 글자와 어두운 배경",
+              "width": "fill_container",
+              "height": 52,
+              "fill": "#17110F",
+              "layout": "horizontal",
+              "padding": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "language-tablet-open-korean",
+                  "name": "한국어 옵션",
+                  "fill": "#C5A15A",
+                  "content": "한국어",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 16,
+                  "fontWeight": "700"
+                }
+              ]
             },
             {
-              "type": "text",
-              "id": "language-tablet-open-english",
+              "type": "frame",
+              "id": "language-tablet-open-english-item",
               "name": "English 옵션",
-              "fill": "#F6F0E5",
-              "content": "English",
-              "fontFamily": "Noto Sans KR",
-              "fontSize": 18,
-              "fontWeight": "600"
+              "width": "fill_container",
+              "height": 52,
+              "fill": "#FFF8EC",
+              "layout": "horizontal",
+              "padding": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "language-tablet-open-english",
+                  "name": "English 옵션",
+                  "fill": "#211A17",
+                  "content": "English",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
             },
             {
-              "type": "text",
-              "id": "language-tablet-open-chinese",
+              "type": "frame",
+              "id": "language-tablet-open-chinese-item",
               "name": "简体中文 옵션",
-              "fill": "#F6F0E5",
-              "content": "简体中文",
-              "fontFamily": "Noto Sans KR",
-              "fontSize": 18,
-              "fontWeight": "600"
+              "width": "fill_container",
+              "height": 52,
+              "fill": "#FFF8EC",
+              "layout": "horizontal",
+              "padding": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "language-tablet-open-chinese",
+                  "name": "简体中文 옵션",
+                  "fill": "#211A17",
+                  "content": "简体中文",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
             },
             {
-              "type": "text",
-              "id": "language-tablet-open-japanese",
+              "type": "frame",
+              "id": "language-tablet-open-japanese-item",
               "name": "日本語 옵션",
-              "fill": "#F6F0E5",
-              "content": "日本語",
-              "fontFamily": "Noto Sans KR",
-              "fontSize": 18,
-              "fontWeight": "600"
+              "width": "fill_container",
+              "height": 52,
+              "fill": "#FFF8EC",
+              "layout": "horizontal",
+              "padding": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "language-tablet-open-japanese",
+                  "name": "日本語 옵션",
+                  "fill": "#211A17",
+                  "content": "日本語",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
             }
           ]
         }
@@ -13058,76 +13155,144 @@
           "y": 76,
           "name": "모바일 언어 메뉴 · 크림 테두리",
           "width": 350,
-          "height": 300,
+          "height": 124,
           "fill": "#17110F",
           "stroke": "#F6F0E5",
           "strokeWidth": 1,
           "layout": "vertical",
-          "gap": 18,
-          "padding": 24,
+          "gap": 8,
+          "padding": 6,
           "children": [
             {
-              "type": "text",
-              "id": "language-mobile-open-korean",
-              "name": "한국어 옵션",
-              "fill": "#B9935A",
-              "content": "한국어",
-              "fontFamily": "Noto Sans KR",
-              "fontSize": 18,
-              "fontWeight": "700"
+              "type": "frame",
+              "id": "language-mobile-open-menu-row-0",
+              "name": "언어 선택 · 두 열 1행",
+              "width": "fill_container",
+              "layout": "horizontal",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "language-mobile-open-korean-item",
+                  "name": "현재 언어 · 금색 글자와 어두운 배경",
+                  "width": "fill_container",
+                  "height": 52,
+                  "fill": "#17110F",
+                  "layout": "horizontal",
+                  "padding": 12,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "language-mobile-open-korean",
+                      "name": "한국어 옵션",
+                      "fill": "#C5A15A",
+                      "content": "한국어",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 16,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "language-mobile-open-english-item",
+                  "name": "English 옵션",
+                  "width": "fill_container",
+                  "height": 52,
+                  "fill": "#17110F",
+                  "layout": "horizontal",
+                  "padding": 12,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "language-mobile-open-english",
+                      "name": "English 옵션",
+                      "fill": "#FFF8EC",
+                      "content": "English",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
             },
             {
-              "type": "text",
-              "id": "language-mobile-open-english",
-              "name": "English 옵션",
-              "fill": "#F6F0E5",
-              "content": "English",
-              "fontFamily": "Noto Sans KR",
-              "fontSize": 18,
-              "fontWeight": "600"
-            },
-            {
-              "type": "text",
-              "id": "language-mobile-open-chinese",
-              "name": "简体中文 옵션",
-              "fill": "#F6F0E5",
-              "content": "简体中文",
-              "fontFamily": "Noto Sans KR",
-              "fontSize": 18,
-              "fontWeight": "600"
-            },
-            {
-              "type": "text",
-              "id": "language-mobile-open-japanese",
-              "name": "日本語 옵션",
-              "fill": "#F6F0E5",
-              "content": "日本語",
-              "fontFamily": "Noto Sans KR",
-              "fontSize": 18,
-              "fontWeight": "600"
+              "type": "frame",
+              "id": "language-mobile-open-menu-row-1",
+              "name": "언어 선택 · 두 열 2행",
+              "width": "fill_container",
+              "layout": "horizontal",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "language-mobile-open-chinese-item",
+                  "name": "简体中文 옵션",
+                  "width": "fill_container",
+                  "height": 52,
+                  "fill": "#17110F",
+                  "layout": "horizontal",
+                  "padding": 12,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "language-mobile-open-chinese",
+                      "name": "简体中文 옵션",
+                      "fill": "#FFF8EC",
+                      "content": "简体中文",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "language-mobile-open-japanese-item",
+                  "name": "日本語 옵션",
+                  "width": "fill_container",
+                  "height": 52,
+                  "fill": "#17110F",
+                  "layout": "horizontal",
+                  "padding": 12,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "language-mobile-open-japanese",
+                      "name": "日本語 옵션",
+                      "fill": "#FFF8EC",
+                      "content": "日本語",
+                      "fontFamily": "Noto Sans KR",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
         {
           "type": "text",
-          "id": "language-mobile-open-naver-pangyo",
+          "id": "language-mobile-open-naver-moran",
           "x": 24,
           "y": 520,
-          "name": "네이버 예약 · 판교점",
+          "name": "네이버 예약 · 모란점",
           "fill": "#F6F0E5",
-          "content": "네이버 예약 · 판교점",
+          "content": "네이버 예약 · 모란본점",
           "fontFamily": "Noto Sans KR",
           "fontSize": 15,
           "fontWeight": "600"
         },
         {
           "type": "text",
-          "id": "language-mobile-open-naver-moran",
+          "id": "language-mobile-open-naver-pangyo",
           "x": 24,
           "y": 560,
-          "name": "네이버 예약 · 모란점",
+          "name": "네이버 예약 · 판교점",
           "fill": "#F6F0E5",
-          "content": "네이버 예약 · 모란점",
+          "content": "네이버 예약 · 판교점",
           "fontFamily": "Noto Sans KR",
           "fontSize": 15,
           "fontWeight": "600"

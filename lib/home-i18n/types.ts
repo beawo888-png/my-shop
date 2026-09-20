@@ -75,6 +75,7 @@ export type HomeCopy = {
   reviews: { eyebrow: string; title: string; description: string; action: string };
   locations: {
     eyebrow: string;
+    cardEyebrow: string;
     title: string;
     description: string;
     jumpAria: string;
@@ -91,6 +92,7 @@ export type HomeCopy = {
   mobileBooking: { aria: string; linkAria: string; label: string };
   footer: {
     brandName: string;
+    tagline: string;
     channelAria: string;
     newWindowAria: string;
     navAria: string;

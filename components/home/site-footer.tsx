@@ -101,7 +101,7 @@ export function SiteFooter({ copy, branches, homePath }: {
       <div className="site-footer__main">
         <section className="site-footer__brand" aria-labelledby="footer-brand">
           <h2 id="footer-brand">{copy.brandName}</h2>
-          <p>PREMIUM CHINESE LAMB DINING</p>
+          <p>{copy.tagline}</p>
           <div className="site-footer__socials" aria-label={copy.channelAria}>
             {SOCIAL_LINKS.map((social) => (
               <a

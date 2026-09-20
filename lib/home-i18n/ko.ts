@@ -75,6 +75,7 @@ export const koHomeCopy = {
   },
   reviews: { eyebrow: "GUEST REVIEWS", title: "지점별 고객 리뷰", description: "모란본점과 판교점을 방문한 고객들의 실제 네이버 리뷰를 확인하세요.", action: "지점별 고객 리뷰 보기" },
   locations: {
+    cardEyebrow: "LOCATION",
     eyebrow: "LOCATIONS", title: "두 곳에서 만나요",
     description: "가까운 왕징을 선택해 주소와 전화번호를 확인하고 네이버·구글 지도로 바로 이동하세요.",
     jumpAria: "지점 바로가기", placeAria: "네이버 플레이스 열기",
@@ -167,6 +168,7 @@ export const koHomeCopy = {
   reservation: { eyebrow: "RESERVATION", title: "오늘의 좋은 자리를 왕징에서", description: "네이버 예약으로 원하는 시간과 인원을 편리하게 알려주세요.", naver: "네이버 예약", phone: "전화 문의", imageAlt: "양고기와 중국 요리가 풍성하게 차려진 왕징 한 상" },
   mobileBooking: { aria: "빠른 예약", linkAria: "네이버 예약 페이지 열기", label: "네이버 예약" },
   footer: {
+    tagline: "PREMIUM CHINESE LAMB DINING",
     brandName: "왕징양다리양꼬치", channelAria: "왕징 공식 채널", newWindowAria: "새 창에서 열기", navAria: "푸터 메뉴", navTitle: "NAV",
     menu: "대표메뉴", group: "단체모임", reservation: "예약",
     legal: "© 2026 왕징양다리양꼬치 메뉴/가격은 매장 상황에 따라 다를 수 있습니다.",
