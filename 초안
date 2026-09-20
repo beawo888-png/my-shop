@@ -13663,6 +13663,148 @@
       }
     ]
   }
+  ,
+    {
+      "type": "frame",
+      "id": "ko-branch-tablet-910",
+      "x": 5500,
+      "y": 8000,
+      "name": "한국어 지점 카드 태블릿 · 910px",
+      "width": 910,
+      "height": 1000,
+      "fill": "#F6F0E5",
+      "layout": "vertical",
+      "gap": 24,
+      "padding": 36,
+      "children": [
+        {
+          "type": "text",
+          "id": "ko-branch-tablet-title",
+          "name": "태블릿 지점 카드 안내",
+          "content": "한국어 · 지점 카드는 2열, 제목과 이미지는 세로 배치",
+          "textGrowth": "fixed-width",
+          "width": "fill_container",
+          "fontFamily": "Noto Sans KR",
+          "fontSize": 22,
+          "fontWeight": "700",
+          "fill": "#211A17"
+        },
+        {
+          "type": "frame",
+          "id": "ko-branch-tablet-grid",
+          "name": "지점 카드 · 2열 유지",
+          "width": "fill_container",
+          "layout": "horizontal",
+          "gap": 32,
+          "children": [
+            {
+              "type": "frame",
+              "id": "ko-branch-tablet-card-0",
+              "name": "모란본점 · 제목 위 이미지 아래",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 20,
+              "padding": 24,
+              "fill": "#FFF8EC",
+              "cornerRadius": 20,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "ko-branch-tablet-heading-0",
+                  "name": "모란본점 제목",
+                  "content": "MORAN\n모란본점\n모란역 가까이에서 편안하게",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 24,
+                  "fontWeight": "700",
+                  "fill": "#211A17"
+                },
+                {
+                  "type": "frame",
+                  "id": "ko-branch-tablet-image-0",
+                  "name": "지점 이미지 · 제목 아래",
+                  "width": "fill_container",
+                  "height": 150,
+                  "fill": [
+                    {
+                      "type": "image",
+                      "url": "public/images/wangjing/moran-group-dining.jpg",
+                      "mode": "fill"
+                    }
+                  ],
+                  "cornerRadius": 16
+                },
+                {
+                  "type": "text",
+                  "id": "ko-branch-tablet-details-0",
+                  "name": "지점 정보와 예약",
+                  "content": "오시는길\n모란역 4번 출구\n추천모임 · 가족외식 · 회식\n모란본점 예약   모란본점 길찾기",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "fill": "#8F1D1D"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "ko-branch-tablet-card-1",
+              "name": "판교점 · 제목 위 이미지 아래",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 20,
+              "padding": 24,
+              "fill": "#FFF8EC",
+              "cornerRadius": 20,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "ko-branch-tablet-heading-1",
+                  "name": "판교점 제목",
+                  "content": "PANGYO\n판교점\n판교역과 라스트리트 가까이",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 24,
+                  "fontWeight": "700",
+                  "fill": "#211A17"
+                },
+                {
+                  "type": "frame",
+                  "id": "ko-branch-tablet-image-1",
+                  "name": "지점 이미지 · 제목 아래",
+                  "width": "fill_container",
+                  "height": 150,
+                  "fill": [
+                    {
+                      "type": "image",
+                      "url": "public/images/wangjing/pangyo-group-dining.jpg",
+                      "mode": "fill"
+                    }
+                  ],
+                  "cornerRadius": 16
+                },
+                {
+                  "type": "text",
+                  "id": "ko-branch-tablet-details-1",
+                  "name": "지점 정보와 예약",
+                  "content": "오시는길\n판교역 4번 출구\n추천모임 · 가족외식 · 회식\n판교점 예약   판교점 길찾기",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "fill": "#8F1D1D"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   ],
   "fileToken": "4786e8a5-4364-43b4-bd9b-87ed94eaa636"
 }

@@ -128,3 +128,19 @@ test("Pencil source records long translated tablet and mobile content layouts", 
     if (width === 390) assert.ok(frame.children.some((child) => child.name.includes("모임 타일 · 2열")));
   }
 });
+
+test("Pencil Korean tablet branch cards stack headings above images in two columns", async () => {
+  const pencil = JSON.parse(await readFile(new URL("../초안", import.meta.url), "utf8"));
+  const frame = pencil.children.find((child) => child.name === "한국어 지점 카드 태블릿 · 910px");
+  assert.ok(frame, "Korean tablet branch layout frame must exist");
+  assert.equal(frame.width, 910);
+  const grid = frame.children.find((child) => child.name === "지점 카드 · 2열 유지");
+  assert.equal(grid.layout, "horizontal");
+  assert.equal(grid.children.length, 2);
+  for (const [index, branch] of ["모란본점", "판교점"].entries()) {
+    const card = grid.children[index];
+    assert.equal(card.layout, "vertical");
+    assert.ok(JSON.stringify(card.children[0]).includes(branch));
+    assert.equal(card.children[1].name, "지점 이미지 · 제목 아래");
+  }
+});

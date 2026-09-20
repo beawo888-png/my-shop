@@ -334,6 +334,13 @@ test("translated content wraps naturally and stacks narrow detail rows", async (
   assert.match(css, /@media \(max-width: 767px\)\s*\{\s*\.group-seo__occasions\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/s);
 });
 
+test("tablet branch headers stack for every locale while the branch grid stays two columns", async () => {
+  const css = await read("app/globals.css");
+  assert.match(css, /@media \(max-width: 1100px\)\s*\{\s*\.group-seo__branch-top\s*\{[^}]*grid-template-columns:\s*1fr;/s);
+  assert.match(css, /\.group-seo__branch-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/s);
+  assert.doesNotMatch(css, /@media \(max-width: 1100px\)\s*\{(?:(?!@media)[\s\S])*\.group-seo__branch-grid/);
+});
+
 test("tablet header keeps all primary navigation buttons visible in two rows", async () => {
   const [css, pencilSource] = await Promise.all([
     read("app/globals.css"),
