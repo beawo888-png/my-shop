@@ -1,7 +1,7 @@
 "use client";
 
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { BrandLogo } from "@/components/home/brand-logo";
 import {
   LanguageSelector,
@@ -34,6 +34,7 @@ export function SiteHeader({
     item.href.startsWith("#") ? `${home ? "" : homePath}${item.href}` : item.href;
 
   const [open, setOpen] = useState(false);
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
 
   return (
     <header className={home ? "site-header site-header--home" : "site-header"}>
@@ -67,6 +68,7 @@ export function SiteHeader({
         aria-expanded={open}
         aria-controls="mobile-navigation"
         aria-label={open ? copy.closeMenuAria : copy.openMenuAria}
+        ref={menuToggleRef}
         onClick={() => setOpen((value) => !value)}
       >
         {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
@@ -96,7 +98,12 @@ export function SiteHeader({
                 key={targetLocale}
                 targetLocale={targetLocale}
                 currentLocale={locale}
-                onSelect={() => setOpen(false)}
+                onSelect={(sameLocale) => {
+                  setOpen(false);
+                  if (sameLocale) {
+                    menuToggleRef.current?.focus();
+                  }
+                }}
               >
                 {LOCALE_CONFIG[targetLocale].label}
               </LocaleLink>

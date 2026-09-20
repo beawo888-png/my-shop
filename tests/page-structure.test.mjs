@@ -360,6 +360,12 @@ test("header exposes an accessible language selector and keeps mobile branch boo
   assert.match(selector, /event\.button !== 0/);
   assert.match(selector, /onAuxClick/);
   assert.match(selector, /buildLocaleHref/);
+  assert.match(selector, /onSelect\?\.\(targetLocale === currentLocale\)/);
+  assert.match(selector, /onSelect=\{\(sameLocale\) =>/);
+  assert.match(selector, /if \(sameLocale\) \{/);
+  assert.match(header, /const menuToggleRef = useRef<HTMLButtonElement>\(null\)/);
+  assert.match(header, /ref=\{menuToggleRef\}/);
+  assert.match(header, /menuToggleRef\.current\?\.focus\(\)/);
 
   for (const className of [
     "language-selector",
@@ -381,6 +387,19 @@ test("header exposes an accessible language selector and keeps mobile branch boo
   assert.match(
     css,
     /\.mobile-nav__languages a\[aria-current="page"\]\s*\{[^}]*color:\s*var\(--gold\);/s,
+  );
+});
+
+test("expanded mobile navigation remains scrollable above the fixed booking bar", async () => {
+  const [header, css] = await Promise.all([
+    read("components/home/site-header.tsx"),
+    read("app/globals.css"),
+  ]);
+
+  assert.equal(header.match(/BOOKING_LOCATIONS\.map/g)?.length, 1);
+  assert.match(
+    css,
+    /@media \(max-width: 767px\)[\s\S]*?\.mobile-nav\s*\{[^}]*max-height:\s*calc\(100dvh - 72px - 76px\);[^}]*overflow-y:\s*auto;[^}]*overscroll-behavior:\s*contain;/s,
   );
 });
 

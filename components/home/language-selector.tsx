@@ -20,7 +20,7 @@ export function LocaleLink({
   targetLocale: Locale;
   currentLocale: Locale;
   children: ReactNode;
-  onSelect?: () => void;
+  onSelect?: (sameLocale: boolean) => void;
 }) {
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     const href = buildLocaleHref(targetLocale, window.location.hash);
@@ -40,7 +40,7 @@ export function LocaleLink({
       event.preventDefault();
       window.location.assign(href);
     }
-    onSelect?.();
+    onSelect?.(targetLocale === currentLocale);
   };
 
   return (
@@ -121,7 +121,12 @@ export function LanguageSelector({
             key={targetLocale}
             targetLocale={targetLocale}
             currentLocale={locale}
-            onSelect={() => setOpen(false)}
+            onSelect={(sameLocale) => {
+              setOpen(false);
+              if (sameLocale) {
+                triggerRef.current?.focus();
+              }
+            }}
           >
             {LOCALE_CONFIG[targetLocale].label}
           </LocaleLink>

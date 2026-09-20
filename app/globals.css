@@ -998,7 +998,11 @@ img {
   .mobile-nav {
     position: absolute;
     inset: 100% 0 auto;
+    max-height: calc(100vh - 72px - 76px);
+    max-height: calc(100dvh - 72px - 76px);
     padding: 1rem 5vw 1.5rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     background: var(--ink);
     border-top: 1px solid rgba(197, 161, 90, 0.25);
     box-shadow: 0 16px 32px rgba(16, 11, 10, 0.25);
