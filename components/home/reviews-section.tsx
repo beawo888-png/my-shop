@@ -1,6 +1,7 @@
 import Link from "next/link";
+import type { HomeCopy } from "@/lib/home-i18n";
 
-export function ReviewsSection() {
+export function ReviewsSection({ copy }: { copy: HomeCopy["reviews"] }) {
   return (
     <section
       className="section section--dark reviews"
@@ -8,13 +9,13 @@ export function ReviewsSection() {
       aria-labelledby="reviews-title"
     >
       <div className="section__heading section__heading--center">
-        <p className="eyebrow eyebrow--gold">GUEST REVIEWS</p>
-        <h2 id="reviews-title">지점별 고객 리뷰</h2>
-        <p>모란본점과 판교점을 방문한 고객들의 실제 네이버 리뷰를 확인하세요.</p>
+        <p className="eyebrow eyebrow--gold">{copy.eyebrow}</p>
+        <h2 id="reviews-title">{copy.title}</h2>
+        <p>{copy.description}</p>
       </div>
       <div className="reviews__action">
         <Link className="button button--primary" href="/reviews">
-          지점별 고객 리뷰 보기
+          {copy.action}
         </Link>
       </div>
     </section>

@@ -1,7 +1,7 @@
 import { FaqAccordionItem } from "@/components/home/faq-accordion-item";
-import { FAQ_ITEMS } from "@/lib/faq-content";
+import type { HomeCopy } from "@/lib/home-i18n";
 
-export function FaqSection() {
+export function FaqSection({ copy }: { copy: HomeCopy["faq"] }) {
   return (
     <section
       className="section section--light faq"
@@ -10,11 +10,11 @@ export function FaqSection() {
     >
       <div className="faq__inner">
         <header className="faq__header">
-          <p className="eyebrow eyebrow--red">FAQ</p>
-          <h2 id="faq-title">자주 묻는 질문</h2>
+          <p className="eyebrow eyebrow--red">{copy.eyebrow}</p>
+          <h2 id="faq-title">{copy.title}</h2>
         </header>
         <div className="faq__list">
-          {FAQ_ITEMS.map((item) => (
+          {copy.items.map((item) => (
             <FaqAccordionItem item={item} key={item.id} />
           ))}
         </div>

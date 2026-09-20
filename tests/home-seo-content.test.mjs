@@ -27,16 +27,22 @@ test("home renders the approved brand story and four Wangjing promises", async (
     "60분 동안",
     "한 점의 양고기에도 시간을 담아",
   ]) {
-    assert.ok(story.includes(phrase), `story should include ${phrase}`);
+    assert.ok(koreanCopy.includes(phrase), `Korean story should include ${phrase}`);
   }
 
-  assert.match(story, /WANGJING_PROMISES\.map/);
+  assert.match(story, /copy\.promises\.map/);
+  assert.match(story, /copy\.paragraphs\.map/);
+  assert.match(story, /<strong>\{copy\.closingStrong\}<\/strong>/);
+  assert.doesNotMatch(story, /dangerouslySetInnerHTML/);
   assert.match(story, /className="story__promise-card"/);
   assert.match(koreanCopy, /label: "브랜드 스토리", href: "#story"/);
 });
 
 test("home describes Pangyo and Moran dining intent with branch actions", async () => {
-  const group = await read("components/home/group-dining-section.tsx");
+  const [group, koreanCopy] = await Promise.all([
+    read("components/home/group-dining-section.tsx"),
+    read("lib/home-i18n/ko.ts"),
+  ]);
 
   for (const phrase of [
     "판교 회식부터 모란 가족모임까지",
@@ -46,12 +52,15 @@ test("home describes Pangyo and Moran dining intent with branch actions", async 
     "비즈니스 미팅",
     "데이트 · 기념일",
   ]) {
-    assert.ok(group.includes(phrase), `group section should include ${phrase}`);
+    assert.ok(koreanCopy.includes(phrase), `Korean group copy should include ${phrase}`);
   }
 
   assert.match(group, /LOCATIONS\.map/);
-  assert.match(group, /location\.transit/);
-  assert.match(group, /location\.parking/);
+  assert.match(group, /branches\[location\.id\]/);
+  assert.match(group, /copy\.occasions\.map/);
+  assert.match(group, /copy\.features\.map/);
+  assert.match(group, /guide\.transit/);
+  assert.match(group, /guide\.parking/);
   assert.match(group, /booking\.url/);
   assert.match(group, /location\.mapUrl/);
   assert.match(group, /import Image from "next\/image"/);
@@ -59,7 +68,7 @@ test("home describes Pangyo and Moran dining intent with branch actions", async 
     assert.ok(group.includes(asset), `group section should include ${asset}`);
   }
   assert.match(group, /className="group-seo__branch-image"/);
-  assert.match(group, /alt=\{guide\.imageAlt\}/);
+  assert.match(group, /alt=\{guide\.groupImageAlt\}/);
   for (const hook of [
     "group-seo__branch-top",
     "group-seo__principle-band",
@@ -75,13 +84,13 @@ test("home describes Pangyo and Moran dining intent with branch actions", async 
     "60분 정성 구이",
     "모든 모임을 위한 공간",
   ]) {
-    assert.ok(group.includes(phrase), `group section should include ${phrase}`);
+    assert.ok(koreanCopy.includes(phrase), `Korean group copy should include ${phrase}`);
   }
 });
 
 test("home exposes two Restaurant entities and responsive SEO sections", async () => {
   const [page, structuredData, layout, css] = await Promise.all([
-    read("app/page.tsx"),
+    read("components/home/localized-homepage.tsx"),
     read("lib/site-structured-data.ts"),
     read("app/layout.tsx"),
     read("app/globals.css"),

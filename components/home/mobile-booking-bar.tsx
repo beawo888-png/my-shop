@@ -1,15 +1,16 @@
 import { SITE } from "@/lib/site-content";
+import type { HomeCopy } from "@/lib/home-i18n";
 
-export function MobileBookingBar() {
+export function MobileBookingBar({ copy }: { copy: HomeCopy["mobileBooking"] }) {
   return (
-    <aside className="mobile-booking" aria-label="빠른 예약">
+    <aside className="mobile-booking" aria-label={copy.aria}>
       <a
         href={SITE.bookingUrl}
         target="_blank"
         rel="noreferrer"
-        aria-label="네이버 예약 페이지 열기"
+        aria-label={copy.linkAria}
       >
-        네이버 예약
+        {copy.label}
       </a>
     </aside>
   );

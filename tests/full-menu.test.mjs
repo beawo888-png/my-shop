@@ -198,7 +198,8 @@ test("all three full-menu entry points open /menu in a safe new tab", async () =
   assert.match(signature, /href="\/menu"/);
   assert.match(signature, /target="_blank"/);
   assert.match(signature, /rel="noreferrer"/);
-  assert.match(signature, />\s*전체 메뉴 보기\s*</);
+  assert.match(signature, />\s*\{copy\.allMenu\}\s*</);
+  assert.match(koreanCopy, /allMenu: "전체 메뉴 보기"/);
 });
 
 test("shared header can root home section links from menu pages", async () => {

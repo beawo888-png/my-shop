@@ -5,8 +5,10 @@ import { test } from "node:test";
 const read = (path) =>
   readFile(new URL(`../${path}`, import.meta.url), "utf8").catch(() => "");
 
-test("home page renders every approved section", async () => {
-  const page = await read("app/page.tsx");
+test("shared homepage passes typed locale copy to every visible section", async () => {
+  const page = await read("components/home/localized-homepage.tsx");
+  assert.match(page, /type LocalizedHomepageProps = \{[\s\S]*?locale: Locale/);
+  assert.match(page, /const copy = getHomeCopy\(locale\)/);
   for (const component of [
     "SiteHeader",
     "HeroSection",
@@ -20,7 +22,28 @@ test("home page renders every approved section", async () => {
     "MobileBookingBar",
     "SiteFooter",
   ]) {
-    assert.match(page, new RegExp(`<${component}`));
+    assert.match(page, new RegExp(`<${component}\\b[^>]*\\bcopy=\\{copy\\.`));
+  }
+  assert.match(page, /lang=\{LOCALE_CONFIG\[locale\]\.htmlLang\}/);
+});
+
+test("root homepage renders the shared Korean implementation", async () => {
+  const page = await read("app/page.tsx");
+  assert.match(page, /<LocalizedHomepage locale="ko" \/>/);
+});
+
+test("homepage leaves require exact copy subsections", async () => {
+  const sections = {
+    "hero-section": "hero", "signature-menu-section": "signature",
+    "story-section": "story", "group-dining-section": "group",
+    "reviews-section": "reviews", "location-section": "locations",
+    "faq-section": "faq", "reservation-banner": "reservation",
+    "mobile-booking-bar": "mobileBooking", "site-footer": "footer",
+  };
+  for (const [file, subsection] of Object.entries(sections)) {
+    const source = await read(`components/home/${file}.tsx`);
+    assert.match(source, new RegExp(`copy: HomeCopy\\["${subsection}"\\]`));
+    assert.doesNotMatch(source, /[가-힣]/, `${file} must not own Korean copy`);
   }
 });
 
@@ -33,6 +56,7 @@ test("section components expose the approved anchor IDs", async () => {
       "reviews-section.tsx",
       "location-section.tsx",
       "faq-section.tsx",
+      "reservation-banner.tsx",
     ].map((name) => read(`components/home/${name}`)),
   );
   for (const [index, id] of [
@@ -42,6 +66,7 @@ test("section components expose the approved anchor IDs", async () => {
     "reviews",
     "location",
     "faq",
+    "reservation",
   ].entries()) {
     assert.match(files[index], new RegExp(`id=["']${id}["']`));
   }
@@ -53,9 +78,7 @@ test("group branch details keep labels on one line and round only their actions"
     read("app/globals.css"),
   ]);
 
-  for (const label of ["오시는길", "추천모임", "대표메뉴", "주차안내"]) {
-    assert.ok(groupDining.includes(`label: "${label}"`));
-  }
+  assert.match(groupDining, /copy\.detailLabels\[index\]/);
   assert.match(
     css,
     /\.group-seo__branch-card dt\s*\{[^}]*white-space:\s*nowrap;/s,
@@ -82,7 +105,7 @@ test("homepage signature section renders four native autoplay videos", async () 
   assert.match(section, /SIGNATURE_VIDEOS\.map/);
   assert.match(section, /<video/);
   assert.match(section, /src=\{video\.src\}/);
-  assert.match(section, /aria-label=\{video\.title\}/);
+  assert.match(section, /aria-label=\{copy\.videoLabels\[index\]\}/);
   assert.match(section, /autoPlay/);
   assert.match(section, /muted/);
   assert.match(section, /loop/);
@@ -120,7 +143,7 @@ test("homepage reviews section links to the branch selector", async () => {
   const section = await read("components/home/reviews-section.tsx");
   assert.match(section, /import Link from "next\/link"/);
   assert.match(section, /href="\/reviews"/);
-  assert.match(section, /지점별 고객 리뷰 보기/);
+  assert.match(section, /\{copy\.action\}/);
   assert.doesNotMatch(section, /REVIEWS\.map|review-card|blockquote/);
   assert.match(section, /id="reviews"/);
 });
@@ -245,13 +268,13 @@ test("reviews page uses a responsive two-to-one column layout", async () => {
 
 test("home header uses a larger logo without changing other pages", async () => {
   const [page, header, reviews, css] = await Promise.all([
-    read("app/page.tsx"),
+    read("components/home/localized-homepage.tsx"),
     read("components/home/site-header.tsx"),
     read("app/reviews/page.tsx"),
     read("app/globals.css"),
   ]);
 
-  assert.match(page, /<SiteHeader home \/>/);
+  assert.match(page, /<SiteHeader\b[^>]* home \/>/);
   assert.match(header, /home\?: boolean/);
   assert.match(header, /site-header--home/);
   assert.match(header, /\(max-width: 767px\) 170px, 250px/);
@@ -279,8 +302,8 @@ test("external actions use safe links and accessible labels", async () => {
   const source = files.join("\n");
   assert.match(source, /target="_blank"/);
   assert.match(source, /rel="noreferrer"/);
-  assert.match(source, /네이버 예약/);
-  assert.match(source, /전화/);
+  assert.match(source, /\{copy\.naver\}/);
+  assert.match(source, /\{copy\.phone\}/);
 });
 
 test("mobile menu exposes its state and target", async () => {
@@ -436,27 +459,34 @@ test("location section renders two data-driven branch cards", async () => {
   assert.match(section, /import \{ LOCATIONS \}/);
   assert.match(section, /import \{ LocationCard \}/);
   assert.match(section, /LOCATIONS\.map/);
-  assert.match(section, /두 곳에서 만나요/);
-  assert.match(section, /네이버·구글 지도로 바로 이동하세요/);
+  assert.match(section, /\{copy\.title\}/);
+  assert.match(section, /\{copy\.description\}/);
   assert.match(section, /href=\{location\.mapUrl\}/);
   assert.match(section, /target="_blank"/);
   assert.match(section, /rel="noreferrer"/);
-  assert.match(section, /네이버 플레이스 열기/);
+  assert.match(section, /copy\.placeAria/);
+  assert.match(section, /copy=\{branches\[location\.id\]\}/);
+  assert.match(section, /labels=\{copy\}/);
   assert.doesNotMatch(section, /#location-/);
 
   assert.match(card, /from "next\/image"/);
   assert.match(card, /id=\{`location-\$\{location\.id\}`\}/);
   assert.match(card, /location\.phoneHref/);
-  assert.match(card, /<dt>주차장<\/dt>/);
+  assert.match(card, /<dt>\{labels\.labels\.parking\}<\/dt>/);
   assert.doesNotMatch(card, /주차장 이용방법/);
-  assert.match(card, /location\.parking/);
+  assert.match(card, /copy\.parking/);
   assert.match(card, /className="location-card__actions"/);
   assert.match(card, /location\.mapUrl/);
   assert.match(card, /location\.googleDirectionsUrl/);
-  assert.match(card, /네이버 길찾기/);
-  assert.match(card, /구글 길찾기/);
-  assert.match(card, /\$\{location\.shortName\} 네이버 길찾기 열기/);
-  assert.match(card, /\$\{location\.shortName\} 구글 길찾기 열기/);
+  assert.match(card, /labels\.naverDirections/);
+  assert.match(card, /labels\.googleDirections/);
+  assert.match(card, /\$\{copy\.shortName\} \$\{labels\.naverDirectionsAria\}/);
+  assert.match(card, /\$\{copy\.shortName\} \$\{labels\.googleDirectionsAria\}/);
+  assert.match(card, /copy: BranchCopy/);
+  assert.match(card, /labels: HomeCopy\["locations"\]/);
+  assert.match(card, /location\.address/);
+  assert.match(card, /location\.phoneDisplay/);
+  assert.doesNotMatch(card, /[가-힣]/);
   assert.equal(card.match(/target="_blank"/g)?.length, 2);
   assert.equal(card.match(/rel="noreferrer"/g)?.length, 2);
 
@@ -512,8 +542,8 @@ test("header uses the approved logo and footer uses the Wangjing brand name", as
   assert.match(header, /brand-logo--header/);
   assert.match(header, /aria-label=\{copy\.homeAria\}/);
   assert.doesNotMatch(header, /SITE\.(?:hanja|name)/);
-  assert.match(footer, /<h2 id="footer-brand">왕징양다리양꼬치<\/h2>/);
-  assert.match(footer, /© 2026 왕징양다리양꼬치 메뉴\/가격은/);
+  assert.match(footer, /<h2 id="footer-brand">\{copy\.brandName\}<\/h2>/);
+  assert.match(footer, /\{copy\.legal\}/);
   assert.match(css, /\.brand-logo\s*\{[\s\S]*?mix-blend-mode: screen;/);
 
   const headerRule = css.match(/\.site-header\s*\{[^}]*\}/)?.[0] ?? "";
@@ -545,12 +575,9 @@ test("reference footer renders the approved four-column information layout", asy
   assert.match(footer, /href=\{moran\.phoneHref\}/);
   assert.match(footer, /href=\{pangyo\.phoneHref\}/);
   assert.match(footer, /href="\/menu"/);
-  assert.match(footer, /href="\/#group"/);
-  assert.match(footer, /href="\/#reservation"/);
-  assert.match(
-    footer,
-    /왕징양다리양꼬치 메뉴\/가격은 매장 상황에 따라 다를 수 있습니다\./,
-  );
+  assert.match(footer, /href=\{`\$\{homePath\}#group`\}/);
+  assert.match(footer, /href=\{`\$\{homePath\}#reservation`\}/);
+  assert.match(footer, /\{copy\.legal\}/);
   assert.match(footer, /@wangjingyangdali_official/);
   assert.match(
     css,
@@ -560,18 +587,18 @@ test("reference footer renders the approved four-column information layout", asy
 
 test("FAQ section renders accessible independently controlled items", async () => {
   const [page, section, item, css] = await Promise.all([
-    read("app/page.tsx"),
+    read("components/home/localized-homepage.tsx"),
     read("components/home/faq-section.tsx"),
     read("components/home/faq-accordion-item.tsx"),
     read("app/globals.css"),
   ]);
 
   assert.match(page, /import \{ FaqSection \}/);
-  assert.match(page, /<FaqSection \/>/);
-  assert.match(section, /FAQ_ITEMS\.map/);
+  assert.match(page, /<FaqSection copy=\{copy\.faq\} \/>/);
+  assert.match(section, /copy\.items\.map/);
   assert.match(section, /<FaqAccordionItem/);
   assert.match(section, /id="faq"/);
-  assert.match(section, /자주 묻는 질문/);
+  assert.match(section, /\{copy\.title\}/);
   assert.match(item, /^"use client";/m);
   assert.match(item, /useState\(false\)/);
   assert.match(item, /type="button"/);
@@ -661,12 +688,12 @@ test("hero uses the two-location copy without overlay actions or summary cards",
     read("app/globals.css"),
   ]);
 
-  assert.match(hero, /WANGJING · PREMIUM CHINESE LAMB DINING/);
-  assert.match(hero, /불향으로 완성한 양고기,/);
-  assert.match(hero, /중요한 자리를 위한 왕징/);
+  assert.match(hero, /\{copy\.eyebrow\}/);
+  assert.match(hero, /\{copy\.titleLine1\}/);
+  assert.match(hero, /\{copy\.titleLine2\}/);
   assert.match(
     hero,
-    /성남 판교·모란에서 만나는 품격있는 양고기전문점\.[\s\S]*회식부터 가족모임까지 편안하게 준비 해 드립니다\./,
+    /\{copy\.leadLine1\}[\s\S]*\{copy\.leadLine2\}/,
   );
   assert.doesNotMatch(hero, /PANGYO · CHINESE LAMB DINING/);
   assert.doesNotMatch(hero, /hero__actions/);

@@ -1,20 +1,21 @@
 import Image from "next/image";
+import type { HomeCopy } from "@/lib/home-i18n";
 import { SITE } from "@/lib/site-content";
 
-export function ReservationBanner() {
+export function ReservationBanner({ copy }: { copy: HomeCopy["reservation"] }) {
   return (
-    <section className="reservation" aria-labelledby="reservation-title">
+    <section className="reservation" id="reservation" aria-labelledby="reservation-title">
       <Image
         src="/images/wangjing/feast.jpg"
-        alt="양고기와 중국 요리가 풍성하게 차려진 왕징 한 상"
+        alt={copy.imageAlt}
         fill
         sizes="100vw"
       />
       <div className="reservation__overlay" />
       <div className="reservation__content">
-        <p className="eyebrow eyebrow--gold">RESERVATION</p>
-        <h2 id="reservation-title">오늘의 좋은 자리를 왕징에서</h2>
-        <p>네이버 예약으로 원하는 시간과 인원을 편리하게 알려주세요.</p>
+        <p className="eyebrow eyebrow--gold">{copy.eyebrow}</p>
+        <h2 id="reservation-title">{copy.title}</h2>
+        <p>{copy.description}</p>
         <div className="button-row button-row--center">
           <a
             className="button button--primary"
@@ -22,10 +23,10 @@ export function ReservationBanner() {
             target="_blank"
             rel="noreferrer"
           >
-            네이버 예약
+            {copy.naver}
           </a>
           <a className="button button--outline" href={SITE.phoneHref}>
-            전화 문의
+            {copy.phone}
           </a>
         </div>
       </div>

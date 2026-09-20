@@ -1,12 +1,13 @@
 import Image from "next/image";
+import type { HomeCopy } from "@/lib/home-i18n";
 
-export function HeroSection() {
+export function HeroSection({ copy }: { copy: HomeCopy["hero"] }) {
   return (
     <section className="hero" id="top" aria-labelledby="hero-title">
       <Image
         className="hero__poster"
         src="/images/wangjing/hero-skewers.png"
-        alt="숯불 위에서 구워지는 왕징양다리양꼬치 대표 메뉴"
+        alt={copy.imageAlt}
         fill
         priority
         sizes="100vw"
@@ -29,14 +30,14 @@ export function HeroSection() {
       </video>
       <div className="hero__overlay" />
       <div className="hero__content">
-        <p className="eyebrow">WANGJING · PREMIUM CHINESE LAMB DINING</p>
+        <p className="eyebrow">{copy.eyebrow}</p>
         <h1 id="hero-title">
-          불향으로 완성한 양고기,
-          <br /> 중요한 자리를 위한 왕징
+          {copy.titleLine1}
+          <br /> {copy.titleLine2}
         </h1>
         <p className="hero__lead">
-          성남 판교·모란에서 만나는 품격있는 양고기전문점.
-          <br /> 회식부터 가족모임까지 편안하게 준비 해 드립니다.
+          {copy.leadLine1}
+          <br /> {copy.leadLine2}
         </p>
       </div>
     </section>

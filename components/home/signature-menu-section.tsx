@@ -1,23 +1,21 @@
+import type { HomeCopy } from "@/lib/home-i18n";
+
 const SIGNATURE_VIDEOS = [
   {
     src: "/videos/signature/signature-01.mp4",
-    title: "왕징 시그니처 요리 영상 1",
   },
   {
     src: "/videos/signature/signature-02.mp4",
-    title: "왕징 시그니처 요리 영상 2",
   },
   {
     src: "/videos/signature/signature-03.mp4",
-    title: "왕징 시그니처 요리 영상 3",
   },
   {
     src: "/videos/signature/signature-04.mp4",
-    title: "왕징 시그니처 요리 영상 4",
   },
 ] as const;
 
-export function SignatureMenuSection() {
+export function SignatureMenuSection({ copy }: { copy: HomeCopy["signature"] }) {
   return (
     <section
       className="section section--light"
@@ -26,9 +24,9 @@ export function SignatureMenuSection() {
     >
       <div className="section__heading section__heading--actions">
         <div>
-          <p className="eyebrow eyebrow--red">SIGNATURE MENU</p>
-          <h2 id="menu-title">왕징에서 먼저 맛봐야 할 요리</h2>
-          <p>불향 가득한 양고기와 정통 중국 요리를 함께 즐겨보세요.</p>
+          <p className="eyebrow eyebrow--red">{copy.eyebrow}</p>
+          <h2 id="menu-title">{copy.title}</h2>
+          <p>{copy.description}</p>
         </div>
         <a
           className="button button--outline-dark signature-menu__all"
@@ -36,16 +34,16 @@ export function SignatureMenuSection() {
           target="_blank"
           rel="noreferrer"
         >
-          전체 메뉴 보기
+          {copy.allMenu}
         </a>
       </div>
       <div className="signature-video-grid">
-        {SIGNATURE_VIDEOS.map((video) => (
+        {SIGNATURE_VIDEOS.map((video, index) => (
           <article className="signature-video-card" key={video.src}>
             <div className="signature-video-card__frame">
               <video
                 src={video.src}
-                aria-label={video.title}
+                aria-label={copy.videoLabels[index]}
                 autoPlay
                 muted
                 loop

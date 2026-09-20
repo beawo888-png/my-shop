@@ -14,6 +14,15 @@ test("FAQ content preserves the Korean locale compatibility alias", async () => 
   assert.doesNotMatch(compatibilitySource, /question: "/);
 });
 
+test("FAQ section renders the supplied locale items instead of the compatibility alias", async () => {
+  const section = await readFile(new URL("../components/home/faq-section.tsx", import.meta.url), "utf8");
+  assert.match(section, /copy: HomeCopy\["faq"\]/);
+  assert.match(section, /copy\.items\.map/);
+  assert.doesNotMatch(section, /FAQ_ITEMS/);
+  assert.match(source, /export const koHomeCopy =/);
+  assert.match(source, /faq: \{[^]*?items: \[/);
+});
+
 test("FAQ content defines the six approved questions in order", () => {
   const questions = [
     "양고기 특유의 잡내가 걱정돼요.",

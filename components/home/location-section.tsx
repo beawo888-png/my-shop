@@ -1,7 +1,11 @@
 import { LocationCard } from "@/components/home/location-card";
 import { LOCATIONS } from "@/lib/site-content";
+import type { HomeCopy } from "@/lib/home-i18n";
 
-export function LocationSection() {
+export function LocationSection({ copy, branches }: {
+  copy: HomeCopy["locations"];
+  branches: HomeCopy["branches"];
+}) {
   return (
     <section
       className="section section--light locations"
@@ -10,11 +14,11 @@ export function LocationSection() {
     >
       <div className="locations__inner">
         <header className="locations__header">
-          <p className="eyebrow eyebrow--red">LOCATIONS</p>
-          <h2 id="location-title">두 곳에서 만나요</h2>
-          <p>가까운 왕징을 선택해 주소와 전화번호를 확인하고 네이버·구글 지도로 바로 이동하세요.</p>
+          <p className="eyebrow eyebrow--red">{copy.eyebrow}</p>
+          <h2 id="location-title">{copy.title}</h2>
+          <p>{copy.description}</p>
 
-          <nav className="location-jumps" aria-label="지점 바로가기">
+          <nav className="location-jumps" aria-label={copy.jumpAria}>
             {LOCATIONS.map((location) => (
               <a
                 className="location-jump"
@@ -22,10 +26,10 @@ export function LocationSection() {
                 key={location.id}
                 target="_blank"
                 rel="noreferrer"
-                aria-label={`${location.shortName} 네이버 플레이스 열기`}
+                aria-label={`${branches[location.id].shortName} ${copy.placeAria}`}
               >
                 <span aria-hidden="true" />
-                {location.shortName}
+                {branches[location.id].shortName}
               </a>
             ))}
           </nav>
@@ -34,7 +38,7 @@ export function LocationSection() {
         <ul className="location-grid">
           {LOCATIONS.map((location) => (
             <li key={location.id}>
-              <LocationCard location={location} />
+              <LocationCard location={location} copy={branches[location.id]} labels={copy} />
             </li>
           ))}
         </ul>
