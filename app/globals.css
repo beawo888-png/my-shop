@@ -881,6 +881,78 @@ img {
 }
 
 @media (max-width: 1023px) {
+  .menu-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .menu-card:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .site-footer {
+    padding-top: 4.5rem;
+  }
+
+  .site-footer__main {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 3.5rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  html {
+    scroll-padding-top: 132px;
+  }
+
+  .site-header {
+    min-height: 132px;
+    padding-inline: 20px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: 76px 56px;
+    grid-template-areas:
+      "wordmark spacer booking"
+      "nav nav nav";
+    column-gap: 1rem;
+    row-gap: 0;
+  }
+
+  .wordmark {
+    grid-area: wordmark;
+  }
+
+  .desktop-nav {
+    grid-area: nav;
+    min-width: 0;
+    align-self: stretch;
+    display: flex;
+    justify-content: space-around;
+    gap: clamp(0.75rem, 2.2vw, 1.4rem);
+    border-top: 1px solid rgba(197, 161, 90, 0.25);
+  }
+
+  .desktop-nav a {
+    min-height: 56px;
+    font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+    white-space: nowrap;
+  }
+
+  .header-booking {
+    grid-area: booking;
+  }
+
+  .menu-toggle,
+  .mobile-nav,
+  .mobile-nav:not([hidden]) {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  html {
+    scroll-padding-top: 72px;
+  }
+
   .desktop-nav {
     display: none;
   }
@@ -937,29 +1009,6 @@ img {
     border-bottom: 0;
     color: var(--paper);
     font-size: 1rem;
-  }
-
-  .menu-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .menu-card:last-child {
-    grid-column: 1 / -1;
-  }
-
-  .site-footer {
-    padding-top: 4.5rem;
-  }
-
-  .site-footer__main {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: 3.5rem;
-  }
-}
-
-@media (max-width: 767px) {
-  html {
-    scroll-padding-top: 72px;
   }
 
   body {

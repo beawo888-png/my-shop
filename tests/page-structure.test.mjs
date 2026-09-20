@@ -295,11 +295,41 @@ test("mobile menu exposes its state and target", async () => {
   assert.match(header, /setOpen\(false\)/);
   assert.match(
     css,
-    /@media \(max-width: 1023px\)[\s\S]*?\.desktop-nav\s*\{[\s\S]*?display:\s*none;/,
+    /@media \(max-width: 767px\)[\s\S]*?\.desktop-nav\s*\{[\s\S]*?display:\s*none;/,
   );
   assert.match(
     css,
-    /@media \(max-width: 1023px\)[\s\S]*?\.menu-toggle\s*\{[\s\S]*?display:\s*inline-grid;/,
+    /@media \(max-width: 767px\)[\s\S]*?\.menu-toggle\s*\{[\s\S]*?display:\s*inline-grid;/,
+  );
+});
+
+test("tablet header keeps all primary navigation buttons visible in two rows", async () => {
+  const [css, pencilSource] = await Promise.all([
+    read("app/globals.css"),
+    read("초안"),
+  ]);
+  const pencil = JSON.parse(pencilSource);
+  const tabletHeader = pencil.children.find(
+    (child) => child.id === "wangjing-tablet-header",
+  );
+
+  assert.equal(tabletHeader?.width, 910);
+  assert.equal(tabletHeader?.height, 132);
+  assert.match(
+    tabletHeader?.children?.[1]?.name ?? "",
+    /브랜드 스토리 → 대표 메뉴 → 지점 안내 → 단체 모임 → 자주 묻는 질문 · 항상 표시/,
+  );
+  assert.match(
+    css,
+    /@media \(min-width: 768px\) and \(max-width: 1023px\)[\s\S]*?\.site-header\s*\{[\s\S]*?grid-template-rows:\s*76px 56px;/,
+  );
+  assert.match(
+    css,
+    /@media \(min-width: 768px\) and \(max-width: 1023px\)[\s\S]*?\.desktop-nav\s*\{[\s\S]*?display:\s*flex;/,
+  );
+  assert.match(
+    css,
+    /@media \(min-width: 768px\) and \(max-width: 1023px\)[\s\S]*?\.menu-toggle\s*\{[\s\S]*?display:\s*none;/,
   );
 });
 

@@ -12752,6 +12752,44 @@
           "padding": 18
         }
       ]
+    },
+    {
+      "type": "frame",
+      "id": "wangjing-tablet-header",
+      "x": 6500,
+      "y": 0,
+      "name": "홈페이지 태블릿 상단 내비게이션 · 768~1023px 두 줄 고정 헤더",
+      "clip": true,
+      "width": 910,
+      "height": 132,
+      "fill": "#17110F",
+      "layout": "none",
+      "children": [
+        {
+          "type": "frame",
+          "id": "tablet-header-top-row",
+          "x": 20,
+          "y": 0,
+          "name": "1행 · 왕징 로고 + 네이버 예약",
+          "width": 870,
+          "height": 76,
+          "fill": "#17110F",
+          "layout": "none"
+        },
+        {
+          "type": "frame",
+          "id": "tablet-header-nav-row",
+          "x": 20,
+          "y": 76,
+          "name": "2행 · 브랜드 스토리 → 대표 메뉴 → 지점 안내 → 단체 모임 → 자주 묻는 질문 · 항상 표시",
+          "width": 870,
+          "height": 56,
+          "fill": "#17110F",
+          "stroke": "#3D302A",
+          "strokeWidth": 1,
+          "layout": "none"
+        }
+      ]
     }
   ],
   "fileToken": "4786e8a5-4364-43b4-bd9b-87ed94eaa636"
