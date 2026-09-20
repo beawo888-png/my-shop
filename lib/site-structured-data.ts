@@ -1,8 +1,15 @@
 import { BOOKING_LOCATIONS, LOCATIONS } from "@/lib/site-content";
+import { getHomePath, type HomeCopy, type Locale } from "@/lib/home-i18n";
 
 const SITE_URL = "https://xn--vr0bn4e2wh79mca68ih9mf4j.com";
 
-export function buildSiteRestaurantStructuredData() {
+export function buildSiteRestaurantStructuredData(
+  locale: Locale,
+  copy: HomeCopy["structuredData"],
+) {
+  const pagePath = getHomePath(locale);
+  const homeUrl = `${SITE_URL}${pagePath === "/" ? "" : pagePath}`;
+
   return {
     "@context": "https://schema.org",
     "@graph": LOCATIONS.map((location) => {
@@ -10,20 +17,20 @@ export function buildSiteRestaurantStructuredData() {
 
       return {
         "@type": "Restaurant",
-        "@id": `${SITE_URL}/#restaurant-${location.id}`,
+        "@id": `${homeUrl}#restaurant-${location.id}`,
         name: location.name,
-        description: `${location.shortName}에서 48시간 숙성과 고온 숯불로 완성한 통양다리구이, 양꼬치와 중국요리를 제공합니다.`,
-        url: `${SITE_URL}/#location-${location.id}`,
+        description: copy.description[location.id],
+        url: `${homeUrl}#location-${location.id}`,
         image: `${SITE_URL}${location.image}`,
         telephone: location.phoneDisplay,
         address: {
           "@type": "PostalAddress",
           streetAddress: location.address,
-          addressLocality: "성남시",
-          addressRegion: "경기도",
+          addressLocality: copy.addressLocality,
+          addressRegion: copy.addressRegion,
           addressCountry: "KR",
         },
-        servesCuisine: ["중국 요리", "양고기 요리", "양꼬치", "통양다리구이"],
+        servesCuisine: copy.cuisines,
         hasMenu: `${SITE_URL}/menu`,
         acceptsReservations: booking?.url,
         sameAs: [location.mapUrl, location.reviewUrl],

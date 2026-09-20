@@ -5,6 +5,9 @@ const SITE_URL = "https://xn--vr0bn4e2wh79mca68ih9mf4j.com";
 
 const STATIC_PAGES = [
   { path: "/", changeFrequency: "weekly", priority: 1 },
+  { path: "/en", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/zh", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/ja", changeFrequency: "weekly", priority: 0.9 },
   { path: "/menu", changeFrequency: "monthly", priority: 0.9 },
   { path: "/reviews", changeFrequency: "monthly", priority: 0.8 },
 ] as const;

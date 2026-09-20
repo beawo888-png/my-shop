@@ -17,7 +17,7 @@ type LocalizedHomepageProps = { locale: Locale };
 export function LocalizedHomepage({ locale }: LocalizedHomepageProps) {
   const copy = getHomeCopy(locale);
   const homePath = getHomePath(locale);
-  const structuredData = buildSiteRestaurantStructuredData();
+  const structuredData = buildSiteRestaurantStructuredData(locale, copy.structuredData);
 
   return (
     <>

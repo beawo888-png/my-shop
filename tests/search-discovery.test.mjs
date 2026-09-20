@@ -10,11 +10,12 @@ test("sitemap exposes every public canonical route", async () => {
 
   assert.match(sitemap, /MetadataRoute\.Sitemap/);
   assert.match(sitemap, /PANGYO_MENU_GROUP_IDS\.map/);
-  for (const route of ["/", "/menu", "/reviews"]) {
+  for (const route of ["/", "/en", "/zh", "/ja", "/menu", "/reviews"]) {
     assert.ok(sitemap.includes(`"${route}"`));
   }
   assert.match(sitemap, /https:\/\/xn--vr0bn4e2wh79mca68ih9mf4j\.com/);
   assert.doesNotMatch(sitemap, /#location-|naver\.com|kakao\.com/);
+  assert.doesNotMatch(sitemap, /\/(?:en|zh|ja)\/(?:menu|reviews)/);
 });
 
 test("robots permits crawling and advertises the canonical sitemap", async () => {

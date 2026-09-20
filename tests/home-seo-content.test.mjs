@@ -89,10 +89,10 @@ test("home describes Pangyo and Moran dining intent with branch actions", async 
 });
 
 test("home exposes two Restaurant entities and responsive SEO sections", async () => {
-  const [page, structuredData, layout, css] = await Promise.all([
+  const [page, structuredData, koreanCopy, css] = await Promise.all([
     read("components/home/localized-homepage.tsx"),
     read("lib/site-structured-data.ts"),
-    read("app/layout.tsx"),
+    read("lib/home-i18n/ko.ts"),
     read("app/globals.css"),
   ]);
 
@@ -104,9 +104,9 @@ test("home exposes two Restaurant entities and responsive SEO sections", async (
   assert.match(structuredData, /servesCuisine/);
   assert.match(structuredData, /hasMenu/);
   assert.match(structuredData, /acceptsReservations/);
-  assert.match(layout, /왕징양다리양꼬치 \| 판교·모란 통양다리구이·양꼬치/);
-  assert.match(layout, /판교 회식/);
-  assert.match(layout, /모란 가족모임/);
+  assert.match(koreanCopy, /왕징양다리양꼬치 \| 판교·모란 통양다리구이·양꼬치/);
+  assert.match(koreanCopy, /판교 회식/);
+  assert.match(koreanCopy, /모란 가족모임/);
   assert.match(css, /\.story__standards\s*\{/);
   assert.match(css, /\.story__promise-grid\s*\{[^}]*grid-template-columns:\s*repeat\(4,/);
   assert.match(css, /\.group-seo__branch-grid\s*\{/);
@@ -143,4 +143,29 @@ test("home exposes two Restaurant entities and responsive SEO sections", async (
     css,
     /@media \(max-width: 767px\)[\s\S]*?\.group-seo__branch-grid[\s\S]*?grid-template-columns:\s*1fr;/,
   );
+});
+
+test("localized homepage route is static, strict, and metadata-aware", async () => {
+  const route = await read("app/[locale]/page.tsx");
+  assert.match(route, /generateStaticParams/);
+  assert.match(route, /LOCALIZED_LOCALES\.map/);
+  assert.match(route, /export const dynamicParams = false/);
+  assert.match(route, /params: Promise<\{ locale: string \}>/);
+  assert.equal(route.match(/const \{ locale \} = await params/g)?.length, 2);
+  assert.equal(route.match(/if \(!isLocalizedLocale\(locale\)\) notFound\(\)/g)?.length, 2);
+  assert.match(route, /buildHomeMetadata\(locale\)/);
+  assert.match(route, /<LocalizedHomepage locale=\{locale\} \/>/);
+});
+
+test("homepage metadata belongs to each page and JSON-LD receives its locale copy", async () => {
+  const [root, layout, home] = await Promise.all([
+    read("app/page.tsx"), read("app/layout.tsx"), read("components/home/localized-homepage.tsx"),
+  ]);
+  assert.match(root, /export const metadata = buildHomeMetadata\("ko"\)/);
+  assert.match(layout, /metadataBase: new URL/);
+  assert.match(layout, /applicationName:/);
+  assert.match(layout, /keywords:/);
+  assert.match(layout, /<html lang="ko">/);
+  assert.doesNotMatch(layout, /\b(?:title|description|alternates|openGraph):/);
+  assert.match(home, /buildSiteRestaurantStructuredData\(locale, copy\.structuredData\)/);
 });

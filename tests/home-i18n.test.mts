@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { HOME_COPY, HOME_LOCALES, HOME_HASHES, LOCALIZED_LOCALES, LOCALE_CONFIG, buildLocaleHref, getHomeCopy, getHomePath, isLocale, isLocalizedLocale } from "../lib/home-i18n/index";
 import { FAQ_ITEMS } from "../lib/faq-content";
+import { BOOKING_LOCATIONS, LOCATIONS } from "../lib/site-content";
+import { buildSiteRestaurantStructuredData } from "../lib/site-structured-data";
 
 test("home locale registry exposes the four approved languages and paths", () => {
   assert.deepEqual(HOME_LOCALES, ["ko", "en", "zh", "ja"]);
@@ -76,5 +78,57 @@ test("FAQ segment boundaries and complete emphasized facts are preserved", () =>
     }
     assert.ok(items[2].answer[1].text.includes("46"));
     assert.ok(items[2].answer[3].text.includes("70"));
+  }
+});
+
+test("each homepage has localized metadata and the exact reciprocal language map", async () => {
+  const { buildHomeMetadata } = await import("../lib/home-metadata");
+  const languages = { "ko-KR": "/", en: "/en", "zh-CN": "/zh", ja: "/ja", "x-default": "/" };
+  for (const locale of HOME_LOCALES) {
+    const copy = getHomeCopy(locale);
+    const metadata = buildHomeMetadata(locale);
+    assert.deepEqual(metadata.alternates, { canonical: getHomePath(locale), languages });
+    assert.equal(metadata.title, copy.metadata.title);
+    assert.equal(metadata.description, copy.metadata.description);
+    assert.deepEqual(metadata.openGraph, {
+      title: copy.metadata.title,
+      description: copy.metadata.ogDescription,
+      locale: LOCALE_CONFIG[locale].openGraphLocale,
+      type: "website",
+      url: getHomePath(locale),
+    });
+  }
+});
+
+test("localized Restaurant JSON-LD translates descriptions and preserves official facts", () => {
+  const siteUrl = "https://xn--vr0bn4e2wh79mca68ih9mf4j.com";
+  for (const locale of HOME_LOCALES) {
+    const copy = getHomeCopy(locale).structuredData;
+    const homeUrl = `${siteUrl}${locale === "ko" ? "" : getHomePath(locale)}`;
+    const data = buildSiteRestaurantStructuredData(locale, copy);
+    assert.equal(data["@context"], "https://schema.org");
+    assert.equal(data["@graph"].length, 2);
+    for (const [index, location] of LOCATIONS.entries()) {
+      assert.deepEqual(data["@graph"][index], {
+        "@type": "Restaurant",
+        "@id": `${homeUrl}#restaurant-${location.id}`,
+        name: location.name,
+        description: copy.description[location.id],
+        url: `${homeUrl}#location-${location.id}`,
+        image: `${siteUrl}${location.image}`,
+        telephone: location.phoneDisplay,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: location.address,
+          addressLocality: copy.addressLocality,
+          addressRegion: copy.addressRegion,
+          addressCountry: "KR",
+        },
+        servesCuisine: copy.cuisines,
+        hasMenu: `${siteUrl}/menu`,
+        acceptsReservations: BOOKING_LOCATIONS.find((booking) => booking.id === location.id)?.url,
+        sameAs: [location.mapUrl, location.reviewUrl],
+      });
+    }
   }
 });
