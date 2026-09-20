@@ -1,0 +1,107 @@
+import type { HomeCopy } from "./types";
+
+export const zhHomeCopy = {
+  metadata: {
+    title: "王京羊腿羊肉串 | 板桥·牡丹烤羊腿与羊肉串",
+    description: "王京羊腿羊肉串适合板桥公司聚餐和牡丹家庭聚会。欢迎光临大王板桥路606番街的板桥店及牡丹总店，品尝经过48小时熟成、以高温炭火烤制的整只羊腿和羊肉串。",
+    ogDescription: "欢迎光临板桥店及牡丹总店，品尝经过48小时熟成、以高温炭火烤制的整只羊腿和羊肉串。",
+  },
+  header: {
+    homeAria: "王京羊腿羊肉串首页", desktopNavAria: "主导航", mobileNavAria: "移动端导航",
+    openMenuAria: "打开菜单", closeMenuAria: "关闭菜单", languageMenuAria: "选择语言，当前为简体中文", languageGroupLabel: "语言",
+    bookingGroupLabel: "选择预约门店", bookingLabels: { moran: "预约牡丹总店", pangyo: "预约板桥店" },
+    nav: [{ label: "品牌故事", href: "#story" }, { label: "招牌菜单", href: "/menu", newTab: true }, { label: "门店指南", href: "#location" }, { label: "团体聚餐", href: "#group" }, { label: "常见问题", href: "#faq" }],
+  },
+  hero: {
+    eyebrow: "王京 · 精品中式羊肉料理", titleLine1: "炭火成就的羊肉美味，", titleLine2: "重要相聚，尽在王京",
+    leadLine1: "在城南板桥与牡丹，邂逅品质羊肉专门店。", leadLine2: "从公司聚餐到家庭聚会，我们为您用心安排。",
+    imageAlt: "炭火上烤制的王京羊腿羊肉串招牌菜",
+  },
+  signature: {
+    eyebrow: "招牌菜单", title: "初访王京，不容错过的美味",
+    description: "一起品尝炭香浓郁的羊肉与地道中国菜。", allMenu: "查看完整菜单",
+    videoLabels: ["王京招牌菜视频1", "王京招牌菜视频2", "王京招牌菜视频3", "王京招牌菜视频4"],
+  },
+  story: {
+    eyebrow: "品牌故事", titleLine1: "将一次难忘的感动，", titleLine2: "在韩国重新呈现。",
+    imageAlt: "王京羊腿羊肉串的炭烤整只羊腿",
+    paragraphs: [
+      "王京羊腿羊肉串的故事，始于我们在中国北京望京品尝羊肉烧烤时的感动。",
+      "羊肉在炭火上慢慢烤熟，香气浓郁，口感柔和，人人都能轻松享受，这份美味让我们久久难忘。我们不只想还原当地的味道，更希望做出让韩国的更多人也能感受到同样惊喜的羊肉料理。",
+      "为实现这个目标，王京羊腿羊肉串用了600天研究羊肉的熟成与烹饪。经过无数次尝试，我们完善了独有的熟成方式和酱汁，让羊肉本身的风味更加深厚，也让每个人都能轻松享用。",
+      "直到今天，每只羊腿仍经过48小时熟成，再以400℃炭火精心烤制60分钟。我们坚持时间与温度的标准，只为把羊肉最美味的瞬间带给顾客。",
+      "王京带来的不只是一顿饭，更是让家人聚餐、公司聚会、约会和婚礼请柬聚会等珍贵相聚更加特别的体验。因此，位于城南板桥与牡丹的王京羊腿羊肉串，始终以美食和温暖的空间迎接每一位顾客。",
+      "灵感源自北京望京，600天研究，48小时熟成，400℃炭火，60分钟用心烤制。",
+    ],
+    closingLead: "王京羊腿羊肉串", closingStrong: "将时间与用心融入每一口羊肉",
+    closingTail: "，留下令人回味的美食与体验。",
+    promiseEyebrow: "我们的四大承诺", promiseTitle: "王京的四大承诺", promiseDescription: "成就王京烤羊腿的四项标准。",
+    promises: [
+      { number: "01", title: "600天的坚持", description: "为在韩国重现北京望京带来的感动，我们经历了数百次测试与反复尝试。", points: ["美味的感动始于北京望京的街巷", "数百次测试与失败", "历经600天完善的王京风味"] },
+      { number: "02", title: "秘制熟成", description: "精选羊肉搭配王京独有的熟成方式，减少膻味，让风味更浓、肉汁更丰盈。", points: ["严选优质羊肉", "15种香料熬制24小时的秘方", "48小时低温熟成"] },
+      { number: "03", title: "精准控温", description: "细致调节火力，烤出表面金黄、内里鲜嫩多汁的羊腿。", points: ["初烤180°C · 定型表面", "中段400°C · 激发肉汁与炭香", "收尾180°C · 让内部柔嫩"] },
+      { number: "04", title: "60分钟的用心", description: "从修整到烤制，每一步都不急不躁，只为呈现最佳风味。", points: ["步骤1 · 精心修整", "步骤2 · 准备熟成羊肉", "步骤3 · 控温烤制", "步骤4 · 完成美味烧烤"] },
+    ],
+    promiseLine: "600天的坚持 · 秘制熟成 · 精准控温 · 60分钟的用心",
+  },
+  group: {
+    eyebrow: "聚餐与门店", titleLine1: "从板桥公司聚餐到牡丹家庭聚会，", titleLine2: "在两家门店邂逅王京",
+    description: "城南板桥店和牡丹总店供应王京羊腿羊肉串的招牌烤羊腿、羊肉串、羊排及地道中国菜，提供适合公司聚餐、家庭聚会、婚礼请柬聚会和约会等各类相聚的空间。",
+    occasionsAria: "推荐聚会类型",
+    occasions: [{ label: "公司聚餐", icon: "◎" }, { label: "家庭用餐", icon: "♧" }, { label: "婚礼请柬聚会", icon: "◇" }, { label: "商务会面", icon: "▣" }, { label: "朋友聚会", icon: "◌" }, { label: "约会·纪念日", icon: "♡" }],
+    detailLabels: ["交通指南", "推荐聚会", "招牌菜", "停车指南"],
+    reserveLabel: "预约", directionsLabel: "路线",
+    principle: "如果您在城南寻找烤羊腿和羊肉串，王京羊腿羊肉串的板桥店与牡丹总店都遵循相同的熟成标准和炭火烹饪方式。选择就近门店，体验王京独有的浓郁风味。",
+    featureAria: "王京聚会特色",
+    features: [{ value: "48小时熟成", detail: "减少膻味，肉质柔嫩", icon: "◒" }, { value: "400℃炭火", detail: "炭香提升风味", icon: "♨" }, { value: "精心烤制60分钟", detail: "外酥里嫩", icon: "◷" }, { value: "适合各种相聚的空间", detail: "公司聚餐·家庭·约会·婚礼请柬聚会", icon: "♧" }],
+  },
+  reviews: { eyebrow: "顾客评价", title: "各门店顾客评价", description: "查看到访牡丹总店和板桥店的顾客在 Naver 上留下的真实评价。", action: "查看各门店评价" },
+  locations: {
+    eyebrow: "门店指南", title: "两家门店，期待相见", description: "选择就近的王京门店，查看地址和电话，并直接打开 Naver 或 Google 地图。",
+    jumpAria: "门店快捷入口", placeAria: "打开 Naver Place",
+    labels: { address: "地址", transit: "附近车站", phone: "电话号码", parking: "停车场" },
+    naverDirections: "在 Naver 地图中查看", googleDirections: "在 Google 地图中查看",
+    naverDirectionsAria: "打开 Naver 地图路线", googleDirectionsAria: "打开 Google 地图路线",
+  },
+  branches: {
+    moran: {
+      shortName: "牡丹总店", name: "王京羊腿羊肉串 牡丹总店", imageAlt: "王京羊腿羊肉串牡丹总店的外观与入口",
+      transit: "距牡丹站4号出口215m，步行5分钟", parking: "店前4个免费停车位·牡丹公共停车场",
+      groupTitle: "牡丹站附近，舒适相聚", groupOccasions: "团体聚餐·朋友聚会·家庭用餐·婚礼请柬聚会",
+      groupMenu: "烤整只羊腿·羊肉串·各式中国菜", groupImageAlt: "王京羊腿羊肉串牡丹总店的团体座位与烤羊腿用餐区",
+      recommendationTitle: "牡丹总店适合这样的您",
+      recommendation: "如果您正在寻找牡丹站附近的公司聚餐场所、城南家庭用餐或婚礼请柬聚会地点，牡丹总店是不错的选择。宽敞的团体座位，让您一起享用烤羊腿、羊肉串及各式中国菜。",
+    },
+    pangyo: {
+      shortName: "板桥店", name: "王京羊腿羊肉串 板桥店", imageAlt: "王京羊腿羊肉串板桥店的外观与招牌",
+      transit: "距板桥站4号出口266m，步行5分钟", parking: "La Street 免费停车3小时·公共停车场",
+      groupTitle: "邻近板桥站与 La Street", groupOccasions: "公司聚餐·商务会面·家庭聚会·约会",
+      groupMenu: "烤整只羊腿·羊肉串·精品羊排", groupImageAlt: "王京羊腿羊肉串板桥店的团体座位与烤羊腿用餐区",
+      recommendationTitle: "板桥店适合这样的您",
+      recommendation: "如果您正在寻找板桥站附近的公司聚餐、板桥约会或商务会面场所，欢迎选择板桥店。邻近 La Street，停车方便，搭配精品羊肉菜单，让相聚更加轻松舒适。",
+    },
+  },
+  faq: {
+    eyebrow: "常见问题", title: "常见问题",
+    items: [
+      { id: "lamb-aroma", question: "担心羊肉的膻味怎么办？", answer: [{ text: "王京使用15种香料熬制24小时的秘方，将羊肉低温熟成48小时，减少膻味，同时保留风味与肉汁，即使第一次吃羊肉也能轻松享受。初次尝试时，推荐从咸甜适中的调味羊肉串开始。" }] },
+      { id: "whole-lamb-order", question: "如何点烤整只羊腿？", answer: [{ text: "烤整只羊腿提供" }, { text: "大份1,700g（3~4人，90,000韩元）", strong: true }, { text: "和" }, { text: "中份1,500g（2~3人，80,000韩元）", strong: true }, { text: "两种规格。羊腿需以400℃炭火烤制60分钟，建议来店前通过 Naver 预约或电话提前告知，让用餐更从容。" }] },
+      { id: "group-dining", question: "可以举办公司聚餐或婚礼请柬聚会吗？", answer: [{ text: "可以。团体座位可容纳" }, { text: "牡丹总店最多46人", strong: true }, { text: "、" }, { text: "板桥店最多70人", strong: true }, { text: "。牡丹总店尤其受公司聚餐、家庭用餐和婚礼请柬聚会顾客欢迎，板桥店则常用于公司聚餐和商务会面。请致电门店告知人数，我们会为您安排座位。" }] },
+      { id: "parking", question: "如何停车？", answer: [{ text: "牡丹总店门前有4个免费停车位，也可使用牡丹公共停车场。板桥店提供 La Street 停车场3小时免费停车，附近也有公共停车场可供使用。" }] },
+      { id: "reservation", question: "一定要预约吗？", answer: [{ text: "欢迎直接到店，但晚间和周末可能需要等位。通过 Naver 预约提前告知希望用餐的时间和人数，我们将为您妥善安排。" }] },
+      { id: "other-menu", question: "除了羊肉，还有其他菜品吗？", answer: [{ text: "我们还供应锅包肉、麻辣香锅、小龙虾、香辣大虾等地道中国菜，以及炒饭、面食、饺子。酒水包括烟台古酿、孔府家酒等中国白酒及多种啤酒，您可以按喜好选择适合搭配羊肉的菜品。" }] },
+    ],
+  },
+  reservation: { eyebrow: "预约", title: "今天的美好相聚，就在王京", description: "通过 Naver 预约，轻松告知用餐时间与人数。", naver: "Naver 预约", phone: "电话咨询", imageAlt: "摆满羊肉与中国菜的丰盛王京餐桌" },
+  mobileBooking: { aria: "快速预约", linkAria: "打开 Naver 预约页面", label: "Naver 预约" },
+  footer: {
+    brandName: "王京羊腿羊肉串", channelAria: "王京官方频道", newWindowAria: "在新窗口打开", navAria: "页脚导航", navTitle: "导航",
+    menu: "招牌菜单", group: "团体聚餐", reservation: "预约",
+    legal: "© 2026 王京羊腿羊肉串 菜单及价格可能因门店情况而有所不同。",
+    socialLabels: { instagram: "Instagram", youtube: "YouTube", kakao: "Kakao 地图", tiktok: "TikTok" },
+  },
+  structuredData: {
+    description: { moran: "牡丹总店供应经过48小时熟成、以高温炭火烤制的整只羊腿、羊肉串及中国菜。", pangyo: "板桥店供应经过48小时熟成、以高温炭火烤制的整只羊腿、羊肉串及中国菜。" },
+    addressLocality: "城南市", addressRegion: "京畿道", cuisines: ["中国菜", "羊肉料理", "羊肉串", "烤整只羊腿"],
+  },
+} as const satisfies HomeCopy;

@@ -3,9 +3,16 @@ import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
 const source = await readFile(
-  new URL("../lib/faq-content.ts", import.meta.url),
+  new URL("../lib/home-i18n/ko.ts", import.meta.url),
   "utf8",
 ).catch(() => "");
+
+test("FAQ content preserves the Korean locale compatibility alias", async () => {
+  const compatibilitySource = await readFile(new URL("../lib/faq-content.ts", import.meta.url), "utf8");
+  assert.match(compatibilitySource, /import\s+\{\s*koHomeCopy\s*\}\s+from\s+["']\.\/home-i18n\/ko["']/);
+  assert.match(compatibilitySource, /export const FAQ_ITEMS = koHomeCopy\.faq\.items;/);
+  assert.doesNotMatch(compatibilitySource, /question: "/);
+});
 
 test("FAQ content defines the six approved questions in order", () => {
   const questions = [
