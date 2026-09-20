@@ -3,7 +3,7 @@ import type { HomeCopy } from "./types";
 export const enHomeCopy = {
   metadata: {
     title: "Wangjing Lamb Leg & Skewers | Roast Lamb & Skewers in Pangyo and Moran",
-    description: "Wangjing Lamb Leg & Skewers welcomes team dinners in Pangyo and family gatherings in Moran. Discover whole roast lamb leg and skewers, aged for 48 hours and cooked over high-heat charcoal, at our Pangyo Branch on Daewangpangyo-ro 606beon-gil and Moran Main Branch.",
+    description: "Wangjing Lamb Leg & Skewers welcomes team dinners in Pangyo and family gatherings in Moran. Discover whole roast lamb leg and skewers, aged for 48 hours and cooked over high-heat charcoal, at our Pangyo Branch and Moran Main Branch.",
     ogDescription: "Discover whole roast lamb leg and skewers, aged for 48 hours and cooked over high-heat charcoal, at our Pangyo Branch and Moran Main Branch.",
   },
   header: {

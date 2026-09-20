@@ -29,6 +29,15 @@ test("foreign display-copy modules contain no accidental Hangul", () => {
   for (const locale of LOCALIZED_LOCALES) assert.doesNotMatch(JSON.stringify(HOME_COPY[locale]), /[가-힣]/);
 });
 
+for (const locale of LOCALIZED_LOCALES) {
+  test(`${locale} display copy does not duplicate official road-name facts`, () => {
+    assert.doesNotMatch(
+      JSON.stringify(HOME_COPY[locale]),
+      /Daewangpangyo-ro|606beon-gil|大王板桥路|606番街|大王板橋路|606番キル/,
+    );
+  });
+}
+
 test("Simplified Chinese uses approved simplified forms", () => {
   const source = JSON.stringify(HOME_COPY.zh);
   for (const word of ["简体中文", "常见问题", "预约", "停车", "菜单"]) assert.ok(source.includes(word), `Chinese copy should include ${word}`);
