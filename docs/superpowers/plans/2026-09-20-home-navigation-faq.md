@@ -248,7 +248,7 @@ test("FAQ content defines the six approved questions in order", () => {
     assert.ok(questionIndex > previousIndex, `${question} 순서가 올바라야 합니다`);
     previousIndex = questionIndex;
   }
-  assert.equal(source.match(/question:/g)?.length, 6);
+  assert.equal(source.match(/question: "/g)?.length, 6);
 });
 
 test("FAQ content contains the approved business facts", () => {
