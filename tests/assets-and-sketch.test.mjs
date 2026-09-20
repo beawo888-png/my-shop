@@ -44,10 +44,14 @@ test("Pencil source contains approved desktop and mobile frames", async () => {
   const approvedFrames = approvedNames.map((name) =>
     pencil.children.find((child) => child.name === name),
   );
+  const navOrder =
+    "브랜드 스토리 → 대표 메뉴 → 지점 안내 → 단체 모임 → 자주 묻는 질문";
+
   for (const frame of approvedFrames) {
-    assert.equal(frame.children.length, 10);
+    assert.equal(frame.children.length, 11);
     const childNames = frame.children.map((child) => child.name);
     assert.ok(childNames[0].startsWith("상단 내비게이션"));
+    assert.ok(childNames[0].includes(navOrder));
     assert.ok(childNames[1].startsWith("대표 영역"));
     for (const section of [
       "신뢰 정보",
@@ -55,6 +59,7 @@ test("Pencil source contains approved desktop and mobile frames", async () => {
       "왕징 이야기",
       "단체 모임",
       "고객 리뷰",
+      "자주 묻는 질문 · 6개 아코디언 초기 닫힘",
       "예약 안내",
       "푸터 · 왕징양다리양꼬치 로고 적용",
     ]) {
