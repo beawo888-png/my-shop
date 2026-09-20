@@ -92,3 +92,26 @@ test("all four signature autoplay videos exist", async () => {
     assert.ok(video.byteLength > 1_000, `${name} should not be empty`);
   }
 });
+
+test("Pencil source records all approved language selector states", async () => {
+  const pencil = JSON.parse(
+    await readFile(new URL("../초안", import.meta.url), "utf8"),
+  );
+  const expected = [
+    ["언어 선택기 데스크톱 · 닫힘", 1440, 160],
+    ["언어 선택기 데스크톱 · 열림", 1440, 420],
+    ["언어 선택기 태블릿 · 열림", 910, 420],
+    ["언어 선택기 모바일 메뉴 · 열림", 390, 720],
+  ];
+
+  for (const [name, width, height] of expected) {
+    const frame = pencil.children.find((child) => child.name === name);
+    assert.ok(frame, `${name} 프레임이 있어야 합니다`);
+    assert.equal(frame.width, width);
+    assert.equal(frame.height, height);
+    const labels = JSON.stringify(frame);
+    for (const label of ["한국어", "English", "简体中文", "日本語"]) {
+      assert.ok(labels.includes(label), `${name}에 ${label}가 있어야 합니다`);
+    }
+  }
+});

@@ -12790,6 +12790,349 @@
           "layout": "none"
         }
       ]
+    },
+    {
+      "type": "frame",
+      "id": "language-selector-desktop-closed",
+      "x": 6500,
+      "y": 300,
+      "name": "언어 선택기 데스크톱 · 닫힘",
+      "width": 1440,
+      "height": 160,
+      "fill": "#17110F",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "language-desktop-closed-current",
+          "x": 1260,
+          "y": 56,
+          "name": "현재 언어",
+          "fill": "#B9935A",
+          "content": "한국어",
+          "fontFamily": "Noto Sans KR",
+          "fontSize": 16,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "language-desktop-closed-english",
+          "x": 0,
+          "y": 0,
+          "name": "영어 옵션 · 닫힘 상태 기록",
+          "fill": "#F6F0E5",
+          "content": "English",
+          "fontFamily": "Noto Sans KR",
+          "fontSize": 16,
+          "opacity": 0
+        },
+        {
+          "type": "text",
+          "id": "language-desktop-closed-chinese",
+          "x": 0,
+          "y": 0,
+          "name": "중국어 옵션 · 닫힘 상태 기록",
+          "fill": "#F6F0E5",
+          "content": "简体中文",
+          "fontFamily": "Noto Sans KR",
+          "fontSize": 16,
+          "opacity": 0
+        },
+        {
+          "type": "text",
+          "id": "language-desktop-closed-japanese",
+          "x": 0,
+          "y": 0,
+          "name": "일본어 옵션 · 닫힘 상태 기록",
+          "fill": "#F6F0E5",
+          "content": "日本語",
+          "fontFamily": "Noto Sans KR",
+          "fontSize": 16,
+          "opacity": 0
+        },
+        {
+          "type": "text",
+          "id": "language-desktop-closed-trigger",
+          "x": 1240,
+          "y": 24,
+          "name": "데스크톱 언어 트리거 · 우측 상단",
+          "fill": "#F6F0E5",
+          "content": "언어 / Language ▾",
+          "fontFamily": "Noto Sans KR",
+          "fontSize": 14,
+          "fontWeight": "600"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "language-selector-desktop-open",
+      "x": 6500,
+      "y": 500,
+      "name": "언어 선택기 데스크톱 · 열림",
+      "width": 1440,
+      "height": 420,
+      "fill": "#17110F",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "language-desktop-open-trigger",
+          "x": 1240,
+          "y": 24,
+          "name": "데스크톱 언어 트리거 · 우측 상단",
+          "fill": "#B9935A",
+          "content": "언어 / Language ▴",
+          "fontFamily": "Noto Sans KR",
+          "fontSize": 14,
+          "fontWeight": "700"
+        },
+        {
+          "type": "frame",
+          "id": "language-desktop-open-menu",
+          "x": 1100,
+          "y": 72,
+          "name": "데스크톱 언어 메뉴 · 크림 테두리",
+          "width": 280,
+          "height": 300,
+          "fill": "#17110F",
+          "stroke": "#F6F0E5",
+          "strokeWidth": 1,
+          "layout": "vertical",
+          "gap": 18,
+          "padding": 24,
+          "children": [
+            {
+              "type": "text",
+              "id": "language-desktop-open-korean",
+              "name": "한국어 옵션",
+              "fill": "#B9935A",
+              "content": "한국어",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 18,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "language-desktop-open-english",
+              "name": "English 옵션",
+              "fill": "#F6F0E5",
+              "content": "English",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 18,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "language-desktop-open-chinese",
+              "name": "简体中文 옵션",
+              "fill": "#F6F0E5",
+              "content": "简体中文",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 18,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "language-desktop-open-japanese",
+              "name": "日本語 옵션",
+              "fill": "#F6F0E5",
+              "content": "日本語",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 18,
+              "fontWeight": "600"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "language-selector-tablet-open",
+      "x": 6500,
+      "y": 960,
+      "name": "언어 선택기 태블릿 · 열림",
+      "width": 910,
+      "height": 420,
+      "fill": "#17110F",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "language-tablet-open-trigger",
+          "x": 760,
+          "y": 24,
+          "name": "태블릿 언어 트리거 · 우측 상단",
+          "fill": "#B9935A",
+          "content": "언어 / Language ▴",
+          "fontFamily": "Noto Sans KR",
+          "fontSize": 14,
+          "fontWeight": "700"
+        },
+        {
+          "type": "frame",
+          "id": "language-tablet-open-menu",
+          "x": 650,
+          "y": 72,
+          "name": "태블릿 언어 메뉴 · 크림 테두리",
+          "width": 220,
+          "height": 300,
+          "fill": "#17110F",
+          "stroke": "#F6F0E5",
+          "strokeWidth": 1,
+          "layout": "vertical",
+          "gap": 18,
+          "padding": 24,
+          "children": [
+            {
+              "type": "text",
+              "id": "language-tablet-open-korean",
+              "name": "한국어 옵션",
+              "fill": "#B9935A",
+              "content": "한국어",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 18,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "language-tablet-open-english",
+              "name": "English 옵션",
+              "fill": "#F6F0E5",
+              "content": "English",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 18,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "language-tablet-open-chinese",
+              "name": "简体中文 옵션",
+              "fill": "#F6F0E5",
+              "content": "简体中文",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 18,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "language-tablet-open-japanese",
+              "name": "日本語 옵션",
+              "fill": "#F6F0E5",
+              "content": "日本語",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 18,
+              "fontWeight": "600"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "language-selector-mobile-open",
+      "x": 6500,
+      "y": 1420,
+      "name": "언어 선택기 모바일 메뉴 · 열림",
+      "width": 390,
+      "height": 720,
+      "fill": "#17110F",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "language-mobile-open-label",
+          "x": 24,
+          "y": 32,
+          "name": "모바일 언어 레이블",
+          "fill": "#B9935A",
+          "content": "언어 / Language",
+          "fontFamily": "Noto Sans KR",
+          "fontSize": 14,
+          "fontWeight": "700"
+        },
+        {
+          "type": "frame",
+          "id": "language-mobile-open-menu",
+          "x": 20,
+          "y": 76,
+          "name": "모바일 언어 메뉴 · 크림 테두리",
+          "width": 350,
+          "height": 300,
+          "fill": "#17110F",
+          "stroke": "#F6F0E5",
+          "strokeWidth": 1,
+          "layout": "vertical",
+          "gap": 18,
+          "padding": 24,
+          "children": [
+            {
+              "type": "text",
+              "id": "language-mobile-open-korean",
+              "name": "한국어 옵션",
+              "fill": "#B9935A",
+              "content": "한국어",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 18,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "language-mobile-open-english",
+              "name": "English 옵션",
+              "fill": "#F6F0E5",
+              "content": "English",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 18,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "language-mobile-open-chinese",
+              "name": "简体中文 옵션",
+              "fill": "#F6F0E5",
+              "content": "简体中文",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 18,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "language-mobile-open-japanese",
+              "name": "日本語 옵션",
+              "fill": "#F6F0E5",
+              "content": "日本語",
+              "fontFamily": "Noto Sans KR",
+              "fontSize": 18,
+              "fontWeight": "600"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "language-mobile-open-naver-pangyo",
+          "x": 24,
+          "y": 520,
+          "name": "네이버 예약 · 판교점",
+          "fill": "#F6F0E5",
+          "content": "네이버 예약 · 판교점",
+          "fontFamily": "Noto Sans KR",
+          "fontSize": 15,
+          "fontWeight": "600"
+        },
+        {
+          "type": "text",
+          "id": "language-mobile-open-naver-moran",
+          "x": 24,
+          "y": 560,
+          "name": "네이버 예약 · 모란점",
+          "fill": "#F6F0E5",
+          "content": "네이버 예약 · 모란점",
+          "fontFamily": "Noto Sans KR",
+          "fontSize": 15,
+          "fontWeight": "600"
+        }
+      ]
     }
   ],
   "fileToken": "4786e8a5-4364-43b4-bd9b-87ed94eaa636"
