@@ -135,27 +135,24 @@ img {
 
 .language-selector__trigger {
   min-height: 48px;
-  padding: 0 1.25rem;
+  padding: 0 0.25rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.55rem;
+  gap: 0.45rem;
   background: transparent;
   color: var(--cream);
-  border: 1px solid color-mix(in srgb, var(--cream) 72%, transparent);
-  border-radius: 2px;
+  border: 0;
+  border-radius: 0;
   font-size: 0.95rem;
   font-weight: 800;
   cursor: pointer;
-  transition:
-    border-color 180ms ease,
-    color 180ms ease;
+  transition: color 180ms ease;
 }
 
 .language-selector__trigger:hover,
 .language-selector__trigger:focus-visible {
   color: var(--gold);
-  border-color: var(--gold);
 }
 
 .language-selector__trigger svg {
@@ -171,14 +168,15 @@ img {
 .language-selector__menu {
   position: absolute;
   z-index: 70;
-  top: calc(100% + 10px);
+  top: 100%;
   right: 0;
-  min-width: 180px;
-  padding: 0.35rem;
+  min-width: 170px;
   display: grid;
+  grid-template-columns: 1fr;
+  padding: 0.5rem 0;
   background: var(--paper);
   color: var(--text);
-  border: 1px solid var(--line);
+  border: 0;
   box-shadow: 0 16px 32px rgba(16, 11, 10, 0.28);
 }
 
@@ -188,15 +186,11 @@ img {
 
 .language-selector__menu a {
   min-height: 52px;
-  padding: 0 1rem;
+  padding: 0 1.25rem;
   display: flex;
   align-items: center;
   font-size: 1rem;
   font-weight: 700;
-}
-
-.language-selector__menu a + a {
-  border-top: 1px solid var(--line);
 }
 
 .language-selector__menu a:hover,
@@ -1033,15 +1027,18 @@ img {
   }
 
   .mobile-nav__languages > div {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
   }
 
   .mobile-nav__languages a {
-    flex: 1 1 calc(50% - 0.25rem);
-    justify-content: center;
-    border: 1px solid rgba(255, 248, 236, 0.24);
+    min-height: 48px;
+    justify-content: flex-start;
+    padding-inline: 1rem;
+    border: 0;
+    border-left: 3px solid transparent;
+    border-bottom: 1px solid rgba(255, 248, 236, 0.1);
   }
 
   .mobile-nav__languages a:hover,
@@ -1049,7 +1046,7 @@ img {
   .mobile-nav__languages a[aria-current="page"] {
     background: var(--ink);
     color: var(--gold);
-    border-color: var(--gold);
+    border-left-color: var(--gold);
   }
 
   .mobile-nav__booking a {

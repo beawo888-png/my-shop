@@ -440,7 +440,7 @@ test("header exposes an accessible language selector and keeps mobile branch boo
   assert.match(css, /\.language-selector__trigger\s*\{[^}]*min-height:\s*48px;/s);
   assert.match(
     css,
-    /\.language-selector__trigger:hover,\s*\.language-selector__trigger:focus-visible\s*\{[^}]*color:\s*var\(--gold\);[^}]*border-color:\s*var\(--gold\);/s,
+    /\.language-selector__trigger:hover,\s*\.language-selector__trigger:focus-visible\s*\{[^}]*color:\s*var\(--gold\);/s,
   );
   assert.match(
     css,

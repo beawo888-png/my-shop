@@ -13153,121 +13153,101 @@
           "id": "language-mobile-open-menu",
           "x": 20,
           "y": 76,
-          "name": "모바일 언어 메뉴 · 크림 테두리",
+          "name": "모바일 언어 메뉴 · 세로 목록",
           "width": 350,
-          "height": 124,
+          "height": 220,
           "fill": "#17110F",
           "stroke": "#F6F0E5",
           "strokeWidth": 1,
           "layout": "vertical",
-          "gap": 8,
+          "gap": 0,
           "padding": 6,
           "children": [
             {
               "type": "frame",
-              "id": "language-mobile-open-menu-row-0",
-              "name": "언어 선택 · 두 열 1행",
+              "id": "language-mobile-open-korean-item",
+              "name": "현재 언어 · 금색 글자와 어두운 배경",
               "width": "fill_container",
+              "height": 52,
+              "fill": "#17110F",
               "layout": "horizontal",
-              "gap": 8,
+              "padding": 12,
               "children": [
                 {
-                  "type": "frame",
-                  "id": "language-mobile-open-korean-item",
-                  "name": "현재 언어 · 금색 글자와 어두운 배경",
-                  "width": "fill_container",
-                  "height": 52,
-                  "fill": "#17110F",
-                  "layout": "horizontal",
-                  "padding": 12,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "language-mobile-open-korean",
-                      "name": "한국어 옵션",
-                      "fill": "#C5A15A",
-                      "content": "한국어",
-                      "fontFamily": "Noto Sans KR",
-                      "fontSize": 16,
-                      "fontWeight": "700"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "language-mobile-open-english-item",
-                  "name": "English 옵션",
-                  "width": "fill_container",
-                  "height": 52,
-                  "fill": "#17110F",
-                  "layout": "horizontal",
-                  "padding": 12,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "language-mobile-open-english",
-                      "name": "English 옵션",
-                      "fill": "#FFF8EC",
-                      "content": "English",
-                      "fontFamily": "Noto Sans KR",
-                      "fontSize": 16,
-                      "fontWeight": "600"
-                    }
-                  ]
+                  "type": "text",
+                  "id": "language-mobile-open-korean",
+                  "name": "한국어 옵션",
+                  "fill": "#C5A15A",
+                  "content": "한국어",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 16,
+                  "fontWeight": "700"
                 }
               ]
             },
             {
               "type": "frame",
-              "id": "language-mobile-open-menu-row-1",
-              "name": "언어 선택 · 두 열 2행",
+              "id": "language-mobile-open-english-item",
+              "name": "English 옵션",
               "width": "fill_container",
+              "height": 52,
+              "fill": "#17110F",
               "layout": "horizontal",
-              "gap": 8,
+              "padding": 12,
               "children": [
                 {
-                  "type": "frame",
-                  "id": "language-mobile-open-chinese-item",
-                  "name": "简体中文 옵션",
-                  "width": "fill_container",
-                  "height": 52,
-                  "fill": "#17110F",
-                  "layout": "horizontal",
-                  "padding": 12,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "language-mobile-open-chinese",
-                      "name": "简体中文 옵션",
-                      "fill": "#FFF8EC",
-                      "content": "简体中文",
-                      "fontFamily": "Noto Sans KR",
-                      "fontSize": 16,
-                      "fontWeight": "600"
-                    }
-                  ]
-                },
+                  "type": "text",
+                  "id": "language-mobile-open-english",
+                  "name": "English 옵션",
+                  "fill": "#FFF8EC",
+                  "content": "English",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "language-mobile-open-chinese-item",
+              "name": "简体中文 옵션",
+              "width": "fill_container",
+              "height": 52,
+              "fill": "#17110F",
+              "layout": "horizontal",
+              "padding": 12,
+              "children": [
                 {
-                  "type": "frame",
-                  "id": "language-mobile-open-japanese-item",
+                  "type": "text",
+                  "id": "language-mobile-open-chinese",
+                  "name": "简体中文 옵션",
+                  "fill": "#FFF8EC",
+                  "content": "简体中文",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "language-mobile-open-japanese-item",
+              "name": "日本語 옵션",
+              "width": "fill_container",
+              "height": 52,
+              "fill": "#17110F",
+              "layout": "horizontal",
+              "padding": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "language-mobile-open-japanese",
                   "name": "日本語 옵션",
-                  "width": "fill_container",
-                  "height": 52,
-                  "fill": "#17110F",
-                  "layout": "horizontal",
-                  "padding": 12,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "language-mobile-open-japanese",
-                      "name": "日本語 옵션",
-                      "fill": "#FFF8EC",
-                      "content": "日本語",
-                      "fontFamily": "Noto Sans KR",
-                      "fontSize": 16,
-                      "fontWeight": "600"
-                    }
-                  ]
+                  "fill": "#FFF8EC",
+                  "content": "日本語",
+                  "fontFamily": "Noto Sans KR",
+                  "fontSize": 16,
+                  "fontWeight": "600"
                 }
               ]
             }

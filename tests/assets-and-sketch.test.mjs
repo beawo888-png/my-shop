@@ -177,7 +177,6 @@ test("Pencil selectors match current labels, contrast, mobile columns and bookin
   }
   assert.equal(menu.children[0].fill, "#17110F");
   assert.equal(menu.children[0].children[0].fill, "#C5A15A");
-  assert.equal(menu.children[0].children[0].children[0].fill, "#C5A15A");
   const bookings = mobile.children.filter((node) => node.id.includes("-naver-"));
   assert.deepEqual(bookings.map((node) => node.id.split("-").at(-1)), ["moran", "pangyo"]);
   assert.ok(bookings[0].y < bookings[1].y);
