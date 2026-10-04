@@ -338,6 +338,8 @@ ws["B2"] = "한 파일로 1년(1~12월)을 관리합니다. 매일 매출·매�
 ws["B2"].font = F_NOTE
 guide = [
     ("■ 시트 구성", None),
+    ("월손익요약", "사장님이 주신 양식(①~⑩) 그대로 계획 vs 실적, 영업이익, 핵심 비율(FL·임대·인건비), 손익분기 매출과 매출 시나리오."),
+    ("월손익상세", "①~⑩ 각 비용의 세부 항목(만원). 계획은 예산, 실적은 그 달 실제 지출 입력. 매출·식재료·의제매입은 자동 연결."),
     ("기본설정", "상호·연도·조회월·조회지점, 목표 원가율, 분류표, 의제매입 공제율. 매월 [조회월]만 바꾸면 계산서가 그 달로 바뀝니다."),
     ("식자재단가", "품목 마스터. 거래명세서 단가가 바뀌면 [구매가격]만 수정 → 레시피·메뉴원가·재고금액이 모두 자동 갱신됩니다."),
     ("레시피", "메뉴 1인분에 들어가는 재료와 사용량(g·ml·개). 품목은 드롭다운으로 선택하세요."),
@@ -387,7 +389,7 @@ for k, v in guide:
         c.font = F_BASE
         c.alignment = LEFT
     r += 1
-for rr, (fill, font) in {17: (FILL_INPUT, F_INPUT), 18: (None, F_BASE), 19: (None, F_LINK)}.items():
+for rr, (fill, font) in {18: (FILL_INPUT, F_INPUT), 19: (None, F_BASE), 20: (None, F_LINK)}.items():
     c = ws.cell(rr, 2)
     if fill:
         c.fill = fill
@@ -884,15 +886,302 @@ ws.conditional_formatting.add(f"S{Y_FIRST}:S{Y_LAST}", CellIsRule(operator="equa
 ws.cell(T + 2, 1, "※ 원가율 색상: 초록 = 목표 이하, 주황 = 목표 초과, 빨강 = 목표 + 허용폭 초과.").font = F_NOTE
 ws.freeze_panes = "B5"
 
+# ================================================================ 11. 월손익상세
+import re as _re
+ws = wb.create_sheet("월손익상세")
+title(ws, "월 손익 상세 (단위: 만원)", "노란 칸만 입력. [계획]은 목표 월매출 기준 예산, [실적]은 기본설정 조회월·조회지점 기준(매출·식재료·의제매입은 매출원가계산서에서 자동, 나머지는 통장·카드 내역으로 입력).", span="B1:I1")
+widths(ws, {"A": 2, "B": 24, "C": 34, "D": 12, "E": 9, "F": 12, "G": 9, "H": 11, "I": 52})
+CG = "'매출원가계산서'"
+F_LINKB = Font(name=FONT, size=10, bold=True, color="008000")
+
+# 가정
+ws.cell(4, 2, "■ 가정 (입력)").font = F_SECTION
+header_row(ws, 4, ["계획", "", "실적(조회월)"], col=4, height=22)
+assume = [
+    (5, "월 매출 (부가세 포함)", 5000, f"={CG}!$C$8/10000", "#,##0", "실적은 매출일보 합계에서 자동"),
+    (6, "카드결제 비중", 0.9, None, PCT, "총매출 중 카드 결제 비율"),
+    (7, "카드수수료율", 0.0122, None, "0.00%", "연매출 5~10억 중소가맹점 신용카드 우대수수료 수준(2026). 카드사 안내 문자로 확인"),
+    (8, "식재료 중 면세 비중", 0.6, None, PCT, "양고기·채소·두부·계란·수산물 등 면세 매입이 식재료(주류·음료 제외)에서 차지하는 비율"),
+    (9, "신용카드매출세액공제율", 0.013, None, "0.0%", "개인사업자(연 매출 10억 이하) 카드매출의 1.3%, 연 1,000만원 한도. 법인은 0%로 바꾸세요"),
+    (10, "의제매입세액 공제율", f"={DEDUCT}", None, "0.00%", "기본설정에서 자동"),
+]
+for r, label, plan, act, fmt, memo in assume:
+    style(ws.cell(r, 2, label), F_BOLD, fill=FILL_SUB)
+    style(ws.cell(r, 3), F_BASE, fill=FILL_SUB)
+    is_f = isinstance(plan, str)
+    style(ws.cell(r, 4, plan), F_LINK if is_f else F_INPUT, fmt, None if is_f else FILL_INPUT, CENTER)
+    style(ws.cell(r, 6, act), F_LINK, fmt, align=CENTER)
+    ws.cell(r, 9, memo).font = F_NOTE
+
+HR = 12
+ws.cell(HR - 1, 2, "■ 비용 상세").font = F_SECTION
+header_row(ws, HR, ["구분", "세부항목", "계획\n(만원)", "매출\n대비", "실적\n(만원)", "매출\n대비", "차이\n(실적−계획)", "기준·메모"], col=2, height=36)
+
+food_cats = [c for c in CATEGORIES if c[1] != "소모품"]
+cogs_plan = [650, 70, 120, 110, 80, 50, 90, 60, 450, 70]
+SECTIONS = [
+    ("vat", "① 부가세 실납부", "=[vat_out]-[vat_in]-[vat_deemed]-[vat_rent]-[vat_card]", [
+        ("vat_out", "매출세액 (매출 ÷ 11)", "=[sales]/11", "same", "손님에게 받아둔 부가세"),
+        ("vat_in", "(−) 과세 매입세액", 85, None, "식재료·주류·소모품·경비의 세금계산서·카드 매입 부가세. 매입장 '부가세' 열 합계 + 경비 부가세"),
+        ("vat_deemed", "(−) 의제매입세액 공제", "=([cogs]-[c8]-[c9])*$D$8*$D$10", f"={CG}!$C${R6 + 3}/10000", "면세 식재료 × 공제율. 실적은 매출원가계산서 6번에서 자동"),
+        ("vat_rent", "(−) 임대료 부가세 공제", "=[rent_vat]", "same", "⑥ 월세 부가세는 세금계산서 받으면 공제"),
+        ("vat_card", "(−) 신용카드매출세액공제", "=MIN([sales]*$D$6*$D$9,1000/12)", "same", "월 한도 약 83만원(연 1,000만원)"),
+    ], "부가세는 1·7월(개인)에 내지만, 매달 이만큼 따로 떼어 적립하세요"),
+    ("cogs", "② 식재료 + 주류", None, [
+        (f"c{i}", cat, cogs_plan[i], f"={CG}!$G${C_FIRST + i}/10000", desc) for i, (cat, _, desc) in enumerate(food_cats)
+    ], "실적은 매출원가계산서(기초재고+매입−기말재고)에서 자동"),
+    ("card", "③ 카드수수료 · 소모품", None, [
+        ("card_fee", "카드수수료", "=[sales]*$D$6*$D$7", "same", "매출 × 카드비중 × 수수료율 (자동 추정, 실제 금액으로 덮어써도 됨)"),
+        ("deliv", "배달앱 수수료·배달대행비", 30, None, "배민·쿠팡이츠 중개수수료 + 배달비 + 결제수수료"),
+        ("supply", "홀 소모품", 40, None, "물티슈·냅킨·일회용 앞치마·이쑤시개"),
+        ("pack", "포장용기·비닐", 10, None, "포장·배달 용기, 봉투"),
+        ("kitchen", "주방 소모품", 15, None, "세제·랩·호일·위생장갑·수세미"),
+    ], ""),
+    ("labor", "④ 인건비 (4대보험 포함)", None, [
+        ("l_kitchen", "주방 직원 급여", 600, None, "주방장·주방 보조 (세전 급여)"),
+        ("l_hall", "홀 직원 급여", 280, None, "홀 매니저·정직원"),
+        ("l_part", "아르바이트 (주휴·야간수당 포함)", 230, None, "시급 × 근무시간. 2026 최저시급 이상, 주 15시간 이상은 주휴수당"),
+        ("l_ins", "4대보험 사업주 부담", 110, None, "급여의 약 10~11% (국민·건강·고용·산재)"),
+        ("l_sev", "퇴직금 적립", 60, None, "1년 이상 근무자 월급의 1/12"),
+        ("l_wel", "직원 식대·복리후생", 20, None, "직원 식사·명절 선물·회식"),
+    ], ""),
+    ("util", "⑤ 수도광열 · 가스 · 숯", None, [
+        ("u_elec", "전기요금", 80, None, "환기·냉난방·냉동고 (여름·겨울 증가)"),
+        ("u_gas", "가스요금", 70, None, "주방 화구·웍"),
+        ("u_water", "수도요금", 15, None, ""),
+        ("u_char", "숯", 50, None, "테이블 숯불 + 양다리 굽기. 매입장 '숯' 합계 참고"),
+        ("u_etc", "기타 연료·정수", 15, None, "착화제·토치 가스·정수 필터"),
+    ], ""),
+    ("rent", "⑥ 월세 + 부가세", None, [
+        ("rent_base", "월세", 500, None, "임대차계약서 기준"),
+        ("rent_vat", "월세 부가세 (10%)", "=[rent_base]*0.1", "same", "세금계산서 받으면 ① 부가세에서 공제"),
+    ], ""),
+    ("mgmt", "⑦ 관리비", None, [
+        ("m_fee", "건물 관리비", 50, None, "공용 전기·청소·엘리베이터"),
+    ], ""),
+    ("valet", "⑧ 발렛파킹", None, [
+        ("v_fee", "발렛 용역비", 100, None, "발렛 업체 월 계약금"),
+    ], ""),
+    ("mkt", "⑨ 마케팅", None, [
+        ("k_naver", "네이버 플레이스·검색광고", 150, None, "플레이스 광고·파워링크 클릭비"),
+        ("k_sns", "인스타·체험단·인플루언서", 120, None, "체험단 원가·광고비"),
+        ("k_review", "리뷰 이벤트·서비스 메뉴", 80, None, "리뷰 작성 서비스(꽃빵·음료 등) 원가"),
+        ("k_deliv", "배달앱 광고", 50, None, "배민 울트라콜·오픈리스트 등"),
+        ("k_offline", "전단·현수막·쿠폰·명함", 50, None, ""),
+        ("k_web", "홈페이지·스레드 운영", 50, None, "도메인·호스팅·콘텐츠 제작"),
+    ], ""),
+    ("etc", "⑩ 기타 고정비", None, [
+        ("e_pos", "POS·카드단말기·테이블오더", 15, None, ""),
+        ("e_tel", "통신·인터넷·CCTV", 12, None, ""),
+        ("e_pest", "방역 (세스코 등)", 10, None, ""),
+        ("e_ins", "화재·영업배상 보험", 10, None, ""),
+        ("e_tax", "세무 기장료", 15, None, "세무사 월 기장료"),
+        ("e_rental", "렌탈 (식기세척기·정수기)", 18, None, ""),
+        ("e_repair", "수선·유지보수", 15, None, "설비 고장·인테리어 보수 (월 평균)"),
+        ("e_waste", "음식물쓰레기·위생", 10, None, "음식물 처리·위생교육·보건증"),
+        ("e_misc", "잡비", 15, None, "은행 수수료·사무용품 등"),
+    ], ""),
+]
+EXTRA = [
+    ("x_loan", "대출이자", 0, None, "창업·운전자금 대출 월 이자"),
+    ("x_dep", "감가상각 (인테리어·설비 회수)", 0, None, "인테리어·주방설비 총액 ÷ 60개월"),
+    ("x_owner", "사장님 본인 인건비", 0, None, "직접 근무하는 노동의 대가 (영업이익과 구분해서 보기)"),
+    ("x_tax", "종합소득세·지방세 적립", 0, None, "영업이익의 약 10~20% (세무사와 확인)"),
+]
+
+ROW = {"sales": 5}
+r = HR + 1
+for key, label, total_tpl, items, memo in SECTIONS:
+    ROW[key] = r
+    r += 1
+    for it in items:
+        ROW[it[0]] = r
+        r += 1
+TOTAL_R = r
+OP_R, OPM_R = r + 1, r + 2
+EX_HEAD = r + 4
+r = EX_HEAD + 1
+for it in EXTRA:
+    ROW[it[0]] = r
+    r += 1
+NET_R = r
+
+
+def expand(tpl, col):
+    return _re.sub(r"\[(\w+)\]", lambda m: f"{col}{ROW[m.group(1)]}", tpl)
+
+
+def write_line(row, label_b, label_c, plan, act, memo, bold=False, fill=None):
+    style(ws.cell(row, 2, label_b), F_BOLD if bold else F_BASE, fill=fill or (FILL_SUB if bold else None))
+    style(ws.cell(row, 3, label_c), F_BOLD if bold else F_BASE, fill=fill or (FILL_SUB if bold else None))
+    font_b = F_BOLD if bold else F_BASE
+    for col, v in (("D", plan), ("F", act)):
+        c = ws[f"{col}{row}"]
+        if v is None:
+            style(c, F_INPUT, NUM, FILL_INPUT)
+        elif isinstance(v, str):
+            c.value = expand(v, col)
+            style(c, F_LINKB if bold and "'" in v else (F_LINK if "'" in v else font_b), NUM, fill)
+        else:
+            c.value = v
+            style(c, F_INPUT, NUM, FILL_INPUT)
+    style(ws.cell(row, 5, f"=IFERROR(D{row}/$D$5,0)"), font_b, PCT, fill, CENTER)
+    style(ws.cell(row, 7, f'=IF(F{row}="","",IFERROR(F{row}/$F$5,0))'), font_b, PCT, fill, CENTER)
+    style(ws.cell(row, 8, f'=IF(F{row}="","",F{row}-D{row})'), font_b, NUM, fill)
+    c = ws.cell(row, 9, memo)
+    c.font = F_NOTE
+    c.alignment = LEFT
+
+
+for key, label, total_tpl, items, memo in SECTIONS:
+    first, last = ROW[items[0][0]], ROW[items[-1][0]]
+    tr = ROW[key]
+    write_line(tr, label, "소계", "=0", "=0", memo, bold=True)
+    for col in "DF":
+        ws[f"{col}{tr}"].value = expand(total_tpl, col) if total_tpl else f"=SUM({col}{first}:{col}{last})"
+    for k, name, plan, act, m in items:
+        a = plan if act == "same" else act
+        write_line(ROW[k], "", name, plan, a, m)
+
+sec_rows = [ROW[s[0]] for s in SECTIONS]
+write_line(TOTAL_R, "총 비용 (①~⑩)", "", "=" + "+".join(f"[{s[0]}]" for s in SECTIONS), "=" + "+".join(f"[{s[0]}]" for s in SECTIONS), "", bold=True, fill=FILL_TOTAL)
+write_line(OP_R, "월 영업이익 (세전)", "매출 − 총비용", "=[sales]-" + f"@{TOTAL_R}", "=[sales]-" + f"@{TOTAL_R}", "", bold=True, fill=FILL_TOTAL)
+for col in "DF":
+    ws[f"{col}{OP_R}"].value = f"={col}5-{col}{TOTAL_R}"
+style(ws.cell(OPM_R, 2, "영업이익률"), F_BOLD, fill=FILL_TOTAL)
+style(ws.cell(OPM_R, 3), F_BOLD, fill=FILL_TOTAL)
+style(ws.cell(OPM_R, 4, f"=IFERROR(D{OP_R}/D5,0)"), F_BOLD, PCT, FILL_TOTAL, CENTER)
+style(ws.cell(OPM_R, 6, f"=IFERROR(F{OP_R}/F5,0)"), F_BOLD, PCT, FILL_TOTAL, CENTER)
+ws.cell(EX_HEAD - 1, 2, "■ 참고: 영업이익에서 더 빠지는 돈 (실제 손에 남는 돈 계산)").font = F_SECTION
+for k, name, plan, act, m in EXTRA:
+    write_line(ROW[k], "", name, plan, act, m)
+style(ws.cell(EX_HEAD, 2, "영업이익 (위에서)"), F_BOLD, fill=FILL_SUB)
+style(ws.cell(EX_HEAD, 3), F_BOLD, fill=FILL_SUB)
+for col in "DF":
+    style(ws[f"{col}{EX_HEAD}"], F_BOLD, NUM, FILL_SUB).value = f"={col}{OP_R}"
+write_line(NET_R, "실제 손에 남는 돈", "영업이익 − 위 항목", "", "", "", bold=True, fill=FILL_TOTAL)
+first_x, last_x = ROW[EXTRA[0][0]], ROW[EXTRA[-1][0]]
+for col in "DF":
+    ws[f"{col}{NET_R}"].value = f"={col}{EX_HEAD}-SUM({col}{first_x}:{col}{last_x})"
+for rr in (OP_R, NET_R):
+    ws.conditional_formatting.add(f"D{rr}:F{rr}", CellIsRule(operator="lessThan", formula=["0"], font=Font(name=FONT, bold=True, color="C8322A")))
+ws.cell(NET_R + 2, 2, "※ 이 시트의 비율은 부가세 포함 매출 대비입니다(매출원가계산서는 공급가 기준이라 원가율이 약 10% 더 높게 나옵니다).").font = F_NOTE
+ws.cell(NET_R + 3, 2, "※ 미리 넣은 계획 금액은 월매출 5,000만원 기준 예시입니다. 사장님 실제 금액으로 바꿔주세요.").font = F_NOTE
+ws.freeze_panes = f"D{HR + 1}"
+DET = ROW
+
+# ================================================================ 12. 월손익요약
+ws = wb.create_sheet("월손익요약")
+widths(ws, {"A": 2, "B": 30, "C": 14, "D": 10, "E": 14, "F": 10, "G": 12, "H": 3, "I": 40})
+D = "'월손익상세'"
+ws["B1"] = f"={S}!$C$3&\" 월 손익 요약\""
+ws["B1"].font = F_TITLE
+ws.row_dimensions[1].height = 30
+ws["B2"] = f'="단위: 만원   |   실적: "&{YEAR}&"년 "&{MONTH}&"월, "&{STORE}&"   |   입력은 [월손익상세] 시트에서"'
+ws["B2"].font = Font(name=FONT, size=10, bold=True, color="555055")
+header_row(ws, 4, ["항목", f'="계획 (월 "&TEXT({D}!$D$5,"#,##0")&")"', "매출대비", "실적 (조회월)", "매출대비", "차이"], col=2, height=28)
+ws["C4"].value = f'="계획 (월 "&TEXT({D}!$D$5,"#,##0")&")"'
+rows = [
+    ("월 매출 (부가세 포함)", "sales", True),
+    ("인건비 (4대보험 포함)", "labor", True),
+    ("수도광열·가스·숯", "util", True),
+]
+labels = ["① 부가세 실납부", "② 식재료+주류", "③ 카드수수료·소모품", "④ 인건비", "⑤ 수도광열·가스·숯", "⑥ 월세 + 부가세", "⑦ 관리비", "⑧ 발렛파킹", "⑨ 마케팅", "⑩ 기타 고정비"]
+rows += [(lab, s[0], False) for lab, s in zip(labels, SECTIONS)]
+r = 5
+SR = {}
+for lab, key, top in rows:
+    src = DET[key]
+    style(ws.cell(r, 2, lab), F_BOLD if top else F_BASE, fill=FILL_TOTAL if top else None)
+    style(ws.cell(r, 3, f"={D}!$D${src}"), Font(name=FONT, size=10, bold=top, color="008000"), NUM, FILL_TOTAL if top else None)
+    style(ws.cell(r, 5, f"={D}!$F${src}"), Font(name=FONT, size=10, bold=top, color="008000"), NUM, FILL_TOTAL if top else None)
+    style(ws.cell(r, 4, "" if key == "sales" else f"=IFERROR(C{r}/$C$5,0)"), F_BASE, PCT, FILL_TOTAL if top else None, CENTER)
+    style(ws.cell(r, 6, "" if key == "sales" else f"=IFERROR(E{r}/$E$5,0)"), F_BASE, PCT, FILL_TOTAL if top else None, CENTER)
+    style(ws.cell(r, 7, f"=E{r}-C{r}"), F_BASE, NUM, FILL_TOTAL if top else None)
+    if not top:
+        SR[key] = r
+    r += 1
+TR = r
+style(ws.cell(TR, 2, "총 비용 (①~⑩)"), F_BOLD, fill=FILL_SUB)
+for col in "CEG":
+    style(ws[f"{col}{TR}"], F_BOLD, NUM, FILL_SUB).value = f"=SUM({col}{TR - 10}:{col}{TR - 1})"
+style(ws.cell(TR, 4, f"=IFERROR(C{TR}/$C$5,0)"), F_BOLD, PCT, FILL_SUB, CENTER)
+style(ws.cell(TR, 6, f"=IFERROR(E{TR}/$E$5,0)"), F_BOLD, PCT, FILL_SUB, CENTER)
+OPR = TR + 1
+LIGHT_BLUE = PatternFill("solid", fgColor="DCE9F5")
+style(ws.cell(OPR, 2, "월 영업이익 (세전)"), F_BOLD, fill=LIGHT_BLUE)
+for col, f in (("C", f"=C5-C{TR}"), ("E", f"=E5-E{TR}"), ("G", f"=E{OPR}-C{OPR}")):
+    style(ws[f"{col}{OPR}"], Font(name=FONT, size=11, bold=True), NUM, LIGHT_BLUE).value = f
+style(ws.cell(OPR, 4, f"=IFERROR(C{OPR}/$C$5,0)"), F_BOLD, PCT, LIGHT_BLUE, CENTER)
+style(ws.cell(OPR, 6, f"=IFERROR(E{OPR}/$E$5,0)"), F_BOLD, PCT, LIGHT_BLUE, CENTER)
+ws.conditional_formatting.add(f"C{OPR}:G{OPR}", CellIsRule(operator="lessThan", formula=["0"], font=Font(name=FONT, size=11, bold=True, color="C8322A")))
+
+kpis = [
+    ("영업이익률", "{c}{op}/{c}5", None, "외식업 평균 5~15%"),
+    ("임대 관련 비용 비율 (⑥+⑦+⑧)", "({c}{rent}+{c}{mgmt}+{c}{valet})/{c}5", 0.15, "10~15% 이내 권장"),
+    ("식재료+주류 원가율 (②)", "{c}{cogs}/{c}5", 0.35, "부가세 포함 매출 기준"),
+    ("인건비율 (④)", "{c}{labor}/{c}5", 0.28, "25~30% 권장"),
+    ("FL 비율 (식재료+인건비)", "({c}{cogs}+{c}{labor})/{c}5", 0.62, "외식업 핵심 지표, 60~65% 이하 권장"),
+    ("마케팅비율 (⑨)", "{c}{mkt}/{c}5", 0.08, "3~8% 권장"),
+]
+kr = OPR + 1
+for lab, f, limit, memo in kpis:
+    style(ws.cell(kr, 2, lab), F_BASE)
+    for col, pc in (("C", "C"), ("E", "E")):
+        ff = f.format(c=pc, op=OPR, **{k: v for k, v in SR.items()})
+        style(ws[f"{col}{kr}"], F_BASE, PCT, align=CENTER).value = f"=IFERROR({ff},0)"
+    style(ws.cell(kr, 4), F_BASE)
+    style(ws.cell(kr, 6), F_BASE)
+    style(ws.cell(kr, 7, f"=E{kr}-C{kr}"), F_BASE, PCT, align=CENTER)
+    ws.cell(kr, 9, memo).font = F_NOTE
+    if limit:
+        ws.conditional_formatting.add(f"C{kr}:E{kr}", FormulaRule(formula=[f"AND(ISNUMBER(C{kr}),C{kr}>{limit})"], font=Font(name=FONT, bold=True, color="C8322A")))
+    kr += 1
+
+# 손익분기
+BE = kr + 1
+ws.cell(BE, 2, "■ 손익분기점 · 매출 시나리오 (계획 기준)").font = F_SECTION
+var_f = f"(C{SR['vat']}+C{SR['cogs']}+C{SR['card']})/C5"
+fix_f = "+".join(f"C{SR[k]}" for k in ("labor", "util", "rent", "mgmt", "valet", "mkt", "etc"))
+info = [
+    ("변동비율 (①+②+③) ÷ 매출", f"=IFERROR({var_f},0)", PCT, "매출이 늘면 같이 늘어나는 비용"),
+    ("월 고정비 (④~⑩)", f"={fix_f}", NUM, "매출과 관계없이 나가는 비용"),
+    ("손익분기 월매출", f"=IFERROR(C{BE + 2}/(1-C{BE + 1}),0)", NUM, "이 매출을 넘어야 이익이 남습니다"),
+    ("현재 계획 매출 − 손익분기", f"=C5-C{BE + 3}", NUM, "여유 매출 (마이너스면 적자 구간)"),
+    ("하루 손익분기 매출 (월 30일 영업)", f"=C{BE + 3}/30", NUM, "휴무일이 있으면 영업일수로 나눠 보세요"),
+]
+for i, (lab, f, fmt, memo) in enumerate(info):
+    rr = BE + 1 + i
+    style(ws.cell(rr, 2, lab), F_BOLD, fill=FILL_SUB)
+    style(ws.cell(rr, 3, f), F_BOLD, fmt, FILL_TOTAL if i == 2 else None, CENTER)
+    ws.cell(rr, 4, memo).font = F_NOTE
+SC = BE + 7
+header_row(ws, SC, ["월 매출 (시나리오)", "변동비", "고정비", "영업이익", "영업이익률"], col=2, height=24)
+for i, s in enumerate([3000, 4000, 5000, 6000, 7000]):
+    rr = SC + 1 + i
+    style(ws.cell(rr, 2, s), F_INPUT, NUM, FILL_INPUT, CENTER)
+    style(ws.cell(rr, 3, f"=B{rr}*$C${BE + 1}"), F_BASE, NUM)
+    style(ws.cell(rr, 4, f"=$C${BE + 2}"), F_BASE, NUM)
+    style(ws.cell(rr, 5, f"=B{rr}-C{rr}-D{rr}"), F_BOLD, NUM)
+    style(ws.cell(rr, 6, f"=IFERROR(E{rr}/B{rr},0)"), F_BASE, PCT, align=CENTER)
+ws.conditional_formatting.add(f"E{SC + 1}:F{SC + 5}", CellIsRule(operator="lessThan", formula=["0"], font=Font(name=FONT, bold=True, color="C8322A")))
+ws.conditional_formatting.add(f"E{SC + 1}:F{SC + 5}", CellIsRule(operator="greaterThan", formula=["0"], font=Font(name=FONT, bold=True, color="187A56")))
+ws.cell(SC + 7, 2, "※ 시나리오는 계획의 변동비율·고정비를 그대로 적용한 추정입니다. 실제로는 매출이 늘면 아르바이트·전기료도 조금씩 늘어납니다.").font = F_NOTE
+ws.cell(SC + 8, 2, "※ 비율은 부가세 포함 매출 대비입니다. 실적 열은 [월손익상세]에 그 달 실제 지출을 입력해야 채워집니다.").font = F_NOTE
+ws.sheet_view.showGridLines = False
+ws.page_setup.fitToWidth, ws.page_setup.fitToHeight = 1, 0
+ws.sheet_properties.pageSetUpPr.fitToPage = True
+ws.print_area = f"B1:G{SC + 8}"
+
 # ---------------------------------------------------------------- 마무리
 for sheet in wb.worksheets:
     sheet.sheet_view.zoomScale = 100
-for name, color in {"사용법": DARK, "기본설정": DARK, "매출원가계산서": CORAL, "연간요약": CORAL}.items():
+for name, color in {"사용법": DARK, "기본설정": DARK, "월손익요약": CORAL, "월손익상세": CORAL, "매출원가계산서": CORAL, "연간요약": CORAL}.items():
     wb[name].sheet_properties.tabColor = color
-wb.move_sheet("매출원가계산서", offset=-(wb.sheetnames.index("매출원가계산서") - 2))
-wb.move_sheet("연간요약", offset=-(wb.sheetnames.index("연간요약") - 3))
-wb.active = wb.sheetnames.index("매출원가계산서")
+ORDER = ["사용법", "기본설정", "월손익요약", "월손익상세", "매출원가계산서", "연간요약", "식자재단가", "레시피", "메뉴원가표", "매출일보", "매입장", "재고실사"]
+wb._sheets = [wb[n] for n in ORDER]
+wb.active = ORDER.index("월손익요약")
 for sheet in wb.worksheets:
-    sheet.sheet_view.tabSelected = sheet.title == "매출원가계산서"
+    sheet.sheet_view.tabSelected = sheet.title == "월손익요약"
 wb.save(OUT)
 print("saved", OUT)
