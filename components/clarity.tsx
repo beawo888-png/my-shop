@@ -3,7 +3,11 @@
 import Script from "next/script";
 import { usePathname } from "next/navigation";
 
-const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID;
+// Clarity 프로젝트 ID는 페이지에 그대로 노출되는 공개 값이다.
+// Vercel 프로덕션 배포에서만 기본 ID를 쓰고, 로컬·프리뷰는 기록하지 않는다.
+const CLARITY_ID =
+  process.env.NEXT_PUBLIC_CLARITY_ID ??
+  (process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? "ywavzrnkrt" : undefined);
 
 export function Clarity() {
   const pathname = usePathname();
