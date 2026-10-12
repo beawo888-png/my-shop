@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Clarity } from "@/components/clarity";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -26,7 +27,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        {children}
+        <Clarity />
+      </body>
     </html>
   );
 }
