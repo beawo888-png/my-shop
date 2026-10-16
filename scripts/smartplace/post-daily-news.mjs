@@ -82,49 +82,44 @@ async function main() {
     );
   }
 
-  const context = await launchBrowser({ channel: config.browserChannel ?? "chrome" });
   const failures = [];
-  try {
-    const page = context.pages()[0] ?? (await context.newPage());
-    for (const { branchId, post } of jobs) {
-      const name = BRANCHES[branchId].name;
-      try {
-        const result = await postNews(page, {
-          url: config.branches[branchId].newsUrl,
-          post,
-          selectors: config.selectors,
-          submit: !args.check,
-          shotName: `${today}-${branchId}`,
-        });
-        if (args.check) {
-          console.log(`\n🔎 ${name}: 등록 직전까지 채웠습니다. 화면을 확인하세요.`);
-          continue;
-        }
-        await appendLog({
-          date: today,
-          branch: branchId,
-          postId: post.id,
-          submitted: result.submitted,
-          verified: result.verified,
-          at: new Date().toISOString(),
-        });
-        if (result.verified) console.log(`\n✅ ${name}: 소식 등록 완료`);
-        else failures.push(`${name}: 등록 버튼은 눌렀지만 완료 화면을 확인하지 못했습니다. 스마트플레이스에서 한 번 확인해 주세요.`);
-      } catch (error) {
-        if (error instanceof LoginRequiredError) {
-          failures.push(`네이버 로그인이 풀렸습니다. 'npm run smartplace:setup'으로 다시 로그인해 주세요.`);
-          break;
-        }
+  // 지점마다 네이버 아이디가 달라서, 지점별 크롬 프로필을 하나씩 열고 닫는다.
+  for (const { branchId, post } of jobs) {
+    const name = BRANCHES[branchId].name;
+    const context = await launchBrowser({ branchId, channel: config.browserChannel ?? "chrome" });
+    try {
+      const page = context.pages()[0] ?? (await context.newPage());
+      const result = await postNews(page, {
+        url: config.branches[branchId].newsUrl,
+        post,
+        selectors: config.selectors,
+        submit: !args.check,
+        shotName: `${today}-${branchId}`,
+      });
+      if (args.check) {
+        console.log(`\n🔎 ${name}: 등록 직전까지 채웠습니다. 화면을 확인하고 크롬 창을 닫아 주세요. (등록은 누르지 않았습니다)`);
+        await new Promise((resolve) => context.on("close", resolve));
+        continue;
+      }
+      await appendLog({
+        date: today,
+        branch: branchId,
+        postId: post.id,
+        submitted: result.submitted,
+        verified: result.verified,
+        at: new Date().toISOString(),
+      });
+      if (result.verified) console.log(`\n✅ ${name}: 소식 등록 완료`);
+      else failures.push(`${name}: 등록 버튼은 눌렀지만 완료 화면을 확인하지 못했습니다. 스마트플레이스에서 한 번 확인해 주세요.`);
+    } catch (error) {
+      if (error instanceof LoginRequiredError) {
+        failures.push(`${name} 네이버 로그인이 풀렸습니다. 'npm run smartplace:setup -- --branch=${branchId}'로 다시 로그인해 주세요.`);
+      } else {
         failures.push(`${name}: ${error.message}`);
       }
+    } finally {
+      await context.close().catch(() => {});
     }
-
-    if (args.check) {
-      console.log("\n브라우저 창을 직접 닫으면 끝납니다. (등록은 누르지 않았습니다)");
-      await new Promise((resolve) => context.on("close", resolve));
-    }
-  } finally {
-    await context.close().catch(() => {});
   }
 
   if (failures.length) {
