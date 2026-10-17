@@ -20,6 +20,9 @@
     "smartplace:setup": "node scripts/smartplace/setup.mjs",
     "smartplace:test": "node scripts/smartplace/post-daily-news.mjs --check",
     "smartplace:post": "node scripts/smartplace/post-daily-news.mjs",
+    "smartplace:daily": "node scripts/smartplace/daily.mjs",
+    "smartplace:bookings": "node scripts/smartplace/daily.mjs --skip-news",
+    "smartplace:bookings-backfill": "node scripts/smartplace/backfill-bookings.mjs",
     "smartplace:schedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smartplace/register-task.ps1",
     "smartplace:unschedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smartplace/register-task.ps1 -Remove"
   },
@@ -28,6 +31,7 @@
     "@neondatabase/serverless": "^1.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "exceljs": "^4.4.0",
     "lucide-react": "^1.24.0",
     "next": "16.3.0",
     "react": "19.2.4",

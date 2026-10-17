@@ -1,4 +1,5 @@
-# Registers a Windows Task Scheduler job that posts Naver Smart Place news
+# Registers a Windows Task Scheduler job that runs the daily Smart Place work
+# (yesterday's booking guests to Excel, then news)
 # for both branches every morning at 09:00 (backup run at 09:40).
 # Usage:  npm run smartplace:schedule      (remove: npm run smartplace:unschedule)
 # Kept ASCII-only on purpose: Windows PowerShell 5 misreads UTF-8 files without BOM.
@@ -33,7 +34,7 @@ $settings = New-ScheduledTaskSettingsSet `
 $principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -LogonType Interactive -RunLevel Limited
 
 Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $triggers -Settings $settings `
-  -Principal $principal -Description "Wangjing: post Naver Smart Place news for Pangyo and Moran" -Force | Out-Null
+  -Principal $principal -Description "Wangjing: booking guests to Excel + Smart Place news for Pangyo and Moran" -Force | Out-Null
 
 Write-Host "Registered scheduled task: $TaskName (daily 09:00, backup 09:40)"
 Write-Host "Run it now to test:  Start-ScheduledTask -TaskName $TaskName"
