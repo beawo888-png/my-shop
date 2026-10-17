@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * 지난 기간의 방문 예약 손님을 한꺼번에 바탕화면 엑셀(날짜별 시트)에 채운다. 예약이 없던 날은 시트를 만들지 않는다.
+ * 지난 기간의 방문 예약 손님을 한꺼번에 바탕화면 엑셀의 '예약고객' 시트에 일자 순으로 채운다.
  *
  * 사용법
  *   node scripts/smartplace/backfill-bookings.mjs --from=2026-01-01            # 어제까지
@@ -8,7 +8,7 @@
  */
 
 import { alertOwner } from "../../lib/smartplace/alert.mjs";
-import { BOOKING_FILE_LABEL, bookingBusinessId, bookingListUrl, bookingWorkbookPath, fetchBookingsByDate, writeBookingSheets } from "../../lib/smartplace/bookings.mjs";
+import { BOOKING_FILE_LABEL, bookingBusinessId, bookingListUrl, bookingWorkbookPath, fetchBookingsByDate, writeBookingDays } from "../../lib/smartplace/bookings.mjs";
 import { BRANCH_IDS, BRANCHES } from "../../lib/smartplace/branches.mjs";
 import { launchBrowser, openWhenLoggedIn } from "../../lib/smartplace/browser.mjs";
 import { readConfig } from "../../lib/smartplace/local-store.mjs";
@@ -37,7 +37,7 @@ for (const branchId of args.branches) {
     });
     const byDate = await fetchBookingsByDate(page, bizId, args.from, args.to);
     const filePath = bookingWorkbookPath(BOOKING_FILE_LABEL[branchId]);
-    await writeBookingSheets(filePath, byDate);
+    await writeBookingDays(filePath, byDate);
     const rows = [...byDate.values()].flat();
     console.log(`  예약 있는 날 ${byDate.size}일 · 손님 ${rows.length}건 (취소 ${rows.filter((r) => r.note === "취소").length}건) → ${filePath}`);
   } finally {

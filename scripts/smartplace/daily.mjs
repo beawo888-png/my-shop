@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * 매일 오전 9시(KST) 지점마다 크롬을 한 번 열어, 한 번 로그인한 채로 순서대로 처리한다.
- *   1. 전날 방문 예약 손님(이름·핸드폰번호, 취소는 비고 '취소') → 바탕화면 '판교점/모란점 예약고객.xlsx'의 날짜 시트
+ *   1. 전날 방문 예약 손님(이름·핸드폰번호, 취소는 비고 '취소') → 바탕화면 '판교점/모란점 예약고객.xlsx'의 '예약고객' 시트 맨 아래(일자 순)
  *   2. 영수증 리뷰 답글 — 별도 파이썬 프로그램(C:\클라우드\네이버플레이스 영수증 자동리뷰\daily_run.py)을 그 지점만 실행해
  *      끝날 때까지 기다린다. 그 프로그램은 자기 크롬·쿠키로 로그인한다. 경로는 config.json의 "reviewProgram"으로 바꿀 수 있다.
  *   3. 스마트플레이스 소식 등록
@@ -57,7 +57,7 @@ function runReviewReplies(storeId, settings = {}) {
   return new Promise((resolve) => {
     const child = spawn(python, [script, storeId], {
       cwd: path.dirname(script),
-      env: { ...process.env, PYTHONIOENCODING: "utf-8", PYTHONUTF8: "1" },
+      env: { ...process.env, PYTHONIOENCODING: "utf-8" },
       windowsHide: true,
     });
     let output = "";
