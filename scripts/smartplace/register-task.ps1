@@ -28,7 +28,7 @@ $settings = New-ScheduledTaskSettingsSet `
   -WakeToRun `
   -AllowStartIfOnBatteries `
   -DontStopIfGoingOnBatteries `
-  -ExecutionTimeLimit (New-TimeSpan -Minutes 30) `
+  -ExecutionTimeLimit (New-TimeSpan -Hours 3) `
   -MultipleInstances IgnoreNew
 # Interactive: runs only while you are signed in to Windows, so the logged-in Chrome profile is usable.
 $principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -LogonType Interactive -RunLevel Limited
