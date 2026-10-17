@@ -105,5 +105,5 @@ npm run smartplace:schedule
 }
 ```
 
-쓸 수 있는 키: `writeButton`, `title`, `text`, `photo`, `submit`, `confirm`. 기본값은 `lib/smartplace/browser.mjs`의 `DEFAULT_SELECTORS`에 있다.
+쓸 수 있는 키: `writeButton`, `title`, `text`, `photo`, `photoEditorDone`, `submit`, `confirm`. 기본값은 `lib/smartplace/browser.mjs`의 `DEFAULT_SELECTORS`에 있다.
 크롬이 기본 위치에 없으면 환경변수 `SMARTPLACE_CHROME_PATH`에 `chrome.exe` 경로를 넣는다.
