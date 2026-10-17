@@ -4,7 +4,8 @@
 
 > Pencil(`초안`) 스케치 단계는 해당 없음: 사이트 화면을 바꾸지 않는 사장님 PC 자동화다.
 
-- 원고집: `content/smartplace/posts.txt` (요일별 4편 × 7일 = 28편, 지점 공용)
+- 날짜별 원고: `content/smartplace/plan-YYYY-MM.json` (그날·그 지점 글을 미리 써 둔 것, 있으면 이것이 먼저)
+- 원고집: `content/smartplace/posts.txt` (요일별 4편 × 7일 = 28편, 지점 공용, 날짜별 원고가 없는 날에 쓴다)
 - 사진: `public/images/wangjing/` 안의 홈페이지 사진을 그대로 쓴다
 - 실행: 사장님 PC의 **작업 스케줄러**가 09:00에 실행하고, 09:40에 한 번 더 실행해 놓친 지점을 올린다
 - 기록: `.smartplace/` 폴더 (로그인 정보·설정·이력·스크린샷, 깃에 올라가지 않음)
@@ -20,8 +21,9 @@
 
 ## 매일 일어나는 일
 
-1. 요일에 맞는 원고를 고른다. 같은 요일 원고 4편이 주마다 돌아가고, 두 지점은 같은 날 서로 다른 글이 나간다.
-2. 원고의 `{지점}`, `{주차}`, `{오시는길}` 같은 자리표시를 지점 정보(`lib/smartplace/branches.mjs`)로 바꾼다.
+1. 원고를 고른다. 그 달의 날짜별 원고(`plan-YYYY-MM.json`)에 그날·그 지점 항목이 있으면 그것을 쓴다(아래 "날짜별 원고").
+   없으면 요일에 맞는 원고집 원고를 쓴다. 같은 요일 원고 4편이 주마다 돌아가고, 두 지점은 같은 날 서로 다른 글이 나간다.
+2. 원고집 원고는 `{지점}`, `{주차}`, `{오시는길}` 같은 자리표시를 지점 정보(`lib/smartplace/branches.mjs`)로 바꾼다. 날짜별 원고는 지점마다 따로 써서 그대로 쓴다.
 3. 지점별 전용 크롬(그 지점 아이디로 로그인된 창)을 차례로 열고 '소식 작성' 화면에서 사진을 올리고, 글을 넣고, 등록을 누른다.
 4. 결과를 `.smartplace/log.jsonl`에 남기고 화면을 `.smartplace/screenshots/`에 저장한다.
 5. 그날 이미 등록한 지점은 다시 올리지 않는다. 그래서 09:40 실행이 있어도 두 번 올라가지 않는다.
@@ -72,7 +74,7 @@ npm run smartplace:schedule
 | --- | --- |
 | 오늘 나갈 글 미리 보기 | `npm run smartplace:preview` |
 | 특정 날짜 글 보기 | `npm run smartplace:preview -- --date=2026-10-20` |
-| 원고집 점검 | `npm run smartplace:check` |
+| 원고집·날짜별 원고 점검 | `npm run smartplace:check` |
 | 한 지점만 지금 올리기 | `npm run smartplace:post -- --branch=moran` |
 | 오늘 다시 올리기 | `npm run smartplace:post -- --force` |
 | 실행 기록 보기 | `.smartplace\task.log`, `.smartplace\screenshots\` |
@@ -80,6 +82,49 @@ npm run smartplace:schedule
 - 원고를 고치거나 늘리려면 `content/smartplace/posts.txt`를 고치고 `npm run smartplace:check`를 돌린다.
 - 메뉴 가격이 바뀌면 원고집의 가격도 함께 고친다.
 - 할인·이벤트 같은 실제 혜택은 원고집에 없다. 할 때만 직접 올린다.
+
+## 날짜별 원고 (`plan-YYYY-MM.json`)
+
+달마다 `content/smartplace/plan-2026-10.json`처럼 파일 하나를 둔다. 발행 날짜(KST)의 연·월로 파일을 찾는다.
+
+```json
+{
+  "range": "2026-10-18 ~ 2026-10-31",
+  "posts": [
+    {
+      "date": "2026-10-18",
+      "branch": "pangyo",
+      "searchKeyword": "판교 양꼬치",
+      "topic": "생양꼬치",
+      "photo": "menu/fresh-lamb-skewers.jpg",
+      "title": "판교 양꼬치, 기본은 생양꼬치부터",
+      "body": "본문 (이모티콘 3개, 줄바꿈은 \n)",
+      "hashtags": ["판교양꼬치", "판교맛집", "판교역맛집", "생양꼬치", "왕징양다리양꼬치"]
+    }
+  ]
+}
+```
+
+- `branch`: `pangyo` 또는 `moran`. 같은 날짜·지점 항목은 하나만.
+- `photo`: `public/images/wangjing/` 기준 경로.
+- `searchKeyword`·`topic`은 원고를 쓸 때 참고용이고, 올라가지는 않는다.
+- 올라가는 모양: 제목칸에 `title`, 본문칸에 `body` + 빈 줄 + 해시태그 5개(`#판교양꼬치 #판교맛집 ...`, `#`은 자동으로 붙는다).
+  제목칸이 없는 화면이면 제목을 첫 줄로 해서 본문칸에 모두 넣는다.
+
+**우선순위**: 그날·그 지점 항목이 날짜별 원고에 있으면 그것을 쓴다. 없으면(파일이 없거나 그 날짜·지점이 빠졌으면) 요일별 원고집 `posts.txt`를 쓴다.
+한 지점만 날짜별 원고가 있어도 된다. 다른 지점은 원고집에서 나간다.
+
+**점검 규칙** (`npm run smartplace:check`, 발행 전에도 자동 점검):
+
+| 항목 | 날짜별 원고 | 원고집 `posts.txt` |
+| --- | --- | --- |
+| 제목 | 5~40자, 이모티콘 없음 | 첫 줄 |
+| 본문 길이 | 해시태그 포함 10~1000자 (스마트플레이스 본문칸 한도) | 80~400자 |
+| 이모티콘 | 본문에 정확히 3개 | 금지 |
+| 해시태그 | `hashtags`에 정확히 5개, 빈칸·중복 없음, 본문 안에는 금지 | 금지 |
+| 사진 | 파일이 있어야 함 | 파일이 있어야 함 |
+
+날짜별 원고에 문제가 하나라도 있으면 그 달은 발행을 멈추고 알림을 띄운다.
 
 ## 이런 알림이 뜨면
 
