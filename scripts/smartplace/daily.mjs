@@ -20,7 +20,7 @@ import { alertOwner } from "../../lib/smartplace/alert.mjs";
 import { bookingBusinessId, bookingListUrl, exportBookings } from "../../lib/smartplace/bookings.mjs";
 import { launchBrowser, LoginRequiredError, openWhenLoggedIn, postNews } from "../../lib/smartplace/browser.mjs";
 import { alreadyPosted, appendLog, readConfig, readLog } from "../../lib/smartplace/local-store.mjs";
-import { checkNewsText, loadNewsBank, selectNewsPost, validateNewsBank } from "../../lib/smartplace/news-bank.mjs";
+import { checkNewsText, loadNewsBank, loadNewsPlan, selectNewsPost, validateNewsBank, validateNewsPlan } from "../../lib/smartplace/news-bank.mjs";
 import { kstDateKey } from "../../lib/threads/schedule.mjs";
 
 function parseArgs(argv) {
@@ -88,8 +88,12 @@ async function postTodayNews(page, { branchId, config, check, log, today }) {
   const bank = await loadNewsBank();
   const problems = validateNewsBank(bank);
   if (problems.length) throw new Error(`원고집에 문제가 있습니다: ${problems.join(", ")}`);
-  const post = selectNewsPost({ posts: bank.posts, branchId, date: new Date() });
-  const textProblems = checkNewsText(post.text);
+  // 날짜별 원고(plan-YYYY-MM.json)에 그날 항목이 있으면 원고집보다 먼저 쓴다.
+  const plan = await loadNewsPlan(new Date());
+  const planProblems = validateNewsPlan(plan);
+  if (planProblems.length) throw new Error(`날짜별 원고에 문제가 있습니다: ${planProblems.join(", ")}`);
+  const post = selectNewsPost({ posts: bank.posts, plan: plan.posts, branchId, date: new Date() });
+  const textProblems = checkNewsText(post.text, post);
   if (textProblems.length) throw new Error(`원고 점검 실패: ${textProblems.join(", ")}`);
 
   const result = await postNews(page, {

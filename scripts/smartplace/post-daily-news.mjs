@@ -15,7 +15,7 @@ import { spawn } from "node:child_process";
 import { BRANCH_IDS, BRANCHES } from "../../lib/smartplace/branches.mjs";
 import { launchBrowser, LoginRequiredError, postNews } from "../../lib/smartplace/browser.mjs";
 import { alreadyPosted, appendLog, readConfig, readLog } from "../../lib/smartplace/local-store.mjs";
-import { checkNewsText, loadNewsBank, selectNewsPost, validateNewsBank } from "../../lib/smartplace/news-bank.mjs";
+import { checkNewsText, loadNewsBank, loadNewsPlan, selectNewsPost, validateNewsBank, validateNewsPlan } from "../../lib/smartplace/news-bank.mjs";
 import { kstDateKey } from "../../lib/threads/schedule.mjs";
 
 function parseArgs(argv) {
@@ -54,16 +54,21 @@ async function main() {
   const bank = await loadNewsBank();
   const problems = validateNewsBank(bank);
   if (problems.length) throw new Error(`원고집에 문제가 있습니다:\n- ${problems.join("\n- ")}`);
+  // 날짜별 원고(plan-YYYY-MM.json)에 그날 항목이 있으면 원고집보다 먼저 쓴다.
+  const plan = await loadNewsPlan(now);
+  const planProblems = validateNewsPlan(plan);
+  if (planProblems.length) throw new Error(`날짜별 원고에 문제가 있습니다:\n- ${planProblems.join("\n- ")}`);
 
   const log = await readLog();
   const jobs = [];
   for (const branchId of args.branches) {
-    const post = selectNewsPost({ posts: bank.posts, branchId, date: now });
-    const textProblems = checkNewsText(post.text);
+    const post = selectNewsPost({ posts: bank.posts, plan: plan.posts, branchId, date: now });
+    const textProblems = checkNewsText(post.text, post);
     if (textProblems.length) throw new Error(`${BRANCHES[branchId].name} 원고 점검 실패: ${textProblems.join(", ")}`);
 
-    console.log(`\n── ${today} · ${BRANCHES[branchId].name} · ${post.id} · 사진 ${post.photo} ──\n`);
-    console.log(post.text);
+    const source = post.source === "plan" ? "날짜별 원고" : "요일별 원고집";
+    console.log(`\n── ${today} · ${BRANCHES[branchId].name} · ${post.id} (${source}) · 사진 ${post.photo} ──\n`);
+    console.log(`[제목] ${post.title}\n[본문]\n${post.body}`);
 
     if (!args.dryRun && !args.check && !args.force && alreadyPosted(log, today, branchId)) {
       console.log(`\n${BRANCHES[branchId].name}: 오늘 이미 올렸습니다. 건너뜁니다.`);
