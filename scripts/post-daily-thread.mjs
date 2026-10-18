@@ -6,6 +6,7 @@
  *   node scripts/post-daily-thread.mjs            # 발행
  *   node scripts/post-daily-thread.mjs --dry-run  # 올리지 않고 미리보기만
  *   node scripts/post-daily-thread.mjs --date=2026-01-01 --dry-run
+ *   node scripts/post-daily-thread.mjs --post=tasty-here --force  # 특정 원고를 다시 올리기
  *
  * 환경변수
  *   THREADS_USER_ID        Threads 계정 ID (필수)
@@ -26,12 +27,13 @@ const LOG_URL = new URL("../data/threads-log.jsonl", import.meta.url);
 const RECENT_WINDOW = 12;
 
 function parseArgs(argv) {
-  const args = { dryRun: false, force: false, date: undefined, source: undefined };
+  const args = { dryRun: false, force: false, date: undefined, source: undefined, postId: undefined };
   for (const arg of argv) {
     if (arg === "--dry-run") args.dryRun = true;
     else if (arg === "--force") args.force = true;
     else if (arg.startsWith("--date=")) args.date = arg.slice("--date=".length);
     else if (arg.startsWith("--source=")) args.source = arg.slice("--source=".length);
+    else if (arg.startsWith("--post=")) args.postId = arg.slice("--post=".length);
     else throw new Error(`알 수 없는 옵션: ${arg}`);
   }
   return args;
@@ -50,12 +52,23 @@ async function readLog() {
   }
 }
 
-async function pickFromBank({ date, log }) {
+async function pickFromBank({ date, log, postId }) {
   const bank = await loadPostBank();
   const problems = validateBank(bank);
   if (problems.length) {
     throw new Error(`원고집에 문제가 있습니다:\n- ${problems.join("\n- ")}`);
   }
+
+  // --post=<id>를 주면 순번을 건너뛰고 그 원고를 그대로 쓴다.
+  // 이미 올린 글을 고쳐서 다시 올릴 때 쓴다.
+  if (postId) {
+    const picked = bank.posts.find((post) => post.id === postId);
+    if (!picked) {
+      throw new Error(`원고집에 '${postId}' 원고가 없습니다.`);
+    }
+    return { text: picked.text, source: "bank", postKey: picked.id, theme: picked.theme };
+  }
+
   const recentIds = log.map((entry) => entry.postKey).filter(Boolean);
   const post = selectPost({ posts: bank.posts, date, recentIds });
   return { text: post.text, source: "bank", postKey: post.id, theme: post.theme };
@@ -93,9 +106,9 @@ async function main() {
   }
 
   // 원고집은 항상 먼저 골라둔다. Claude 경로가 실패해도 그대로 쓸 수 있다.
-  const fallback = await pickFromBank({ date: now, log });
+  const fallback = await pickFromBank({ date: now, log, postId: args.postId });
 
-  const source = args.source || process.env.THREADS_SOURCE || "auto";
+  const source = args.postId ? "bank" : args.source || process.env.THREADS_SOURCE || "auto";
   let chosen = fallback;
 
   if (source === "ai" || (source === "auto" && process.env.ANTHROPIC_API_KEY)) {
