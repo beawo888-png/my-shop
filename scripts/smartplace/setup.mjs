@@ -32,7 +32,7 @@ for (const branchId of targets) {
   const page = context.pages()[0] ?? (await context.newPage());
   await page.goto("https://new.smartplace.naver.com/", { waitUntil: "domcontentloaded" });
 
-  console.log(`[1] 방금 열린 크롬 창에서 ${name} 네이버 아이디로 로그인해 주세요. '로그인 상태 유지'를 꼭 체크하세요.`);
+  console.log(`[1] 방금 열린 브라우저 창에서 ${name} 네이버 아이디로 로그인해 주세요. '로그인 상태 유지'를 꼭 체크하세요.`);
   console.log("    (이미 로그인돼 있으면 그대로 넘어가면 됩니다)");
   console.log(`[2] 로그인 후 ${name} → 소식 → '새 소식 작성' 화면까지 들어가 주세요.`);
   if (saved) console.log(`    지금 저장된 주소: ${saved} — 로그인만 하고 주소는 그대로 두려면 's' 입력`);
