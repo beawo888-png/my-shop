@@ -31,7 +31,14 @@
     "blog:test": "node scripts/blog/post-daily-menu.mjs --check",
     "blog:post": "node scripts/blog/post-daily-menu.mjs",
     "blog:schedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/blog/register-task.ps1",
-    "blog:unschedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/blog/register-task.ps1 -Remove"
+    "blog:unschedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/blog/register-task.ps1 -Remove",
+    "moim:check": "node scripts/blog/check-gathering-posts.mjs",
+    "moim:preview": "node scripts/blog/post-daily-gathering.mjs --dry-run",
+    "moim:test": "node scripts/blog/post-daily-gathering.mjs --check",
+    "moim:post": "node scripts/blog/post-daily-gathering.mjs",
+    "moim:ai-photos": "node scripts/blog/make-ai-photos.mjs",
+    "moim:schedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/blog/register-gathering-task.ps1",
+    "moim:unschedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/blog/register-gathering-task.ps1 -Remove"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

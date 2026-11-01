@@ -53,3 +53,7 @@ next-env.d.ts
 
 # smartplace automation: login profile, config, logs (owner PC only)
 /.smartplace/
+
+# owner blog photo folders (incl. AI연출/ generated images) stay on the owner PC
+/판교블로그이미지/
+/모란블로그이미지/
