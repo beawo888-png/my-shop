@@ -6,6 +6,10 @@ import { BLOG_BRANCHES } from "../lib/blog/branch-info.mjs";
 import { alreadyPublished } from "../lib/blog/log.mjs";
 import {
   blocksToHtml,
+  BOOKING_LINK_TEXT,
+  LAMB_LEG_NOTICE,
+  MAP_LINK_TEXT,
+  postLinks,
   loadMenuPosts,
   renderMenuPost,
   selectMenu,
@@ -105,9 +109,32 @@ test("같은 날 두 블로그의 인사말이 다르다", () => {
 test("붙여 넣을 HTML은 링크를 살리고 특수문자를 막는다", () => {
   const html = blocksToHtml([
     { type: "text", lines: ["a < b & c", ""] },
-    { type: "info", items: [{ label: "지도", value: "https://x.test/?a=1&b=2", href: "https://x.test/?a=1&b=2" }] },
+    { type: "info", items: [{ label: "주차", value: "무료" }] },
+    { type: "links", items: [{ text: "예약", href: "https://x.test/?a=1&b=2" }] },
   ]);
-  assert.equal(html, '<p>a &lt; b &amp; c</p><p><br></p><p>✔ <b>지도</b> : <a href="https://x.test/?a=1&amp;b=2">https://x.test/?a=1&amp;b=2</a></p>');
+  assert.equal(
+    html,
+    '<p>a &lt; b &amp; c</p><p><br></p><p>✔ <b>주차</b> : 무료</p><p><b><a href="https://x.test/?a=1&amp;b=2">예약</a></b></p>',
+  );
+});
+
+test("모든 글에 양다리구이 1시간 전 예약 안내와 눌러지는 예약·지도 링크가 들어간다", () => {
+  for (let n = 0; n < bank.menus.length; n += 1) {
+    for (const branchId of BRANCH_IDS) {
+      const post = renderMenuPost({ bank, branchId, date: dayAfter(n) });
+      const info = BLOG_BRANCHES[branchId];
+      assert.ok(post.blocks.some((block) => block.type === "notice" && block.text === LAMB_LEG_NOTICE));
+      assert.deepEqual(postLinks(post), [
+        { text: BOOKING_LINK_TEXT, href: info.bookingUrl },
+        { text: MAP_LINK_TEXT, href: info.mapUrl },
+      ]);
+    }
+  }
+});
+
+test("양다리구이 글 본문에도 1시간 전 예약 문구가 있다", () => {
+  const lambLeg = bank.menus.find((menu) => menu.id === "lamb-leg");
+  for (const taste of lambLeg.tastes) assert.match(taste, /1시간 전에 예약/);
 });
 
 test("본문은 글·사진·글·사진·글 순서로 나뉜다", () => {
