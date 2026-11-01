@@ -1,5 +1,5 @@
 {
-  "_설명": "네이버 블로그 '메뉴추천' 원고집. 메뉴마다 글감을 두 벌(A·B)씩 써 두고, 같은 메뉴라도 판교점과 모란본점 블로그에는 서로 다른 벌이 나간다. {역} {지역} {지점} {모임} 자리표시는 지점 정보로 바뀐다. 가격·설명은 홈페이지 메뉴판(lib/menu-content.ts)과 같게 쓴다. 메뉴 순서대로 하루에 하나씩 나간다(2026-11-02 판교점은 첫 메뉴, 모란본점은 가운데 메뉴부터).",
+  "_설명": "네이버 블로그 '메뉴추천' 원고집. 메뉴마다 글감을 두 벌(A·B)씩 써 두고, 같은 메뉴라도 판교점과 모란본점 블로그에는 서로 다른 벌이 나간다. {역} {지역} {지점} {모임} 자리표시는 지점 정보로 바뀐다. 지점마다 가격이 달라서 가격은 글에 넣지 않는다. 메뉴 순서대로 하루에 하나씩 나간다(2026-11-02 판교점은 첫 메뉴, 모란본점은 가운데 메뉴부터).",
   "greetings": [
     "안녕하세요, {역} 양고기 전문점 왕징양다리양꼬치 {지점}입니다 😊",
     "안녕하세요! {지역}에서 숯불 양고기를 굽는 왕징양다리양꼬치 {지점}이에요 😊",
@@ -16,7 +16,6 @@
     {
       "id": "lamb-leg",
       "name": "통양다리구이",
-      "price": "대 90,000원 · 중 80,000원",
       "photo": "menu/lamb-leg.jpg",
       "emoji": "🍖",
       "tags": [
@@ -49,7 +48,6 @@
     {
       "id": "guobaorou",
       "name": "꿔바로우",
-      "price": "20,000원",
       "photo": "menu/guobaorou.jpg",
       "emoji": "🥢",
       "tags": [
@@ -82,7 +80,6 @@
     {
       "id": "marinated-lamb-skewers",
       "name": "양념양꼬치",
-      "price": "18,000원",
       "photo": "menu/marinated-lamb-skewers.jpg",
       "emoji": "🍢",
       "tags": [
@@ -115,7 +112,6 @@
     {
       "id": "shrimp-skewers",
       "name": "새우꼬치",
-      "price": "18,000원",
       "photo": "menu/shrimp-skewers.png",
       "emoji": "🍤",
       "tags": [
@@ -148,7 +144,6 @@
     {
       "id": "premium-lamb-chops",
       "name": "고급양갈비",
-      "price": "30,000원",
       "photo": "menu/premium-lamb-chops.jpg",
       "emoji": "🥩",
       "tags": [
@@ -181,7 +176,6 @@
     {
       "id": "mala-xiang-guo",
       "name": "마라샹궈",
-      "price": "32,000원",
       "photo": "menu/mala-xiang-guo.jpg",
       "emoji": "🌶️",
       "tags": [
@@ -214,7 +208,6 @@
     {
       "id": "lamb-rib-skewers",
       "name": "양갈비살꼬치",
-      "price": "18,000원",
       "photo": "menu/lamb-rib-skewers.jpg",
       "emoji": "🍢",
       "tags": [
@@ -247,7 +240,6 @@
     {
       "id": "tomato-egg",
       "name": "토마토계란볶음",
-      "price": "16,000원",
       "photo": "menu/tomato-egg.jpg",
       "emoji": "🍅",
       "tags": [
@@ -280,7 +272,6 @@
     {
       "id": "spicy-prawn",
       "name": "향라대하",
-      "price": "22,000원",
       "photo": "menu/spicy-prawn.jpg",
       "emoji": "🦐",
       "tags": [
@@ -313,7 +304,6 @@
     {
       "id": "cumin-lamb",
       "name": "쯔란양고기",
-      "price": "28,000원",
       "photo": "menu/cumin-lamb.jpg",
       "emoji": "🐑",
       "tags": [
@@ -346,7 +336,6 @@
     {
       "id": "yu-xiang-pork",
       "name": "어향육사",
-      "price": "19,000원",
       "photo": "menu/yu-xiang-pork.jpg",
       "emoji": "🥢",
       "tags": [
@@ -379,7 +368,6 @@
     {
       "id": "cucumber-salad",
       "name": "오이무침",
-      "price": "12,000원",
       "photo": "menu/cucumber-salad.jpg",
       "emoji": "🥒",
       "tags": [
@@ -412,7 +400,6 @@
     {
       "id": "egg-fried-rice",
       "name": "계란볶음밥",
-      "price": "8,000원",
       "photo": "menu/egg-fried-rice.jpg",
       "emoji": "🍚",
       "tags": [
@@ -445,7 +432,6 @@
     {
       "id": "corn-noodle-soup",
       "name": "옥수수온면",
-      "price": "8,000원",
       "photo": "menu/corn-noodle-soup.jpg",
       "emoji": "🍜",
       "tags": [
@@ -478,7 +464,6 @@
     {
       "id": "fried-eggplant",
       "name": "가지튀김",
-      "price": "18,000원",
       "photo": "menu/fried-eggplant.jpg",
       "emoji": "🍆",
       "tags": [
@@ -511,7 +496,6 @@
     {
       "id": "fresh-lamb-skewers",
       "name": "생양꼬치",
-      "price": "17,000원",
       "photo": "menu/fresh-lamb-skewers.jpg",
       "emoji": "🍢",
       "tags": [
@@ -544,7 +528,6 @@
     {
       "id": "xiaolongxia",
       "name": "소룽샤",
-      "price": "38,000원",
       "photo": "menu/xiaolongxia.jpg",
       "emoji": "🦞",
       "tags": [
@@ -577,7 +560,6 @@
     {
       "id": "mapo-tofu",
       "name": "마파두부",
-      "price": "15,000원",
       "photo": "menu/mapo-tofu.jpg",
       "emoji": "🌶️",
       "tags": [
@@ -610,7 +592,6 @@
     {
       "id": "di-san-xian",
       "name": "지삼선",
-      "price": "18,000원",
       "photo": "menu/di-san-xian.jpg",
       "emoji": "🥔",
       "tags": [
@@ -643,7 +624,6 @@
     {
       "id": "jingjiang-pork",
       "name": "경장육사",
-      "price": "19,000원",
       "photo": "menu/jingjiang-pork.jpg",
       "emoji": "🥢",
       "tags": [
@@ -676,7 +656,6 @@
     {
       "id": "malatang",
       "name": "마라탕",
-      "price": "18,000원",
       "photo": "menu/malatang.jpg",
       "emoji": "🍲",
       "tags": [
@@ -709,7 +688,6 @@
     {
       "id": "stir-fried-tofu-skin",
       "name": "건두부볶음",
-      "price": "16,000원",
       "photo": "menu/stir-fried-tofu-skin.jpg",
       "emoji": "🥢",
       "tags": [
@@ -742,7 +720,6 @@
     {
       "id": "tofu-skin-salad",
       "name": "건두부무침",
-      "price": "16,000원",
       "photo": "menu/tofu-skin-salad.jpg",
       "emoji": "🥗",
       "tags": [
@@ -775,7 +752,6 @@
     {
       "id": "lamb-soup",
       "name": "양탕",
-      "price": "15,000원",
       "photo": "menu/lamb-soup.jpg",
       "emoji": "🍲",
       "tags": [
@@ -808,7 +784,6 @@
     {
       "id": "boiled-dumplings",
       "name": "물만두",
-      "price": "8,000원",
       "photo": "menu/boiled-dumplings.jpg",
       "emoji": "🥟",
       "tags": [
@@ -841,7 +816,6 @@
     {
       "id": "eggplant-fried-rice",
       "name": "가지볶음밥",
-      "price": "8,000원",
       "photo": "menu/eggplant-fried-rice.jpg",
       "emoji": "🍆",
       "tags": [
@@ -874,7 +848,6 @@
     {
       "id": "cold-noodles",
       "name": "냉면",
-      "price": "8,000원",
       "photo": "menu/cold-noodles.jpg",
       "emoji": "🥶",
       "tags": [
@@ -907,7 +880,6 @@
     {
       "id": "fried-flower-buns",
       "name": "꽃빵튀김",
-      "price": "8,000원",
       "photo": "menu/fried-flower-buns.jpg",
       "emoji": "🌸",
       "tags": [

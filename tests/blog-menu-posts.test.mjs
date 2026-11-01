@@ -26,10 +26,19 @@ test("블로그 원고집이 규칙을 모두 지킨다", () => {
   assert.deepEqual(validateMenuPosts(bank), []);
 });
 
-test("메뉴 가격이 홈페이지 메뉴판과 같다", async () => {
+test("메뉴 이름이 홈페이지 메뉴판에 있다", async () => {
   const source = await readFile(new URL("../lib/menu-content.ts", import.meta.url), "utf8");
   for (const menu of bank.menus.filter((m) => m.id !== "lamb-leg")) {
-    assert.match(source, new RegExp(`menuItem\\("${menu.name}", "${menu.price}"`), menu.name);
+    assert.ok(source.includes(`menuItem("${menu.name}",`), menu.name);
+  }
+});
+
+test("지점마다 가격이 달라 글에 가격이 들어가지 않는다", () => {
+  for (let n = 0; n < bank.menus.length; n += 1) {
+    for (const branchId of BRANCH_IDS) {
+      const post = renderMenuPost({ bank, branchId, date: dayAfter(n) });
+      assert.doesNotMatch(toPlainText(post) + post.title, /가격|\d원/);
+    }
   }
 });
 
