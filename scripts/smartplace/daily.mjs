@@ -5,7 +5,7 @@
  *   2. 영수증 리뷰 답글 — 별도 파이썬 프로그램(C:\클라우드\네이버플레이스 영수증 자동리뷰\daily_run.py)을 그 지점만 실행해
  *      끝날 때까지 기다린다. 그 프로그램은 자기 크롬·쿠키로 로그인한다. 경로는 config.json의 "reviewProgram"으로 바꿀 수 있다.
  *   3. 스마트플레이스 소식 등록
- * 로그인이 풀려 있으면 알림 창을 띄우고, 사장님이 그 크롬 창에서 로그인할 때까지 20분 기다린다.
+ * 로그인이 풀려 있으면 알림 창을 띄우고, 사장님이 그 브라우저 창에서 로그인할 때까지 지점마다 3시간(config.json "loginWaitMinutes") 기다린다.
  *
  * 사용법
  *   node scripts/smartplace/daily.mjs                       # 두 지점 전부
@@ -13,15 +13,47 @@
  */
 
 import { spawn } from "node:child_process";
+import { readFileSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import { BRANCH_IDS, BRANCHES } from "../../lib/smartplace/branches.mjs";
 import { alertOwner } from "../../lib/smartplace/alert.mjs";
 import { bookingBusinessId, bookingListUrl, exportBookings } from "../../lib/smartplace/bookings.mjs";
 import { launchBrowser, LoginRequiredError, openWhenLoggedIn, postNews } from "../../lib/smartplace/browser.mjs";
-import { alreadyPosted, appendLog, readConfig, readLog } from "../../lib/smartplace/local-store.mjs";
+import { alreadyPosted, appendLog, LOCAL_DIR, readConfig, readLog } from "../../lib/smartplace/local-store.mjs";
 import { checkNewsText, loadNewsBank, loadNewsPlan, selectNewsPost, validateNewsBank, validateNewsPlan } from "../../lib/smartplace/news-bank.mjs";
 import { kstDateKey } from "../../lib/threads/schedule.mjs";
+
+/** 지점마다 사장님 로그인을 기다리는 기본 시간(분). 09:00 실행이면 판교점은 12시까지 기다린다. */
+const DEFAULT_LOGIN_WAIT_MINUTES = 180;
+
+const LOCK_PATH = path.join(LOCAL_DIR, "daily.lock");
+
+/** 이미 돌고 있는 9시 작업이 없으면 잠금을 잡는다. 남은 잠금 파일이라도 그 프로세스가 끝났으면 새로 잡는다. */
+async function acquireLock() {
+  try {
+    const pid = Number(readFileSync(LOCK_PATH, "utf8"));
+    if (pid && pid !== process.pid) {
+      try {
+        process.kill(pid, 0);
+        return false;
+      } catch {
+        // 프로세스가 없으면 남은 잠금이다.
+      }
+    }
+  } catch {
+    // 잠금 파일 없음
+  }
+  writeFileSync(LOCK_PATH, String(process.pid));
+  process.on("exit", () => {
+    try {
+      if (Number(readFileSync(LOCK_PATH, "utf8")) === process.pid) rmSync(LOCK_PATH);
+    } catch {
+      // 이미 지워짐
+    }
+  });
+  return true;
+}
 
 function parseArgs(argv) {
   const args = { branches: BRANCH_IDS, date: undefined, skipNews: false, skipReviews: false, check: false };
@@ -122,6 +154,15 @@ async function main() {
   const config = await readConfig();
   const log = await readLog();
   const failures = [];
+  // 사장님이 PC에서 로그인할 때까지 지점마다 기다리는 시간. config.json의 "loginWaitMinutes"로 바꿀 수 있다.
+  const loginWaitMinutes = Number(config.loginWaitMinutes) > 0 ? Number(config.loginWaitMinutes) : DEFAULT_LOGIN_WAIT_MINUTES;
+  const waitLabel = loginWaitMinutes % 60 ? `${loginWaitMinutes}분` : `${loginWaitMinutes / 60}시간`;
+
+  // 로그인을 오래 기다리는 동안 09:40 실행이 겹쳐 시작되면 같은 브라우저 프로필을 두고 부딪친다. 먼저 돌던 것이 있으면 이번 실행은 그만둔다.
+  if (!(await acquireLock())) {
+    console.log("이미 다른 9시 작업이 돌고 있습니다(로그인 대기 중일 수 있음). 이번 실행은 건너뜁니다.");
+    return;
+  }
 
   for (const branchId of args.branches) {
     const name = BRANCHES[branchId].name;
@@ -138,7 +179,8 @@ async function main() {
     try {
       const page = context.pages()[0] ?? (await context.newPage());
       await openWhenLoggedIn(page, bookingListUrl(bizId, visitDate), {
-        onWait: () => alertOwner(`${name} 네이버 로그인이 필요합니다. 방금 열린 브라우저 창(엣지)에서 ${name} 아이디로 로그인해 주세요. (20분 동안 기다립니다)`),
+        timeoutMs: loginWaitMinutes * 60_000,
+        onWait: () => alertOwner(`${name} 네이버 로그인이 필요합니다. 방금 열린 브라우저 창(엣지)에서 ${name} 아이디로 로그인해 주세요. (${waitLabel} 동안 기다립니다)`),
       });
 
       // 1. 전날 방문 손님 엑셀
