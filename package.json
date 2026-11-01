@@ -24,7 +24,14 @@
     "smartplace:bookings": "node scripts/smartplace/daily.mjs --skip-reviews --skip-news",
     "smartplace:bookings-backfill": "node scripts/smartplace/backfill-bookings.mjs",
     "smartplace:schedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smartplace/register-task.ps1",
-    "smartplace:unschedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smartplace/register-task.ps1 -Remove"
+    "smartplace:unschedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/smartplace/register-task.ps1 -Remove",
+    "blog:check": "node scripts/blog/check-posts.mjs",
+    "blog:preview": "node scripts/blog/post-daily-menu.mjs --dry-run",
+    "blog:setup": "node scripts/blog/setup.mjs",
+    "blog:test": "node scripts/blog/post-daily-menu.mjs --check",
+    "blog:post": "node scripts/blog/post-daily-menu.mjs",
+    "blog:schedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/blog/register-task.ps1",
+    "blog:unschedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/blog/register-task.ps1 -Remove"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
