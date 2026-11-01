@@ -1,5 +1,5 @@
 # Registers a Windows Task Scheduler job that posts the daily menu article
-# to the Pangyo and Moran Naver blogs (category: menu recommendation) at 10:00 (backup run at 10:40).
+# to the Pangyo and Moran Naver blogs (default category) at 10:00 (backup run at 10:40).
 # Usage:  npm run blog:schedule      (remove: npm run blog:unschedule)
 # Kept ASCII-only on purpose: Windows PowerShell 5 misreads UTF-8 files without BOM.
 

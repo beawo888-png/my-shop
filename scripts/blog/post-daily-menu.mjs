@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * 매일 오전 10시(KST)에 판교점·모란본점 네이버 블로그 '메뉴추천' 카테고리에 메뉴 소개 글을 올린다.
+ * 매일 오전 10시(KST)에 판교점·모란본점 네이버 블로그에 메뉴 소개 글을 올린다(블로그 기본 카테고리).
  * 사장님 PC의 작업 스케줄러가 실행한다 (docs/operations/naver-blog-automation.md).
  *
  * 사용법
@@ -69,7 +69,7 @@ async function main() {
   const jobs = [];
   for (const branchId of args.branches) {
     const post = renderMenuPost({ bank, branchId, date: now });
-    console.log(`\n── ${today} · ${BRANCHES[branchId].name} 블로그 · ${post.id} · 카테고리 ${post.category} ──\n`);
+    console.log(`\n── ${today} · ${BRANCHES[branchId].name} 블로그 · ${post.id} ──\n`);
     console.log(`[제목] ${post.title}\n[본문]\n${toPlainText(post)}\n[태그] ${post.tags.map((t) => `#${t}`).join(" ")}`);
 
     if (!args.dryRun && !args.check && !args.force && alreadyPublished(log, today, branchId)) {
@@ -97,6 +97,7 @@ async function main() {
       const result = await publishBlogPost(page, {
         url,
         post,
+        category: config.blogCategory,
         selectors: config.blogSelectors,
         submit: !args.check,
         shotName: `blog-${today}-${branchId}`,

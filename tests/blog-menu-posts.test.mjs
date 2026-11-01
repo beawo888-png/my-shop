@@ -6,7 +6,6 @@ import { BLOG_BRANCHES } from "../lib/blog/branch-info.mjs";
 import { alreadyPublished } from "../lib/blog/log.mjs";
 import {
   blocksToHtml,
-  CATEGORY,
   loadMenuPosts,
   renderMenuPost,
   selectMenu,
@@ -83,12 +82,11 @@ test("한 블로그에서 한 바퀴 동안 메뉴가 겹치지 않고, 다음 �
   }
 });
 
-test("글에 지도·예약 링크, 지점 정보, 사진 두 장, 카테고리가 들어간다", () => {
+test("글에 지도·예약 링크, 지점 정보, 사진 두 장이 들어간다", () => {
   for (const branchId of BRANCH_IDS) {
     const post = renderMenuPost({ bank, branchId, date: at10(START_DATE) });
     const text = toPlainText(post);
     const info = BLOG_BRANCHES[branchId];
-    assert.equal(post.category, CATEGORY);
     assert.doesNotMatch(text + post.title, /[{}]/);
     for (const value of [info.mapUrl, info.bookingUrl, info.address, info.parking]) assert.ok(text.includes(value), value);
     assert.equal(post.photos.length, 2);

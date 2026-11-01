@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** 네이버 블로그 '메뉴추천' 원고집 점검과 앞으로 2주 일정 보기. `npm run blog:check` */
+/** 네이버 블로그 메뉴 소개 원고집 점검과 앞으로 2주 일정 보기. `npm run blog:check` */
 
 import { loadMenuPosts, renderMenuPost, toPlainText, validateMenuPosts } from "../../lib/blog/menu-posts.mjs";
 import { BRANCH_IDS, BRANCHES } from "../../lib/smartplace/branches.mjs";

@@ -12,7 +12,6 @@ import { stdin as input, stdout as output } from "node:process";
 import readline from "node:readline/promises";
 
 import { BLOG_BRANCHES, postWriteUrl } from "../../lib/blog/branch-info.mjs";
-import { CATEGORY } from "../../lib/blog/menu-posts.mjs";
 import { BRANCH_IDS, BRANCHES } from "../../lib/smartplace/branches.mjs";
 import { isLoginPage, launchBrowser } from "../../lib/smartplace/browser.mjs";
 import { CONFIG_PATH, readConfig, writeConfig } from "../../lib/smartplace/local-store.mjs";
@@ -36,9 +35,7 @@ for (const branchId of targets) {
 
   console.log(`[1] 방금 열린 브라우저 창에서 ${name} 네이버 아이디(${blogId})로 로그인해 주세요. '로그인 상태 유지'를 꼭 체크하세요.`);
   console.log("    (이미 로그인돼 있으면 그대로 넘어가면 됩니다)");
-  console.log(`[2] 블로그 글쓰기 화면이 뜨면, 그 블로그에 '${CATEGORY}' 카테고리가 있는지 확인해 주세요.`);
-  console.log("    없으면: 내 블로그 → 관리 → 메뉴·글·동영상 관리 → 블로그 → 카테고리 추가");
-  console.log("    글쓰기 화면은 닫지 말고, 쓰지도 마세요. 확인만 하면 됩니다.");
+  console.log("[2] 블로그 글쓰기 화면이 뜨는지 확인해 주세요. 글은 쓰지 마세요. 확인만 하면 됩니다.");
   const answer = (await rl.question(`블로그 아이디가 ${blogId}가 아니면 여기에 아이디를 입력하고, 맞으면 그냥 엔터를 누르세요. `)).trim();
 
   if (answer && answer !== blogId) {
