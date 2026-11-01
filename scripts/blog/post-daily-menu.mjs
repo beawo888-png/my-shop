@@ -102,6 +102,11 @@ async function main() {
         submit: !args.check,
         shotName: `blog-${today}-${branchId}`,
       });
+      if (result.unlinked?.length) {
+        const message = `${name}: '${result.unlinked.join("', '")}'에 링크를 걸지 못해 주소를 글자로 넣었습니다. 글에서 눌러지는지 확인해 주세요.`;
+        if (args.check) console.warn(`⚠️  ${message}`);
+        else failures.push(message);
+      }
       if (args.check) {
         console.log(`\n🔎 ${name}: 최종 '발행' 직전까지 채웠습니다. 화면을 확인하세요. (발행은 누르지 않았습니다)`);
         const rl = createInterface({ input: process.stdin, output: process.stdout });
