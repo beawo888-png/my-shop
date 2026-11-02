@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * 매일 오전 10시(KST)에 판교점·모란본점 네이버 블로그에 메뉴 소개 글을 올린다(블로그 기본 카테고리).
+ * 매일 오전 10시(KST)에 판교점·모란본점 네이버 블로그 '메뉴추천' 카테고리에 메뉴 소개 글을 올린다.
  * 사장님 PC의 작업 스케줄러가 실행한다 (docs/operations/naver-blog-automation.md).
  *
  * 사용법
@@ -15,7 +15,7 @@ import { createInterface } from "node:readline/promises";
 import { BLOG_BRANCHES, postWriteUrl } from "../../lib/blog/branch-info.mjs";
 import { publishBlogPost } from "../../lib/blog/editor.mjs";
 import { alreadyPublished, appendBlogLog, readBlogLog } from "../../lib/blog/log.mjs";
-import { loadMenuPosts, renderMenuPost, toPlainText, validateMenuPosts } from "../../lib/blog/menu-posts.mjs";
+import { CATEGORY, loadMenuPosts, renderMenuPost, toPlainText, validateMenuPosts } from "../../lib/blog/menu-posts.mjs";
 import { alertOwner } from "../../lib/smartplace/alert.mjs";
 import { BRANCH_IDS, BRANCHES } from "../../lib/smartplace/branches.mjs";
 import { launchBrowser, LoginRequiredError, openWhenLoggedIn } from "../../lib/smartplace/browser.mjs";
@@ -65,11 +65,12 @@ async function main() {
   const problems = validateMenuPosts(bank);
   if (problems.length) throw new Error(`블로그 원고집에 문제가 있습니다:\n- ${problems.join("\n- ")}`);
 
+  const config = await readConfig();
   const log = await readBlogLog();
   const jobs = [];
   for (const branchId of args.branches) {
     const post = renderMenuPost({ bank, branchId, date: now });
-    console.log(`\n── ${today} · ${BRANCHES[branchId].name} 블로그 · ${post.id} ──\n`);
+    console.log(`\n── ${today} · ${BRANCHES[branchId].name} 블로그 · ${post.id} · 카테고리 ${config.blogCategory ?? CATEGORY} ──\n`);
     console.log(`[제목] ${post.title}\n[본문]\n${toPlainText(post)}\n[태그] ${post.tags.map((t) => `#${t}`).join(" ")}`);
 
     if (!args.dryRun && !args.check && !args.force && alreadyPublished(log, today, branchId)) {
@@ -81,7 +82,6 @@ async function main() {
   console.log("\n────────────────────────────");
   if (args.dryRun || !jobs.length) return;
 
-  const config = await readConfig();
   const failures = [];
   for (const { branchId, post } of jobs) {
     const name = BRANCHES[branchId].name;
@@ -97,7 +97,8 @@ async function main() {
       const result = await publishBlogPost(page, {
         url,
         post,
-        category: config.blogCategory,
+        // config.json의 blogCategory로 바꿀 수 있다. 빈 글자("")면 카테고리를 고르지 않는다(기본 카테고리).
+        category: config.blogCategory ?? CATEGORY,
         selectors: config.blogSelectors,
         submit: !args.check,
         shotName: `blog-${today}-${branchId}`,
