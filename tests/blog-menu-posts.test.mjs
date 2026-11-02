@@ -6,6 +6,7 @@ import { BLOG_BRANCHES } from "../lib/blog/branch-info.mjs";
 import { alreadyPublished } from "../lib/blog/log.mjs";
 import {
   blocksToHtml,
+  BODY_LENGTH_RANGE,
   BOOKING_LINK_TEXT,
   LAMB_LEG_NOTICE,
   MAP_LINK_TEXT,
@@ -33,6 +34,17 @@ test("메뉴 이름이 홈페이지 메뉴판에 있다", async () => {
   const source = await readFile(new URL("../lib/menu-content.ts", import.meta.url), "utf8");
   for (const menu of bank.menus.filter((m) => m.id !== "lamb-leg")) {
     assert.ok(source.includes(`menuItem("${menu.name}",`), menu.name);
+  }
+});
+
+test("글 한 편이 3000자 안팎이다", () => {
+  const [min, max] = BODY_LENGTH_RANGE;
+  for (let n = 0; n < bank.menus.length * 2; n += 1) {
+    for (const branchId of BRANCH_IDS) {
+      const post = renderMenuPost({ bank, branchId, date: dayAfter(n) });
+      const length = [...toPlainText(post)].length;
+      assert.ok(length >= min && length <= max, `${branchId} ${post.id}: ${length}자`);
+    }
   }
 });
 
