@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 /**
- * 매일 오전 10시(KST)에 판교점·모란본점 네이버 블로그 '메뉴추천' 카테고리에 메뉴 소개 글을 올린다.
+ * 매일 오전 10시·오후 4시(KST)에 판교점·모란본점 네이버 블로그 '메뉴추천' 카테고리에 메뉴 소개 글을 한 편씩 올린다.
+ * (지점마다 하루 2편, 모두 4편. 오후 실행 때 오전 글이 빠져 있으면 그것도 같이 올린다.)
  * 사장님 PC의 작업 스케줄러가 실행한다 (docs/operations/naver-blog-automation.md).
  *
  * 사용법
  *   node scripts/blog/post-daily-menu.mjs              # 두 지점 발행
  *   node scripts/blog/post-daily-menu.mjs --dry-run    # 브라우저 없이 오늘 글만 보기
  *   node scripts/blog/post-daily-menu.mjs --check      # 화면에 다 채우고 최종 '발행'은 누르지 않기
- *   옵션: --branch=pangyo|moran  --date=2026-11-02  --force
+ *   옵션: --branch=pangyo|moran  --slot=1|2(오전·오후 글만)  --date=2026-11-06  --force
  */
 
 import { createInterface } from "node:readline/promises";
@@ -15,7 +16,7 @@ import { createInterface } from "node:readline/promises";
 import { BLOG_BRANCHES, postWriteUrl } from "../../lib/blog/branch-info.mjs";
 import { publishBlogPost } from "../../lib/blog/editor.mjs";
 import { alreadyPublished, appendBlogLog, readBlogLog } from "../../lib/blog/log.mjs";
-import { CATEGORY, loadMenuPosts, renderMenuPost, toPlainText, validateMenuPosts } from "../../lib/blog/menu-posts.mjs";
+import { CATEGORY, loadMenuPosts, POSTS_PER_DAY, renderMenuPost, SLOT_HOURS, toPlainText, validateMenuPosts } from "../../lib/blog/menu-posts.mjs";
 import { alertOwner } from "../../lib/smartplace/alert.mjs";
 import { BRANCH_IDS, BRANCHES } from "../../lib/smartplace/branches.mjs";
 import { launchBrowser, LoginRequiredError, openWhenLoggedIn } from "../../lib/smartplace/browser.mjs";
@@ -25,16 +26,20 @@ import { kstDateKey } from "../../lib/threads/schedule.mjs";
 const ALERT_TITLE = "네이버 블로그 자동 발행";
 
 function parseArgs(argv) {
-  const args = { dryRun: false, check: false, force: false, date: undefined, branches: BRANCH_IDS };
+  const args = { dryRun: false, check: false, force: false, date: undefined, slots: undefined, branches: BRANCH_IDS };
   for (const arg of argv) {
     if (arg === "--dry-run") args.dryRun = true;
     else if (arg === "--check") args.check = true;
     else if (arg === "--force") args.force = true;
     else if (arg.startsWith("--date=")) args.date = arg.slice(7);
     else if (arg.startsWith("--branch=")) args.branches = arg.slice(9).split(",");
+    else if (arg.startsWith("--slot=")) args.slots = arg.slice(7).split(",").map((n) => Number(n) - 1);
     else throw new Error(`알 수 없는 옵션: ${arg}`);
   }
   for (const id of args.branches) if (!BRANCHES[id]) throw new Error(`알 수 없는 지점: ${id} (pangyo | moran)`);
+  for (const slot of args.slots ?? []) {
+    if (!Number.isInteger(slot) || slot < 0 || slot >= POSTS_PER_DAY) throw new Error(`--slot은 1~${POSTS_PER_DAY} 중에서 고릅니다.`);
+  }
   return args;
 }
 
@@ -60,6 +65,10 @@ async function main() {
   const now = args.date ? new Date(`${args.date}T10:00:00+09:00`) : new Date();
   if (Number.isNaN(now.getTime())) throw new Error(`날짜 형식이 잘못됐습니다: ${args.date}`);
   const today = kstDateKey(now);
+  // 올릴 차례가 된 글: 오전 10시가 지나면 1번째, 오후 4시가 지나면 2번째까지. 미리보기·날짜 지정은 하루 치 전부.
+  const kstHour = new Date(now.getTime() + 9 * 60 * 60 * 1000).getUTCHours();
+  const dueSlots = SLOT_HOURS.map((hour, slot) => (kstHour >= hour ? slot : null)).filter((slot) => slot !== null);
+  const slots = args.slots ?? (args.dryRun || args.date ? SLOT_HOURS.map((_, slot) => slot) : dueSlots.length ? dueSlots : [0]);
 
   const bank = await loadMenuPosts();
   const problems = validateMenuPosts(bank);
@@ -69,22 +78,25 @@ async function main() {
   const log = await readBlogLog();
   const jobs = [];
   for (const branchId of args.branches) {
-    const post = renderMenuPost({ bank, branchId, date: now });
-    console.log(`\n── ${today} · ${BRANCHES[branchId].name} 블로그 · ${post.id} · 카테고리 ${config.blogCategory ?? CATEGORY} ──\n`);
-    console.log(`[제목] ${post.title}\n[본문]\n${toPlainText(post)}\n[태그] ${post.tags.map((t) => `#${t}`).join(" ")}`);
+    for (const slot of slots) {
+      const post = renderMenuPost({ bank, branchId, date: now, slot });
+      console.log(`\n── ${today} · ${BRANCHES[branchId].name} 블로그 ${slot + 1}번째 글 · ${post.id} · 카테고리 ${config.blogCategory ?? CATEGORY} ──\n`);
+      console.log(`[제목] ${post.title}\n[본문]\n${toPlainText(post)}\n[태그] ${post.tags.map((t) => `#${t}`).join(" ")}`);
 
-    if (!args.dryRun && !args.check && !args.force && alreadyPublished(log, today, branchId)) {
-      console.log(`\n${BRANCHES[branchId].name}: 오늘 블로그 글을 이미 올렸습니다. 건너뜁니다.`);
-      continue;
+      if (!args.dryRun && !args.check && !args.force && alreadyPublished(log, today, branchId, slot)) {
+        console.log(`\n${BRANCHES[branchId].name}: 오늘 ${slot + 1}번째 글은 이미 올렸습니다. 건너뜁니다.`);
+        continue;
+      }
+      jobs.push({ branchId, slot, post });
     }
-    jobs.push({ branchId, post });
   }
   console.log("\n────────────────────────────");
   if (args.dryRun || !jobs.length) return;
 
   const failures = [];
-  for (const { branchId, post } of jobs) {
-    const name = BRANCHES[branchId].name;
+  for (const { branchId, slot, post } of jobs) {
+    const branchName = BRANCHES[branchId].name;
+    const name = `${branchName} ${slot + 1}번째 글`;
     const blogId = config.branches?.[branchId]?.blogId ?? BLOG_BRANCHES[branchId].blogId;
     const url = postWriteUrl(blogId);
     const context = await openBrowser(branchId, config.browserChannel ?? "chrome");
@@ -92,7 +104,7 @@ async function main() {
     const page = await context.newPage();
     try {
       await openWhenLoggedIn(page, url, {
-        onWait: () => alertOwner(`${name} 네이버 로그인이 필요합니다. 방금 열린 브라우저 창에서 ${name} 아이디(${blogId})로 로그인해 주세요. (20분 동안 기다립니다)`, ALERT_TITLE),
+        onWait: () => alertOwner(`${branchName} 네이버 로그인이 필요합니다. 방금 열린 브라우저 창에서 ${branchName} 아이디(${blogId})로 로그인해 주세요. (20분 동안 기다립니다)`, ALERT_TITLE),
       });
       const result = await publishBlogPost(page, {
         url,
@@ -101,7 +113,7 @@ async function main() {
         category: config.blogCategory ?? CATEGORY,
         selectors: config.blogSelectors,
         submit: !args.check,
-        shotName: `blog-${today}-${branchId}`,
+        shotName: `blog-${today}-${branchId}-${slot + 1}`,
       });
       if (result.unlinked?.length) {
         const message = `${name}: '${result.unlinked.join("', '")}'에 링크를 걸지 못해 주소를 글자로 넣었습니다. 글에서 눌러지는지 확인해 주세요.`;
@@ -118,6 +130,7 @@ async function main() {
       await appendBlogLog({
         date: today,
         branch: branchId,
+        slot,
         postId: post.id,
         title: post.title,
         submitted: result.submitted,
@@ -129,7 +142,7 @@ async function main() {
       else failures.push(`${name}: 발행 버튼은 눌렀지만 완료 화면을 확인하지 못했습니다. 블로그에서 한 번 확인해 주세요.`);
     } catch (error) {
       if (error instanceof LoginRequiredError) {
-        failures.push(`${name} 네이버 로그인이 풀렸습니다. 'npm run blog:setup -- --branch=${branchId}'로 다시 로그인해 주세요.`);
+        failures.push(`${branchName} 네이버 로그인이 풀렸습니다. 'npm run blog:setup -- --branch=${branchId}'로 다시 로그인해 주세요.`);
       } else {
         failures.push(`${name} 블로그: ${error.message}`);
       }

@@ -9,7 +9,9 @@ import {
   BOOKING_LINK_TEXT,
   LAMB_LEG_NOTICE,
   MAP_LINK_TEXT,
+  pairingPhoto,
   postLinks,
+  POSTS_PER_DAY,
   loadMenuPosts,
   renderMenuPost,
   selectMenu,
@@ -54,55 +56,80 @@ test("지점 안내(지도·예약·주소)가 홈페이지와 같다", async ()
   }
 });
 
-test("첫날은 판교점 통양다리구이, 모란본점 가지튀김이다", () => {
-  assert.equal(selectMenu({ menus: bank.menus, branchId: "pangyo", date: at10(START_DATE) }).menu.id, "lamb-leg");
-  assert.equal(selectMenu({ menus: bank.menus, branchId: "moran", date: at10(START_DATE) }).menu.id, "fried-eggplant");
+test("하루 2편을 시작한 날은 이전 날 다음 메뉴부터 이어서 나간다", () => {
+  const first = (branchId, slot) => selectMenu({ menus: bank.menus, branchId, date: at10(START_DATE), slot }).menu.id;
+  assert.equal(first("pangyo", 0), bank.menus[4].id);
+  assert.equal(first("pangyo", 1), bank.menus[5].id);
+  assert.equal(first("moran", 0), bank.menus[18].id);
+  assert.equal(first("moran", 1), bank.menus[19].id);
 });
 
-test("같은 날 두 블로그는 서로 다른 메뉴, 같은 메뉴는 서로 다른 글감 벌이 나간다", () => {
+test("하루 네 편은 모두 다른 메뉴이고, 같은 메뉴는 두 블로그에 서로 다른 글감 벌이 나간다", () => {
+  const n = bank.menus.length;
   const seen = { pangyo: new Map(), moran: new Map() };
-  for (let n = 0; n < 112; n += 1) {
-    const [pangyo, moran] = BRANCH_IDS.map((branchId) => selectMenu({ menus: bank.menus, branchId, date: dayAfter(n) }));
-    assert.notEqual(pangyo.menu.id, moran.menu.id);
-    const cycle = Math.floor(n / bank.menus.length);
-    seen.pangyo.set(`${cycle}:${pangyo.menu.id}`, pangyo.variant);
-    seen.moran.set(`${cycle}:${moran.menu.id}`, moran.variant);
+  for (let day = 0; day < 56; day += 1) {
+    const picks = [];
+    for (const branchId of BRANCH_IDS) {
+      for (let slot = 0; slot < POSTS_PER_DAY; slot += 1) {
+        const pick = selectMenu({ menus: bank.menus, branchId, date: dayAfter(day), slot });
+        picks.push(pick.menu.id);
+        const cycle = Math.floor((4 + day * POSTS_PER_DAY + slot) / n);
+        seen[branchId].set(`${cycle}:${pick.menu.id}`, pick.variant);
+      }
+    }
+    assert.equal(new Set(picks).size, 4, picks.join(","));
   }
   for (const [key, variant] of seen.pangyo) {
     if (seen.moran.has(key)) assert.notEqual(seen.moran.get(key), variant, key);
   }
 });
 
-test("한 블로그에서 한 바퀴 동안 메뉴가 겹치지 않고, 다음 바퀴엔 다른 글감 벌이 나간다", () => {
+test("한 블로그에서 한 바퀴(14일) 동안 메뉴가 겹치지 않고, 다음 바퀴엔 다른 글감 벌이 나간다", () => {
   const n = bank.menus.length;
+  const days = n / POSTS_PER_DAY;
   for (const branchId of BRANCH_IDS) {
-    const first = Array.from({ length: n }, (_, i) => selectMenu({ menus: bank.menus, branchId, date: dayAfter(i) }));
-    assert.equal(new Set(first.map((s) => s.menu.id)).size, n);
-    for (const [i, pick] of first.entries()) {
-      const next = selectMenu({ menus: bank.menus, branchId, date: dayAfter(i + n) });
-      assert.equal(next.menu.id, pick.menu.id);
-      assert.notEqual(next.variant, pick.variant);
+    for (let day = 0; day < days; day += 1) {
+      for (let slot = 0; slot < POSTS_PER_DAY; slot += 1) {
+        const pick = selectMenu({ menus: bank.menus, branchId, date: dayAfter(day), slot });
+        const next = selectMenu({ menus: bank.menus, branchId, date: dayAfter(day + days), slot });
+        assert.equal(next.menu.id, pick.menu.id);
+        assert.notEqual(next.variant, pick.variant);
+      }
+    }
+    const ids = Array.from({ length: n }, (_, i) =>
+      selectMenu({ menus: bank.menus, branchId, date: dayAfter(Math.floor(i / POSTS_PER_DAY)), slot: i % POSTS_PER_DAY }).menu.id,
+    );
+    assert.equal(new Set(ids).size, n);
+  }
+});
+
+test("글에 메뉴 사진, 함께 추천 메뉴 사진(이름 포함), 외관 사진과 지점 정보가 들어간다", () => {
+  for (const branchId of BRANCH_IDS) {
+    for (let slot = 0; slot < POSTS_PER_DAY; slot += 1) {
+      const post = renderMenuPost({ bank, branchId, date: at10(START_DATE), slot });
+      const menu = bank.menus.find((m) => m.id === post.menuId);
+      const text = toPlainText(post);
+      const info = BLOG_BRANCHES[branchId];
+      assert.doesNotMatch(text + post.title, /[{}]/);
+      for (const value of [info.mapUrl, info.bookingUrl, info.address, info.parking]) assert.ok(text.includes(value), value);
+      assert.equal(post.photos.length, 2 + menu.pairWith.length);
+      assert.ok(post.photos[0].endsWith(menu.photo));
+      for (const [i, name] of menu.pairWith.entries()) {
+        assert.ok(post.photos[1 + i].endsWith(pairingPhoto(bank, name)), name);
+        assert.ok(text.includes(`▲ ${name}`), name);
+      }
+      assert.ok(post.tags.length <= TAG_MAX);
+      assert.equal(new Set(post.tags).size, post.tags.length);
     }
   }
 });
 
-test("글에 지도·예약 링크, 지점 정보, 사진 두 장이 들어간다", () => {
-  for (const branchId of BRANCH_IDS) {
-    const post = renderMenuPost({ bank, branchId, date: at10(START_DATE) });
-    const text = toPlainText(post);
-    const info = BLOG_BRANCHES[branchId];
-    assert.doesNotMatch(text + post.title, /[{}]/);
-    for (const value of [info.mapUrl, info.bookingUrl, info.address, info.parking]) assert.ok(text.includes(value), value);
-    assert.equal(post.photos.length, 2);
-    assert.ok(post.tags.length <= TAG_MAX);
-    assert.equal(new Set(post.tags).size, post.tags.length);
-  }
-});
-
-test("같은 날 두 블로그의 인사말이 다르다", () => {
-  for (let n = 0; n < 14; n += 1) {
-    const [pangyo, moran] = BRANCH_IDS.map((branchId) => renderMenuPost({ bank, branchId, date: dayAfter(n) }));
-    assert.notDeepEqual(pangyo.blocks[0], moran.blocks[0]);
+test("같은 날 네 편의 인사말이 모두 다르다", () => {
+  for (let day = 0; day < 14; day += 1) {
+    const greetings = BRANCH_IDS.flatMap((branchId) =>
+      Array.from({ length: POSTS_PER_DAY }, (_, slot) => JSON.stringify(renderMenuPost({ bank, branchId, date: dayAfter(day), slot }).blocks[0])),
+    );
+    assert.equal(new Set(greetings).size, 4);
   }
 });
 
@@ -137,13 +164,22 @@ test("양다리구이 글 본문에도 1시간 전 예약 문구가 있다", () 
   for (const taste of lambLeg.tastes) assert.match(taste, /1시간 전에 예약/);
 });
 
-test("본문은 글·사진·글·사진·글 순서로 나뉜다", () => {
+test("본문은 글 → 메뉴 사진 → 글 → 함께 추천 사진들 → 글 → 외관 사진 → 글 순서로 나뉜다", () => {
   const post = renderMenuPost({ bank, branchId: "pangyo", date: at10(START_DATE) });
-  assert.deepEqual(splitByPhotos(post.blocks).map((part) => part.type), ["html", "photo", "html", "photo", "html"]);
+  const pairs = bank.menus.find((m) => m.id === post.menuId).pairWith.map(() => "photo");
+  assert.deepEqual(splitByPhotos(post.blocks).map((part) => part.type), ["html", "photo", "html", ...pairs, "html", "photo", "html"]);
 });
 
-test("최종 발행까지 누른 지점은 같은 날 다시 올리지 않는다", () => {
-  const log = [{ date: "2026-11-02", branch: "pangyo", submitted: true }, { date: "2026-11-02", branch: "moran", submitted: false }];
-  assert.equal(alreadyPublished(log, "2026-11-02", "pangyo"), true);
-  assert.equal(alreadyPublished(log, "2026-11-02", "moran"), false);
+test("최종 발행까지 누른 글은 같은 날 같은 순번으로 다시 올리지 않는다", () => {
+  const log = [
+    { date: "2026-11-06", branch: "pangyo", slot: 0, submitted: true },
+    { date: "2026-11-06", branch: "moran", slot: 1, submitted: false },
+    { date: "2026-11-05", branch: "moran", submitted: true },
+  ];
+  assert.equal(alreadyPublished(log, "2026-11-06", "pangyo", 0), true);
+  assert.equal(alreadyPublished(log, "2026-11-06", "pangyo", 1), false);
+  assert.equal(alreadyPublished(log, "2026-11-06", "moran", 1), false);
+  // 하루 1편이던 때의 기록(slot 없음)은 오전 글로 본다.
+  assert.equal(alreadyPublished(log, "2026-11-05", "moran", 0), true);
+  assert.equal(alreadyPublished(log, "2026-11-05", "moran", 1), false);
 });
