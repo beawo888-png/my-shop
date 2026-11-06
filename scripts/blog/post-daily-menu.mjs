@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 /**
- * 매일 오전 10시·오후 4시(KST)에 판교점·모란본점 네이버 블로그 '메뉴추천' 카테고리에 메뉴 소개 글을 한 편씩 올린다.
- * (지점마다 하루 2편, 모두 4편. 오후 실행 때 오전 글이 빠져 있으면 그것도 같이 올린다.)
+ * 매일 오전 10시 반(KST)에 판교점·모란본점 네이버 블로그 '메뉴추천' 카테고리에 메뉴 소개 글을 올린다.
+ * 지점마다 하루 2편, 모두 4편을 판교점 1 → 모란본점 1 → 판교점 2 → 모란본점 2 순서로 한 번에 올린다.
  * 사장님 PC의 작업 스케줄러가 실행한다 (docs/operations/naver-blog-automation.md).
  *
  * 사용법
  *   node scripts/blog/post-daily-menu.mjs              # 두 지점 발행
  *   node scripts/blog/post-daily-menu.mjs --dry-run    # 브라우저 없이 오늘 글만 보기
  *   node scripts/blog/post-daily-menu.mjs --check      # 화면에 다 채우고 최종 '발행'은 누르지 않기
- *   옵션: --branch=pangyo|moran  --slot=1|2(오전·오후 글만)  --date=2026-11-06  --force
+ *   옵션: --branch=pangyo|moran  --slot=1|2(그날 첫째·둘째 글만)  --date=2026-11-06  --force
  */
 
 import { createInterface } from "node:readline/promises";
@@ -16,7 +16,7 @@ import { createInterface } from "node:readline/promises";
 import { BLOG_BRANCHES, postWriteUrl } from "../../lib/blog/branch-info.mjs";
 import { publishBlogPost } from "../../lib/blog/editor.mjs";
 import { alreadyPublished, appendBlogLog, readBlogLog } from "../../lib/blog/log.mjs";
-import { CATEGORY, loadMenuPosts, POSTS_PER_DAY, renderMenuPost, SLOT_HOURS, toPlainText, validateMenuPosts } from "../../lib/blog/menu-posts.mjs";
+import { CATEGORY, loadMenuPosts, POSTS_PER_DAY, renderMenuPost, toPlainText, validateMenuPosts } from "../../lib/blog/menu-posts.mjs";
 import { alertOwner } from "../../lib/smartplace/alert.mjs";
 import { BRANCH_IDS, BRANCHES } from "../../lib/smartplace/branches.mjs";
 import { launchBrowser, LoginRequiredError, openWhenLoggedIn } from "../../lib/smartplace/browser.mjs";
@@ -65,10 +65,7 @@ async function main() {
   const now = args.date ? new Date(`${args.date}T10:00:00+09:00`) : new Date();
   if (Number.isNaN(now.getTime())) throw new Error(`날짜 형식이 잘못됐습니다: ${args.date}`);
   const today = kstDateKey(now);
-  // 올릴 차례가 된 글: 오전 10시가 지나면 1번째, 오후 4시가 지나면 2번째까지. 미리보기·날짜 지정은 하루 치 전부.
-  const kstHour = new Date(now.getTime() + 9 * 60 * 60 * 1000).getUTCHours();
-  const dueSlots = SLOT_HOURS.map((hour, slot) => (kstHour >= hour ? slot : null)).filter((slot) => slot !== null);
-  const slots = args.slots ?? (args.dryRun || args.date ? SLOT_HOURS.map((_, slot) => slot) : dueSlots.length ? dueSlots : [0]);
+  const slots = args.slots ?? Array.from({ length: POSTS_PER_DAY }, (_, slot) => slot);
 
   const bank = await loadMenuPosts();
   const problems = validateMenuPosts(bank);
@@ -77,8 +74,9 @@ async function main() {
   const config = await readConfig();
   const log = await readBlogLog();
   const jobs = [];
-  for (const branchId of args.branches) {
-    for (const slot of slots) {
+  // 한 블로그에 두 편이 연달아 올라가지 않게 지점을 번갈아 올린다.
+  for (const slot of slots) {
+    for (const branchId of args.branches) {
       const post = renderMenuPost({ bank, branchId, date: now, slot });
       console.log(`\n── ${today} · ${BRANCHES[branchId].name} 블로그 ${slot + 1}번째 글 · ${post.id} · 카테고리 ${config.blogCategory ?? CATEGORY} ──\n`);
       console.log(`[제목] ${post.title}\n[본문]\n${toPlainText(post)}\n[태그] ${post.tags.map((t) => `#${t}`).join(" ")}`);
