@@ -9,6 +9,7 @@
  *   node scripts/blog/post-daily-menu.mjs --dry-run    # 브라우저 없이 오늘 글만 보기
  *   node scripts/blog/post-daily-menu.mjs --check      # 화면에 다 채우고 최종 '발행'은 누르지 않기
  *   옵션: --branch=pangyo|moran  --slot=1|2(그날 첫째·둘째 글만)  --date=2026-11-06  --force
+ *   메뉴를 직접 골라 한 편 올리기: --branch=pangyo --menu=어향육사 (순서대로 나가는 글과 따로 센다)
  */
 
 import { createInterface } from "node:readline/promises";
@@ -16,7 +17,7 @@ import { createInterface } from "node:readline/promises";
 import { BLOG_BRANCHES, postWriteUrl } from "../../lib/blog/branch-info.mjs";
 import { publishBlogPost } from "../../lib/blog/editor.mjs";
 import { alreadyPublished, appendBlogLog, readBlogLog } from "../../lib/blog/log.mjs";
-import { CATEGORY, loadMenuPosts, POSTS_PER_DAY, renderMenuPost, toPlainText, validateMenuPosts } from "../../lib/blog/menu-posts.mjs";
+import { CATEGORY, findMenu, loadMenuPosts, POSTS_PER_DAY, renderMenuPost, toPlainText, validateMenuPosts } from "../../lib/blog/menu-posts.mjs";
 import { alertOwner } from "../../lib/smartplace/alert.mjs";
 import { BRANCH_IDS, BRANCHES } from "../../lib/smartplace/branches.mjs";
 import { launchBrowser, LoginRequiredError, openWhenLoggedIn } from "../../lib/smartplace/browser.mjs";
@@ -26,7 +27,7 @@ import { kstDateKey } from "../../lib/threads/schedule.mjs";
 const ALERT_TITLE = "네이버 블로그 자동 발행";
 
 function parseArgs(argv) {
-  const args = { dryRun: false, check: false, force: false, date: undefined, slots: undefined, branches: BRANCH_IDS };
+  const args = { dryRun: false, check: false, force: false, date: undefined, slots: undefined, menu: undefined, branches: BRANCH_IDS };
   for (const arg of argv) {
     if (arg === "--dry-run") args.dryRun = true;
     else if (arg === "--check") args.check = true;
@@ -34,9 +35,13 @@ function parseArgs(argv) {
     else if (arg.startsWith("--date=")) args.date = arg.slice(7);
     else if (arg.startsWith("--branch=")) args.branches = arg.slice(9).split(",");
     else if (arg.startsWith("--slot=")) args.slots = arg.slice(7).split(",").map((n) => Number(n) - 1);
+    else if (arg.startsWith("--menu=")) args.menu = arg.slice(7).trim();
     else throw new Error(`알 수 없는 옵션: ${arg}`);
   }
   for (const id of args.branches) if (!BRANCHES[id]) throw new Error(`알 수 없는 지점: ${id} (pangyo | moran)`);
+  if (args.menu && (args.branches.length !== 1 || args.slots)) {
+    throw new Error("--menu는 지점 하나와 같이 씁니다. 예: --branch=pangyo --menu=어향육사");
+  }
   for (const slot of args.slots ?? []) {
     if (!Number.isInteger(slot) || slot < 0 || slot >= POSTS_PER_DAY) throw new Error(`--slot은 1~${POSTS_PER_DAY} 중에서 고릅니다.`);
   }
@@ -65,7 +70,9 @@ async function main() {
   const now = args.date ? new Date(`${args.date}T10:00:00+09:00`) : new Date();
   if (Number.isNaN(now.getTime())) throw new Error(`날짜 형식이 잘못됐습니다: ${args.date}`);
   const today = kstDateKey(now);
-  const slots = args.slots ?? Array.from({ length: POSTS_PER_DAY }, (_, slot) => slot);
+  // 직접 고른 메뉴는 순번 대신 "manual"로 센다.
+  const slots = args.menu ? ["manual"] : (args.slots ?? Array.from({ length: POSTS_PER_DAY }, (_, slot) => slot));
+  const slotLabel = (slot) => (slot === "manual" ? "직접 고른 글" : `${slot + 1}번째 글`);
 
   const bank = await loadMenuPosts();
   const problems = validateMenuPosts(bank);
@@ -77,12 +84,19 @@ async function main() {
   // 한 블로그에 두 편이 연달아 올라가지 않게 지점을 번갈아 올린다.
   for (const slot of slots) {
     for (const branchId of args.branches) {
-      const post = renderMenuPost({ bank, branchId, date: now, slot });
-      console.log(`\n── ${today} · ${BRANCHES[branchId].name} 블로그 ${slot + 1}번째 글 · ${post.id} · 카테고리 ${config.blogCategory ?? CATEGORY} ──\n`);
+      const post =
+        slot === "manual"
+          ? renderMenuPost({ bank, branchId, date: now, menuId: findMenu(bank, args.menu).id })
+          : renderMenuPost({ bank, branchId, date: now, slot });
+      console.log(`\n── ${today} · ${BRANCHES[branchId].name} 블로그 ${slotLabel(slot)} · ${post.id} · 카테고리 ${config.blogCategory ?? CATEGORY} ──\n`);
       console.log(`[제목] ${post.title}\n[본문]\n${toPlainText(post)}\n[태그] ${post.tags.map((t) => `#${t}`).join(" ")}`);
 
-      if (!args.dryRun && !args.check && !args.force && alreadyPublished(log, today, branchId, slot)) {
-        console.log(`\n${BRANCHES[branchId].name}: 오늘 ${slot + 1}번째 글은 이미 올렸습니다. 건너뜁니다.`);
+      const posted =
+        slot === "manual"
+          ? log.some((e) => e.date === today && e.branch === branchId && e.slot === "manual" && e.menuId === post.menuId && e.submitted)
+          : alreadyPublished(log, today, branchId, slot);
+      if (!args.dryRun && !args.check && !args.force && posted) {
+        console.log(`\n${BRANCHES[branchId].name}: 오늘 ${slotLabel(slot)}(${post.menuId})은 이미 올렸습니다. 건너뜁니다.`);
         continue;
       }
       jobs.push({ branchId, slot, post });
@@ -94,7 +108,7 @@ async function main() {
   const failures = [];
   for (const { branchId, slot, post } of jobs) {
     const branchName = BRANCHES[branchId].name;
-    const name = `${branchName} ${slot + 1}번째 글`;
+    const name = `${branchName} ${slotLabel(slot)}`;
     const blogId = config.branches?.[branchId]?.blogId ?? BLOG_BRANCHES[branchId].blogId;
     const url = postWriteUrl(blogId);
     const context = await openBrowser(branchId, config.browserChannel ?? "chrome");
@@ -111,7 +125,7 @@ async function main() {
         category: config.blogCategory ?? CATEGORY,
         selectors: config.blogSelectors,
         submit: !args.check,
-        shotName: `blog-${today}-${branchId}-${slot + 1}`,
+        shotName: `blog-${today}-${branchId}-${slot === "manual" ? post.menuId : slot + 1}`,
       });
       if (result.unlinked?.length) {
         const message = `${name}: '${result.unlinked.join("', '")}'에 링크를 걸지 못해 주소를 글자로 넣었습니다. 글에서 눌러지는지 확인해 주세요.`;
@@ -130,6 +144,7 @@ async function main() {
         branch: branchId,
         slot,
         postId: post.id,
+        menuId: post.menuId,
         title: post.title,
         submitted: result.submitted,
         verified: result.verified,

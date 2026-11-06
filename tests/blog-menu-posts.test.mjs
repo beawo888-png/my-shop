@@ -6,6 +6,7 @@ import { BLOG_BRANCHES } from "../lib/blog/branch-info.mjs";
 import { alreadyPublished } from "../lib/blog/log.mjs";
 import {
   blocksToHtml,
+  findMenu,
   BOOKING_LINK_TEXT,
   LAMB_LEG_NOTICE,
   MAP_LINK_TEXT,
@@ -182,4 +183,20 @@ test("최종 발행까지 누른 글은 같은 날 같은 순번으로 다시 �
   // 하루 1편이던 때의 기록(slot 없음)은 오전 글로 본다.
   assert.equal(alreadyPublished(log, "2026-11-05", "moran", 0), true);
   assert.equal(alreadyPublished(log, "2026-11-05", "moran", 1), false);
+});
+
+test("메뉴를 이름이나 id로 직접 골라 글을 만들 수 있다", () => {
+  assert.equal(findMenu(bank, "어향육사").id, "yu-xiang-pork");
+  assert.equal(findMenu(bank, "yu-xiang-pork").name, "어향육사");
+  assert.throws(() => findMenu(bank, "없는메뉴"));
+  const pangyo = renderMenuPost({ bank, branchId: "pangyo", menuId: "yu-xiang-pork" });
+  const moran = renderMenuPost({ bank, branchId: "moran", menuId: "yu-xiang-pork" });
+  assert.equal(pangyo.menuId, "yu-xiang-pork");
+  assert.notEqual(pangyo.title, moran.title);
+  // 11/6에 직접 올린 판교점 어향육사는, 11/9에 순서대로 나가는 판교점 어향육사와 다른 벌이다.
+  const manual = renderMenuPost({ bank, branchId: "pangyo", date: at10("2026-11-06"), menuId: "yu-xiang-pork" });
+  const scheduled = [0, 1].map((slot) => renderMenuPost({ bank, branchId: "pangyo", date: at10("2026-11-09"), slot }));
+  const due = scheduled.find((post) => post.menuId === "yu-xiang-pork");
+  assert.ok(due);
+  assert.notEqual(manual.variant, due.variant);
 });

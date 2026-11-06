@@ -99,6 +99,7 @@ npm run blog:schedule
 | `npm run blog:test` | 최종 발행 직전까지 채우기 |
 | `npm run blog:post -- --branch=moran` | 모란본점만 지금 발행 |
 | `npm run blog:post -- --slot=2` | 오늘 2번째 글만 지금 발행 |
+| `npm run blog:post -- --branch=pangyo --menu=어향육사` | 메뉴를 직접 골라 한 편 발행(순서대로 나가는 글과 따로 센다) |
 | `npm run blog:post -- --force` | 오늘 이미 올렸어도 한 번 더 발행 |
 
 ## 화면이 바뀌었을 때
