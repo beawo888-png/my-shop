@@ -193,4 +193,10 @@ test("메뉴를 이름이나 id로 직접 골라 글을 만들 수 있다", () =
   const moran = renderMenuPost({ bank, branchId: "moran", menuId: "yu-xiang-pork" });
   assert.equal(pangyo.menuId, "yu-xiang-pork");
   assert.notEqual(pangyo.title, moran.title);
+  // 11/6에 직접 올린 판교점 어향육사는, 11/9에 순서대로 나가는 판교점 어향육사와 다른 벌이다.
+  const manual = renderMenuPost({ bank, branchId: "pangyo", date: at10("2026-11-06"), menuId: "yu-xiang-pork" });
+  const scheduled = [0, 1].map((slot) => renderMenuPost({ bank, branchId: "pangyo", date: at10("2026-11-09"), slot }));
+  const due = scheduled.find((post) => post.menuId === "yu-xiang-pork");
+  assert.ok(due);
+  assert.notEqual(manual.variant, due.variant);
 });
