@@ -185,8 +185,10 @@ async function main() {
 
       // 1. 전날 방문 손님 엑셀
       try {
-        const r = await exportBookings(page, { branchId, bizId, date: visitDate });
-        console.log(`  예약 엑셀: ${r.count}명 (취소 ${r.cancelled}건) → ${r.filePath}`);
+        // --date를 주면 그날만, 아니면 엑셀의 마지막 일자 다음 날부터 어제까지 빠진 날을 모두 채운다.
+        const r = await exportBookings(page, { branchId, bizId, date: args.date, to: visitDate });
+        const range = r.from === r.to ? r.to : `${r.from} ~ ${r.to}`;
+        console.log(`  예약 엑셀: ${range} · ${r.count}명 (취소 ${r.cancelled}건) → ${r.filePath}`);
       } catch (error) {
         failures.push(`${name} 예약 엑셀: ${error.message}`);
       }
