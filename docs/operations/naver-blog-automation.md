@@ -17,6 +17,8 @@
 - 실행: 사장님 PC의 **작업 스케줄러**가 10:30에 실행하고, 11:10에 한 번 더 실행해 놓친 글을 올린다
 - 기록: `.smartplace/blog-log.jsonl`, 화면 `.smartplace/screenshots/blog-*.png`, 실행 로그 `.smartplace/blog-task.log`
 
+발행이 끝나면 카카오톡 '나와의 채팅'으로 결과를 보낸다(설정: `docs/operations/kakao-notify.md`).
+
 **네이버 비밀번호는 어디에도 저장하지 않는다.** 스마트플레이스 자동화와 같은 지점별 전용 브라우저 창에 한 번 로그인해 두고 그 로그인을 계속 쓴다.
 
 ## 글은 이렇게 만들어진다

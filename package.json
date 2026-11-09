@@ -31,7 +31,9 @@
     "blog:test": "node scripts/blog/post-daily-menu.mjs --check",
     "blog:post": "node scripts/blog/post-daily-menu.mjs",
     "blog:schedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/blog/register-task.ps1",
-    "blog:unschedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/blog/register-task.ps1 -Remove"
+    "blog:unschedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/blog/register-task.ps1 -Remove",
+    "kakao:setup": "node scripts/notify/kakao-setup.mjs",
+    "kakao:test": "node scripts/notify/kakao-test.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
