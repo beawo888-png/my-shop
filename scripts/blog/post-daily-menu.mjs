@@ -18,6 +18,8 @@ import { BLOG_BRANCHES, postWriteUrl } from "../../lib/blog/branch-info.mjs";
 import { publishBlogPost } from "../../lib/blog/editor.mjs";
 import { alreadyPublished, appendBlogLog, readBlogLog } from "../../lib/blog/log.mjs";
 import { CATEGORY, findMenu, loadMenuPosts, POSTS_PER_DAY, renderMenuPost, toPlainText, validateMenuPosts } from "../../lib/blog/menu-posts.mjs";
+import { formatBlogReport, shortReason } from "../../lib/blog/report.mjs";
+import { sendKakaoMemo } from "../../lib/notify/kakao.mjs";
 import { alertOwner } from "../../lib/smartplace/alert.mjs";
 import { BRANCH_IDS, BRANCHES } from "../../lib/smartplace/branches.mjs";
 import { launchBrowser, LoginRequiredError, openWhenLoggedIn } from "../../lib/smartplace/browser.mjs";
@@ -106,9 +108,13 @@ async function main() {
   if (args.dryRun || !jobs.length) return;
 
   const failures = [];
+  // 카카오톡으로 보낼 글마다의 결과
+  const results = [];
   for (const { branchId, slot, post } of jobs) {
     const branchName = BRANCHES[branchId].name;
     const name = `${branchName} ${slotLabel(slot)}`;
+    const report = { branch: branchName, slot: slotLabel(slot), menu: findMenu(bank, post.menuId).name, status: "fail" };
+    results.push(report);
     const blogId = config.branches?.[branchId]?.blogId ?? BLOG_BRANCHES[branchId].blogId;
     const url = postWriteUrl(blogId);
     const context = await openBrowser(branchId, config.browserChannel ?? "chrome");
@@ -131,6 +137,7 @@ async function main() {
         const message = `${name}: '${result.unlinked.join("', '")}'에 링크를 걸지 못해 주소를 글자로 넣었습니다. 글에서 눌러지는지 확인해 주세요.`;
         if (args.check) console.warn(`⚠️  ${message}`);
         else failures.push(message);
+        report.reason = "링크 확인 필요";
       }
       if (args.check) {
         console.log(`\n🔎 ${name}: 최종 '발행' 직전까지 채웠습니다. 화면을 확인하세요. (발행은 누르지 않았습니다)`);
@@ -151,13 +158,21 @@ async function main() {
         postUrl: result.postUrl,
         at: new Date().toISOString(),
       });
-      if (result.verified) console.log(`\n✅ ${name}: 블로그 발행 완료 ${result.postUrl ?? ""}`);
-      else failures.push(`${name}: 발행 버튼은 눌렀지만 완료 화면을 확인하지 못했습니다. 블로그에서 한 번 확인해 주세요.`);
+      if (result.verified) {
+        console.log(`\n✅ ${name}: 블로그 발행 완료 ${result.postUrl ?? ""}`);
+        report.status = report.reason ? "warn" : "ok";
+      } else {
+        failures.push(`${name}: 발행 버튼은 눌렀지만 완료 화면을 확인하지 못했습니다. 블로그에서 한 번 확인해 주세요.`);
+        report.status = "warn";
+        report.reason = "발행 확인 필요";
+      }
     } catch (error) {
       if (error instanceof LoginRequiredError) {
         failures.push(`${branchName} 네이버 로그인이 풀렸습니다. 'npm run blog:setup -- --branch=${branchId}'로 다시 로그인해 주세요.`);
+        report.reason = "로그인 풀림";
       } else {
         failures.push(`${name} 블로그: ${error.message}`);
+        report.reason = shortReason(error.message);
       }
     } finally {
       await page.close().catch(() => {});
@@ -165,13 +180,17 @@ async function main() {
     }
   }
 
+  // 시험 실행(--check)은 발행하지 않으니 알리지 않는다.
+  if (!args.check) await sendKakaoMemo(formatBlogReport({ date: today, results }), { link: "https://blog.naver.com/" + BLOG_BRANCHES.pangyo.blogId });
+
   if (failures.length) {
     alertOwner(failures.join("\n"), ALERT_TITLE);
     process.exitCode = 1;
   }
 }
 
-main().catch((error) => {
+main().catch(async (error) => {
+  await sendKakaoMemo(`[왕징 블로그] 발행을 시작하지 못했어요: ${error.message}`);
   alertOwner(error.message, ALERT_TITLE);
   process.exitCode = 1;
 });
