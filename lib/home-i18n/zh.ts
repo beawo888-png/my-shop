@@ -86,7 +86,7 @@ export const zhHomeCopy = {
     eyebrow: "常见问题", title: "常见问题",
     items: [
       { id: "lamb-aroma", question: "担心羊肉的膻味怎么办？", answer: [{ text: "王京使用15种香料熬制24小时的秘方，将羊肉低温熟成48小时，减少膻味，同时保留风味与肉汁，即使第一次吃羊肉也能轻松享受。初次尝试时，推荐从咸甜适中的调味羊肉串开始。" }] },
-      { id: "whole-lamb-order", question: "如何点烤整只羊腿？", answer: [{ text: "烤整只羊腿提供" }, { text: "大份1,700g（3~4人，90,000韩元）", strong: true }, { text: "和" }, { text: "中份1,500g（2~3人，80,000韩元）", strong: true }, { text: "两种规格。羊腿需以400℃炭火烤制60分钟，建议来店前通过 Naver 预约或电话提前告知，让用餐更从容。" }] },
+      { id: "whole-lamb-order", question: "如何点烤整只羊腿？", answer: [{ text: "烤整只羊腿提供" }, { text: "大份1,700g（3~4人，90,000韩元）", strong: true }, { text: "和" }, { text: "中份1,500g（2~3人，80,000韩元）", strong: true }, { text: "两种规格。羊腿需以400℃炭火烤制60分钟，请在到店前1小时通过 Naver 预约或电话预订，到店即可享用，无需等待。" }] },
       { id: "group-dining", question: "可以举办公司聚餐或婚前聚会吗？", answer: [{ text: "可以。团体座位可容纳" }, { text: "牡丹总店最多46人", strong: true }, { text: "、" }, { text: "板桥店最多70人", strong: true }, { text: "。牡丹总店尤其受公司聚餐、家庭用餐和婚前聚会顾客欢迎，板桥店则常用于公司聚餐和商务会面。请致电门店告知人数，我们会为您安排座位。" }] },
       { id: "parking", question: "如何停车？", answer: [{ text: "牡丹总店门前有4个免费停车位，也可使用牡丹公共停车场。板桥店提供 La Street 停车场3小时免费停车，附近也有公共停车场可供使用。" }] },
       { id: "reservation", question: "一定要预约吗？", answer: [{ text: "欢迎直接到店，但晚间和周末可能需要等位。通过 Naver 预约提前告知希望用餐的时间和人数，我们将为您妥善安排。" }] },

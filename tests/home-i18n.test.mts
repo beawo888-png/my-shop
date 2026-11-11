@@ -97,7 +97,8 @@ test("business facts stay in the correct branch and preparation fields", () => {
       ["FAQ aging", copy.faq.items[0].answer.map(segment=>segment.text).join(""), [15,24,48]],
       ["large size/servings/price", copy.faq.items[1].answer[1].text, [3,4,1700,90000]],
       ["medium size/servings/price", copy.faq.items[1].answer[3].text, [2,3,1500,80000]],
-      ["FAQ cooking", copy.faq.items[1].answer[4].text, locale === "ja" ? [2,60,400] : [60,400]],
+      // 1 = 사장님이 정한 '양다리구이는 1시간 전 예약' 안내
+      ["FAQ cooking", copy.faq.items[1].answer[4].text, locale === "ja" ? [1,2,60,400] : [1,60,400]],
       ["Moran capacity", copy.faq.items[2].answer[1].text, [46]],
       ["Pangyo capacity", copy.faq.items[2].answer[3].text, [70]],
       ["FAQ parking", copy.faq.items[3].answer.map(segment=>segment.text).join(""), [3,4]],
