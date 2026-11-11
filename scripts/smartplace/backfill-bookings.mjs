@@ -33,7 +33,7 @@ for (const branchId of args.branches) {
   try {
     const page = context.pages()[0] ?? (await context.newPage());
     await openWhenLoggedIn(page, bookingListUrl(bizId, args.to), {
-      onWait: () => alertOwner(`${name} 네이버 로그인이 필요합니다. 방금 열린 크롬 창에서 ${name} 아이디로 로그인해 주세요. (20분 동안 기다립니다)`),
+      onWait: () => alertOwner(`${name} 네이버 로그인이 필요합니다. 방금 열린 브라우저 창(엣지)에서 ${name} 아이디로 로그인해 주세요. (20분 동안 기다립니다)`),
     });
     const byDate = await fetchBookingsByDate(page, bizId, args.from, args.to);
     const filePath = bookingWorkbookPath(BOOKING_FILE_LABEL[branchId]);

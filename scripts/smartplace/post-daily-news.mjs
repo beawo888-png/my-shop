@@ -11,6 +11,7 @@
  */
 
 import { spawn } from "node:child_process";
+import { createInterface } from "node:readline/promises";
 
 import { BRANCH_IDS, BRANCHES } from "../../lib/smartplace/branches.mjs";
 import { launchBrowser, LoginRequiredError, postNews } from "../../lib/smartplace/browser.mjs";
@@ -102,8 +103,11 @@ async function main() {
         shotName: `${today}-${branchId}`,
       });
       if (args.check) {
-        console.log(`\n🔎 ${name}: 등록 직전까지 채웠습니다. 화면을 확인하고 크롬 창을 닫아 주세요. (등록은 누르지 않았습니다)`);
-        await new Promise((resolve) => context.on("close", resolve));
+        console.log(`\n🔎 ${name}: 등록 직전까지 채웠습니다. 화면을 확인하세요. (등록은 누르지 않았습니다)`);
+        // 엣지 창은 로그인을 지키려고 켜 두므로, 창 대신 엔터로 다음 지점으로 넘어간다.
+        const rl = createInterface({ input: process.stdin, output: process.stdout });
+        await rl.question("확인이 끝났으면 여기서 엔터를 누르세요. (창은 닫지 마세요) ");
+        rl.close();
         continue;
       }
       await appendLog({
