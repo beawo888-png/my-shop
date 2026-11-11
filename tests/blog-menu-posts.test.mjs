@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
@@ -11,6 +12,7 @@ import {
   LAMB_LEG_NOTICE,
   MAP_LINK_TEXT,
   pairingPhoto,
+  PHOTO_ROOT,
   postLinks,
   POSTS_PER_DAY,
   loadMenuPosts,
@@ -22,7 +24,7 @@ import {
   toPlainText,
   validateMenuPosts,
 } from "../lib/blog/menu-posts.mjs";
-import { BRANCH_IDS } from "../lib/smartplace/branches.mjs";
+import { BRANCH_IDS, BRANCHES } from "../lib/smartplace/branches.mjs";
 
 const bank = await loadMenuPosts();
 const at10 = (day) => new Date(`${day}T10:00:00+09:00`);
@@ -45,6 +47,12 @@ test("지점마다 가격이 달라 글에 가격이 들어가지 않는다", ()
       const post = renderMenuPost({ bank, branchId, date: dayAfter(n) });
       assert.doesNotMatch(toPlainText(post) + post.title, /가격|\d원/);
     }
+  }
+});
+
+test("지점별 가게 정면·내부 사진 파일이 있다", () => {
+  for (const info of Object.values(BLOG_BRANCHES)) {
+    for (const file of [info.storefront, info.interior]) assert.ok(existsSync(`${PHOTO_ROOT}${file}`), file);
   }
 });
 
@@ -104,7 +112,7 @@ test("한 블로그에서 한 바퀴(14일) 동안 메뉴가 겹치지 않고, �
   }
 });
 
-test("글에 메뉴 사진, 함께 추천 메뉴 사진(이름 포함), 외관 사진과 지점 정보가 들어간다", () => {
+test("글에 메뉴 사진, 함께 추천 메뉴 사진(이름 포함), 가게 정면·내부 사진과 지점 정보가 들어간다", () => {
   for (const branchId of BRANCH_IDS) {
     for (let slot = 0; slot < POSTS_PER_DAY; slot += 1) {
       const post = renderMenuPost({ bank, branchId, date: at10(START_DATE), slot });
@@ -113,7 +121,10 @@ test("글에 메뉴 사진, 함께 추천 메뉴 사진(이름 포함), 외관 �
       const info = BLOG_BRANCHES[branchId];
       assert.doesNotMatch(text + post.title, /[{}]/);
       for (const value of [info.mapUrl, info.bookingUrl, info.address, info.parking]) assert.ok(text.includes(value), value);
-      assert.equal(post.photos.length, 2 + menu.pairWith.length);
+      assert.equal(post.photos.length, 3 + menu.pairWith.length);
+      assert.ok(post.photos.at(-2).endsWith(info.storefront));
+      assert.ok(post.photos.at(-1).endsWith(info.interior));
+      assert.ok(text.includes(`▲ ${BRANCHES[branchId].name} 가게 정면`) && text.includes(`▲ ${BRANCHES[branchId].name} 가게 내부`));
       assert.ok(post.photos[0].endsWith(menu.photo));
       for (const [i, name] of menu.pairWith.entries()) {
         assert.ok(post.photos[1 + i].endsWith(pairingPhoto(bank, name)), name);
@@ -165,10 +176,10 @@ test("양다리구이 글 본문에도 1시간 전 예약 문구가 있다", () 
   for (const taste of lambLeg.tastes) assert.match(taste, /1시간 전에 예약/);
 });
 
-test("본문은 글 → 메뉴 사진 → 글 → 함께 추천 사진들 → 글 → 외관 사진 → 글 순서로 나뉜다", () => {
+test("본문은 글 → 메뉴 사진 → 글 → 함께 추천 사진들 → 글 → 가게 정면·내부 사진 → 글 순서로 나뉜다", () => {
   const post = renderMenuPost({ bank, branchId: "pangyo", date: at10(START_DATE) });
   const pairs = bank.menus.find((m) => m.id === post.menuId).pairWith.map(() => "photo");
-  assert.deepEqual(splitByPhotos(post.blocks).map((part) => part.type), ["html", "photo", "html", ...pairs, "html", "photo", "html"]);
+  assert.deepEqual(splitByPhotos(post.blocks).map((part) => part.type), ["html", "photo", "html", ...pairs, "html", "photo", "photo", "html"]);
 });
 
 test("최종 발행까지 누른 글은 같은 날 같은 순번으로 다시 올리지 않는다", () => {
