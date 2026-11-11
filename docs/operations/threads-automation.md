@@ -3,7 +3,7 @@
 외식업 사장님들이 공감할 글 한 편을 **매일 오전 7시(KST)** 에 Threads에 자동으로 올린다.
 
 - 글자 수: 공백·줄바꿈 포함 **185~215자 (목표 200자)**
-- 원고집: `content/threads/posts.txt` (60편, 두 달치)
+- 원고집: `content/threads/posts.txt` (120편, 넉 달치)
 - 스케줄러: `.github/workflows/daily-thread.yml` (06:45 / 07:10 / 07:35 KST 3중 예약)
 - 발행 이력: `data/threads-log.jsonl`
 
