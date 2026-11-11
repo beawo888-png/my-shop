@@ -11,6 +11,7 @@
  * 사용법
  *   node scripts/smartplace/daily.mjs                       # 두 지점 전부
  *   옵션: --branch=pangyo|moran  --date=2026-10-17(엑셀에 적을 방문일)  --skip-news  --skip-reviews  --skip-blog  --check(소식·블로그는 등록 직전까지만)
+ *         --today(어제가 아니라 오늘 방문 손님까지 엑셀에 적기 — 밤 10시 예약 엑셀 작업용)
  */
 
 import { spawn } from "node:child_process";
@@ -59,12 +60,13 @@ async function acquireLock() {
 }
 
 function parseArgs(argv) {
-  const args = { branches: BRANCH_IDS, date: undefined, skipNews: false, skipReviews: false, skipBlog: false, check: false };
+  const args = { branches: BRANCH_IDS, date: undefined, skipNews: false, skipReviews: false, skipBlog: false, check: false, today: false };
   for (const arg of argv) {
     if (arg === "--skip-news") args.skipNews = true;
     else if (arg === "--skip-reviews") args.skipReviews = true;
     else if (arg === "--skip-blog") args.skipBlog = true;
     else if (arg === "--check") args.check = true;
+    else if (arg === "--today") args.today = true;
     else if (arg.startsWith("--date=")) args.date = arg.slice(7);
     else if (arg.startsWith("--branch=")) args.branches = arg.slice(9).split(",");
     else throw new Error(`알 수 없는 옵션: ${arg}`);
@@ -171,7 +173,8 @@ function runBlog(branchId, { check }) {
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const today = kstDateKey(new Date());
-  const visitDate = args.date ?? kstDateKey(new Date(Date.now() - 24 * 60 * 60 * 1000));
+  // 밤 10시 실행(--today)은 그날 영업이 끝난 뒤라 오늘 방문 손님까지 적는다.
+  const visitDate = args.date ?? (args.today ? today : kstDateKey(new Date(Date.now() - 24 * 60 * 60 * 1000)));
   const config = await readConfig();
   const log = await readLog();
   const failures = [];
@@ -206,7 +209,7 @@ async function main() {
         onWait: () => {
           alertOwner(`${name} 네이버 로그인이 필요합니다. 방금 열린 브라우저 창(엣지)에서 ${name} 아이디로 로그인해 주세요. (${waitLabel} 동안 기다립니다)`);
           // 알림은 덤이라 실패해도 기다리기는 계속한다.
-          sendKakaoMemo(`[왕징] ${name} 네이버 로그인이 필요해요. PC에 뜬 엣지 창에서 ${name} 아이디로 로그인해 주세요. 로그인하면 예약 엑셀·소식·블로그가 한 번에 올라갑니다. (${waitLabel} 기다려요)`).catch(() => {});
+          sendKakaoMemo(`[왕징] ${name} 네이버 로그인이 필요해요. PC에 뜬 엣지 창에서 ${name} 아이디로 로그인해 주세요. 로그인하면 ${["예약 엑셀", !args.skipNews && "소식", !args.skipBlog && "블로그"].filter(Boolean).join("·")}이 한 번에 처리됩니다. (${waitLabel} 기다려요)`).catch(() => {});
         },
       });
       loggedIn = true;

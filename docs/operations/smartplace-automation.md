@@ -29,6 +29,10 @@
    열은 일자 · 고객님 이름 · 핸드폰번호 · 비고이고, 취소된 예약은 비고에 `취소`라고 적는다. 엑셀 파일이 열려 있으면 알림을 띄우고 닫힐 때까지 5분 기다린다.
    네이버는 방문일이 약 6개월 지난 예약의 이름·번호를 `***`로 가려서 준다. 매일 저장해 두는 이유다.
    지난 날짜를 다시 만들려면 `npm run smartplace:bookings -- --date=2026-10-17`.
+   **밤 10시에도 따로 돈다**(작업 스케줄러 `WangjingBookingsNightly` → `npm run smartplace:bookings-night`). 그날 영업이 끝난 뒤라
+   오늘 방문 손님까지 적는다. 네이버 로그인이 하룻밤을 못 넘겨 아침 9시엔 대개 풀려 있어서, 사장님이 PC 앞에 있는 밤에 로그인을 받으려는 것이다.
+   엑셀의 마지막 일자 다음 날부터 채우므로, 며칠 빠져도 다음에 로그인한 날 한꺼번에 들어간다.
+   등록·해제: `npm run smartplace:bookings-schedule` / `npm run smartplace:bookings-unschedule`.
 2. **영수증 리뷰 답글**: 별도 파이썬 프로그램(`C:\클라우드\네이버플레이스 영수증 자동리뷰\daily_run.py <플레이스번호>`)을 그 지점만 실행하고 끝날 때까지(최대 60분) 기다린다.
    그 프로그램은 자기 크롬·쿠키로 로그인하고, 자체 10:00·20:00 실행도 그대로 있다(같이 돌면 나중 것이 건너뛴다). 경로는 `.smartplace/config.json`의 `reviewProgram` (`python`, `script`, `timeoutMinutes`)으로 바꿀 수 있다.
 3. **소식** (아래)

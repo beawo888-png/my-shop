@@ -8,7 +8,7 @@
  */
 
 import { alertOwner } from "../../lib/smartplace/alert.mjs";
-import { BOOKING_FILE_LABEL, bookingBusinessId, bookingListUrl, bookingWorkbookPath, fetchBookingsByDate, writeBookingDays } from "../../lib/smartplace/bookings.mjs";
+import { BOOKING_FILE_LABEL, bookingApiReady, bookingBusinessId, bookingListUrl, bookingWorkbookPath, fetchBookingsByDate, writeBookingDays } from "../../lib/smartplace/bookings.mjs";
 import { BRANCH_IDS, BRANCHES } from "../../lib/smartplace/branches.mjs";
 import { launchBrowser, openWhenLoggedIn } from "../../lib/smartplace/browser.mjs";
 import { readConfig } from "../../lib/smartplace/local-store.mjs";
@@ -33,6 +33,7 @@ for (const branchId of args.branches) {
   try {
     const page = context.pages()[0] ?? (await context.newPage());
     await openWhenLoggedIn(page, bookingListUrl(bizId, args.to), {
+      verify: () => bookingApiReady(page, bizId),
       onWait: () => alertOwner(`${name} 네이버 로그인이 필요합니다. 방금 열린 브라우저 창(엣지)에서 ${name} 아이디로 로그인해 주세요. (20분 동안 기다립니다)`),
     });
     const byDate = await fetchBookingsByDate(page, bizId, args.from, args.to);
