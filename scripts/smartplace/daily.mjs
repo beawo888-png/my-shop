@@ -5,23 +5,26 @@
  *   2. 영수증 리뷰 답글 — 별도 파이썬 프로그램(C:\클라우드\네이버플레이스 영수증 자동리뷰\daily_run.py)을 그 지점만 실행해
  *      끝날 때까지 기다린다. 그 프로그램은 자기 크롬·쿠키로 로그인한다. 경로는 config.json의 "reviewProgram"으로 바꿀 수 있다.
  *   3. 스마트플레이스 소식 등록
+ *   4. 네이버 블로그 글(지점마다 하루 2편) — 같은 지점 프로필로 이어서 scripts/blog/post-daily-menu.mjs를 돌린다
  * 로그인이 풀려 있으면 알림 창을 띄우고, 사장님이 그 브라우저 창에서 로그인할 때까지 지점마다 3시간(config.json "loginWaitMinutes") 기다린다.
  *
  * 사용법
  *   node scripts/smartplace/daily.mjs                       # 두 지점 전부
- *   옵션: --branch=pangyo|moran  --date=2026-10-17(엑셀에 적을 방문일)  --skip-news  --skip-reviews  --check(소식은 등록 직전까지만)
+ *   옵션: --branch=pangyo|moran  --date=2026-10-17(엑셀에 적을 방문일)  --skip-news  --skip-reviews  --skip-blog  --check(소식·블로그는 등록 직전까지만)
  */
 
 import { spawn } from "node:child_process";
 import { readFileSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { BRANCH_IDS, BRANCHES } from "../../lib/smartplace/branches.mjs";
 import { alertOwner } from "../../lib/smartplace/alert.mjs";
-import { bookingBusinessId, bookingListUrl, exportBookings } from "../../lib/smartplace/bookings.mjs";
+import { bookingApiReady, bookingBusinessId, bookingListUrl, exportBookings } from "../../lib/smartplace/bookings.mjs";
 import { launchBrowser, LoginRequiredError, openWhenLoggedIn, postNews } from "../../lib/smartplace/browser.mjs";
 import { alreadyPosted, appendLog, LOCAL_DIR, readConfig, readLog } from "../../lib/smartplace/local-store.mjs";
 import { checkNewsText, loadNewsBank, loadNewsPlan, selectNewsPost, validateNewsBank, validateNewsPlan } from "../../lib/smartplace/news-bank.mjs";
+import { sendKakaoMemo } from "../../lib/notify/kakao.mjs";
 import { kstDateKey } from "../../lib/threads/schedule.mjs";
 
 /** 지점마다 사장님 로그인을 기다리는 기본 시간(분). 09:00 실행이면 판교점은 12시까지 기다린다. */
@@ -56,10 +59,11 @@ async function acquireLock() {
 }
 
 function parseArgs(argv) {
-  const args = { branches: BRANCH_IDS, date: undefined, skipNews: false, skipReviews: false, check: false };
+  const args = { branches: BRANCH_IDS, date: undefined, skipNews: false, skipReviews: false, skipBlog: false, check: false };
   for (const arg of argv) {
     if (arg === "--skip-news") args.skipNews = true;
     else if (arg === "--skip-reviews") args.skipReviews = true;
+    else if (arg === "--skip-blog") args.skipBlog = true;
     else if (arg === "--check") args.check = true;
     else if (arg.startsWith("--date=")) args.date = arg.slice(7);
     else if (arg.startsWith("--branch=")) args.branches = arg.slice(9).split(",");
@@ -147,6 +151,23 @@ async function postTodayNews(page, { branchId, config, check, log, today }) {
   return `${name}: 소식 등록 버튼은 눌렀지만 완료 화면을 확인하지 못했습니다. 스마트플레이스에서 한 번 확인해 주세요.`;
 }
 
+/** 블로그 발행 스크립트를 그 지점만 돌리고 끝날 때까지 기다린다. 돌려주는 값: 문제가 있으면 메시지 */
+function runBlog(branchId, { check }) {
+  const script = fileURLToPath(new URL("../blog/post-daily-menu.mjs", import.meta.url));
+  const argv = [script, `--branch=${branchId}`, ...(check ? ["--check"] : [])];
+  return new Promise((resolve) => {
+    const child = spawn(process.execPath, argv, { stdio: check ? "inherit" : ["ignore", "pipe", "pipe"], windowsHide: true });
+    let output = "";
+    child.stdout?.on("data", (d) => (output += d));
+    child.stderr?.on("data", (d) => (output += d));
+    child.on("error", (error) => resolve(`블로그 스크립트를 실행하지 못했습니다: ${error.message}`));
+    child.on("close", (code) => {
+      for (const line of output.split(/\r?\n/).filter((l) => /✅|❌|⚠️/.test(l)).slice(-6)) console.log(`    ${line.trim()}`);
+      resolve(code === 0 ? null : "발행 중 문제가 있었습니다(카카오톡 결과 알림 확인).");
+    });
+  });
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const today = kstDateKey(new Date());
@@ -176,12 +197,19 @@ async function main() {
     }
 
     const context = await launchBrowser({ branchId, channel: config.browserChannel ?? "chrome" });
+    let loggedIn = false;
     try {
       const page = context.pages()[0] ?? (await context.newPage());
       await openWhenLoggedIn(page, bookingListUrl(bizId, visitDate), {
         timeoutMs: loginWaitMinutes * 60_000,
-        onWait: () => alertOwner(`${name} 네이버 로그인이 필요합니다. 방금 열린 브라우저 창(엣지)에서 ${name} 아이디로 로그인해 주세요. (${waitLabel} 동안 기다립니다)`),
+        verify: () => bookingApiReady(page, bizId),
+        onWait: () => {
+          alertOwner(`${name} 네이버 로그인이 필요합니다. 방금 열린 브라우저 창(엣지)에서 ${name} 아이디로 로그인해 주세요. (${waitLabel} 동안 기다립니다)`);
+          // 알림은 덤이라 실패해도 기다리기는 계속한다.
+          sendKakaoMemo(`[왕징] ${name} 네이버 로그인이 필요해요. PC에 뜬 엣지 창에서 ${name} 아이디로 로그인해 주세요. 로그인하면 예약 엑셀·소식·블로그가 한 번에 올라갑니다. (${waitLabel} 기다려요)`).catch(() => {});
+        },
       });
+      loggedIn = true;
 
       // 1. 전날 방문 손님 엑셀
       try {
@@ -219,6 +247,14 @@ async function main() {
       else failures.push(`${name}: ${error.message}`);
     } finally {
       await context.close().catch(() => {});
+    }
+
+    // 4. 블로그: 방금 로그인한 그 지점 프로필로 이어서 올린다(하루 로그인 한 번으로 끝). 결과는 블로그 스크립트가 카카오톡으로 알린다.
+    if (loggedIn && !args.skipBlog) {
+      console.log("  블로그: 발행 중…");
+      const problem = await runBlog(branchId, { check: args.check });
+      if (problem) failures.push(`${name} 블로그: ${problem}`);
+      else console.log("  블로그: 끝");
     }
   }
 
