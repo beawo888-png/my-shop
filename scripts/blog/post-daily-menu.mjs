@@ -15,7 +15,7 @@
 import { createInterface } from "node:readline/promises";
 
 import { BLOG_BRANCHES, postWriteUrl } from "../../lib/blog/branch-info.mjs";
-import { publishBlogPost } from "../../lib/blog/editor.mjs";
+import { publishBlogPost, WrongBlogError } from "../../lib/blog/editor.mjs";
 import { alreadyPublished, appendBlogLog, readBlogLog } from "../../lib/blog/log.mjs";
 import { CATEGORY, findMenu, loadMenuPosts, POSTS_PER_DAY, renderMenuPost, toPlainText, validateMenuPosts } from "../../lib/blog/menu-posts.mjs";
 import { formatBlogReport, shortReason } from "../../lib/blog/report.mjs";
@@ -126,6 +126,7 @@ async function main() {
       });
       const result = await publishBlogPost(page, {
         url,
+        blogId,
         post,
         // config.json의 blogCategory로 바꿀 수 있다. 빈 글자("")면 카테고리를 고르지 않는다(기본 카테고리).
         category: config.blogCategory ?? CATEGORY,
@@ -156,18 +157,25 @@ async function main() {
         submitted: result.submitted,
         verified: result.verified,
         postUrl: result.postUrl,
+        ...(result.wrongBlog ? { wrongBlog: true } : {}),
         at: new Date().toISOString(),
       });
       if (result.verified) {
         console.log(`\n✅ ${name}: 블로그 발행 완료 ${result.postUrl ?? ""}`);
         report.status = report.reason ? "warn" : "ok";
+      } else if (result.wrongBlog) {
+        failures.push(`${name}: ${blogId}가 아닌 다른 블로그에 올라갔습니다 (${result.postUrl}). 그 글을 지우고 'npm run blog:setup -- --branch=${branchId}'로 ${blogId} 아이디로 다시 로그인해 주세요.`);
+        report.reason = "다른 블로그에 올라감";
       } else {
         failures.push(`${name}: 발행 버튼은 눌렀지만 완료 화면을 확인하지 못했습니다. 블로그에서 한 번 확인해 주세요.`);
         report.status = "warn";
         report.reason = "발행 확인 필요";
       }
     } catch (error) {
-      if (error instanceof LoginRequiredError) {
+      if (error instanceof WrongBlogError) {
+        failures.push(`${name}: ${error.message} 'npm run blog:setup -- --branch=${branchId}'로 ${blogId} 아이디로 다시 로그인해 주세요.`);
+        report.reason = "다른 아이디로 로그인됨";
+      } else if (error instanceof LoginRequiredError) {
         failures.push(`${branchName} 네이버 로그인이 풀렸습니다. 'npm run blog:setup -- --branch=${branchId}'로 다시 로그인해 주세요.`);
         report.reason = "로그인 풀림";
       } else {

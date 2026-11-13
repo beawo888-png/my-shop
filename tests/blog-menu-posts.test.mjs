@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
 import { BLOG_BRANCHES } from "../lib/blog/branch-info.mjs";
+import { urlBelongsToBlog } from "../lib/blog/editor.mjs";
 import { alreadyPublished } from "../lib/blog/log.mjs";
 import {
   blocksToHtml,
@@ -210,4 +211,18 @@ test("메뉴를 이름이나 id로 직접 골라 글을 만들 수 있다", () =
   const due = scheduled.find((post) => post.menuId === "yu-xiang-pork");
   assert.ok(due);
   assert.notEqual(manual.variant, due.variant);
+});
+
+test("글쓰기 화면과 발행된 글이 그 지점 블로그의 것인지 알아본다", () => {
+  assert.equal(urlBelongsToBlog(["https://blog.naver.com/ruilian417/postwrite"], "ruilian417"), true);
+  assert.equal(urlBelongsToBlog(["https://blog.naver.com/PostWriteForm.naver?blogId=ruilian417"], "ruilian417"), true);
+  assert.equal(urlBelongsToBlog(["https://blog.naver.com/ruilian417/224087654321"], "ruilian417"), true);
+  // 다른 아이디로 로그인돼 그 아이디의 글쓰기 화면이 열린 경우
+  assert.equal(urlBelongsToBlog(["https://blog.naver.com/wangjing_lamb/postwrite", "about:blank"], "ruilian417"), false);
+  assert.equal(urlBelongsToBlog(["https://evil.example/ruilian417/postwrite", "not a url"], "ruilian417"), false);
+});
+
+test("다른 블로그에 잘못 올라간 기록은 올린 것으로 치지 않는다", () => {
+  const log = [{ date: "2026-11-13", branch: "moran", slot: 0, submitted: true, verified: false, wrongBlog: true }];
+  assert.equal(alreadyPublished(log, "2026-11-13", "moran", 0), false);
 });
