@@ -17,6 +17,7 @@ import {
   collectAccount,
   fetchRelated,
   fetchSearchVolumes,
+  keywordsForVolume,
   lastDays,
   pickCandidates,
 } from "../../lib/searchad/keywords.mjs";
@@ -45,7 +46,9 @@ for (const branchId of targets) {
   const onError = (part, error) => warnings.push(`검색수 조회 실패: ${part.join(", ")} (${error.message})`);
 
   const account = await collectAccount(client, { timeRange: range, onProgress: (text) => console.log(`  읽음: ${text}`) });
-  const volumes = await fetchSearchVolumes(client, account.keywords.map((k) => k.keyword), { onError });
+  const volumeTargets = keywordsForVolume(account);
+  console.log(`  네이버 월간 검색수 묻는 중… (노출된 키워드 ${volumeTargets.length}개)`);
+  const volumes = await fetchSearchVolumes(client, volumeTargets, { onError });
   console.log(`  네이버 월간 검색수: ${volumes.size}개 키워드`);
   const analysis = analyzeKeywords(account, volumes);
   const groups = analyzeGroups(account);

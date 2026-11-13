@@ -200,3 +200,22 @@ test("엑셀 한 파일에 요약 · 지점별 키워드 · 새 후보 · 광고
     await rm(dir, { recursive: true, force: true });
   }
 });
+
+test("광고그룹이 수천 개여도: 동시에 몇 개씩 읽고, 검색수는 노출된 키워드만 노출 많은 순으로 묻는다", async () => {
+  const { mapLimit, keywordsForVolume } = await import("../lib/searchad/keywords.mjs");
+  let running = 0;
+  let peak = 0;
+  const out = await mapLimit([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 4, async (n) => {
+    running += 1;
+    peak = Math.max(peak, running);
+    await new Promise((r) => setTimeout(r, 5));
+    running -= 1;
+    return n * 2;
+  });
+  assert.deepEqual(out, [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]);
+  assert.equal(peak, 4);
+
+  const stats = new Map(Object.entries(STATS));
+  assert.deepEqual(keywordsForVolume({ keywords: ACCOUNT.keywords, stats }), ["판교 양꼬치", "판교 맛집", "백현동 양갈비"]);
+  assert.deepEqual(keywordsForVolume({ keywords: ACCOUNT.keywords, stats }, 1), ["판교 양꼬치"]);
+});
