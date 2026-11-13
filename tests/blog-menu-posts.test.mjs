@@ -157,7 +157,7 @@ test("붙여 넣을 HTML은 링크를 살리고 특수문자를 막는다", () =
   );
 });
 
-test("모든 글에 양다리구이 1시간 전 예약 안내와 눌러지는 예약·지도 링크가 들어간다", () => {
+test("모든 글에 양다리구이 30분 전 예약 안내와 눌러지는 예약·지도 링크가 들어간다", () => {
   for (let n = 0; n < bank.menus.length; n += 1) {
     for (const branchId of BRANCH_IDS) {
       const post = renderMenuPost({ bank, branchId, date: dayAfter(n) });
@@ -171,9 +171,9 @@ test("모든 글에 양다리구이 1시간 전 예약 안내와 눌러지는 �
   }
 });
 
-test("양다리구이 글 본문에도 1시간 전 예약 문구가 있다", () => {
+test("양다리구이 글 본문에도 30분 전 예약 문구가 있다", () => {
   const lambLeg = bank.menus.find((menu) => menu.id === "lamb-leg");
-  for (const taste of lambLeg.tastes) assert.match(taste, /1시간 전에 예약/);
+  for (const taste of lambLeg.tastes) assert.match(taste, /30분 전에 예약/);
 });
 
 test("본문은 글 → 메뉴 사진 → 글 → 함께 추천 사진들 → 글 → 가게 정면·내부 사진 → 글 순서로 나뉜다", () => {
