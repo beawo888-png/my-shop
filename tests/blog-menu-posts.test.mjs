@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
 import { BLOG_BRANCHES } from "../lib/blog/branch-info.mjs";
-import { findPostUrl, urlBelongsToBlog } from "../lib/blog/editor.mjs";
+import { DEFAULT_BLOG_SELECTORS, findPostUrl, hasUrlText, urlBelongsToBlog } from "../lib/blog/editor.mjs";
 import { alreadyPublished } from "../lib/blog/log.mjs";
 import {
   blocksToHtml,
@@ -240,4 +240,22 @@ test("발행된 글 주소를 바깥 주소나 편집기 iframe 주소에서 찾
     "https://blog.naver.com/PostView.naver?blogId=wangjing_lamb&logNo=224087654321",
   );
   assert.equal(findPostUrl(["about:blank", "https://blog.naver.com/PostWriteForm.naver?blogId=x"]), null);
+});
+
+test("편집기 선택자는 CSS와 role= 선택자를 쉼표로 섞지 않는다(섞으면 선택자 오류로 멈춘다)", () => {
+  for (const [name, selector] of Object.entries(DEFAULT_BLOG_SELECTORS)) {
+    if (selector.startsWith("role=")) assert.ok(!/,\s*[.#\[a-z]/i.test(selector.replace(/\/.*\//, "")), name);
+    else assert.ok(!/(^|,\s*)role=/.test(selector), name);
+  }
+});
+
+test("카테고리 버튼 선택자가 화면 아래 '글감 카테고리 열기' 버튼을 고르지 않는다", () => {
+  assert.ok(!DEFAULT_BLOG_SELECTORS.categoryButton.includes("aria-label*='카테고리'"));
+});
+
+test("예약·지도 줄에 주소 글자가 들어가 있으면 링크가 걸린 것으로 본다(발행할 때 네이버가 링크로 바꾼다)", () => {
+  const href = "https://booking.naver.com/booking/6/bizes/970819";
+  assert.ok(hasUrlText(`📅 네이버 예약 바로가기 ${href}`, href));
+  assert.ok(hasUrlText(`📅 네이버 예약 바로가기 ​${href}​`, href));
+  assert.ok(!hasUrlText("📅 네이버 예약 바로가기", href));
 });

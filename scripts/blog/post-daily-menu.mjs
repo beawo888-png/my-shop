@@ -24,6 +24,7 @@ import { alertOwner } from "../../lib/smartplace/alert.mjs";
 import { BRANCH_IDS, BRANCHES } from "../../lib/smartplace/branches.mjs";
 import { launchBrowser, LoginRequiredError, openWhenLoggedIn } from "../../lib/smartplace/browser.mjs";
 import { readConfig } from "../../lib/smartplace/local-store.mjs";
+import { contextLoginPersistence, SESSION_ONLY_WARNING } from "../../lib/smartplace/login-cookies.mjs";
 import { kstDateKey } from "../../lib/threads/schedule.mjs";
 
 const ALERT_TITLE = "네이버 블로그 자동 발행";
@@ -110,6 +111,8 @@ async function main() {
   const failures = [];
   // 카카오톡으로 보낼 글마다의 결과
   const results = [];
+  // '로그인 상태 유지'가 꺼져 있어 재부팅하면 로그인이 풀릴 지점
+  const sessionOnly = new Set();
   for (const { branchId, slot, post } of jobs) {
     const branchName = BRANCHES[branchId].name;
     const name = `${branchName} ${slotLabel(slot)}`;
@@ -124,6 +127,11 @@ async function main() {
       await openWhenLoggedIn(page, url, {
         onWait: () => alertOwner(`${branchName} 네이버 로그인이 필요합니다. 방금 열린 브라우저 창에서 ${branchName} 아이디(${blogId})로 로그인해 주세요. (20분 동안 기다립니다)`, ALERT_TITLE),
       });
+      // 지금은 로그인돼 있어도 '로그인 상태 유지'가 꺼져 있으면 재부팅 뒤 풀린다. 풀리기 전에 미리 알린다.
+      if (!sessionOnly.has(branchName) && (await contextLoginPersistence(context)) === "session") {
+        sessionOnly.add(branchName);
+        console.warn(`⚠️  ${branchName}: ${SESSION_ONLY_WARNING}`);
+      }
       const result = await publishBlogPost(page, {
         url,
         blogId,
@@ -203,7 +211,8 @@ async function main() {
   }
 
   // 시험 실행(--check)은 발행하지 않으니 알리지 않는다.
-  if (!args.check) await sendKakaoMemo(formatBlogReport({ date: today, results }), { link: "https://blog.naver.com/" + BLOG_BRANCHES.pangyo.blogId });
+  const notes = [...sessionOnly].map((branchName) => `🔑 ${branchName.replace(/(본)?점$/, "")}: 로그인 상태 유지 꺼짐(재부팅하면 풀림)`);
+  if (!args.check) await sendKakaoMemo(formatBlogReport({ date: today, results, notes }), { link: "https://blog.naver.com/" + BLOG_BRANCHES.pangyo.blogId });
 
   if (failures.length) {
     alertOwner(failures.join("\n"), ALERT_TITLE);
