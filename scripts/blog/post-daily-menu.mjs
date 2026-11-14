@@ -182,6 +182,21 @@ async function main() {
         failures.push(`${name} 블로그: ${error.message}`);
         report.reason = shortReason(error.message);
       }
+      // 실패한 글도 기록에 남겨, 어느 날 어떤 글이 왜 안 올라갔는지 나중에 볼 수 있게 한다.
+      // submitted가 false라 '이미 올림'으로 치지 않으므로 다음 실행 때 다시 올린다.
+      if (!args.check) {
+        await appendBlogLog({
+          date: today,
+          branch: branchId,
+          slot,
+          postId: post.id,
+          menuId: post.menuId,
+          title: post.title,
+          submitted: false,
+          error: error.message.split("\n")[0],
+          at: new Date().toISOString(),
+        }).catch(() => {});
+      }
     } finally {
       await page.close().catch(() => {});
       await context.close().catch(() => {});

@@ -226,3 +226,8 @@ test("다른 블로그에 잘못 올라간 기록은 올린 것으로 치지 않
   const log = [{ date: "2026-11-13", branch: "moran", slot: 0, submitted: true, verified: false, wrongBlog: true }];
   assert.equal(alreadyPublished(log, "2026-11-13", "moran", 0), false);
 });
+
+test("실패해서 남긴 기록은 올린 것으로 치지 않는다", () => {
+  const log = [{ date: "2026-11-13", branch: "moran", slot: 1, submitted: false, error: "네이버 로그인이 풀렸습니다." }];
+  assert.equal(alreadyPublished(log, "2026-11-13", "moran", 1), false);
+});
