@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
 import { BLOG_BRANCHES } from "../lib/blog/branch-info.mjs";
-import { urlBelongsToBlog } from "../lib/blog/editor.mjs";
+import { findPostUrl, urlBelongsToBlog } from "../lib/blog/editor.mjs";
 import { alreadyPublished } from "../lib/blog/log.mjs";
 import {
   blocksToHtml,
@@ -230,4 +230,14 @@ test("다른 블로그에 잘못 올라간 기록은 올린 것으로 치지 않
 test("실패해서 남긴 기록은 올린 것으로 치지 않는다", () => {
   const log = [{ date: "2026-11-13", branch: "moran", slot: 1, submitted: false, error: "네이버 로그인이 풀렸습니다." }];
   assert.equal(alreadyPublished(log, "2026-11-13", "moran", 1), false);
+});
+
+test("발행된 글 주소를 바깥 주소나 편집기 iframe 주소에서 찾는다", () => {
+  assert.equal(findPostUrl(["https://blog.naver.com/ruilian417/postwrite"]), null);
+  assert.equal(findPostUrl(["https://blog.naver.com/ruilian417/224087654321"]), "https://blog.naver.com/ruilian417/224087654321");
+  assert.equal(
+    findPostUrl(["https://blog.naver.com/wangjing_lamb", "https://blog.naver.com/PostView.naver?blogId=wangjing_lamb&logNo=224087654321"]),
+    "https://blog.naver.com/PostView.naver?blogId=wangjing_lamb&logNo=224087654321",
+  );
+  assert.equal(findPostUrl(["about:blank", "https://blog.naver.com/PostWriteForm.naver?blogId=x"]), null);
 });
