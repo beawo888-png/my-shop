@@ -135,9 +135,8 @@ async function main() {
         shotName: `blog-${today}-${branchId}-${slot === "manual" ? post.menuId : slot + 1}`,
       });
       if (result.unlinked?.length) {
-        const message = `${name}: '${result.unlinked.join("', '")}'에 링크를 걸지 못해 주소를 글자로 넣었습니다. 글에서 눌러지는지 확인해 주세요.`;
-        if (args.check) console.warn(`⚠️  ${message}`);
-        else failures.push(message);
+        // 글은 올라가므로 PC 알림 창은 띄우지 않고, 카톡에 ⚠️로만 알린다.
+        console.warn(`⚠️  ${name}: '${result.unlinked.join("', '")}' 줄은 링크 대신 주소 글자로 들어갔습니다. 글에서 눌러지는지 확인해 주세요.`);
         report.reason = "링크 확인 필요";
       }
       if (args.check) {
