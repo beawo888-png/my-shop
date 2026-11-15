@@ -78,3 +78,20 @@
 | `npm run ads:watch -- --always` | 정상이어도 카톡 한 통 (카톡이 오는지 확인용) |
 | `npm run ads:watch-schedule` | 작업 스케줄러에 매일 08:20 등록 (`WangjingLiveAdWatch`) |
 | `npm run ads:watch-unschedule` | 등록 해제 |
+
+## 키워드 끄기 2주 시험 (되돌릴 수 있음)
+
+광고를 실제로 바꾸는 유일한 명령이다. 세 단계로 나눠 사장님이 엑셀로 확인한 것만 끈다.
+
+| 명령 | 하는 일 |
+| --- | --- |
+| `npm run ads:pause` | 끌 목록만 만든다(아무것도 안 바꿈) → 바탕화면 `왕징 끌 키워드 확인.xlsx`. 끄고 싶지 않은 줄은 지우고 저장 |
+| `npm run ads:pause-apply` | 엑셀에 남은 줄만 끈다(네이버 '사용자 중지'). 3일 지난 목록은 거절 |
+| `npm run ads:pause-restore` | 이 프로그램이 끈 키워드를 모두 다시 켠다 |
+
+- 목록: `data/searchad/pause-2026-11-recipe.json` (레시피·나들이 장소·엉뚱한 조합. 판교 45개, 모란 40개 단어, 30일 약 9만·11만 원).
+  애매한 단어(가족외식, 결혼기념일식사, 꼬치전문점, 점심·저녁메뉴추천 등)는 뺐다. '우리 메뉴' 표시는 메뉴판과 겹치는 단어.
+- 라이브애드 캠페인(이름에 '프로그램')은 같은 단어가 있어도 건너뛴다. 이미 꺼져 있던 키워드는 기록하지 않아 되돌릴 때도 켜지 않는다.
+- 기록: `.smartplace/paused-keywords.json`, 확인한 목록: `.smartplace/pause-plan.json`
+- 2주 뒤 POS 매출을 같은 요일 평소와 비교해 5% 넘게 줄었으면 되돌린다.
+- 코드: `lib/searchad/pause.mjs`, `scripts/searchad/pause-keywords.mjs`. 쓰기는 `createClient(keys, { allowWrite: true })`에만 있다.

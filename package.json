@@ -43,7 +43,10 @@
     "ads:watch": "node scripts/searchad/livead-watch.mjs",
     "ads:watch-test": "node scripts/searchad/livead-watch.mjs --dry-run --always",
     "ads:watch-schedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/searchad/register-watch-task.ps1",
-    "ads:watch-unschedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/searchad/register-watch-task.ps1 -Remove"
+    "ads:watch-unschedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/searchad/register-watch-task.ps1 -Remove",
+    "ads:pause": "node scripts/searchad/pause-keywords.mjs",
+    "ads:pause-apply": "node scripts/searchad/pause-keywords.mjs --apply",
+    "ads:pause-restore": "node scripts/searchad/pause-keywords.mjs --restore"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

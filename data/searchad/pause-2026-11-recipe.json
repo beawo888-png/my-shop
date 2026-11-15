@@ -1,0 +1,520 @@
+{
+  "name": "2026-11 레시피·관계없는 검색 끄기 (2주 시험)",
+  "why": "동네 이름 없이 전국에서 검색되는 요리 이름·레시피·나들이 장소·엉뚱한 조합 키워드. 2026/10/16~11/14 30일 광고비 기준. 애매한 것(가족외식, 결혼기념일식사, 꼬치전문점, 점심·저녁메뉴추천 등)은 뺐다.",
+  "branches": {
+    "pangyo": [
+      {
+        "keyword": "오이무침",
+        "cost30": 17219,
+        "clicks30": 228,
+        "ourMenu": true
+      },
+      {
+        "keyword": "오이탕탕이",
+        "cost30": 10368,
+        "clicks30": 135,
+        "ourMenu": false
+      },
+      {
+        "keyword": "쯔란",
+        "cost30": 5757,
+        "clicks30": 71,
+        "ourMenu": true
+      },
+      {
+        "keyword": "계란국",
+        "cost30": 5294,
+        "clicks30": 72,
+        "ourMenu": false
+      },
+      {
+        "keyword": "마라샹궈",
+        "cost30": 5236,
+        "clicks30": 68,
+        "ourMenu": true
+      },
+      {
+        "keyword": "잠실롯데월드몰",
+        "cost30": 5054,
+        "clicks30": 66,
+        "ourMenu": false
+      },
+      {
+        "keyword": "가지요리",
+        "cost30": 4892,
+        "clicks30": 68,
+        "ourMenu": false
+      },
+      {
+        "keyword": "경기버스",
+        "cost30": 4620,
+        "clicks30": 60,
+        "ourMenu": false
+      },
+      {
+        "keyword": "경기전",
+        "cost30": 4235,
+        "clicks30": 55,
+        "ourMenu": false
+      },
+      {
+        "keyword": "계란볶음밥",
+        "cost30": 3532,
+        "clicks30": 46,
+        "ourMenu": true
+      },
+      {
+        "keyword": "곤지암",
+        "cost30": 3526,
+        "clicks30": 46,
+        "ourMenu": false
+      },
+      {
+        "keyword": "어린이대공원",
+        "cost30": 2926,
+        "clicks30": 38,
+        "ourMenu": false
+      },
+      {
+        "keyword": "볶음밥",
+        "cost30": 2743,
+        "clicks30": 36,
+        "ourMenu": true
+      },
+      {
+        "keyword": "오마카세",
+        "cost30": 2387,
+        "clicks30": 2,
+        "ourMenu": false
+      },
+      {
+        "keyword": "감자볶음",
+        "cost30": 1925,
+        "clicks30": 23,
+        "ourMenu": false
+      },
+      {
+        "keyword": "감자요리",
+        "cost30": 1925,
+        "clicks30": 25,
+        "ourMenu": false
+      },
+      {
+        "keyword": "두부요리",
+        "cost30": 1683,
+        "clicks30": 22,
+        "ourMenu": false
+      },
+      {
+        "keyword": "토마토요리",
+        "cost30": 1661,
+        "clicks30": 22,
+        "ourMenu": false
+      },
+      {
+        "keyword": "오이",
+        "cost30": 1155,
+        "clicks30": 15,
+        "ourMenu": true
+      },
+      {
+        "keyword": "집밥메뉴추천",
+        "cost30": 1054,
+        "clicks30": 12,
+        "ourMenu": false
+      },
+      {
+        "keyword": "경기도서관",
+        "cost30": 693,
+        "clicks30": 9,
+        "ourMenu": false
+      },
+      {
+        "keyword": "피로회복에좋은음식",
+        "cost30": 690,
+        "clicks30": 8,
+        "ourMenu": false
+      },
+      {
+        "keyword": "탕수육소스",
+        "cost30": 581,
+        "clicks30": 8,
+        "ourMenu": false
+      },
+      {
+        "keyword": "계란",
+        "cost30": 439,
+        "clicks30": 6,
+        "ourMenu": true
+      },
+      {
+        "keyword": "경기주택",
+        "cost30": 308,
+        "clicks30": 4,
+        "ourMenu": false
+      },
+      {
+        "keyword": "경기도청",
+        "cost30": 308,
+        "clicks30": 4,
+        "ourMenu": false
+      },
+      {
+        "keyword": "저녁반찬",
+        "cost30": 264,
+        "clicks30": 3,
+        "ourMenu": false
+      },
+      {
+        "keyword": "경기한우",
+        "cost30": 231,
+        "clicks30": 3,
+        "ourMenu": false
+      },
+      {
+        "keyword": "서울공항",
+        "cost30": 210,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "홍소육",
+        "cost30": 176,
+        "clicks30": 2,
+        "ourMenu": false
+      },
+      {
+        "keyword": "경기북",
+        "cost30": 154,
+        "clicks30": 2,
+        "ourMenu": false
+      },
+      {
+        "keyword": "스승의날",
+        "cost30": 88,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "고추잡채밥",
+        "cost30": 88,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "감자조림",
+        "cost30": 88,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "경기소룡포",
+        "cost30": 77,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "경기사진",
+        "cost30": 77,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "경기2차",
+        "cost30": 77,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "경기온천",
+        "cost30": 77,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "삼환하이펙스죽엽청주",
+        "cost30": 77,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "경기한옥카페",
+        "cost30": 77,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "경기청바지",
+        "cost30": 77,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "경기출장뷔페",
+        "cost30": 77,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "경기차돌된장찌개",
+        "cost30": 77,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "육회양념레시피",
+        "cost30": 76,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "경기짐빔하이볼",
+        "cost30": 71,
+        "clicks30": 1,
+        "ourMenu": false
+      }
+    ],
+    "moran": [
+      {
+        "keyword": "오이무침",
+        "cost30": 28413,
+        "clicks30": 369,
+        "ourMenu": true
+      },
+      {
+        "keyword": "오이탕탕이",
+        "cost30": 15708,
+        "clicks30": 204,
+        "ourMenu": false
+      },
+      {
+        "keyword": "캠핑음식",
+        "cost30": 8767,
+        "clicks30": 114,
+        "ourMenu": false
+      },
+      {
+        "keyword": "가지요리",
+        "cost30": 7854,
+        "clicks30": 102,
+        "ourMenu": false
+      },
+      {
+        "keyword": "계란국",
+        "cost30": 6259,
+        "clicks30": 81,
+        "ourMenu": false
+      },
+      {
+        "keyword": "볶음밥",
+        "cost30": 5680,
+        "clicks30": 74,
+        "ourMenu": true
+      },
+      {
+        "keyword": "가지튀김",
+        "cost30": 4593,
+        "clicks30": 37,
+        "ourMenu": true
+      },
+      {
+        "keyword": "마라샹궈",
+        "cost30": 4589,
+        "clicks30": 60,
+        "ourMenu": true
+      },
+      {
+        "keyword": "계란볶음밥",
+        "cost30": 4389,
+        "clicks30": 57,
+        "ourMenu": true
+      },
+      {
+        "keyword": "감자요리",
+        "cost30": 2728,
+        "clicks30": 31,
+        "ourMenu": false
+      },
+      {
+        "keyword": "쯔란",
+        "cost30": 2310,
+        "clicks30": 30,
+        "ourMenu": true
+      },
+      {
+        "keyword": "토마토요리",
+        "cost30": 2002,
+        "clicks30": 26,
+        "ourMenu": false
+      },
+      {
+        "keyword": "잠실롯데월드몰",
+        "cost30": 1771,
+        "clicks30": 23,
+        "ourMenu": false
+      },
+      {
+        "keyword": "두부요리",
+        "cost30": 1694,
+        "clicks30": 22,
+        "ourMenu": false
+      },
+      {
+        "keyword": "카페모카",
+        "cost30": 1576,
+        "clicks30": 19,
+        "ourMenu": false
+      },
+      {
+        "keyword": "어린이대공원",
+        "cost30": 1454,
+        "clicks30": 19,
+        "ourMenu": false
+      },
+      {
+        "keyword": "캠핑음식추천",
+        "cost30": 1386,
+        "clicks30": 18,
+        "ourMenu": false
+      },
+      {
+        "keyword": "캠핑요리",
+        "cost30": 1386,
+        "clicks30": 18,
+        "ourMenu": false
+      },
+      {
+        "keyword": "캠핑요리추천",
+        "cost30": 1155,
+        "clicks30": 15,
+        "ourMenu": false
+      },
+      {
+        "keyword": "계란",
+        "cost30": 1078,
+        "clicks30": 14,
+        "ourMenu": true
+      },
+      {
+        "keyword": "탕수육소스",
+        "cost30": 1001,
+        "clicks30": 13,
+        "ourMenu": false
+      },
+      {
+        "keyword": "곤지암",
+        "cost30": 1001,
+        "clicks30": 13,
+        "ourMenu": false
+      },
+      {
+        "keyword": "오이",
+        "cost30": 616,
+        "clicks30": 8,
+        "ourMenu": true
+      },
+      {
+        "keyword": "집밥메뉴추천",
+        "cost30": 462,
+        "clicks30": 6,
+        "ourMenu": false
+      },
+      {
+        "keyword": "감자볶음",
+        "cost30": 385,
+        "clicks30": 5,
+        "ourMenu": false
+      },
+      {
+        "keyword": "캠핑바베큐",
+        "cost30": 231,
+        "clicks30": 3,
+        "ourMenu": false
+      },
+      {
+        "keyword": "가지튀김만들기",
+        "cost30": 165,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "카페라떼",
+        "cost30": 157,
+        "clicks30": 2,
+        "ourMenu": false
+      },
+      {
+        "keyword": "고기리계곡",
+        "cost30": 156,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "캠핑고기",
+        "cost30": 154,
+        "clicks30": 2,
+        "ourMenu": false
+      },
+      {
+        "keyword": "저녁반찬",
+        "cost30": 154,
+        "clicks30": 2,
+        "ourMenu": false
+      },
+      {
+        "keyword": "감바스",
+        "cost30": 88,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "고기볶음밥",
+        "cost30": 88,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "다식",
+        "cost30": 88,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "꽈리고추조림",
+        "cost30": 88,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "감자채튀김",
+        "cost30": 77,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "설원",
+        "cost30": 77,
+        "clicks30": 1,
+        "ourMenu": true
+      },
+      {
+        "keyword": "난자완스",
+        "cost30": 77,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "캠핑꼬치",
+        "cost30": 77,
+        "clicks30": 1,
+        "ourMenu": false
+      },
+      {
+        "keyword": "피로회복에좋은음식",
+        "cost30": 77,
+        "clicks30": 1,
+        "ourMenu": false
+      }
+    ]
+  }
+}
