@@ -115,12 +115,17 @@ test("계정 전체를 읽는다: 캠페인 → 광고그룹 → 키워드 → �
     "/ncc/adgroups": ({ nccCampaignId }) => ACCOUNT.adgroups.filter((g) => g.nccCampaignId === nccCampaignId),
     "/ncc/keywords": ({ nccAdgroupId }) =>
       nccAdgroupId === "grp-place" ? new Response(JSON.stringify({ code: 3000 }), { status: 400 }) : ACCOUNT.keywords,
-    "/stats": ({ ids }) => ({ data: ids.split(",").filter((id) => STATS[id]).map((id) => STATS[id]) }),
+    "/stats": ({ ids }) => {
+      const types = new Set(ids.split(",").map((id) => id.split("-")[0]));
+      if (types.size > 1) return new Response(JSON.stringify({ code: 11001, title: "모든 ID는 동일한 타입이어야 합니다." }), { status: 400 });
+      return { data: ids.split(",").filter((id) => STATS[id]).map((id) => STATS[id]) };
+    },
   });
   const timeRange = { since: "2026-10-14", until: "2026-11-12" };
   const account = await collectAccount(createClient(KEYS, { ...quiet, fetch: api.fetch }), { timeRange });
   assert.equal(account.keywords.length, 5);
   assert.equal(account.stats.get("grp-place").clkCnt, 450);
+  assert.equal(api.calls.filter((c) => c.pathname === "/stats").length, 3, "캠페인·광고그룹·키워드를 따로 묻는다");
   const statsCall = api.calls.find((c) => c.pathname === "/stats");
   assert.deepEqual(JSON.parse(statsCall.params.timeRange), timeRange);
   assert.ok(JSON.parse(statsCall.params.fields).includes("salesAmt"));
