@@ -38,7 +38,8 @@
     "kakao:setup": "node scripts/notify/kakao-setup.mjs",
     "kakao:test": "node scripts/notify/kakao-test.mjs",
     "ads:setup": "node scripts/searchad/setup.mjs",
-    "ads:keywords": "node scripts/searchad/keyword-report.mjs"
+    "ads:keywords": "node scripts/searchad/keyword-report.mjs",
+    "ads:history": "node scripts/searchad/livead-history.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
