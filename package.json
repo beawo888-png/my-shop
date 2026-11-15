@@ -36,7 +36,13 @@
     "blog:schedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/blog/register-task.ps1",
     "blog:unschedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/blog/register-task.ps1 -Remove",
     "kakao:setup": "node scripts/notify/kakao-setup.mjs",
-    "kakao:test": "node scripts/notify/kakao-test.mjs"
+    "kakao:test": "node scripts/notify/kakao-test.mjs",
+    "agent:new-store": "node scripts/agent/new-store.mjs",
+    "agent:ads-setup": "node scripts/agent/ads-setup.mjs",
+    "agent:daily": "node scripts/agent/run.mjs",
+    "agent:check": "node scripts/agent/run.mjs --check",
+    "agent:approve": "node scripts/agent/approve.mjs",
+    "agent:status": "node scripts/agent/status.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

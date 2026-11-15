@@ -1,0 +1,20 @@
+{
+  "id": "{{id}}",
+  "name": "{{name}}",
+  "shortName": "{{shortName}}",
+  "branchId": "{{branchId}}",
+  "voice": {
+    "tone": "{{tone}}",
+    "examples": [],
+    "forbidden": ["최고", "1등", "무조건", "건강에 좋은", "다이어트"]
+  },
+  "channels": {
+    "smartplace": true,
+    "searchAd": true
+  },
+  "searchAd": {
+    "coreKeywords": [],
+    "rules": {}
+  },
+  "trust": {}
+}
