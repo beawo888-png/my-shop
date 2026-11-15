@@ -67,6 +67,9 @@ Threads 토큰은 60일짜리다. `GH_SECRETS_TOKEN`만 등록해두면 사람�
 한 번 걸러도 다음 차례까지 30일이 남으므로 한 번의 실패로 만료되지는 않는다.
 
 ```bash
+# 깃허브 토큰이 Secrets에 닿는지만 보기 (Threads는 건드리지 않는다)
+GH_SECRETS_TOKEN=<깃허브 토큰> GITHUB_REPOSITORY=<owner/repo> node scripts/rotate-threads-token.mjs --check
+
 # 갱신만 해보고 Secret은 그대로 두기
 THREADS_ACCESS_TOKEN=<현재 토큰> node scripts/rotate-threads-token.mjs --dry-run
 

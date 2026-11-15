@@ -12,6 +12,7 @@
  *   THREADS_USER_ID       (선택) 갱신한 토큰이 이 계정인지 대조한다
  *
  * --dry-run 을 주면 갱신만 해보고 Secret은 건드리지 않는다.
+ * --check 를 주면 깃허브 토큰이 Secrets에 닿는지만 보고 끝낸다. (Threads는 건드리지 않는다)
  *
  * 토큰 값은 성공하든 실패하든 출력하지 않는다.
  */
@@ -21,6 +22,7 @@ import sodium from "libsodium-wrappers";
 const SECRET_NAME = "THREADS_ACCESS_TOKEN";
 
 const dryRun = process.argv.includes("--dry-run");
+const checkOnly = process.argv.includes("--check");
 const currentToken = process.env.THREADS_ACCESS_TOKEN;
 const githubToken = process.env.GH_SECRETS_TOKEN;
 const repository = process.env.GITHUB_REPOSITORY;
@@ -39,7 +41,7 @@ function fail(message) {
   process.exit(1);
 }
 
-if (!currentToken) fail("THREADS_ACCESS_TOKEN 환경변수가 필요합니다.");
+if (!currentToken && !checkOnly) fail("THREADS_ACCESS_TOKEN 환경변수가 필요합니다.");
 if (!dryRun && !githubToken) {
   fail(
     "GH_SECRETS_TOKEN 환경변수가 필요합니다.\n" +
@@ -58,6 +60,32 @@ async function request(url, init) {
     fail(`연결하지 못했습니다 (${url.host ?? url}): ${error.message}`);
   }
   return { response, body };
+}
+
+const api = `https://api.github.com/repos/${repository}/actions/secrets`;
+const headers = {
+  authorization: `Bearer ${githubToken}`,
+  accept: "application/vnd.github+json",
+  "x-github-api-version": "2022-11-28",
+};
+
+/** 저장소 공개키를 읽는다. 여기서 깃허브 토큰 권한이 맞는지 드러난다. */
+async function readPublicKey() {
+  const key = await request(`${api}/public-key`, { headers });
+  if (!key.response.ok) {
+    fail(
+      `저장소 공개키를 읽지 못했습니다 (HTTP ${key.response.status}): ${scrub(key.body)}\n` +
+        "GH_SECRETS_TOKEN에 이 저장소의 Secrets 읽기·쓰기 권한이 있는지 확인하세요.",
+    );
+  }
+  return JSON.parse(key.body);
+}
+
+// --check: 깃허브 쪽만 확인하고 끝낸다. Threads 토큰은 건드리지 않는다.
+if (checkOnly) {
+  await readPublicKey();
+  console.log(`깃허브 토큰 정상 · ${repository}의 Secrets에 닿습니다.`);
+  process.exit(0);
 }
 
 // 1. 새 토큰을 받는다. 여기서 실패하면 Secret은 그대로 둔다.
@@ -98,21 +126,7 @@ if (dryRun) {
 }
 
 // 3. 저장소 공개키로 봉해서 Secret에 덮어쓴다.
-const api = `https://api.github.com/repos/${repository}/actions/secrets`;
-const headers = {
-  authorization: `Bearer ${githubToken}`,
-  accept: "application/vnd.github+json",
-  "x-github-api-version": "2022-11-28",
-};
-
-const key = await request(`${api}/public-key`, { headers });
-if (!key.response.ok) {
-  fail(
-    `저장소 공개키를 읽지 못했습니다 (HTTP ${key.response.status}): ${scrub(key.body)}\n` +
-      "GH_SECRETS_TOKEN에 이 저장소의 Secrets 읽기·쓰기 권한이 있는지 확인하세요.",
-  );
-}
-const { key: publicKey, key_id: keyId } = JSON.parse(key.body);
+const { key: publicKey, key_id: keyId } = await readPublicKey();
 
 await sodium.ready;
 const encryptedValue = sodium.to_base64(
