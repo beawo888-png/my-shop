@@ -39,7 +39,11 @@
     "kakao:test": "node scripts/notify/kakao-test.mjs",
     "ads:setup": "node scripts/searchad/setup.mjs",
     "ads:keywords": "node scripts/searchad/keyword-report.mjs",
-    "ads:history": "node scripts/searchad/livead-history.mjs"
+    "ads:history": "node scripts/searchad/livead-history.mjs",
+    "ads:watch": "node scripts/searchad/livead-watch.mjs",
+    "ads:watch-test": "node scripts/searchad/livead-watch.mjs --dry-run --always",
+    "ads:watch-schedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/searchad/register-watch-task.ps1",
+    "ads:watch-unschedule": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/searchad/register-watch-task.ps1 -Remove"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
