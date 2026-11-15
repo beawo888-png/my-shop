@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
 import { BLOG_BRANCHES } from "../lib/blog/branch-info.mjs";
+import { DEFAULT_BLOG_SELECTORS, findPostUrl, hasUrlText, urlBelongsToBlog } from "../lib/blog/editor.mjs";
 import { alreadyPublished } from "../lib/blog/log.mjs";
 import {
   blocksToHtml,
@@ -11,6 +13,7 @@ import {
   LAMB_LEG_NOTICE,
   MAP_LINK_TEXT,
   pairingPhoto,
+  PHOTO_ROOT,
   postLinks,
   POSTS_PER_DAY,
   loadMenuPosts,
@@ -22,7 +25,7 @@ import {
   toPlainText,
   validateMenuPosts,
 } from "../lib/blog/menu-posts.mjs";
-import { BRANCH_IDS } from "../lib/smartplace/branches.mjs";
+import { BRANCH_IDS, BRANCHES } from "../lib/smartplace/branches.mjs";
 
 const bank = await loadMenuPosts();
 const at10 = (day) => new Date(`${day}T10:00:00+09:00`);
@@ -45,6 +48,12 @@ test("지점마다 가격이 달라 글에 가격이 들어가지 않는다", ()
       const post = renderMenuPost({ bank, branchId, date: dayAfter(n) });
       assert.doesNotMatch(toPlainText(post) + post.title, /가격|\d원/);
     }
+  }
+});
+
+test("지점별 가게 정면·내부 사진 파일이 있다", () => {
+  for (const info of Object.values(BLOG_BRANCHES)) {
+    for (const file of [info.storefront, info.interior]) assert.ok(existsSync(`${PHOTO_ROOT}${file}`), file);
   }
 });
 
@@ -104,7 +113,7 @@ test("한 블로그에서 한 바퀴(14일) 동안 메뉴가 겹치지 않고, �
   }
 });
 
-test("글에 메뉴 사진, 함께 추천 메뉴 사진(이름 포함), 외관 사진과 지점 정보가 들어간다", () => {
+test("글에 메뉴 사진, 함께 추천 메뉴 사진(이름 포함), 가게 정면·내부 사진과 지점 정보가 들어간다", () => {
   for (const branchId of BRANCH_IDS) {
     for (let slot = 0; slot < POSTS_PER_DAY; slot += 1) {
       const post = renderMenuPost({ bank, branchId, date: at10(START_DATE), slot });
@@ -113,7 +122,10 @@ test("글에 메뉴 사진, 함께 추천 메뉴 사진(이름 포함), 외관 �
       const info = BLOG_BRANCHES[branchId];
       assert.doesNotMatch(text + post.title, /[{}]/);
       for (const value of [info.mapUrl, info.bookingUrl, info.address, info.parking]) assert.ok(text.includes(value), value);
-      assert.equal(post.photos.length, 2 + menu.pairWith.length);
+      assert.equal(post.photos.length, 3 + menu.pairWith.length);
+      assert.ok(post.photos.at(-2).endsWith(info.storefront));
+      assert.ok(post.photos.at(-1).endsWith(info.interior));
+      assert.ok(text.includes(`▲ ${BRANCHES[branchId].name} 가게 정면`) && text.includes(`▲ ${BRANCHES[branchId].name} 가게 내부`));
       assert.ok(post.photos[0].endsWith(menu.photo));
       for (const [i, name] of menu.pairWith.entries()) {
         assert.ok(post.photos[1 + i].endsWith(pairingPhoto(bank, name)), name);
@@ -146,7 +158,7 @@ test("붙여 넣을 HTML은 링크를 살리고 특수문자를 막는다", () =
   );
 });
 
-test("모든 글에 양다리구이 1시간 전 예약 안내와 눌러지는 예약·지도 링크가 들어간다", () => {
+test("모든 글에 양다리구이 30분 전 예약 안내와 눌러지는 예약·지도 링크가 들어간다", () => {
   for (let n = 0; n < bank.menus.length; n += 1) {
     for (const branchId of BRANCH_IDS) {
       const post = renderMenuPost({ bank, branchId, date: dayAfter(n) });
@@ -160,15 +172,15 @@ test("모든 글에 양다리구이 1시간 전 예약 안내와 눌러지는 �
   }
 });
 
-test("양다리구이 글 본문에도 1시간 전 예약 문구가 있다", () => {
+test("양다리구이 글 본문에도 30분 전 예약 문구가 있다", () => {
   const lambLeg = bank.menus.find((menu) => menu.id === "lamb-leg");
-  for (const taste of lambLeg.tastes) assert.match(taste, /1시간 전에 예약/);
+  for (const taste of lambLeg.tastes) assert.match(taste, /30분 전에 예약/);
 });
 
-test("본문은 글 → 메뉴 사진 → 글 → 함께 추천 사진들 → 글 → 외관 사진 → 글 순서로 나뉜다", () => {
+test("본문은 글 → 메뉴 사진 → 글 → 함께 추천 사진들 → 글 → 가게 정면·내부 사진 → 글 순서로 나뉜다", () => {
   const post = renderMenuPost({ bank, branchId: "pangyo", date: at10(START_DATE) });
   const pairs = bank.menus.find((m) => m.id === post.menuId).pairWith.map(() => "photo");
-  assert.deepEqual(splitByPhotos(post.blocks).map((part) => part.type), ["html", "photo", "html", ...pairs, "html", "photo", "html"]);
+  assert.deepEqual(splitByPhotos(post.blocks).map((part) => part.type), ["html", "photo", "html", ...pairs, "html", "photo", "photo", "html"]);
 });
 
 test("최종 발행까지 누른 글은 같은 날 같은 순번으로 다시 올리지 않는다", () => {
@@ -199,4 +211,51 @@ test("메뉴를 이름이나 id로 직접 골라 글을 만들 수 있다", () =
   const due = scheduled.find((post) => post.menuId === "yu-xiang-pork");
   assert.ok(due);
   assert.notEqual(manual.variant, due.variant);
+});
+
+test("글쓰기 화면과 발행된 글이 그 지점 블로그의 것인지 알아본다", () => {
+  assert.equal(urlBelongsToBlog(["https://blog.naver.com/ruilian417/postwrite"], "ruilian417"), true);
+  assert.equal(urlBelongsToBlog(["https://blog.naver.com/PostWriteForm.naver?blogId=ruilian417"], "ruilian417"), true);
+  assert.equal(urlBelongsToBlog(["https://blog.naver.com/ruilian417/224087654321"], "ruilian417"), true);
+  // 다른 아이디로 로그인돼 그 아이디의 글쓰기 화면이 열린 경우
+  assert.equal(urlBelongsToBlog(["https://blog.naver.com/wangjing_lamb/postwrite", "about:blank"], "ruilian417"), false);
+  assert.equal(urlBelongsToBlog(["https://evil.example/ruilian417/postwrite", "not a url"], "ruilian417"), false);
+});
+
+test("다른 블로그에 잘못 올라간 기록은 올린 것으로 치지 않는다", () => {
+  const log = [{ date: "2026-11-13", branch: "moran", slot: 0, submitted: true, verified: false, wrongBlog: true }];
+  assert.equal(alreadyPublished(log, "2026-11-13", "moran", 0), false);
+});
+
+test("실패해서 남긴 기록은 올린 것으로 치지 않는다", () => {
+  const log = [{ date: "2026-11-13", branch: "moran", slot: 1, submitted: false, error: "네이버 로그인이 풀렸습니다." }];
+  assert.equal(alreadyPublished(log, "2026-11-13", "moran", 1), false);
+});
+
+test("발행된 글 주소를 바깥 주소나 편집기 iframe 주소에서 찾는다", () => {
+  assert.equal(findPostUrl(["https://blog.naver.com/ruilian417/postwrite"]), null);
+  assert.equal(findPostUrl(["https://blog.naver.com/ruilian417/224087654321"]), "https://blog.naver.com/ruilian417/224087654321");
+  assert.equal(
+    findPostUrl(["https://blog.naver.com/wangjing_lamb", "https://blog.naver.com/PostView.naver?blogId=wangjing_lamb&logNo=224087654321"]),
+    "https://blog.naver.com/PostView.naver?blogId=wangjing_lamb&logNo=224087654321",
+  );
+  assert.equal(findPostUrl(["about:blank", "https://blog.naver.com/PostWriteForm.naver?blogId=x"]), null);
+});
+
+test("편집기 선택자는 CSS와 role= 선택자를 쉼표로 섞지 않는다(섞으면 선택자 오류로 멈춘다)", () => {
+  for (const [name, selector] of Object.entries(DEFAULT_BLOG_SELECTORS)) {
+    if (selector.startsWith("role=")) assert.ok(!/,\s*[.#\[a-z]/i.test(selector.replace(/\/.*\//, "")), name);
+    else assert.ok(!/(^|,\s*)role=/.test(selector), name);
+  }
+});
+
+test("카테고리 버튼 선택자가 화면 아래 '글감 카테고리 열기' 버튼을 고르지 않는다", () => {
+  assert.ok(!DEFAULT_BLOG_SELECTORS.categoryButton.includes("aria-label*='카테고리'"));
+});
+
+test("예약·지도 줄에 주소 글자가 들어가 있으면 링크가 걸린 것으로 본다(발행할 때 네이버가 링크로 바꾼다)", () => {
+  const href = "https://booking.naver.com/booking/6/bizes/970819";
+  assert.ok(hasUrlText(`📅 네이버 예약 바로가기 ${href}`, href));
+  assert.ok(hasUrlText(`📅 네이버 예약 바로가기 ​${href}​`, href));
+  assert.ok(!hasUrlText("📅 네이버 예약 바로가기", href));
 });

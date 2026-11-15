@@ -6,6 +6,7 @@
  * 스마트플레이스 자동화와 같은 지점별 전용 브라우저 창을 쓴다.
  * 1. 그 지점 아이디로 네이버에 로그인한다 ('로그인 상태 유지' 체크). 비밀번호는 어디에도 저장하지 않는다.
  * 2. 블로그 글쓰기 화면이 열리는지 확인한다.
+ * 3. '로그인 상태 유지'로 로그인됐는지(재부팅해도 남는지) 쿠키 만료 시각으로 확인한다.
  */
 
 import { stdin as input, stdout as output } from "node:process";
@@ -15,6 +16,7 @@ import { BLOG_BRANCHES, postWriteUrl } from "../../lib/blog/branch-info.mjs";
 import { BRANCH_IDS, BRANCHES } from "../../lib/smartplace/branches.mjs";
 import { isLoginPage, launchBrowser } from "../../lib/smartplace/browser.mjs";
 import { CONFIG_PATH, readConfig, writeConfig } from "../../lib/smartplace/local-store.mjs";
+import { contextLoginPersistence, SESSION_ONLY_WARNING } from "../../lib/smartplace/login-cookies.mjs";
 
 const branchArg = process.argv.find((arg) => arg.startsWith("--branch="));
 const targets = branchArg ? branchArg.slice(9).split(",") : BRANCH_IDS;
@@ -43,8 +45,14 @@ for (const branchId of targets) {
     await writeConfig(config);
     console.log(`  저장: ${name} 블로그 아이디 = ${answer}`);
   }
-  if (isLoginPage(page.url())) {
+  const persistence = await contextLoginPersistence(context);
+  if (isLoginPage(page.url()) || persistence === "none") {
     console.log(`⚠️  아직 로그인 화면입니다. 'npm run blog:setup -- --branch=${branchId}'로 다시 해 주세요.`);
+  } else if (persistence === "session") {
+    console.log(`⚠️  ${name}: ${SESSION_ONLY_WARNING}`);
+    console.log(`    다시 로그인한 뒤 'npm run blog:setup -- --branch=${branchId}'로 한 번 더 확인해 주세요.`);
+  } else {
+    console.log(`✅ ${name}: '로그인 상태 유지'로 로그인돼 있어 PC를 다시 켜도 로그인이 남습니다.`);
   }
   await page.close().catch(() => {});
   await context.close();

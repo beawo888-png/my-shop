@@ -15,7 +15,7 @@
 import { createInterface } from "node:readline/promises";
 
 import { BLOG_BRANCHES, postWriteUrl } from "../../lib/blog/branch-info.mjs";
-import { publishBlogPost } from "../../lib/blog/editor.mjs";
+import { publishBlogPost, WrongBlogError } from "../../lib/blog/editor.mjs";
 import { alreadyPublished, appendBlogLog, readBlogLog } from "../../lib/blog/log.mjs";
 import { CATEGORY, findMenu, loadMenuPosts, POSTS_PER_DAY, renderMenuPost, toPlainText, validateMenuPosts } from "../../lib/blog/menu-posts.mjs";
 import { formatBlogReport, shortReason } from "../../lib/blog/report.mjs";
@@ -24,6 +24,7 @@ import { alertOwner } from "../../lib/smartplace/alert.mjs";
 import { BRANCH_IDS, BRANCHES } from "../../lib/smartplace/branches.mjs";
 import { launchBrowser, LoginRequiredError, openWhenLoggedIn } from "../../lib/smartplace/browser.mjs";
 import { readConfig } from "../../lib/smartplace/local-store.mjs";
+import { contextLoginPersistence, SESSION_ONLY_WARNING } from "../../lib/smartplace/login-cookies.mjs";
 import { kstDateKey } from "../../lib/threads/schedule.mjs";
 
 const ALERT_TITLE = "네이버 블로그 자동 발행";
@@ -110,6 +111,8 @@ async function main() {
   const failures = [];
   // 카카오톡으로 보낼 글마다의 결과
   const results = [];
+  // '로그인 상태 유지'가 꺼져 있어 재부팅하면 로그인이 풀릴 지점
+  const sessionOnly = new Set();
   for (const { branchId, slot, post } of jobs) {
     const branchName = BRANCHES[branchId].name;
     const name = `${branchName} ${slotLabel(slot)}`;
@@ -124,8 +127,14 @@ async function main() {
       await openWhenLoggedIn(page, url, {
         onWait: () => alertOwner(`${branchName} 네이버 로그인이 필요합니다. 방금 열린 브라우저 창에서 ${branchName} 아이디(${blogId})로 로그인해 주세요. (20분 동안 기다립니다)`, ALERT_TITLE),
       });
+      // 지금은 로그인돼 있어도 '로그인 상태 유지'가 꺼져 있으면 재부팅 뒤 풀린다. 풀리기 전에 미리 알린다.
+      if (!sessionOnly.has(branchName) && (await contextLoginPersistence(context)) === "session") {
+        sessionOnly.add(branchName);
+        console.warn(`⚠️  ${branchName}: ${SESSION_ONLY_WARNING}`);
+      }
       const result = await publishBlogPost(page, {
         url,
+        blogId,
         post,
         // config.json의 blogCategory로 바꿀 수 있다. 빈 글자("")면 카테고리를 고르지 않는다(기본 카테고리).
         category: config.blogCategory ?? CATEGORY,
@@ -134,9 +143,8 @@ async function main() {
         shotName: `blog-${today}-${branchId}-${slot === "manual" ? post.menuId : slot + 1}`,
       });
       if (result.unlinked?.length) {
-        const message = `${name}: '${result.unlinked.join("', '")}'에 링크를 걸지 못해 주소를 글자로 넣었습니다. 글에서 눌러지는지 확인해 주세요.`;
-        if (args.check) console.warn(`⚠️  ${message}`);
-        else failures.push(message);
+        // 글은 올라가므로 PC 알림 창은 띄우지 않고, 카톡에 ⚠️로만 알린다.
+        console.warn(`⚠️  ${name}: '${result.unlinked.join("', '")}' 줄은 링크 대신 주소 글자로 들어갔습니다. 글에서 눌러지는지 확인해 주세요.`);
         report.reason = "링크 확인 필요";
       }
       if (args.check) {
@@ -156,23 +164,45 @@ async function main() {
         submitted: result.submitted,
         verified: result.verified,
         postUrl: result.postUrl,
+        ...(result.wrongBlog ? { wrongBlog: true } : {}),
         at: new Date().toISOString(),
       });
       if (result.verified) {
         console.log(`\n✅ ${name}: 블로그 발행 완료 ${result.postUrl ?? ""}`);
         report.status = report.reason ? "warn" : "ok";
+      } else if (result.wrongBlog) {
+        failures.push(`${name}: ${blogId}가 아닌 다른 블로그에 올라갔습니다 (${result.postUrl}). 그 글을 지우고 'npm run blog:setup -- --branch=${branchId}'로 ${blogId} 아이디로 다시 로그인해 주세요.`);
+        report.reason = "다른 블로그에 올라감";
       } else {
         failures.push(`${name}: 발행 버튼은 눌렀지만 완료 화면을 확인하지 못했습니다. 블로그에서 한 번 확인해 주세요.`);
         report.status = "warn";
         report.reason = "발행 확인 필요";
       }
     } catch (error) {
-      if (error instanceof LoginRequiredError) {
+      if (error instanceof WrongBlogError) {
+        failures.push(`${name}: ${error.message} 'npm run blog:setup -- --branch=${branchId}'로 ${blogId} 아이디로 다시 로그인해 주세요.`);
+        report.reason = "다른 아이디로 로그인됨";
+      } else if (error instanceof LoginRequiredError) {
         failures.push(`${branchName} 네이버 로그인이 풀렸습니다. 'npm run blog:setup -- --branch=${branchId}'로 다시 로그인해 주세요.`);
         report.reason = "로그인 풀림";
       } else {
         failures.push(`${name} 블로그: ${error.message}`);
         report.reason = shortReason(error.message);
+      }
+      // 실패한 글도 기록에 남겨, 어느 날 어떤 글이 왜 안 올라갔는지 나중에 볼 수 있게 한다.
+      // submitted가 false라 '이미 올림'으로 치지 않으므로 다음 실행 때 다시 올린다.
+      if (!args.check) {
+        await appendBlogLog({
+          date: today,
+          branch: branchId,
+          slot,
+          postId: post.id,
+          menuId: post.menuId,
+          title: post.title,
+          submitted: false,
+          error: error.message.split("\n")[0],
+          at: new Date().toISOString(),
+        }).catch(() => {});
       }
     } finally {
       await page.close().catch(() => {});
@@ -181,7 +211,8 @@ async function main() {
   }
 
   // 시험 실행(--check)은 발행하지 않으니 알리지 않는다.
-  if (!args.check) await sendKakaoMemo(formatBlogReport({ date: today, results }), { link: "https://blog.naver.com/" + BLOG_BRANCHES.pangyo.blogId });
+  const notes = [...sessionOnly].map((branchName) => `🔑 ${branchName.replace(/(본)?점$/, "")}: 로그인 상태 유지 꺼짐(재부팅하면 풀림)`);
+  if (!args.check) await sendKakaoMemo(formatBlogReport({ date: today, results, notes }), { link: "https://blog.naver.com/" + BLOG_BRANCHES.pangyo.blogId });
 
   if (failures.length) {
     alertOwner(failures.join("\n"), ALERT_TITLE);
