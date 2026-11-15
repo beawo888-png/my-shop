@@ -137,3 +137,15 @@ test("노출은 그대로인데 순위만 밀린 날도 멈춤 의심으로 본�
   assert.deepEqual(rows.map((r) => r.liveAdStatus), ["정상", "정상", "멈춤 의심", "정상"]);
   assert.equal(compareBookings(rows).normalAvg, null, "예약 엑셀이 없으면 비교하지 않는다");
 });
+
+test("8월처럼 노출은 절반쯤 남고 클릭만 크게 줄어도 멈춤 의심으로 잡는다", () => {
+  const days = new Map();
+  for (let d = 1; d <= 20; d += 1) {
+    const date = `2026-08-${String(d).padStart(2, "0")}`;
+    const weak = d >= 14;
+    days.set(date, { impCnt: weak ? 2300 : 4100, clkCnt: weak ? 12 : 40, avgRnk: 2.1 });
+  }
+  const rows = buildDailyRows([{ group: "라이브애드", days }], { since: "2026-08-01", until: "2026-08-20" }, null);
+  markLiveAd(rows);
+  assert.deepEqual(rows.filter((r) => r.liveAdStatus === "멈춤 의심").map((r) => r.date.slice(8)), ["14", "15", "16", "17", "18", "19", "20"]);
+});
