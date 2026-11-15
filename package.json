@@ -13,6 +13,7 @@
     "admin:secrets": "node scripts/generate-admin-secrets.mjs",
     "test:synthetic": "node scripts/synthetic-ai-visits.mjs",
     "threads:check": "node scripts/check-threads-posts.mjs",
+    "threads:token": "node scripts/check-threads-token.mjs",
     "threads:preview": "node scripts/post-daily-thread.mjs --dry-run",
     "threads:post": "node scripts/post-daily-thread.mjs",
     "smartplace:check": "node scripts/smartplace/check-posts.mjs",
