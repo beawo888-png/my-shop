@@ -5,6 +5,7 @@
  *   npm run ads:history                                  8/1부터 어제까지, 두 지점
  *   npm run ads:history -- --since=2026-09-01 --until=2026-09-30
  *   npm run ads:history -- --branch=moran
+ *   npm run ads:history -- --since=2025-01-01       1년 넘게 길게 (오래된 기간은 네이버가 거절할 수 있다)
  *
  * 결과: 바탕화면 `왕징 라이브애드 기간 점검.xlsx`
  * 예약 수는 바탕화면 `판교점 예약고객.xlsx`, `모란점 예약고객.xlsx`에서 읽는다.
@@ -35,7 +36,14 @@ for (const branchId of targets) {
     continue;
   }
   console.log(`\n━━━━━ ${name} (${range.since} ~ ${range.until}) ━━━━━`);
-  const history = await collectHistory(createClient(keys[branchId]), range, { onProgress: (t) => console.log(`  ${t}`) });
+  // 네이버가 거절한 기간(너무 오래된 기간 등)은 모아서 알려 준다.
+  const refused = new Map();
+  const onError = ({ since, until }, error) => refused.set(`${since}~${until}`, error.message);
+  const history = await collectHistory(createClient(keys[branchId]), range, { onProgress: (t) => console.log(`  ${t}`), onError });
+  const warnings = [...refused].map(([window, message]) => `네이버가 ${window} 성과를 주지 않았습니다 (${message.slice(0, 60)})`);
+  for (const warning of warnings) console.log(`  ⚠️  ${warning}`);
+  const firstDay = history.flatMap((h) => [...h.days.entries()].filter(([, r]) => Number(r.impCnt) > 0).map(([d]) => d)).sort()[0];
+  if (firstDay) console.log(`  광고 성과가 있는 가장 이른 날: ${firstDay}`);
   const liveAdCount = history.filter((h) => h.group === "라이브애드").length;
   console.log(`  라이브애드 캠페인(이름에 '프로그램'): ${liveAdCount}개`);
 
@@ -46,7 +54,7 @@ for (const branchId of targets) {
   const rows = buildDailyRows(history, range, bookings);
   const typical = markLiveAd(rows);
   const comparison = compareBookings(rows);
-  results.push({ name, range, rows, typical, comparison, hasBookings: Boolean(bookings) });
+  results.push({ name, range, rows, typical, comparison, hasBookings: Boolean(bookings), warnings });
 
   const f = (v) => (v === null ? "자료 없음" : v.toFixed(1));
   console.log(`  멈춤 의심인 날: ${comparison.downDays}일 ${comparison.downDates.length ? `(${comparison.downDates.slice(0, 10).join(", ")}${comparison.downDates.length > 10 ? " …" : ""})` : ""}`);

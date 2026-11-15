@@ -149,3 +149,17 @@ test("8월처럼 노출은 절반쯤 남고 클릭만 크게 줄어도 멈춤 �
   markLiveAd(rows);
   assert.deepEqual(rows.filter((r) => r.liveAdStatus === "멈춤 의심").map((r) => r.date.slice(8)), ["14", "15", "16", "17", "18", "19", "20"]);
 });
+
+test("오래된 기간을 네이버가 거절하면(400) 그 구간만 건너뛰고 나머지는 받는다", async () => {
+  const fetch = async (url) => {
+    const { pathname, searchParams } = new URL(url);
+    if (pathname === "/ncc/campaigns") return new Response(JSON.stringify([{ nccCampaignId: "cmp-1", name: "성남맛집/프로그램", campaignTp: "PLACE" }]));
+    const { since } = JSON.parse(searchParams.get("timeRange"));
+    if (since < "2025-03-01") return new Response(JSON.stringify({ code: 11000, title: "조회 기간 초과" }), { status: 400 });
+    return new Response(JSON.stringify({ data: [{ dateStart: since, impCnt: 10, clkCnt: 1 }] }));
+  };
+  const refused = [];
+  const history = await collectHistory(createClient({ apiKey: "a", secretKey: "b", customerId: 1 }, { ...quiet, fetch }), { since: "2025-01-01", until: "2025-04-10" }, { onError: (w) => refused.push(w.since) });
+  assert.deepEqual(refused, ["2025-01-01", "2025-02-01"]);
+  assert.deepEqual([...history[0].days.keys()], ["2025-03-04", "2025-04-04"]);
+});

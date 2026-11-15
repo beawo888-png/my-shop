@@ -59,7 +59,10 @@ let sent = false;
 if (!message) console.log("이상 없음. 카톡은 보내지 않습니다.");
 else if (dryRun) console.log(`\n[시험 실행: 보내지 않음]\n${message}`);
 else if (sentBefore && !always) console.log("오늘 같은 알림을 이미 보냈습니다.");
-else sent = await sendKakaoMemo(message, { link: "https://livead.co.kr/app/dashboard", buttonTitle: "라이브애드 열기" });
+else {
+  sent = await sendKakaoMemo(message, { link: "https://livead.co.kr/app/dashboard", buttonTitle: "라이브애드 열기" });
+  if (sent) console.log("✅ 카톡을 보냈습니다.");
+}
 
 if (!dryRun) {
   await mkdir(LOCAL_DIR, { recursive: true });
