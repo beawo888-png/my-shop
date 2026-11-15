@@ -42,18 +42,46 @@
 | 이름 | 필수 | 설명 |
 | --- | --- | --- |
 | `THREADS_USER_ID` | 예 | 위에서 확인한 계정 ID |
-| `THREADS_ACCESS_TOKEN` | 예 | 장기 액세스 토큰 |
+| `THREADS_ACCESS_TOKEN` | 예 | 장기 액세스 토큰 (자동 갱신되며 값이 바뀐다) |
+| `GH_SECRETS_TOKEN` | 아니오 | 있으면 토큰을 자동으로 갱신한다 (아래 참고) |
 | `ANTHROPIC_API_KEY` | 아니오 | 있으면 매일 새 원고를 Claude가 쓴다 |
 
 > 토큰이 없으면 워크플로는 실패하지 않고 **미리보기 모드**로 돈다. 그날 올렸을 글이 실행 요약에 그대로 찍히므로, 설정 전에도 어떤 글이 나갈지 확인할 수 있다.
 
-### 3. 토큰 갱신 (60일마다)
+### 3. 토큰 자동 갱신
+
+Threads 토큰은 60일짜리다. `GH_SECRETS_TOKEN`만 등록해두면 사람이 손댈 일이 없다.
+
+1. 깃허브 `Settings → Developer settings → Personal access tokens → Fine-grained tokens`에서 토큰을 만든다.
+   - Repository access: 이 저장소만
+   - Repository permissions → **Secrets: Read and write**
+2. 그 값을 저장소 Secret `GH_SECRETS_TOKEN`으로 등록한다.
+
+`.github/workflows/rotate-threads-token.yml`이 **매달 6일·21일 03:17 KST**에 돈다.
+
+1. 현재 토큰으로 갱신을 요청해 새 60일 토큰을 받는다.
+2. 새 토큰으로 계정을 한 번 읽어 진짜 되는지 본다. (계정이 `THREADS_USER_ID`와 다르면 멈춘다)
+3. 저장소 공개키로 봉해서 `THREADS_ACCESS_TOKEN` Secret을 덮어쓴다.
+
+어느 단계든 실패하면 Secret은 건드리지 않고 워크플로가 빨갛게 끝난다. 토큰 값은 로그에 찍지 않는다.
+한 번 걸러도 다음 차례까지 30일이 남으므로 한 번의 실패로 만료되지는 않는다.
+
+```bash
+# 갱신만 해보고 Secret은 그대로 두기
+THREADS_ACCESS_TOKEN=<현재 토큰> node scripts/rotate-threads-token.mjs --dry-run
+
+# 토큰이 아직 살아 있는지만 보기 (글은 올리지 않는다)
+THREADS_ACCESS_TOKEN=<현재 토큰> npm run threads:token
+```
+
+`GH_SECRETS_TOKEN`을 안 쓸 거라면 수동으로도 된다.
 
 ```bash
 THREADS_ACCESS_TOKEN=<현재 토큰> node scripts/refresh-threads-token.mjs
 ```
 
-출력된 새 토큰을 `THREADS_ACCESS_TOKEN` Secret에 다시 넣는다. 만료된 뒤에는 갱신이 안 되고 재발급해야 하니, 50일쯤에 알림을 걸어두면 좋다.
+출력된 새 토큰을 `THREADS_ACCESS_TOKEN` Secret에 다시 넣는다.
+**이미 만료된 뒤에는 갱신이 안 되고 Meta 콘솔에서 재발급해야 한다.**
 
 ## 평소 운영
 
