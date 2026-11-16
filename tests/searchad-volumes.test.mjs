@@ -74,3 +74,8 @@ test("두 지점 표: 같은 단어는 한 줄로, 지점별 넣은 곳 수·성
     await rm(dir, { recursive: true, force: true });
   }
 });
+
+test("'오리고기'는 동네(오리역)가 아니다", () => {
+  assert.equal(classifyKeyword("오리고기"), CATEGORIES[7]);
+  assert.equal(classifyKeyword("오리역맛집"), CATEGORIES[2]);
+});
