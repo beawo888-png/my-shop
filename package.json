@@ -39,6 +39,7 @@
     "kakao:test": "node scripts/notify/kakao-test.mjs",
     "ads:setup": "node scripts/searchad/setup.mjs",
     "ads:keywords": "node scripts/searchad/keyword-report.mjs",
+    "ads:volumes": "node scripts/searchad/keyword-volumes.mjs",
     "ads:history": "node scripts/searchad/livead-history.mjs",
     "ads:watch": "node scripts/searchad/livead-watch.mjs",
     "ads:watch-test": "node scripts/searchad/livead-watch.mjs --dry-run --always",

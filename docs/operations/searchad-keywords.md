@@ -96,3 +96,13 @@
 - 기록: `.smartplace/paused-keywords.json`, 확인한 목록: `.smartplace/pause-plan.json`
 - 2주 뒤 POS 매출을 같은 요일 평소와 비교해 5% 넘게 줄었으면 되돌린다.
 - 코드: `lib/searchad/pause.mjs`, `scripts/searchad/pause-keywords.mjs`. 쓰기는 `createClient(keys, { allowWrite: true })`에만 있다.
+
+## 키워드 검색수 전체 (두 지점 고유 키워드 약 10만 개)
+
+`npm run ads:volumes` → 바탕화면 `왕징 키워드 검색수.xlsx` (읽기만 함)
+
+- 두 지점 키워드와 30일 성과를 읽고, 고유 키워드마다 네이버 월간 검색수(PC+모바일)를 붙여 검색 많은 순으로 정리.
+- 처음에는 1시간 가까이 걸린다. 받은 검색수는 `.smartplace/keyword-volumes.json`에 쌓여 끊겨도 이어서 받고, 30일 동안은 다시 묻지 않는다.
+- 분류: ① 가게 이름 ② 우리 동네 + 메뉴 ③ 우리 동네 ④ 동네 없는 넓은 단어 ⑤ 양고기(동네 없음·다른 동네) ⑥ 요리 이름(동네 없음) ⑦ 다른 동네 ⑧ 기타.
+- 시트: 요약(분류별 키워드 수·검색수·지점별 클릭·광고비) · 검색 많은 순(10회 이상) · 우리 동네 키워드.
+- 코드: `lib/searchad/volumes.mjs`, `scripts/searchad/keyword-volumes.mjs`
