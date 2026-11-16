@@ -73,10 +73,10 @@ test("되돌릴 기록: 아직 되돌리지 않은 것만, 지점별로", () => 
   assert.equal(openBatches(log).length, 2);
 });
 
-test("끌 목록 파일: 두 지점, 애매한 단어는 없고, 우리 메뉴 이름은 표시돼 있다", async () => {
+test("끌 목록 파일: 브랜드 노출용 요리·장소 키워드는 남기고 엉뚱한 '경기+단어'만 끈다", async () => {
   const list = JSON.parse(await readFile(new URL("../data/searchad/pause-2026-11-recipe.json", import.meta.url), "utf8"));
   const all = [...list.branches.pangyo, ...list.branches.moran].map((k) => k.keyword);
-  for (const keep of ["가족외식", "결혼기념일식사", "꼬치전문점", "모란양꼬치", "판교양꼬치", "성남마라샹궈"]) assert.ok(!all.includes(keep), keep);
-  assert.ok(list.branches.moran.find((k) => k.keyword === "오이무침").ourMenu);
-  assert.ok(!list.branches.moran.find((k) => k.keyword === "캠핑음식").ourMenu);
+  assert.ok(all.length > 0 && all.every((k) => k.startsWith("경기")), all.join(","));
+  for (const keep of ["오이무침", "마라샹궈", "캠핑음식", "잠실롯데월드몰", "모란양꼬치", "성남마라샹궈"]) assert.ok(!all.includes(keep), keep);
+  assert.equal(list.branches.moran.length, 0);
 });
