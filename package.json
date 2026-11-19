@@ -17,6 +17,8 @@
     "threads:rotate": "node scripts/rotate-threads-token.mjs",
     "threads:preview": "node scripts/post-daily-thread.mjs --dry-run",
     "threads:post": "node scripts/post-daily-thread.mjs",
+    "threads:replies": "node scripts/reply-to-threads-comments.mjs",
+    "threads:replies-preview": "node scripts/reply-to-threads-comments.mjs --dry-run",
     "smartplace:check": "node scripts/smartplace/check-posts.mjs",
     "smartplace:preview": "node scripts/smartplace/post-daily-news.mjs --dry-run",
     "smartplace:setup": "node scripts/smartplace/setup.mjs",
