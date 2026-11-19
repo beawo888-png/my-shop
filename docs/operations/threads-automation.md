@@ -109,6 +109,12 @@ THREADS_ACCESS_TOKEN=<현재 토큰> node scripts/refresh-threads-token.mjs
 토큰에 **`threads_manage_replies`** 가 있어야 한다. 없으면 댓글을 읽지도 못한다.
 권한을 추가한 뒤에는 **토큰을 새로 발급**받아야 한다(기존 토큰에는 새 권한이 안 붙는다).
 
+### 쌓인 댓글 닫기 (처음 한 번)
+
+자동 답글을 켜기 전에 이미 쌓여 있던 댓글은 `--mark-handled`로 한 번 닫는다.
+답글을 달지 않고 처리됨으로만 기록하므로, 오래된 글에 오늘 날짜로 답글이 줄줄이 달리지 않는다.
+그다음 실행부터는 새로 달린 댓글만 본다.
+
 ```bash
 # 답글을 달지 않고 몇 건이나 걸리는지만 보기
 THREADS_USER_ID=... THREADS_ACCESS_TOKEN=... npm run threads:replies-preview

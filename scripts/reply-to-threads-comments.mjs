@@ -9,6 +9,7 @@
  *   node scripts/reply-to-threads-comments.mjs             # 훑고 자동 답글
  *   node scripts/reply-to-threads-comments.mjs --dry-run   # 달지 않고 세어만 보기
  *   node scripts/reply-to-threads-comments.mjs --reply-to=<댓글id> --text="..."   # 손으로 하나만
+ *   node scripts/reply-to-threads-comments.mjs --mark-handled  # 지금까지 쌓인 댓글을 답글 없이 닫기
  *
  * 환경변수
  *   THREADS_USER_ID        Threads 계정 ID (필수)
@@ -32,15 +33,17 @@ import {
 const LOG_URL = new URL("../data/threads-replies.jsonl", import.meta.url);
 
 function parseArgs(argv) {
-  const args = { dryRun: false, replyTo: undefined, text: undefined };
+  const args = { dryRun: false, markHandled: false, replyTo: undefined, text: undefined };
   for (const arg of argv) {
     if (arg === "--dry-run") args.dryRun = true;
+    else if (arg === "--mark-handled") args.markHandled = true;
     else if (arg.startsWith("--reply-to=")) args.replyTo = arg.slice("--reply-to=".length);
     else if (arg.startsWith("--text=")) args.text = arg.slice("--text=".length);
     else throw new Error(`알 수 없는 옵션: ${arg}`);
   }
   if (args.replyTo && !args.text) throw new Error("--reply-to 에는 --text 가 함께 필요합니다.");
   if (args.text && !args.replyTo) throw new Error("--text 에는 --reply-to 가 함께 필요합니다.");
+  if (args.markHandled && args.replyTo) throw new Error("--mark-handled 와 --reply-to 는 같이 쓸 수 없습니다.");
   return args;
 }
 
@@ -65,7 +68,13 @@ const userId = process.env.THREADS_USER_ID;
 const accessToken = process.env.THREADS_ACCESS_TOKEN;
 const maxAutoReplies = Number(process.env.THREADS_REPLY_MAX ?? 10);
 
-const args = parseArgs(process.argv.slice(2));
+let args;
+try {
+  args = parseArgs(process.argv.slice(2));
+} catch (error) {
+  console.error(error.message);
+  process.exit(1);
+}
 
 if (!userId || !accessToken) {
   console.error("THREADS_USER_ID와 THREADS_ACCESS_TOKEN이 필요합니다.");
@@ -99,6 +108,8 @@ console.log(`최근 글 ${posts.length}편을 훑습니다.`);
 let auto = 0;
 let pending = 0;
 let skipped = 0;
+let backlog = 0;
+let limitNoticed = false;
 const pendingPermalinks = new Set();
 
 for (const post of posts) {
@@ -115,6 +126,21 @@ for (const post of posts) {
     if (reply.is_reply_owned_by_me) continue; // 내가 단 답글
     if (handled.has(reply.id)) {
       skipped += 1;
+      continue;
+    }
+
+    // 쌓여 있던 댓글을 답글 없이 닫는다.
+    // 두 달 전 글에 오늘 날짜로 답글이 줄줄이 달리는 것을 막는다.
+    if (args.markHandled) {
+      backlog += 1;
+      if (!args.dryRun) {
+        await appendLog({
+          replyId: reply.id,
+          postId: post.id,
+          status: "backlog",
+          decidedAt: new Date().toISOString(),
+        });
+      }
       continue;
     }
 
@@ -135,8 +161,11 @@ for (const post of posts) {
     }
 
     if (auto >= maxAutoReplies) {
-      console.log(`자동 답글 한도(${maxAutoReplies}건)에 걸려 나머지는 다음 차례로 넘깁니다.`);
-      break;
+      if (!limitNoticed) {
+        console.log(`자동 답글 한도(${maxAutoReplies}건)에 걸려 나머지는 다음 차례로 넘깁니다.`);
+        limitNoticed = true;
+      }
+      continue;
     }
 
     const text = pickReplyText(reply.id);
@@ -163,9 +192,13 @@ for (const post of posts) {
   }
 }
 
-console.log(
-  `${args.dryRun ? "[미리보기] " : ""}자동 답글 ${auto}건 · 사장님 확인 필요 ${pending}건 · 이미 처리 ${skipped}건`,
-);
+const prefix = args.dryRun ? "[미리보기] " : "";
+if (args.markHandled) {
+  console.log(`${prefix}쌓여 있던 댓글 ${backlog}건을 답글 없이 닫았습니다. 이미 처리 ${skipped}건.`);
+  console.log("다음 실행부터는 새로 달리는 댓글만 봅니다.");
+} else {
+  console.log(`${prefix}자동 답글 ${auto}건 · 사장님 확인 필요 ${pending}건 · 이미 처리 ${skipped}건`);
+}
 
 if (pending > 0) {
   console.log("확인이 필요한 댓글이 있습니다. 쓰레드 앱에서 읽어주세요:");
