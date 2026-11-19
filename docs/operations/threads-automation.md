@@ -86,6 +86,37 @@ THREADS_ACCESS_TOKEN=<현재 토큰> node scripts/refresh-threads-token.mjs
 출력된 새 토큰을 `THREADS_ACCESS_TOKEN` Secret에 다시 넣는다.
 **이미 만료된 뒤에는 갱신이 안 되고 Meta 콘솔에서 재발급해야 한다.**
 
+## 댓글 답글
+
+새 댓글을 **한 시간에 한 번**(09:23~23:23 KST) 훑는다. `.github/workflows/threads-replies.yml`
+
+- 분명한 칭찬·감사에만 미리 적어둔 짧은 문장으로 답한다 (`lib/threads/replies.mjs`의 `REPLY_TEXTS`)
+- 물어보는 글·불만·홍보·긴 글은 **건드리지 않고** 사장님 확인으로 넘긴다
+- 한 번에 자동 답글은 최대 10건 (`THREADS_REPLY_MAX`)
+- 같은 댓글에 두 번 답하지 않는다 (`data/threads-replies.jsonl`)
+
+손님 글을 되받아 쓰지 않고 미리 적어둔 문장만 쓴다. 분류는 `classifyReply`가 하고,
+칭찬 낱말이 **있으면서** 질문·불만·홍보 낱말이 **하나도 없어야** 자동 답글이 나간다.
+
+### 이 저장소는 공개다
+
+그래서 손님이 쓴 글과 아이디는 **저장소에도 실행 로그에도 남기지 않는다.**
+남기는 것은 댓글 id, 처리 결과, 우리가 올린 문장뿐이다.
+확인이 필요한 댓글은 글 주소만 찍고, 내용은 쓰레드 앱에서 읽는다.
+
+### 필요한 권한
+
+토큰에 **`threads_manage_replies`** 가 있어야 한다. 없으면 댓글을 읽지도 못한다.
+권한을 추가한 뒤에는 **토큰을 새로 발급**받아야 한다(기존 토큰에는 새 권한이 안 붙는다).
+
+```bash
+# 답글을 달지 않고 몇 건이나 걸리는지만 보기
+THREADS_USER_ID=... THREADS_ACCESS_TOKEN=... npm run threads:replies-preview
+
+# 확인이 필요했던 댓글에 손으로 하나 답하기
+node scripts/reply-to-threads-comments.mjs --reply-to=<댓글id> --text="..."
+```
+
 ## 평소 운영
 
 ```bash
