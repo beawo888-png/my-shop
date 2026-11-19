@@ -63,6 +63,12 @@ jobs:
       - name: 처리 이력 커밋
         if: success()
         run: |
+          # 기록이 .gitignore에 걸리면 조용히 사라지고, 다음 실행이 같은 댓글에
+          # 또 답글을 단다. 그러느니 여기서 멈춘다.
+          if git check-ignore -q data/threads-replies.jsonl; then
+            echo "data/threads-replies.jsonl 이 .gitignore에 걸려 있어 기록이 남지 않습니다."
+            exit 1
+          fi
           if [ -z "$(git status --porcelain data/threads-replies.jsonl)" ]; then
             echo "기록할 변경 사항이 없습니다."
             exit 0
