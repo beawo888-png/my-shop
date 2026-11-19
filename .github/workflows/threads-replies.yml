@@ -12,6 +12,10 @@ on:
         description: "달지 않고 세어만 보기"
         type: boolean
         default: false
+      mark_handled:
+        description: "쌓여 있던 댓글을 답글 없이 닫기 (처음 한 번만)"
+        type: boolean
+        default: false
       reply_to:
         description: "손으로 답할 댓글 id"
         type: string
@@ -45,11 +49,13 @@ jobs:
           THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
           THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
           DRY_RUN: ${{ inputs.dry_run }}
+          MARK_HANDLED: ${{ inputs.mark_handled }}
           REPLY_TO: ${{ inputs.reply_to }}
           REPLY_TEXT: ${{ inputs.text }}
         run: |
           args=()
           if [ "$DRY_RUN" = "true" ]; then args+=(--dry-run); fi
+          if [ "$MARK_HANDLED" = "true" ]; then args+=(--mark-handled); fi
           if [ -n "$REPLY_TO" ]; then args+=("--reply-to=$REPLY_TO"); fi
           if [ -n "$REPLY_TEXT" ]; then args+=("--text=$REPLY_TEXT"); fi
           node scripts/reply-to-threads-comments.mjs "${args[@]}"
