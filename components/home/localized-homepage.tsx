@@ -37,7 +37,7 @@ export function LocalizedHomepage({ locale }: LocalizedHomepageProps) {
           <ReviewsSection copy={copy.reviews} />
           <LocationSection copy={copy.locations} branches={copy.branches} />
           <FaqSection copy={copy.faq} />
-          <ReservationBanner copy={copy.reservation} />
+          <ReservationBanner copy={copy.reservation} branches={copy.branches} />
         </main>
         <SiteFooter copy={copy.footer} branches={copy.branches} homePath={homePath} />
         <MobileBookingBar copy={copy.mobileBooking} />

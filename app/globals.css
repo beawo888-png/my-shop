@@ -763,6 +763,25 @@ img {
   color: rgba(255, 248, 236, 0.72);
 }
 
+.reservation__branches {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.75rem 2.5rem;
+}
+
+.reservation__branches h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.125rem;
+}
+
+.reservation__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
 .button-row--center {
   justify-content: center;
 }

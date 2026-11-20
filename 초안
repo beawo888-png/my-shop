@@ -688,7 +688,133 @@
           "width": 1440,
           "height": 560,
           "fill": "#241A17",
-          "layout": "none"
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "desktop-reserve-title",
+              "x": 20,
+              "y": 60,
+              "content": "오늘의 좋은 자리를 왕징에서",
+              "width": 1400,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 40,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "text",
+              "id": "desktop-reserve-moran",
+              "x": 400,
+              "y": 200,
+              "content": "모란본점",
+              "width": 300,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 22,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "rectangle",
+              "id": "desktop-reserve-moran-book-bg",
+              "x": 400,
+              "y": 234,
+              "width": 144,
+              "height": 50,
+              "fill": "#8D1B1B",
+              "cornerRadius": 2
+            },
+            {
+              "type": "text",
+              "id": "desktop-reserve-moran-book",
+              "x": 400,
+              "y": 248,
+              "content": "네이버 예약",
+              "width": 144,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 17,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "rectangle",
+              "id": "desktop-reserve-moran-call-bg",
+              "x": 556,
+              "y": 234,
+              "width": 144,
+              "height": 50,
+              "fill": "#493834",
+              "cornerRadius": 2
+            },
+            {
+              "type": "text",
+              "id": "desktop-reserve-moran-call",
+              "x": 556,
+              "y": 248,
+              "content": "전화 문의",
+              "width": 144,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 17,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "text",
+              "id": "desktop-reserve-pangyo",
+              "x": 740,
+              "y": 200,
+              "content": "판교점",
+              "width": 300,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 22,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "rectangle",
+              "id": "desktop-reserve-pangyo-book-bg",
+              "x": 740,
+              "y": 234,
+              "width": 144,
+              "height": 50,
+              "fill": "#8D1B1B",
+              "cornerRadius": 2
+            },
+            {
+              "type": "text",
+              "id": "desktop-reserve-pangyo-book",
+              "x": 740,
+              "y": 248,
+              "content": "네이버 예약",
+              "width": 144,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 17,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "rectangle",
+              "id": "desktop-reserve-pangyo-call-bg",
+              "x": 896,
+              "y": 234,
+              "width": 144,
+              "height": 50,
+              "fill": "#493834",
+              "cornerRadius": 2
+            },
+            {
+              "type": "text",
+              "id": "desktop-reserve-pangyo-call",
+              "x": 896,
+              "y": 248,
+              "content": "전화 문의",
+              "width": 144,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 17,
+              "fill": "#FFF8EC"
+            }
+          ]
         },
         {
           "type": "frame",
@@ -833,7 +959,133 @@
           "width": 390,
           "height": 420,
           "fill": "#241A17",
-          "layout": "none"
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "mobile-reserve-title",
+              "x": 20,
+              "y": 60,
+              "content": "오늘의 좋은 자리를 왕징에서",
+              "width": 350,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 24,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "text",
+              "id": "mobile-reserve-moran",
+              "x": 45,
+              "y": 130,
+              "content": "모란본점",
+              "width": 300,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 22,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "rectangle",
+              "id": "mobile-reserve-moran-book-bg",
+              "x": 45,
+              "y": 164,
+              "width": 144,
+              "height": 50,
+              "fill": "#8D1B1B",
+              "cornerRadius": 2
+            },
+            {
+              "type": "text",
+              "id": "mobile-reserve-moran-book",
+              "x": 45,
+              "y": 178,
+              "content": "네이버 예약",
+              "width": 144,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 17,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "rectangle",
+              "id": "mobile-reserve-moran-call-bg",
+              "x": 201,
+              "y": 164,
+              "width": 144,
+              "height": 50,
+              "fill": "#493834",
+              "cornerRadius": 2
+            },
+            {
+              "type": "text",
+              "id": "mobile-reserve-moran-call",
+              "x": 201,
+              "y": 178,
+              "content": "전화 문의",
+              "width": 144,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 17,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "text",
+              "id": "mobile-reserve-pangyo",
+              "x": 45,
+              "y": 246,
+              "content": "판교점",
+              "width": 300,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 22,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "rectangle",
+              "id": "mobile-reserve-pangyo-book-bg",
+              "x": 45,
+              "y": 280,
+              "width": 144,
+              "height": 50,
+              "fill": "#8D1B1B",
+              "cornerRadius": 2
+            },
+            {
+              "type": "text",
+              "id": "mobile-reserve-pangyo-book",
+              "x": 45,
+              "y": 294,
+              "content": "네이버 예약",
+              "width": 144,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 17,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "rectangle",
+              "id": "mobile-reserve-pangyo-call-bg",
+              "x": 201,
+              "y": 280,
+              "width": 144,
+              "height": 50,
+              "fill": "#493834",
+              "cornerRadius": 2
+            },
+            {
+              "type": "text",
+              "id": "mobile-reserve-pangyo-call",
+              "x": 201,
+              "y": 294,
+              "content": "전화 문의",
+              "width": 144,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 17,
+              "fill": "#FFF8EC"
+            }
+          ]
         },
         {
           "type": "frame",
