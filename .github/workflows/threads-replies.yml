@@ -1,0 +1,80 @@
+name: 쓰레드 댓글 답글
+
+# 한 시간에 한 번 새 댓글을 훑는다.
+# 분명한 칭찬·감사에만 짧게 답하고, 물어보는 글·불만·홍보는 건드리지 않는다.
+# 손님이 쓴 글과 아이디는 저장소에도 로그에도 남기지 않는다(이 저장소는 공개다).
+on:
+  schedule:
+    - cron: "23 0-14 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "달지 않고 세어만 보기"
+        type: boolean
+        default: false
+      mark_handled:
+        description: "쌓여 있던 댓글을 답글 없이 닫기 (처음 한 번만)"
+        type: boolean
+        default: false
+      reply_to:
+        description: "손으로 답할 댓글 id"
+        type: string
+        default: ""
+      text:
+        description: "그 댓글에 올릴 답글 문장"
+        type: string
+        default: ""
+
+concurrency:
+  group: threads-replies
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  reply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # 입력값은 셸에 끼워 넣지 않고 환경변수로 넘긴다.
+      # 답글 문장에 따옴표가 들어가도 명령이 깨지지 않게.
+      - name: 댓글 훑고 답글
+        env:
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          MARK_HANDLED: ${{ inputs.mark_handled }}
+          REPLY_TO: ${{ inputs.reply_to }}
+          REPLY_TEXT: ${{ inputs.text }}
+        run: |
+          args=()
+          if [ "$DRY_RUN" = "true" ]; then args+=(--dry-run); fi
+          if [ "$MARK_HANDLED" = "true" ]; then args+=(--mark-handled); fi
+          if [ -n "$REPLY_TO" ]; then args+=("--reply-to=$REPLY_TO"); fi
+          if [ -n "$REPLY_TEXT" ]; then args+=("--text=$REPLY_TEXT"); fi
+          node scripts/reply-to-threads-comments.mjs "${args[@]}"
+
+      - name: 처리 이력 커밋
+        if: success()
+        run: |
+          # 기록이 .gitignore에 걸리면 조용히 사라지고, 다음 실행이 같은 댓글에
+          # 또 답글을 단다. 그러느니 여기서 멈춘다.
+          if git check-ignore -q data/threads-replies.jsonl; then
+            echo "data/threads-replies.jsonl 이 .gitignore에 걸려 있어 기록이 남지 않습니다."
+            exit 1
+          fi
+          if [ -z "$(git status --porcelain data/threads-replies.jsonl)" ]; then
+            echo "기록할 변경 사항이 없습니다."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/threads-replies.jsonl
+          git commit -m "chore: record thread reply handling"
+          git push

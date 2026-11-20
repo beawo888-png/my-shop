@@ -1,0 +1,49 @@
+name: 쓰레드 토큰 자동 갱신
+
+# 토큰은 60일짜리다. 한 달에 두 번 갱신해서 매번 60일로 되돌려 놓는다.
+# 한 번 걸러도 다음 차례까지 30일 여유가 남는다.
+# 갱신은 토큰을 받은 지 24시간이 지나야 된다. 그래서 발급 직후와 겹치지 않는 날로 잡았다.
+#   17 18 5,20 UTC = 매달 6일·21일 03:17 KST (한산한 시각)
+on:
+  schedule:
+    - cron: "17 18 5,20 * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "갱신만 해보고 Secret은 그대로 두기"
+        type: boolean
+        default: false
+      check_only:
+        description: "깃허브 토큰이 Secrets에 닿는지만 보기 (Threads는 건드리지 않음)"
+        type: boolean
+        default: false
+
+concurrency:
+  group: rotate-threads-token
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  rotate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: 토큰 갱신
+        env:
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          GH_SECRETS_TOKEN: ${{ secrets.GH_SECRETS_TOKEN }}
+        run: |
+          node scripts/rotate-threads-token.mjs \
+            ${{ inputs.dry_run && '--dry-run' || '' }} \
+            ${{ inputs.check_only && '--check' || '' }}

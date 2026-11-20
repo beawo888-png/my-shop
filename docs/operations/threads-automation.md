@@ -42,18 +42,86 @@
 | 이름 | 필수 | 설명 |
 | --- | --- | --- |
 | `THREADS_USER_ID` | 예 | 위에서 확인한 계정 ID |
-| `THREADS_ACCESS_TOKEN` | 예 | 장기 액세스 토큰 |
+| `THREADS_ACCESS_TOKEN` | 예 | 장기 액세스 토큰 (자동 갱신되며 값이 바뀐다) |
+| `GH_SECRETS_TOKEN` | 아니오 | 있으면 토큰을 자동으로 갱신한다 (아래 참고) |
 | `ANTHROPIC_API_KEY` | 아니오 | 있으면 매일 새 원고를 Claude가 쓴다 |
 
 > 토큰이 없으면 워크플로는 실패하지 않고 **미리보기 모드**로 돈다. 그날 올렸을 글이 실행 요약에 그대로 찍히므로, 설정 전에도 어떤 글이 나갈지 확인할 수 있다.
 
-### 3. 토큰 갱신 (60일마다)
+### 3. 토큰 자동 갱신
+
+Threads 토큰은 60일짜리다. `GH_SECRETS_TOKEN`만 등록해두면 사람이 손댈 일이 없다.
+
+1. 깃허브 `Settings → Developer settings → Personal access tokens → Fine-grained tokens`에서 토큰을 만든다.
+   - Repository access: 이 저장소만
+   - Repository permissions → **Secrets: Read and write**
+2. 그 값을 저장소 Secret `GH_SECRETS_TOKEN`으로 등록한다.
+
+`.github/workflows/rotate-threads-token.yml`이 **매달 6일·21일 03:17 KST**에 돈다.
+
+1. 현재 토큰으로 갱신을 요청해 새 60일 토큰을 받는다.
+2. 새 토큰으로 계정을 한 번 읽어 진짜 되는지 본다. (계정이 `THREADS_USER_ID`와 다르면 멈춘다)
+3. 저장소 공개키로 봉해서 `THREADS_ACCESS_TOKEN` Secret을 덮어쓴다.
+
+어느 단계든 실패하면 Secret은 건드리지 않고 워크플로가 빨갛게 끝난다. 토큰 값은 로그에 찍지 않는다.
+한 번 걸러도 다음 차례까지 30일이 남으므로 한 번의 실패로 만료되지는 않는다.
+
+```bash
+# 깃허브 토큰이 Secrets에 닿는지만 보기 (Threads는 건드리지 않는다)
+GH_SECRETS_TOKEN=<깃허브 토큰> GITHUB_REPOSITORY=<owner/repo> node scripts/rotate-threads-token.mjs --check
+
+# 갱신만 해보고 Secret은 그대로 두기
+THREADS_ACCESS_TOKEN=<현재 토큰> node scripts/rotate-threads-token.mjs --dry-run
+
+# 토큰이 아직 살아 있는지만 보기 (글은 올리지 않는다)
+THREADS_ACCESS_TOKEN=<현재 토큰> npm run threads:token
+```
+
+`GH_SECRETS_TOKEN`을 안 쓸 거라면 수동으로도 된다.
 
 ```bash
 THREADS_ACCESS_TOKEN=<현재 토큰> node scripts/refresh-threads-token.mjs
 ```
 
-출력된 새 토큰을 `THREADS_ACCESS_TOKEN` Secret에 다시 넣는다. 만료된 뒤에는 갱신이 안 되고 재발급해야 하니, 50일쯤에 알림을 걸어두면 좋다.
+출력된 새 토큰을 `THREADS_ACCESS_TOKEN` Secret에 다시 넣는다.
+**이미 만료된 뒤에는 갱신이 안 되고 Meta 콘솔에서 재발급해야 한다.**
+
+## 댓글 답글
+
+새 댓글을 **한 시간에 한 번**(09:23~23:23 KST) 훑는다. `.github/workflows/threads-replies.yml`
+
+- 분명한 칭찬·감사에만 미리 적어둔 짧은 문장으로 답한다 (`lib/threads/replies.mjs`의 `REPLY_TEXTS`)
+- 물어보는 글·불만·홍보·긴 글은 **건드리지 않고** 사장님 확인으로 넘긴다
+- 한 번에 자동 답글은 최대 10건 (`THREADS_REPLY_MAX`)
+- 같은 댓글에 두 번 답하지 않는다 (`data/threads-replies.jsonl`)
+
+손님 글을 되받아 쓰지 않고 미리 적어둔 문장만 쓴다. 분류는 `classifyReply`가 하고,
+칭찬 낱말이 **있으면서** 질문·불만·홍보 낱말이 **하나도 없어야** 자동 답글이 나간다.
+
+### 이 저장소는 공개다
+
+그래서 손님이 쓴 글과 아이디는 **저장소에도 실행 로그에도 남기지 않는다.**
+남기는 것은 댓글 id, 처리 결과, 우리가 올린 문장뿐이다.
+확인이 필요한 댓글은 글 주소만 찍고, 내용은 쓰레드 앱에서 읽는다.
+
+### 필요한 권한
+
+토큰에 **`threads_manage_replies`** 가 있어야 한다. 없으면 댓글을 읽지도 못한다.
+권한을 추가한 뒤에는 **토큰을 새로 발급**받아야 한다(기존 토큰에는 새 권한이 안 붙는다).
+
+### 쌓인 댓글 닫기 (처음 한 번)
+
+자동 답글을 켜기 전에 이미 쌓여 있던 댓글은 `--mark-handled`로 한 번 닫는다.
+답글을 달지 않고 처리됨으로만 기록하므로, 오래된 글에 오늘 날짜로 답글이 줄줄이 달리지 않는다.
+그다음 실행부터는 새로 달린 댓글만 본다.
+
+```bash
+# 답글을 달지 않고 몇 건이나 걸리는지만 보기
+THREADS_USER_ID=... THREADS_ACCESS_TOKEN=... npm run threads:replies-preview
+
+# 확인이 필요했던 댓글에 손으로 하나 답하기
+node scripts/reply-to-threads-comments.mjs --reply-to=<댓글id> --text="..."
+```
 
 ## 평소 운영
 
