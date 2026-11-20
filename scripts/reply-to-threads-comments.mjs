@@ -146,7 +146,7 @@ for (const post of posts) {
 
     const verdict = classifyReply(reply.text);
 
-    if (verdict !== "praise") {
+    if (verdict === "needs-owner") {
       pending += 1;
       if (post.permalink) pendingPermalinks.add(post.permalink);
       if (!args.dryRun) {
@@ -168,7 +168,7 @@ for (const post of posts) {
       continue;
     }
 
-    const text = pickReplyText(reply.id);
+    const text = pickReplyText(reply.id, verdict);
     if (args.dryRun) {
       console.log(`[미리보기] ${reply.id} → "${text}"`);
       auto += 1;
