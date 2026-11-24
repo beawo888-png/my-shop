@@ -3,7 +3,7 @@ import type { Locale, LocalizedLocale } from "./types";
 export const HOME_LOCALES = ["ko", "en", "zh", "ja"] as const satisfies readonly Locale[];
 export const LOCALIZED_LOCALES = ["en", "zh", "ja"] as const satisfies readonly LocalizedLocale[];
 export const HOME_HASHES = [
-  "#top", "#story", "#menu", "#location", "#group",
+  "#top", "#story", "#menu", "#location", "#location-moran", "#location-pangyo", "#group",
   "#reviews", "#faq", "#reservation",
 ] as const;
 

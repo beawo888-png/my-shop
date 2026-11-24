@@ -110,6 +110,7 @@ img {
 }
 
 .desktop-nav a,
+.desktop-nav summary,
 .mobile-nav a {
   min-height: 48px;
   display: inline-flex;
@@ -119,8 +120,43 @@ img {
 }
 
 .desktop-nav a:hover,
+.desktop-nav summary:hover,
 .site-footer nav a:hover {
   color: var(--gold);
+}
+
+.desktop-nav__locations {
+  position: relative;
+}
+
+.desktop-nav__locations summary {
+  gap: 0.35rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.desktop-nav__locations summary::-webkit-details-marker {
+  display: none;
+}
+
+.desktop-nav__locations[open] summary svg {
+  transform: rotate(180deg);
+}
+
+.desktop-nav__branches {
+  position: absolute;
+  inset: 100% auto auto 50%;
+  transform: translateX(-50%);
+  min-width: max(100%, 8.5rem);
+  display: grid;
+  background: var(--ink);
+  border: 1px solid rgba(197, 161, 90, 0.35);
+  box-shadow: 0 12px 24px rgba(16, 11, 10, 0.25);
+}
+
+.desktop-nav__branches a {
+  padding-inline: 1rem;
+  white-space: nowrap;
 }
 
 .menu-toggle,
@@ -572,7 +608,7 @@ img {
   border: 1px solid var(--line);
   background: var(--paper);
   box-shadow: 0 18px 50px rgba(43, 30, 24, 0.09);
-  scroll-margin-top: 112px;
+  scroll-margin-top: 12px;
 }
 
 .location-card__image {
@@ -968,7 +1004,8 @@ img {
     border-top: 1px solid rgba(197, 161, 90, 0.25);
   }
 
-  .desktop-nav a {
+  .desktop-nav a,
+  .desktop-nav summary {
     min-height: 56px;
     font-size: clamp(0.8rem, 1.6vw, 0.9rem);
     white-space: nowrap;
@@ -1028,6 +1065,15 @@ img {
 
   .mobile-nav a {
     border-bottom: 1px solid rgba(255, 248, 236, 0.1);
+  }
+
+  .mobile-nav__locations,
+  .mobile-nav__locations > div {
+    display: grid;
+  }
+
+  .mobile-nav__locations > div a {
+    padding-inline-start: 1rem;
   }
 
   .mobile-nav__languages,
