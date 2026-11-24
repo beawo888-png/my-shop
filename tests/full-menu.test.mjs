@@ -39,6 +39,50 @@ test("Pangyo menu data contains 44 items in five approved groups", async () => {
   assert.match(source, /PANGYO_MENU_COUNT = 44/);
 });
 
+test("one signature lamb-leg menu exposes the hover video prototype", async () => {
+  const [source, csv, generator] = await Promise.all([
+    read("lib/menu-content.ts"),
+    read("data/menu.csv"),
+    read("scripts/build-menu.mjs"),
+  ]);
+
+  assert.match(csv.slice(0, csv.indexOf("\n")).trimEnd(), /,videoFile$/);
+  assert.match(csv, /lamb-leg\.jpg,,,signature-01\.mp4/);
+  assert.equal((csv.match(/signature-01\.mp4/g) ?? []).length, 1);
+  assert.match(generator, /idx\("videoFile"\)/);
+  assert.match(source, /videoSrc\?: string/);
+  assert.match(source, /const MENU_VIDEO_SOURCES: Record<string, string>/);
+  assert.match(source, /videoSrc: MENU_VIDEO_SOURCES\[name\]/);
+  assert.equal((source.match(/signature-01\.mp4/g) ?? []).length, 1);
+});
+
+test("menu video media supports desktop hover and mobile tap without preloading", async () => {
+  const [card, media, css, sketch] = await Promise.all([
+    read("components/menu/full-menu-card.tsx"),
+    read("components/menu/menu-card-media.tsx"),
+    read("app/globals.css"),
+    read("초안"),
+  ]);
+
+  assert.match(card, /<MenuCardMedia/);
+  assert.match(card, /videoSrc=\{item\.videoSrc\}/);
+  assert.match(media, /^"use client";/);
+  assert.match(media, /onPointerEnter/);
+  assert.match(media, /onPointerLeave/);
+  assert.match(media, /onClick/);
+  assert.match(media, /prefers-reduced-motion/);
+  assert.match(media, /<video/);
+  assert.match(media, /preload="none"/);
+  assert.match(media, /autoPlay/);
+  assert.match(media, /playsInline/);
+  assert.match(media, /muted=\{muted\}/);
+  assert.match(media, /영상 보기/);
+  assert.match(css, /\.full-menu-card__video/);
+  assert.match(css, /\.full-menu-card__video-badge/);
+  assert.match(sketch, /menu-video-hover-desktop/);
+  assert.match(sketch, /menu-video-tap-mobile/);
+});
+
 test("all menu rows define local accessible images and group fallbacks", async () => {
   const source = await read("lib/menu-content.ts");
   assert.match(source, /imageSrc: `\/images\/wangjing\/menu\/\$\{imageFile\}`/);
