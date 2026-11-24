@@ -9,6 +9,8 @@ import { alreadyPublished } from "../lib/blog/log.mjs";
 import {
   blocksToHtml,
   findMenu,
+  HOMEPAGE_LINK_TEXT,
+  HOMEPAGE_URL,
   josa,
   BOOKING_LINK_TEXT,
   LAMB_LEG_NOTICE,
@@ -168,6 +170,7 @@ test("모든 글에 양다리구이 30분 전 예약 안내와 눌러지는 예�
       assert.deepEqual(postLinks(post), [
         { text: BOOKING_LINK_TEXT, href: info.bookingUrl },
         { text: MAP_LINK_TEXT, href: info.mapUrl },
+        { text: HOMEPAGE_LINK_TEXT, href: HOMEPAGE_URL },
       ]);
     }
   }
@@ -296,4 +299,15 @@ test("같은 날 두 블로그의 질문형 소제목 문장이 다르다", () =
   const m = renderMenuPost({ bank, branchId: "moran", date: at10("2026-11-25") });
   const q = (post) => post.blocks.find((b) => b.type === "heading" && b.text.startsWith("❓")).text;
   assert.notEqual(q(p), q(m));
+});
+
+test("GEO·SEO 보강: 기준일, 다른 지점, 잡내 문답, 지역+메뉴 태그가 들어간다", () => {
+  const post = renderMenuPost({ bank, branchId: "pangyo", date: at10("2026-11-25") });
+  const text = toPlainText(post);
+  assert.match(text, /※ 2026년 11월 기준 정보예요/);
+  assert.match(text, /다른 지점: 왕징양다리양꼬치 모란본점/);
+  assert.match(text, /Q\. 양고기 잡내가 걱정돼요\./);
+  const menuName = bank.menus.find((m) => m.id === post.menuId).name;
+  assert.equal(post.tags[0], `판교${menuName}`.replace(/\s/g, ""));
+  assert.ok(post.tags.length <= TAG_MAX);
 });
