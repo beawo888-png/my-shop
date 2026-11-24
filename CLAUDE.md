@@ -48,10 +48,30 @@
 - `.worktrees/`, `초안-exports/.claude/worktrees/` — 작업용 복사본(브랜치별). 본 작업은 저장소 루트에서 한다.
 - `docs/superpowers/plans/` — 지난 홈페이지 작업 계획서(기록용).
 
+## 홈페이지 구조 (Next.js 16)
+
+- **Next.js 16** — 학습 데이터와 다르다. 코드 작성 전 `node_modules/next/dist/docs/`의 해당 안내를 먼저 본다(AGENTS.md). 예: 미들웨어 파일은 루트의 `proxy.ts`(`export function proxy`)이고, 관리자 경로 정리 + AI 봇 방문 기록(`after()`로 응답 뒤 실행)을 한다.
+- **화면 문구·데이터는 `lib/*-content.ts`에 모아 둔다** (`site-content`, `faq-content`, `video-content`, `menu-content`). 구조화 데이터(JSON-LD)는 `lib/*-structured-data.ts`, 메타데이터는 `lib/home-metadata.ts`.
+- **메뉴**: `lib/menu-content.ts`는 `data/menu.csv`에서 **생성되는 파일**이다. 메뉴를 고칠 땐 CSV를 고치고 `node scripts/build-menu.mjs`를 실행한다(직접 수정 금지).
+- **다국어 홈**: 한국어는 `/`(`app/page.tsx`), 영·중·일은 `app/[locale]/page.tsx`가 `generateStaticParams`로 `/en` `/zh` `/ja`만 만든다. 문구는 `lib/home-i18n/{ko,en,zh,ja}.ts`, 지원 언어·허용 해시는 `lib/home-i18n/config.ts`.
+- **관리자 + AI 방문 대시보드**: `/admin/login`, `/admin/ai-visits`, `app/api/admin/*`, `lib/admin/*`, `lib/ai-visits/*`. 저장소는 `AI_VISIT_STORAGE`(`disabled` | `file`=개발 전용, 프로젝트 밖 절대경로 | `postgres`=운영 Neon). 비밀값 생성 `npm run admin:secrets`, DB 준비 `npm run db:migrate`. 자세한 내용 `docs/operations/ai-visit-dashboard.md`.
+- **디자인 규칙**: `DESIGN.md` (예: 모든 글자 16px 이상, 강조색 코랄 하나). 화면 작업은 Pencil `초안`부터(AGENTS.md).
+- **배포**: Vercel. `.vercelignore`로 `초안`·문서·테스트 등을 뺀다 — 이 목록은 `tests/deployment-config.test.mjs`가 검사한다.
+
+## 테스트
+
+- `tests/*.test.mjs`는 `node --test`, `tests/*.test.mts`는 `tsx --test`로 돈다(`npm test`가 둘 다 실행).
+- 상당수 테스트는 **소스 파일을 문자열로 읽어** 검사한다(예: 손님 화면에 관리자 링크·개발 용어가 없는지, 페이지 구조, SEO 문구). 화면 문구나 파일 위치를 바꾸면 관련 테스트도 같이 확인한다.
+
 ## 자주 쓰는 확인
 
 ```powershell
+npm run dev                 # 홈페이지 로컬 실행 (localhost:3000)
+npm run build
+npm run lint
 npm test
+node --test tests/video-seo.test.mjs        # .mjs 테스트 하나만
+npx tsx --test tests/proxy.test.mts         # .mts 테스트 하나만
 npm run smartplace:test     # 로그인·화면 점검(등록 안 함)
 npm run blog:setup          # 지점별 로그인 + '로그인 상태 유지' 확인
 npm run ads:watch-test      # 라이브애드 감시 시험(카톡 안 보냄)
