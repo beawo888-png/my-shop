@@ -33,6 +33,7 @@ export const koHomeCopy = {
     description: "불향 가득한 양고기와 정통 중국 요리를 함께 즐겨보세요.",
     allMenu: "전체 메뉴 보기",
     videoLabels: ["왕징 시그니처 요리 영상 1", "왕징 시그니처 요리 영상 2", "왕징 시그니처 요리 영상 3", "왕징 시그니처 요리 영상 4"],
+    watchVideo: "영상 크게 보기",
   },
   story: {
     eyebrow: "BRAND STORY", titleLine1: "한 번의 감동을,", titleLine2: "한국에서 다시 완성하다.",

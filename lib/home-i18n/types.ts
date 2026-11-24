@@ -42,7 +42,7 @@ export type HomeCopy = {
     nav: readonly HomeNavItem[];
   };
   hero: { eyebrow: string; titleLine1: string; titleLine2: string; leadLine1: string; leadLine2: string; imageAlt: string };
-  signature: { eyebrow: string; title: string; description: string; allMenu: string; videoLabels: readonly [string, string, string, string] };
+  signature: { eyebrow: string; title: string; description: string; allMenu: string; videoLabels: readonly [string, string, string, string]; watchVideo: string };
   story: {
     eyebrow: string;
     titleLine1: string;
