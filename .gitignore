@@ -54,3 +54,6 @@ next-env.d.ts
 
 # smartplace automation: login profile, config, logs (owner PC only)
 /.smartplace/
+
+# Claude 작업용 복사본(worktree) — 초안-exports 아래에 잘못 생긴 것
+/초안-exports/.claude/

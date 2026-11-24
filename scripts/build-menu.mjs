@@ -1,7 +1,7 @@
 // CSV -> lib/menu-content.ts 자동 생성기
 // 사용법: node scripts/build-menu.mjs
 // CSV 형식(data/menu.csv):
-//   groupId,groupTitle,groupDescription,groupFallback,itemName,price,description,imageFile,imageFit,subsection
+//   groupId,groupTitle,groupDescription,groupFallback,itemName,price,description,imageFile,imageFit,subsection,videoFile
 //   - 첫 줄은 헤더(무시)
 //   - group* 컬럼은 그룹의 첫 번째 아이템 행에만 채움. 이후 행은 비워도 됨(이전 그룹 유지)
 //   - 값에 쉼표가 들어가면 큰따옴표로 감싸야 함 (예: "90,000원")
@@ -64,6 +64,7 @@ function parseCsvFile(path) {
   const iImage = idx("imageFile");
   const iFit = idx("imageFit");
   const iSub = idx("subsection");
+  const iVideo = idx("videoFile");
 
   const groups = [];
   let current = null;
@@ -84,6 +85,10 @@ function parseCsvFile(path) {
     if (!current) continue;
     const name = get(iItemName);
     if (!name) continue;
+    const videoFile = get(iVideo);
+    if (videoFile && !/^[a-z0-9]+(?:-[a-z0-9]+)*\.mp4$/.test(videoFile)) {
+      throw new Error(`올바르지 않은 영상 파일명입니다: ${videoFile}`);
+    }
     current.items.push({
       name,
       price: get(iPrice),
@@ -91,6 +96,7 @@ function parseCsvFile(path) {
       imageFile: get(iImage),
       imageFit: get(iFit) || "cover",
       subsection: get(iSub) || "",
+      videoFile,
     });
   }
   return groups;
@@ -102,6 +108,14 @@ function esc(s) {
 
 function buildTs(groups, sourceUrl, checkedAt, count) {
   const groupIdType = groups.map((g) => `"${g.id}"`).join("\n    | ");
+  const videoEntries = groups
+    .flatMap((group) => group.items)
+    .filter((item) => item.videoFile)
+    .map(
+      (item) =>
+        `  "${esc(item.name)}": "/videos/signature/${esc(item.videoFile)}",`,
+    )
+    .join("\n");
   const groupBlocks = groups
     .map((g) => {
       const items = g.items
@@ -130,6 +144,7 @@ export type FullMenuItem = {
   imageAlt: string;
   imageFit: MenuImageFit;
   subsection?: MenuSubsection;
+  videoSrc?: string;
 };
 
 export type FullMenuGroup = {
@@ -139,6 +154,10 @@ export type FullMenuGroup = {
   description: string;
   fallbackImageSrc: string;
   items: FullMenuItem[];
+};
+
+const MENU_VIDEO_SOURCES: Record<string, string> = {
+${videoEntries}
 };
 
 const menuItem = (
@@ -156,6 +175,7 @@ const menuItem = (
   imageAlt: \`\${name} 메뉴 사진\`,
   imageFit,
   subsection,
+  videoSrc: MENU_VIDEO_SOURCES[name],
 });
 
 export const PANGYO_MENU_SOURCE_URL =

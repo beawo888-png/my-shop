@@ -19,15 +19,17 @@ test("every declared menu image is a non-empty local asset", async () => {
 });
 
 test("menu card renders image, description, price, and fallback behavior", async () => {
-  const [card, image] = await Promise.all([
+  const [card, media, image] = await Promise.all([
     read("components/menu/full-menu-card.tsx"),
+    read("components/menu/menu-card-media.tsx"),
     read("components/menu/full-menu-image.tsx"),
   ]);
-  assert.match(card, /<FullMenuImage/);
+  assert.match(card, /<MenuCardMedia/);
+  assert.match(media, /<FullMenuImage/);
   assert.match(card, /<h3>\{item\.name\}<\/h3>/);
   assert.match(card, /<p>\{item\.description\}<\/p>/);
   assert.match(card, /<strong>\{item\.price\}<\/strong>/);
-  assert.match(card, /style=\{\{ position: "relative" \}\}/);
+  assert.match(media, /className="full-menu-card__media/);
   assert.match(image, /^"use client";/);
   assert.match(image, /import Image from "next\/image"/);
   assert.match(image, /alt=\{alt\}/);

@@ -765,3 +765,13 @@ test("reservation banner uses the booking and phone links for each branch", asyn
   assert.match(banner, /href=\{location\.phoneHref\}/);
   assert.match(banner, /branches\[location\.id\]\.shortName/);
 });
+
+test("header links open the existing cards for both branches", async () => {
+  const header = await read("components/home/site-header.tsx");
+  const card = await read("components/home/location-card.tsx");
+  assert.match(header, /<details className="desktop-nav__locations"/);
+  assert.match(header, /className="mobile-nav__locations"/);
+  assert.match(header, /LOCATIONS\.map\(/);
+  assert.match(header, /#location-\$\{location\.id\}/);
+  assert.match(card, /#?location-\$\{location\.id\}/);
+});
