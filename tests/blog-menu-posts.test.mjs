@@ -9,8 +9,6 @@ import { alreadyPublished } from "../lib/blog/log.mjs";
 import {
   blocksToHtml,
   findMenu,
-  HOMEPAGE_LINK_TEXT,
-  HOMEPAGE_URL,
   josa,
   BOOKING_LINK_TEXT,
   LAMB_LEG_NOTICE,
@@ -170,7 +168,6 @@ test("모든 글에 양다리구이 30분 전 예약 안내와 눌러지는 예�
       assert.deepEqual(postLinks(post), [
         { text: BOOKING_LINK_TEXT, href: info.bookingUrl },
         { text: MAP_LINK_TEXT, href: info.mapUrl },
-        { text: HOMEPAGE_LINK_TEXT, href: HOMEPAGE_URL },
       ]);
     }
   }
@@ -310,4 +307,24 @@ test("GEO·SEO 보강: 기준일, 다른 지점, 잡내 문답, 지역+메뉴 �
   const menuName = bank.menus.find((m) => m.id === post.menuId).name;
   assert.equal(post.tags[0], `판교${menuName}`.replace(/\s/g, ""));
   assert.ok(post.tags.length <= TAG_MAX);
+});
+
+test("상위노출: 사진 파일 이름에 지역·메뉴·상호가 들어간다", async () => {
+  const { keywordFileName } = await import("../lib/blog/editor.mjs");
+  assert.equal(keywordFileName("판교 가지튀김 왕징양다리양꼬치 판교점", "C:/x/menu/fried-eggplant.JPG"), "판교-가지튀김-왕징양다리양꼬치-판교점.jpg");
+  assert.equal(keywordFileName('a/b:c', "x.png"), "abc.png");
+  const post = renderMenuPost({ bank, branchId: "moran", date: at10("2026-11-25") });
+  const menuName = bank.menus.find((m) => m.id === post.menuId).name;
+  const first = post.blocks.find((b) => b.type === "photo");
+  assert.ok(first.caption.startsWith(`모란 ${menuName}`) && first.caption.includes("왕징양다리양꼬치"));
+});
+
+test("영업시간이 지점 안내와 자주 묻는 질문에 들어가고, 외부 링크는 네이버 예약·지도뿐이다", () => {
+  for (const branchId of BRANCH_IDS) {
+    const post = renderMenuPost({ bank, branchId, date: at10("2026-11-25") });
+    const text = toPlainText(post);
+    assert.ok(text.includes(`- 영업시간: ${BLOG_BRANCHES[branchId].hours}`));
+    assert.ok(text.includes("영업시간은 어떻게 되나요?") && text.includes("휴무일 없이"));
+    assert.ok(postLinks(post).every((l) => /^https:\/\/(booking|map)\.naver\.com\//.test(l.href)));
+  }
 });
