@@ -45,6 +45,32 @@ test("종류마다 그 종류의 답글이 나온다", () => {
   assert.ok(REPLY_TEXTS.praise.includes(pickReplyText("1", "praise")));
 });
 
+test("실제로 달렸던 공감 댓글을 알아본다", () => {
+  // 쓰레드에 실제로 달린 말들. 낱말 목록이 이것들을 놓쳐서 사장님께 넘어갔었다.
+  for (const text of [
+    "그 끄덕임 알아요",
+    "가끔 모르는 사람이 하는 그 한마디가 참 큰힘이 될때가잇어요.",
+    "그 마음 알죠",
+    "그쵸",
+  ]) {
+    assert.equal(classifyReply(text), "empathy", text);
+  }
+});
+
+test("공감 낱말이 들어 있어도 질문이나 불만이면 넘긴다", () => {
+  assert.equal(classifyReply("영업시간 알아요? 몇시까지 하세요"), "needs-owner");
+  assert.equal(classifyReply("저번에 갔는데 별로였어요 맞아요 그냥 그래요"), "needs-owner");
+});
+
+test("길고 사연 있는 댓글은 공감 낱말이 있어도 사람이 읽는다", () => {
+  const story =
+    "진짜 그건 습관인가봐.. 40년 식당하신 우리 어머니, 쉬는날에도 외출후에도 " +
+    "집에 들어오시기 전에 늘 매장부터 들리시거든, 채소라도 늘 다듬어주시는데 " +
+    "그만하시라는 말씀을 못드리겠어 상실감에 힘드실까봐";
+  assert.ok([...story].length > 60);
+  assert.equal(classifyReply(story), "needs-owner");
+});
+
 test("눈물이나 생각 같은 말을 질문으로 오해하지 않는다", () => {
   assert.notEqual(classifyReply("눈물나요"), "needs-owner");
   assert.notEqual(classifyReply("저도 그 생각났어요 맞아요"), "needs-owner");
