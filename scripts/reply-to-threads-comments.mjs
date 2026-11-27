@@ -16,6 +16,8 @@
  *   THREADS_USER_ID        Threads 계정 ID (필수)
  *   THREADS_ACCESS_TOKEN   threads_manage_replies 권한이 있는 토큰 (필수)
  *   THREADS_REPLY_MAX      한 번에 달 자동 답글 수 (기본 10)
+ *   ANTHROPIC_API_KEY      있으면 Claude가 댓글을 읽고 답글을 쓴다 (없으면 미리 적어둔 문장)
+ *   THREADS_REPLY_MODEL    기본 claude-sonnet-5-5
  *
  * 이 저장소는 공개다. 그래서 손님이 쓴 글과 아이디는
  * 저장소에도 실행 로그에도 남기지 않는다. 남기는 것은 댓글 id와 처리 결과뿐이다.
@@ -23,10 +25,11 @@
 
 import { appendFile, readFile } from "node:fs/promises";
 
+import { generateReply } from "../lib/threads/generate-reply.mjs";
 import {
-  classifyReply,
   fetchRecentPosts,
   fetchReplies,
+  inspectReply,
   pickReplyText,
   publishReply,
 } from "../lib/threads/replies.mjs";
@@ -79,6 +82,8 @@ async function appendLog(entry) {
 const userId = process.env.THREADS_USER_ID;
 const accessToken = process.env.THREADS_ACCESS_TOKEN;
 const maxAutoReplies = Number(process.env.THREADS_REPLY_MAX ?? 10);
+const useClaude = Boolean(process.env.ANTHROPIC_API_KEY);
+const replyModel = process.env.THREADS_REPLY_MODEL;
 
 let args;
 try {
@@ -126,7 +131,9 @@ const handled = new Set(
 );
 
 const posts = await fetchRecentPosts({ userId, accessToken });
-console.log(`최근 글 ${posts.length}편을 훑습니다.`);
+console.log(
+  `최근 글 ${posts.length}편을 훑습니다. 답글은 ${useClaude ? "Claude가 씁니다" : "미리 적어둔 문장을 씁니다"}.`,
+);
 
 let auto = 0;
 let pending = 0;
@@ -167,13 +174,18 @@ for (const post of posts) {
       continue;
     }
 
-    const verdict = classifyReply(reply.text);
+    const verdict = inspectReply(reply.text);
 
-    if (verdict === "needs-owner") {
+    // 사장님께 넘긴다. 질문·불만·홍보는 Claude에게도 보내지 않는다.
+    const toOwner = async (reason) => {
       pending += 1;
       if (post.permalink) pendingPermalinks.add(post.permalink);
+      if (args.dryRun) {
+        console.log(`[미리보기] ${reply.id} → 사장님 확인 (${reason})`);
+        return;
+      }
       // 이미 넘겨둔 댓글이면 같은 줄을 또 쌓지 않는다.
-      if (!args.dryRun && !pendingIds.has(reply.id)) {
+      if (!pendingIds.has(reply.id)) {
         await appendLog({
           replyId: reply.id,
           postId: post.id,
@@ -181,6 +193,10 @@ for (const post of posts) {
           decidedAt: new Date().toISOString(),
         });
       }
+    };
+
+    if (verdict.blocked) {
+      await toOwner(verdict.reason);
       continue;
     }
 
@@ -192,9 +208,39 @@ for (const post of posts) {
       continue;
     }
 
-    const text = pickReplyText(reply.id, verdict);
+    // Claude가 있으면 댓글을 읽고 그 댓글에 맞는 답글을 쓴다.
+    // 없으면 미리 적어둔 문장 중에서 고른다.
+    let text;
+    let writtenBy;
+    if (useClaude) {
+      let written;
+      try {
+        written = await generateReply({
+          comment: reply.text,
+          postText: post.text,
+          ...(replyModel ? { model: replyModel } : {}),
+        });
+      } catch (error) {
+        console.error(`Claude가 답글을 쓰지 못했습니다 (${reply.id}): ${error.message}`);
+        await toOwner("Claude 호출 실패");
+        continue;
+      }
+      if (written.skip) {
+        await toOwner(written.reason);
+        continue;
+      }
+      text = written.text;
+      writtenBy = "claude";
+    } else if (verdict.long || verdict.kind === "unknown") {
+      await toOwner(verdict.long ? "긴 댓글" : "미리 적어둔 문장으로는 답하기 어려움");
+      continue;
+    } else {
+      text = pickReplyText(reply.id, verdict.kind);
+      writtenBy = "bank";
+    }
+
     if (args.dryRun) {
-      console.log(`[미리보기] ${reply.id} → "${text}"`);
+      console.log(`[미리보기] ${reply.id} (${writtenBy}) → "${text}"`);
       auto += 1;
       continue;
     }
@@ -205,6 +251,8 @@ for (const post of posts) {
         replyId: reply.id,
         postId: post.id,
         status: "auto",
+        kind: verdict.kind,
+        writtenBy,
         repliedWith: text,
         publishedReplyId: published.replyId,
         decidedAt: new Date().toISOString(),
