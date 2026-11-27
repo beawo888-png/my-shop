@@ -48,10 +48,13 @@ jobs:
 
       # 입력값은 셸에 끼워 넣지 않고 환경변수로 넘긴다.
       # 답글 문장에 따옴표가 들어가도 명령이 깨지지 않게.
+      - run: npm ci
+
       - name: 댓글 훑고 답글
         env:
           THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
           THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           DRY_RUN: ${{ inputs.dry_run }}
           MARK_HANDLED: ${{ inputs.mark_handled }}
           RETRY_PENDING: ${{ inputs.retry_pending }}
