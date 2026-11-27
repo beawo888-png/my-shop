@@ -9,6 +9,7 @@ import { alreadyPublished } from "../lib/blog/log.mjs";
 import {
   blocksToHtml,
   findMenu,
+  josa,
   BOOKING_LINK_TEXT,
   LAMB_LEG_NOTICE,
   MAP_LINK_TEXT,
@@ -258,4 +259,72 @@ test("예약·지도 줄에 주소 글자가 들어가 있으면 링크가 걸�
   assert.ok(hasUrlText(`📅 네이버 예약 바로가기 ${href}`, href));
   assert.ok(hasUrlText(`📅 네이버 예약 바로가기 ​${href}​`, href));
   assert.ok(!hasUrlText("📅 네이버 예약 바로가기", href));
+});
+
+test("josa는 받침에 맞는 조사를 고른다", () => {
+  assert.equal(josa("마파두부", "을", "를"), "를");
+  assert.equal(josa("양탕", "을", "를"), "을");
+  assert.equal(josa("칭다오 맥주", "을", "를"), "를");
+});
+
+test("글마다 AEO·GEO 질문형 소제목과 답 먼저 요약, 자주 묻는 질문이 들어간다", () => {
+  for (const branchId of BRANCH_IDS) {
+    for (let n = 0; n < bank.menus.length; n++) {
+      const post = renderMenuPost({ bank, branchId, date: dayAfter(n), slot: n % 2 });
+      const menuName = bank.menus.find((m) => m.id === post.menuId).name;
+      const branch = BRANCHES[branchId];
+      const qi = post.blocks.findIndex((b) => b.type === "heading" && b.text.startsWith("❓"));
+      assert.ok(qi > 0, `${post.id}: 질문형 소제목이 없습니다`);
+      const q = post.blocks[qi].text;
+      assert.ok(q.includes(menuName) && (q.includes(branch.station) || q.includes(branch.area)) && q.endsWith("?"), q);
+      // 소제목은 메뉴 사진보다 앞(글 윗부분)에 있고, 바로 아래 답 첫 문장에 상호·메뉴가 들어간다.
+      assert.ok(qi < post.blocks.findIndex((b) => b.type === "photo"));
+      const answer = post.blocks[qi + 1];
+      assert.equal(answer.type, "text");
+      assert.ok(answer.lines[0].includes(BLOG_BRANCHES[branchId].fullName) && answer.lines[0].includes(menuName));
+      // 답 요약 문장이 바로 아래 '이런 맛이에요' 본문과 겹치지 않는다.
+      const taste = post.blocks.find((b, i) => i > qi + 1 && b.type === "text");
+      assert.ok(!taste.lines.includes(answer.lines[1]), `${post.id}: 요약과 본문이 겹칩니다`);
+      assert.ok(post.blocks.some((b) => b.type === "heading" && b.text.includes("자주 묻는 질문")));
+      assert.ok(!/\d원/.test(toPlainText(post)));
+    }
+  }
+});
+
+test("같은 날 두 블로그의 질문형 소제목 문장이 다르다", () => {
+  const p = renderMenuPost({ bank, branchId: "pangyo", date: at10("2026-11-25") });
+  const m = renderMenuPost({ bank, branchId: "moran", date: at10("2026-11-25") });
+  const q = (post) => post.blocks.find((b) => b.type === "heading" && b.text.startsWith("❓")).text;
+  assert.notEqual(q(p), q(m));
+});
+
+test("GEO·SEO 보강: 기준일, 다른 지점, 잡내 문답, 지역+메뉴 태그가 들어간다", () => {
+  const post = renderMenuPost({ bank, branchId: "pangyo", date: at10("2026-11-25") });
+  const text = toPlainText(post);
+  assert.match(text, /※ 2026년 11월 기준 정보예요/);
+  assert.match(text, /다른 지점: 왕징양다리양꼬치 모란본점/);
+  assert.match(text, /Q\. 양고기 잡내가 걱정돼요\./);
+  const menuName = bank.menus.find((m) => m.id === post.menuId).name;
+  assert.equal(post.tags[0], `판교${menuName}`.replace(/\s/g, ""));
+  assert.ok(post.tags.length <= TAG_MAX);
+});
+
+test("상위노출: 사진 파일 이름에 지역·메뉴·상호가 들어간다", async () => {
+  const { keywordFileName } = await import("../lib/blog/editor.mjs");
+  assert.equal(keywordFileName("판교 가지튀김 왕징양다리양꼬치 판교점", "C:/x/menu/fried-eggplant.JPG"), "판교-가지튀김-왕징양다리양꼬치-판교점.jpg");
+  assert.equal(keywordFileName('a/b:c', "x.png"), "abc.png");
+  const post = renderMenuPost({ bank, branchId: "moran", date: at10("2026-11-25") });
+  const menuName = bank.menus.find((m) => m.id === post.menuId).name;
+  const first = post.blocks.find((b) => b.type === "photo");
+  assert.ok(first.caption.startsWith(`모란 ${menuName}`) && first.caption.includes("왕징양다리양꼬치"));
+});
+
+test("영업시간이 지점 안내와 자주 묻는 질문에 들어가고, 외부 링크는 네이버 예약·지도뿐이다", () => {
+  for (const branchId of BRANCH_IDS) {
+    const post = renderMenuPost({ bank, branchId, date: at10("2026-11-25") });
+    const text = toPlainText(post);
+    assert.ok(text.includes(`- 영업시간: ${BLOG_BRANCHES[branchId].hours}`));
+    assert.ok(text.includes("영업시간은 어떻게 되나요?") && text.includes("휴무일 없이"));
+    assert.ok(postLinks(post).every((l) => /^https:\/\/(booking|map)\.naver\.com\//.test(l.href)));
+  }
 });

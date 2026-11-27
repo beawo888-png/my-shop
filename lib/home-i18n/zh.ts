@@ -21,6 +21,7 @@ export const zhHomeCopy = {
     eyebrow: "招牌菜单", title: "初访王京，不容错过的美味",
     description: "一起品尝炭香浓郁的羊肉与地道中国菜。", allMenu: "查看完整菜单",
     videoLabels: ["王京招牌菜视频1", "王京招牌菜视频2", "王京招牌菜视频3", "王京招牌菜视频4"],
+    watchVideo: "观看视频",
   },
   story: {
     eyebrow: "品牌故事", titleLine1: "将一次难忘的感动，", titleLine2: "在韩国重新呈现。",

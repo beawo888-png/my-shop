@@ -9,6 +9,7 @@ export type FullMenuItem = {
   imageAlt: string;
   imageFit: MenuImageFit;
   subsection?: MenuSubsection;
+  videoSrc?: string;
 };
 
 export type FullMenuGroup = {
@@ -22,6 +23,10 @@ export type FullMenuGroup = {
   description: string;
   fallbackImageSrc: string;
   items: FullMenuItem[];
+};
+
+const MENU_VIDEO_SOURCES: Record<string, string> = {
+  "400도 숯불로 완성한 겉바속촉 양다리구이 (대)": "/videos/signature/signature-01.mp4",
 };
 
 const menuItem = (
@@ -39,6 +44,7 @@ const menuItem = (
   imageAlt: `${name} 메뉴 사진`,
   imageFit,
   subsection,
+  videoSrc: MENU_VIDEO_SOURCES[name],
 });
 
 export const PANGYO_MENU_SOURCE_URL =

@@ -3,15 +3,23 @@ import type { HomeCopy } from "@/lib/home-i18n";
 const SIGNATURE_VIDEOS = [
   {
     src: "/videos/signature/signature-01.mp4",
+    poster: "/images/videos/signature-01.jpg",
+    page: "/videos/signature-01",
   },
   {
     src: "/videos/signature/signature-02.mp4",
+    poster: "/images/videos/signature-02.jpg",
+    page: "/videos/signature-02",
   },
   {
     src: "/videos/signature/signature-03.mp4",
+    poster: "/images/videos/signature-03.jpg",
+    page: "/videos/signature-03",
   },
   {
     src: "/videos/signature/signature-04.mp4",
+    poster: "/images/videos/signature-04.jpg",
+    page: "/videos/signature-04",
   },
 ] as const;
 
@@ -49,8 +57,12 @@ export function SignatureMenuSection({ copy }: { copy: HomeCopy["signature"] }) 
                 loop
                 playsInline
                 preload="metadata"
+                poster={video.poster}
               />
             </div>
+            <a className="signature-video-card__link" href={video.page}>
+              {copy.watchVideo}
+            </a>
           </article>
         ))}
       </div>

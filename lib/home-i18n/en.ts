@@ -21,6 +21,7 @@ export const enHomeCopy = {
     eyebrow: "SIGNATURE MENU", title: "Your first taste of Wangjing",
     description: "Enjoy smoky charcoal-grilled lamb alongside authentic Chinese dishes.", allMenu: "View full menu",
     videoLabels: ["Wangjing signature dish video 1", "Wangjing signature dish video 2", "Wangjing signature dish video 3", "Wangjing signature dish video 4"],
+    watchVideo: "Watch video",
   },
   story: {
     eyebrow: "BRAND STORY", titleLine1: "An unforgettable taste,", titleLine2: "recreated in Korea.",

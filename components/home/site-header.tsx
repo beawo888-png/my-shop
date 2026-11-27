@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { BrandLogo } from "@/components/home/brand-logo";
 import {
@@ -15,7 +15,7 @@ import {
   type HomeNavItem,
   type Locale,
 } from "@/lib/home-i18n";
-import { BOOKING_LOCATIONS } from "@/lib/site-content";
+import { BOOKING_LOCATIONS, LOCATIONS } from "@/lib/site-content";
 
 type SiteHeaderProps = {
   locale?: Locale;
@@ -35,6 +35,18 @@ export function SiteHeader({
 
   const [open, setOpen] = useState(false);
   const menuToggleRef = useRef<HTMLButtonElement>(null);
+  const branchLinks = LOCATIONS.map((location) => (
+    <a
+      href={`${home ? "" : homePath}#location-${location.id}`}
+      key={location.id}
+      onClick={(event) => {
+        event.currentTarget.closest("details")?.removeAttribute("open");
+        setOpen(false);
+      }}
+    >
+      {HOME_COPY[locale].branches[location.id].shortName}
+    </a>
+  ));
 
   return (
     <header className={home ? "site-header site-header--home" : "site-header"}>
@@ -51,14 +63,24 @@ export function SiteHeader({
       </a>
       <nav className="desktop-nav" aria-label={copy.desktopNavAria}>
         {copy.nav.map((item) => (
-          <a
-            href={resolveNavHref(item)}
-            key={item.href}
-            target={item.newTab ? "_blank" : undefined}
-            rel={item.newTab ? "noreferrer" : undefined}
-          >
-            {item.label}
-          </a>
+          item.href === "#location" ? (
+            <details className="desktop-nav__locations" key={item.href}>
+              <summary>
+                {item.label}
+                <ChevronDown size={14} aria-hidden="true" />
+              </summary>
+              <div className="desktop-nav__branches">{branchLinks}</div>
+            </details>
+          ) : (
+            <a
+              href={resolveNavHref(item)}
+              key={item.href}
+              target={item.newTab ? "_blank" : undefined}
+              rel={item.newTab ? "noreferrer" : undefined}
+            >
+              {item.label}
+            </a>
+          )
         ))}
       </nav>
       <LanguageSelector locale={locale} copy={copy} />
@@ -80,15 +102,24 @@ export function SiteHeader({
         hidden={!open}
       >
         {copy.nav.map((item) => (
-          <a
-            href={resolveNavHref(item)}
-            key={item.href}
-            target={item.newTab ? "_blank" : undefined}
-            rel={item.newTab ? "noreferrer" : undefined}
-            onClick={() => setOpen(false)}
-          >
-            {item.label}
-          </a>
+          item.href === "#location" ? (
+            <div className="mobile-nav__locations" key={item.href}>
+              <a href={resolveNavHref(item)} onClick={() => setOpen(false)}>
+                {item.label}
+              </a>
+              <div>{branchLinks}</div>
+            </div>
+          ) : (
+            <a
+              href={resolveNavHref(item)}
+              key={item.href}
+              target={item.newTab ? "_blank" : undefined}
+              rel={item.newTab ? "noreferrer" : undefined}
+              onClick={() => setOpen(false)}
+            >
+              {item.label}
+            </a>
+          )
         ))}
         <div className="mobile-nav__languages">
           <p>{copy.languageGroupLabel}</p>

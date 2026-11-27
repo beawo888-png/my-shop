@@ -21,6 +21,7 @@ export const jaHomeCopy = {
     eyebrow: "看板メニュー", title: "王京でまず味わっていただきたい料理",
     description: "炭火の香り豊かな羊肉と、本格中国料理をお楽しみください。", allMenu: "すべてのメニューを見る",
     videoLabels: ["王京の看板料理動画1", "王京の看板料理動画2", "王京の看板料理動画3", "王京の看板料理動画4"],
+    watchVideo: "動画を見る",
   },
   story: {
     eyebrow: "ブランドストーリー", titleLine1: "あの日の感動を、", titleLine2: "韓国でもう一度。",

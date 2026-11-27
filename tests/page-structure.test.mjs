@@ -756,3 +756,22 @@ test("hero uses the two-location copy without overlay actions or summary cards",
     /@media \(max-width: 767px\)[\s\S]*?\.hero\s*\{[^}]*min-height:\s*740px;/,
   );
 });
+
+test("reservation banner uses the booking and phone links for each branch", async () => {
+  const banner = await read("components/home/reservation-banner.tsx");
+  assert.match(banner, /LOCATIONS\.map\(/);
+  assert.match(banner, /BOOKING_LOCATIONS\.find\(.*\.id === location\.id\)/);
+  assert.match(banner, /href=\{booking\.url\}/);
+  assert.match(banner, /href=\{location\.phoneHref\}/);
+  assert.match(banner, /branches\[location\.id\]\.shortName/);
+});
+
+test("header links open the existing cards for both branches", async () => {
+  const header = await read("components/home/site-header.tsx");
+  const card = await read("components/home/location-card.tsx");
+  assert.match(header, /<details className="desktop-nav__locations"/);
+  assert.match(header, /className="mobile-nav__locations"/);
+  assert.match(header, /LOCATIONS\.map\(/);
+  assert.match(header, /#location-\$\{location\.id\}/);
+  assert.match(card, /#?location-\$\{location\.id\}/);
+});

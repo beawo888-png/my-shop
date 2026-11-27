@@ -1,4 +1,4 @@
-import { FullMenuImage } from "@/components/menu/full-menu-image";
+import { MenuCardMedia } from "@/components/menu/menu-card-media";
 import type { FullMenuItem } from "@/lib/menu-content";
 
 type FullMenuCardProps = {
@@ -12,14 +12,14 @@ export function FullMenuCard({
 }: FullMenuCardProps) {
   return (
     <li className="full-menu-card">
-      <div className="full-menu-card__media" style={{ position: "relative" }}>
-        <FullMenuImage
-          src={item.imageSrc}
-          fallbackSrc={fallbackImageSrc}
-          alt={item.imageAlt}
-          fit={item.imageFit}
-        />
-      </div>
+      <MenuCardMedia
+        name={item.name}
+        imageSrc={item.imageSrc}
+        fallbackImageSrc={fallbackImageSrc}
+        imageAlt={item.imageAlt}
+        imageFit={item.imageFit}
+        videoSrc={item.videoSrc}
+      />
       <div className="full-menu-card__body">
         <h3>{item.name}</h3>
         <p>{item.description}</p>

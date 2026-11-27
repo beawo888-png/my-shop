@@ -3,6 +3,214 @@
   "children": [
     {
       "type": "frame",
+      "id": "menu-video-hover-desktop",
+      "name": "전체메뉴 영상 시험 · PC 마우스 호버",
+      "x": 7240,
+      "y": 8000,
+      "width": 520,
+      "height": 520,
+      "layout": "none",
+      "fill": "#F6F0E5",
+      "children": [
+        {
+          "type": "frame",
+          "id": "menu-video-hover-desktop-media",
+          "name": "양다리구이 이미지 자리 · 영상 재생 중",
+          "x": 40,
+          "y": 40,
+          "width": 440,
+          "height": 330,
+          "layout": "none",
+          "fill": "#17110F",
+          "children": [
+            {
+              "type": "text",
+              "id": "menu-video-hover-desktop-playing",
+              "x": 142,
+              "y": 134,
+              "content": "▶ 영상 재생 중",
+              "fontSize": 24,
+              "fontWeight": "700",
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "text",
+              "id": "menu-video-hover-desktop-sound",
+              "x": 320,
+              "y": 286,
+              "content": "🔇 소리 켜기",
+              "fontSize": 14,
+              "fill": "#FFF8EC"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "menu-video-hover-desktop-title",
+          "x": 40,
+          "y": 396,
+          "content": "양다리구이 (대) · 사진 영역에 마우스를 올리면 무음 영상",
+          "fontSize": 18,
+          "fontWeight": "700",
+          "fill": "#17110F"
+        },
+        {
+          "type": "text",
+          "id": "menu-video-hover-desktop-note",
+          "x": 40,
+          "y": 438,
+          "content": "마우스를 빼면 사진으로 즉시 복귀",
+          "fontSize": 15,
+          "fill": "#796B61"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "menu-video-tap-mobile",
+      "name": "전체메뉴 영상 시험 · 모바일 한 번 누르기",
+      "x": 7800,
+      "y": 8000,
+      "width": 390,
+      "height": 500,
+      "layout": "none",
+      "fill": "#F6F0E5",
+      "children": [
+        {
+          "type": "frame",
+          "id": "menu-video-tap-mobile-media",
+          "name": "양다리구이 이미지 자리 · 탭 후 영상",
+          "x": 24,
+          "y": 28,
+          "width": 342,
+          "height": 257,
+          "layout": "none",
+          "fill": "#17110F",
+          "children": [
+            {
+              "type": "text",
+              "id": "menu-video-tap-mobile-playing",
+              "x": 100,
+              "y": 102,
+              "content": "▶ 영상 재생 중",
+              "fontSize": 20,
+              "fontWeight": "700",
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "text",
+              "id": "menu-video-tap-mobile-sound",
+              "x": 230,
+              "y": 216,
+              "content": "🔇 소리 켜기",
+              "fontSize": 13,
+              "fill": "#FFF8EC"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "menu-video-tap-mobile-title",
+          "x": 24,
+          "y": 314,
+          "content": "양다리구이 (대)",
+          "fontSize": 20,
+          "fontWeight": "700",
+          "fill": "#17110F"
+        },
+        {
+          "type": "text",
+          "id": "menu-video-tap-mobile-note",
+          "x": 24,
+          "y": 360,
+          "content": "사진을 한 번 누르면 재생\n다시 누르면 사진으로 복귀",
+          "fontSize": 15,
+          "fill": "#796B61"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "desktop-branch-navigation",
+      "name": "desktop 지점 안내 하위 메뉴",
+      "x": 6500,
+      "y": 8000,
+      "width": 240,
+      "height": 156,
+      "layout": "none",
+      "fill": "#17110F",
+      "children": [
+        {
+          "type": "text",
+          "id": "desktop-branch-navigation-title",
+          "x": 20,
+          "y": 8,
+          "content": "지점 안내",
+          "fontSize": 16,
+          "fill": "#FFF8EC"
+        },
+        {
+          "type": "text",
+          "id": "desktop-branch-navigation-moran",
+          "x": 36,
+          "y": 56,
+          "content": "모란본점",
+          "fontSize": 16,
+          "fill": "#C5A15A"
+        },
+        {
+          "type": "text",
+          "id": "desktop-branch-navigation-pangyo",
+          "x": 36,
+          "y": 104,
+          "content": "판교점",
+          "fontSize": 16,
+          "fill": "#FFF8EC"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "mobile-branch-navigation",
+      "name": "mobile 지점 안내 하위 메뉴",
+      "x": 6780,
+      "y": 8000,
+      "width": 390,
+      "height": 156,
+      "layout": "none",
+      "fill": "#17110F",
+      "children": [
+        {
+          "type": "text",
+          "id": "mobile-branch-navigation-title",
+          "x": 20,
+          "y": 8,
+          "content": "지점 안내",
+          "fontSize": 16,
+          "fill": "#FFF8EC"
+        },
+        {
+          "type": "text",
+          "id": "mobile-branch-navigation-moran",
+          "x": 36,
+          "y": 56,
+          "content": "모란본점",
+          "fontSize": 16,
+          "fill": "#C5A15A"
+        },
+        {
+          "type": "text",
+          "id": "mobile-branch-navigation-pangyo",
+          "x": 36,
+          "y": 104,
+          "content": "판교점",
+          "fontSize": 16,
+          "fill": "#FFF8EC"
+        }
+      ]
+    },
+    {
+      "type": "frame",
       "id": "wangjing-desktop",
       "x": 0,
       "y": 0,
@@ -688,7 +896,133 @@
           "width": 1440,
           "height": 560,
           "fill": "#241A17",
-          "layout": "none"
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "desktop-reserve-title",
+              "x": 20,
+              "y": 60,
+              "content": "오늘의 좋은 자리를 왕징에서",
+              "width": 1400,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 40,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "text",
+              "id": "desktop-reserve-moran",
+              "x": 400,
+              "y": 200,
+              "content": "모란본점",
+              "width": 300,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 22,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "rectangle",
+              "id": "desktop-reserve-moran-book-bg",
+              "x": 400,
+              "y": 234,
+              "width": 144,
+              "height": 50,
+              "fill": "#8D1B1B",
+              "cornerRadius": 2
+            },
+            {
+              "type": "text",
+              "id": "desktop-reserve-moran-book",
+              "x": 400,
+              "y": 248,
+              "content": "네이버 예약",
+              "width": 144,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 17,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "rectangle",
+              "id": "desktop-reserve-moran-call-bg",
+              "x": 556,
+              "y": 234,
+              "width": 144,
+              "height": 50,
+              "fill": "#493834",
+              "cornerRadius": 2
+            },
+            {
+              "type": "text",
+              "id": "desktop-reserve-moran-call",
+              "x": 556,
+              "y": 248,
+              "content": "전화 문의",
+              "width": 144,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 17,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "text",
+              "id": "desktop-reserve-pangyo",
+              "x": 740,
+              "y": 200,
+              "content": "판교점",
+              "width": 300,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 22,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "rectangle",
+              "id": "desktop-reserve-pangyo-book-bg",
+              "x": 740,
+              "y": 234,
+              "width": 144,
+              "height": 50,
+              "fill": "#8D1B1B",
+              "cornerRadius": 2
+            },
+            {
+              "type": "text",
+              "id": "desktop-reserve-pangyo-book",
+              "x": 740,
+              "y": 248,
+              "content": "네이버 예약",
+              "width": 144,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 17,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "rectangle",
+              "id": "desktop-reserve-pangyo-call-bg",
+              "x": 896,
+              "y": 234,
+              "width": 144,
+              "height": 50,
+              "fill": "#493834",
+              "cornerRadius": 2
+            },
+            {
+              "type": "text",
+              "id": "desktop-reserve-pangyo-call",
+              "x": 896,
+              "y": 248,
+              "content": "전화 문의",
+              "width": 144,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 17,
+              "fill": "#FFF8EC"
+            }
+          ]
         },
         {
           "type": "frame",
@@ -833,7 +1167,133 @@
           "width": 390,
           "height": 420,
           "fill": "#241A17",
-          "layout": "none"
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "mobile-reserve-title",
+              "x": 20,
+              "y": 60,
+              "content": "오늘의 좋은 자리를 왕징에서",
+              "width": 350,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 24,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "text",
+              "id": "mobile-reserve-moran",
+              "x": 45,
+              "y": 130,
+              "content": "모란본점",
+              "width": 300,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 22,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "rectangle",
+              "id": "mobile-reserve-moran-book-bg",
+              "x": 45,
+              "y": 164,
+              "width": 144,
+              "height": 50,
+              "fill": "#8D1B1B",
+              "cornerRadius": 2
+            },
+            {
+              "type": "text",
+              "id": "mobile-reserve-moran-book",
+              "x": 45,
+              "y": 178,
+              "content": "네이버 예약",
+              "width": 144,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 17,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "rectangle",
+              "id": "mobile-reserve-moran-call-bg",
+              "x": 201,
+              "y": 164,
+              "width": 144,
+              "height": 50,
+              "fill": "#493834",
+              "cornerRadius": 2
+            },
+            {
+              "type": "text",
+              "id": "mobile-reserve-moran-call",
+              "x": 201,
+              "y": 178,
+              "content": "전화 문의",
+              "width": 144,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 17,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "text",
+              "id": "mobile-reserve-pangyo",
+              "x": 45,
+              "y": 246,
+              "content": "판교점",
+              "width": 300,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 22,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "rectangle",
+              "id": "mobile-reserve-pangyo-book-bg",
+              "x": 45,
+              "y": 280,
+              "width": 144,
+              "height": 50,
+              "fill": "#8D1B1B",
+              "cornerRadius": 2
+            },
+            {
+              "type": "text",
+              "id": "mobile-reserve-pangyo-book",
+              "x": 45,
+              "y": 294,
+              "content": "네이버 예약",
+              "width": 144,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 17,
+              "fill": "#FFF8EC"
+            },
+            {
+              "type": "rectangle",
+              "id": "mobile-reserve-pangyo-call-bg",
+              "x": 201,
+              "y": 280,
+              "width": 144,
+              "height": 50,
+              "fill": "#493834",
+              "cornerRadius": 2
+            },
+            {
+              "type": "text",
+              "id": "mobile-reserve-pangyo-call",
+              "x": 201,
+              "y": 294,
+              "content": "전화 문의",
+              "width": 144,
+              "textGrowth": "fixed-width",
+              "textAlign": "center",
+              "fontSize": 17,
+              "fill": "#FFF8EC"
+            }
+          ]
         },
         {
           "type": "frame",
