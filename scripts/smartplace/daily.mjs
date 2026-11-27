@@ -21,7 +21,7 @@ import { fileURLToPath } from "node:url";
 
 import { BRANCH_IDS, BRANCHES } from "../../lib/smartplace/branches.mjs";
 import { alertOwner } from "../../lib/smartplace/alert.mjs";
-import { bookingApiReady, bookingBusinessId, bookingListUrl, exportBookings } from "../../lib/smartplace/bookings.mjs";
+import { bookingApiReady, bookingBusinessId, bookingListUrl, exportBookings, PRIVACY_AUTH_EVERY_DAYS, privacyAuthDue } from "../../lib/smartplace/bookings.mjs";
 import { launchBrowser, LoginRequiredError, openWhenLoggedIn, postNews } from "../../lib/smartplace/browser.mjs";
 import { alreadyPosted, appendLog, LOCAL_DIR, readConfig, readLog } from "../../lib/smartplace/local-store.mjs";
 import { checkNewsText, loadNewsBank, loadNewsPlan, selectNewsPost, validateNewsBank, validateNewsPlan } from "../../lib/smartplace/news-bank.mjs";
@@ -32,6 +32,21 @@ import { kstDateKey } from "../../lib/threads/schedule.mjs";
 const DEFAULT_LOGIN_WAIT_MINUTES = 180;
 
 const LOCK_PATH = path.join(LOCAL_DIR, "daily.lock");
+
+/** 지점별 마지막 '개인정보 조회' 인증일 { pangyo: "2026-11-27", ... } */
+const PRIVACY_STATE_PATH = path.join(LOCAL_DIR, "privacy-auth.json");
+
+function readPrivacyState() {
+  try {
+    return JSON.parse(readFileSync(PRIVACY_STATE_PATH, "utf8"));
+  } catch {
+    return {};
+  }
+}
+
+function writePrivacyState(state) {
+  writeFileSync(PRIVACY_STATE_PATH, `${JSON.stringify(state, null, 2)}\n`);
+}
 
 /** 이미 돌고 있는 9시 작업이 없으면 잠금을 잡는다. 남은 잠금 파일이라도 그 프로세스가 끝났으면 새로 잡는다. */
 async function acquireLock() {
@@ -217,9 +232,26 @@ async function main() {
       // 1. 전날 방문 손님 엑셀
       try {
         // --date를 주면 그날만, 아니면 엑셀의 마지막 일자 다음 날부터 어제까지 빠진 날을 모두 채운다.
-        const r = await exportBookings(page, { branchId, bizId, date: args.date, to: visitDate });
+        // 이름·번호는 사장님이 '개인정보 조회' 인증을 해 둔 동안만 보인다. 인증은 3일에 한 번만 받는다(사장님 요청):
+        // 마지막 인증 뒤 3일이 지난 밤 작업(--today)만 알리고 기다리고, 나머지는 가려진 채 저장한다(인증한 날 한꺼번에 고친다).
+        const privacyState = readPrivacyState();
+        const due = privacyAuthDue(privacyState[branchId], today, Number(config.privacyAuthEveryDays) || PRIVACY_AUTH_EVERY_DAYS);
+        const privacy = args.today && due
+          ? {
+              timeoutMs: loginWaitMinutes * 60_000,
+              onWait: () => {
+                const msg = `${name} 예약 화면의 '개인정보 조회' 버튼을 눌러 인증해 주세요. 인증해야 손님 이름·번호가 엑셀에 제대로 들어갑니다. (${waitLabel} 동안 기다립니다)`;
+                console.log(`  ⚠️  ${msg}`);
+                alertOwner(msg);
+                sendKakaoMemo(`[왕징] ${msg}`).catch(() => {});
+              },
+            }
+          : {};
+        const r = await exportBookings(page, { branchId, bizId, date: args.date, to: visitDate, privacy });
         const range = r.from === r.to ? r.to : `${r.from} ~ ${r.to}`;
         console.log(`  예약 엑셀: ${range} · ${r.count}명 (취소 ${r.cancelled}건) → ${r.filePath}`);
+        if (r.privacyAuthed) writePrivacyState({ ...privacyState, [branchId]: today });
+        if (r.masked) console.log(`  ⚠️  개인정보 조회 인증이 없어 ${r.masked}명은 이름·번호가 가려진 채 저장됐습니다. 다음 인증 때 고칩니다.`);
       } catch (error) {
         failures.push(`${name} 예약 엑셀: ${error.message}`);
       }

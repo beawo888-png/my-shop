@@ -31,6 +31,12 @@
    지난 날짜를 다시 만들려면 `npm run smartplace:bookings -- --date=2026-10-17`.
    **밤 10시에도 따로 돈다**(작업 스케줄러 `WangjingBookingsNightly` → `npm run smartplace:bookings-night`). 그날 영업이 끝난 뒤라
    오늘 방문 손님까지 적는다. 네이버 로그인이 하룻밤을 못 넘겨 아침 9시엔 대개 풀려 있어서, 사장님이 PC 앞에 있는 밤에 로그인을 받으려는 것이다.
+   **개인정보 조회 인증(2026-11-26~)**: 네이버는 사장님이 예약 화면의 `개인정보 조회` 버튼으로 본인 인증을 해 둔 동안만 이름·번호를 보여 준다
+   (확인 API `GET /api/businesses/{bizId}/privacy-auth/session` → `valid`). 인증은 사장님이 직접 하고 자동화는 확인만 한다.
+   인증은 **3일에 한 번만** 받는다(사장님 요청, `config.json`의 `privacyAuthEveryDays`로 바꿀 수 있다). 지점별 마지막 인증일은 `.smartplace/privacy-auth.json`.
+   마지막 인증 뒤 3일이 지난 밤 작업만 인증이 꺼져 있으면 PC·카톡으로 알리고 `loginWaitMinutes`만큼 기다린다. 그 밖의 실행(9시 작업 포함)은 기다리지 않고 가려진 채 저장한다.
+   어느 날이든 사장님이 직접 인증해 두었으면 그 실행이 알아서 고치고, 그날을 마지막 인증일로 적는다.
+   인증된 상태로 돌면 최근 60일 안에 가려진 채 저장된 날도 다시 받아 실제 이름·번호로 고친다. 인증 없이 받은 가려진 목록으로 이미 제대로 저장된 날을 덮어쓰지는 않는다.
    엑셀의 마지막 일자 다음 날부터 채우므로, 며칠 빠져도 다음에 로그인한 날 한꺼번에 들어간다.
    등록·해제: `npm run smartplace:bookings-schedule` / `npm run smartplace:bookings-unschedule`.
 2. **영수증 리뷰 답글**: 별도 파이썬 프로그램(`C:\클라우드\네이버플레이스 영수증 자동리뷰\daily_run.py <플레이스번호>`)을 그 지점만 실행하고 끝날 때까지(최대 60분) 기다린다.
