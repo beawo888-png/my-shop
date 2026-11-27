@@ -9,7 +9,8 @@
  *   node scripts/reply-to-threads-comments.mjs             # 훑고 자동 답글
  *   node scripts/reply-to-threads-comments.mjs --dry-run   # 달지 않고 세어만 보기
  *   node scripts/reply-to-threads-comments.mjs --reply-to=<댓글id> --text="..."   # 손으로 하나만
- *   node scripts/reply-to-threads-comments.mjs --mark-handled  # 지금까지 쌓인 댓글을 답글 없이 닫기
+ *   node scripts/reply-to-threads-comments.mjs --mark-handled   # 지금까지 쌓인 댓글을 답글 없이 닫기
+ *   node scripts/reply-to-threads-comments.mjs --retry-pending  # 사장님께 넘겼던 댓글을 다시 보기
  *
  * 환경변수
  *   THREADS_USER_ID        Threads 계정 ID (필수)
@@ -33,10 +34,17 @@ import {
 const LOG_URL = new URL("../data/threads-replies.jsonl", import.meta.url);
 
 function parseArgs(argv) {
-  const args = { dryRun: false, markHandled: false, replyTo: undefined, text: undefined };
+  const args = {
+    dryRun: false,
+    markHandled: false,
+    retryPending: false,
+    replyTo: undefined,
+    text: undefined,
+  };
   for (const arg of argv) {
     if (arg === "--dry-run") args.dryRun = true;
     else if (arg === "--mark-handled") args.markHandled = true;
+    else if (arg === "--retry-pending") args.retryPending = true;
     else if (arg.startsWith("--reply-to=")) args.replyTo = arg.slice("--reply-to=".length);
     else if (arg.startsWith("--text=")) args.text = arg.slice("--text=".length);
     else throw new Error(`알 수 없는 옵션: ${arg}`);
@@ -44,6 +52,10 @@ function parseArgs(argv) {
   if (args.replyTo && !args.text) throw new Error("--reply-to 에는 --text 가 함께 필요합니다.");
   if (args.text && !args.replyTo) throw new Error("--text 에는 --reply-to 가 함께 필요합니다.");
   if (args.markHandled && args.replyTo) throw new Error("--mark-handled 와 --reply-to 는 같이 쓸 수 없습니다.");
+  if (args.retryPending && args.replyTo) throw new Error("--retry-pending 과 --reply-to 는 같이 쓸 수 없습니다.");
+  if (args.retryPending && args.markHandled) {
+    throw new Error("--retry-pending 과 --mark-handled 는 같이 쓸 수 없습니다.");
+  }
   return args;
 }
 
@@ -100,7 +112,18 @@ if (args.replyTo) {
 }
 
 const log = await readLog();
-const handled = new Set(log.map((entry) => entry.replyId).filter(Boolean));
+
+// 사장님께 넘겼던 댓글은 id만 따로 둔다.
+// 분류가 좋아졌을 때 --retry-pending 으로 다시 볼 수 있게.
+const pendingIds = new Set(
+  log.filter((entry) => entry.status === "pending").map((entry) => entry.replyId).filter(Boolean),
+);
+const handled = new Set(
+  log
+    .filter((entry) => !(args.retryPending && entry.status === "pending"))
+    .map((entry) => entry.replyId)
+    .filter(Boolean),
+);
 
 const posts = await fetchRecentPosts({ userId, accessToken });
 console.log(`최근 글 ${posts.length}편을 훑습니다.`);
@@ -149,7 +172,8 @@ for (const post of posts) {
     if (verdict === "needs-owner") {
       pending += 1;
       if (post.permalink) pendingPermalinks.add(post.permalink);
-      if (!args.dryRun) {
+      // 이미 넘겨둔 댓글이면 같은 줄을 또 쌓지 않는다.
+      if (!args.dryRun && !pendingIds.has(reply.id)) {
         await appendLog({
           replyId: reply.id,
           postId: post.id,

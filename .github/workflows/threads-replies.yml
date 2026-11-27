@@ -16,6 +16,10 @@ on:
         description: "쌓여 있던 댓글을 답글 없이 닫기 (처음 한 번만)"
         type: boolean
         default: false
+      retry_pending:
+        description: "사장님께 넘겼던 댓글을 다시 보기 (분류를 고친 뒤)"
+        type: boolean
+        default: false
       reply_to:
         description: "손으로 답할 댓글 id"
         type: string
@@ -50,12 +54,14 @@ jobs:
           THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
           DRY_RUN: ${{ inputs.dry_run }}
           MARK_HANDLED: ${{ inputs.mark_handled }}
+          RETRY_PENDING: ${{ inputs.retry_pending }}
           REPLY_TO: ${{ inputs.reply_to }}
           REPLY_TEXT: ${{ inputs.text }}
         run: |
           args=()
           if [ "$DRY_RUN" = "true" ]; then args+=(--dry-run); fi
           if [ "$MARK_HANDLED" = "true" ]; then args+=(--mark-handled); fi
+          if [ "$RETRY_PENDING" = "true" ]; then args+=(--retry-pending); fi
           if [ -n "$REPLY_TO" ]; then args+=("--reply-to=$REPLY_TO"); fi
           if [ -n "$REPLY_TEXT" ]; then args+=("--text=$REPLY_TEXT"); fi
           node scripts/reply-to-threads-comments.mjs "${args[@]}"
