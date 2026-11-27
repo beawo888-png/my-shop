@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteHeader } from "@/components/home/site-header";
 import { BOOKING_LOCATIONS } from "@/lib/site-content";
@@ -88,9 +89,9 @@ export default async function VideoPage({ params }: VideoPageProps) {
             영상 길이 {video.durationSeconds}초 · {video.uploadDate.replaceAll("-", ".")} 등록
           </p>
           <div className="video-watch__actions">
-            <a className="button button--outline-dark" href={video.menuPath}>
+            <Link className="button button--outline-dark" href={video.menuPath}>
               이 메뉴 보러 가기
-            </a>
+            </Link>
             {BOOKING_LOCATIONS.map((booking) => (
               <a
                 className="button button--outline-dark"
@@ -111,18 +112,18 @@ export default async function VideoPage({ params }: VideoPageProps) {
         <ul className="video-list">
           {others.map((item) => (
             <li key={item.slug}>
-              <a className="video-list__card" href={getVideoPagePath(item)}>
+              <Link className="video-list__card" href={getVideoPagePath(item)}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={item.thumbnail} alt="" loading="lazy" width={720} height={1280} />
                 <span>{item.title}</span>
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
         <p>
-          <a className="video-more__all" href="/videos">
+          <Link className="video-more__all" href="/videos">
             영상 전체 보기
-          </a>
+          </Link>
         </p>
       </section>
     </main>
