@@ -2,8 +2,8 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { HOME_COPY, HOME_LOCALES, HOME_HASHES, LOCALIZED_LOCALES, LOCALE_CONFIG, buildLocaleHref, getHomeCopy, getHomePath, isLocale, isLocalizedLocale } from "../lib/home-i18n/index";
 import { FAQ_ITEMS } from "../lib/faq-content";
-import { BOOKING_LOCATIONS, LOCATIONS } from "../lib/site-content";
-import { buildSiteRestaurantStructuredData } from "../lib/site-structured-data";
+import { BOOKING_LOCATIONS, BRAND_CHANNELS, LOCATIONS } from "../lib/site-content";
+import { buildSiteFaqStructuredData, buildSiteRestaurantStructuredData } from "../lib/site-structured-data";
 
 test("home locale registry exposes the four approved languages and paths", () => {
   assert.deepEqual(HOME_LOCALES, ["ko", "en", "zh", "ja"]);
@@ -183,8 +183,49 @@ test("localized Restaurant JSON-LD translates descriptions and preserves officia
         servesCuisine: copy.cuisines,
         hasMenu: `${siteUrl}/menu`,
         acceptsReservations: BOOKING_LOCATIONS.find((booking) => booking.id === location.id)?.url,
-        sameAs: [location.mapUrl, location.reviewUrl],
+        openingHoursSpecification: location.openingHours.map((hours) => ({
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: hours.days,
+          opens: hours.opens,
+          closes: hours.closes,
+        })),
+        sameAs: [
+          location.mapUrl,
+          location.reviewUrl,
+          location.kakaoReviewUrl.split("#")[0],
+          ...BRAND_CHANNELS,
+        ],
       });
+    }
+  }
+});
+
+test("home FAQPage JSON-LD mirrors the visible FAQ text in every locale", () => {
+  for (const locale of HOME_LOCALES) {
+    const faq = getHomeCopy(locale).faq;
+    const data = buildSiteFaqStructuredData(locale, faq);
+    assert.equal(data["@type"], "FAQPage");
+    assert.equal(data.mainEntity.length, faq.items.length);
+    for (const [index, item] of faq.items.entries()) {
+      assert.equal(data.mainEntity[index].name, item.question);
+      assert.equal(
+        data.mainEntity[index].acceptedAnswer.text,
+        item.answer.map((segment) => segment.text).join(""),
+      );
+    }
+  }
+});
+
+test("branch opening hours match the owner-confirmed schedule", () => {
+  const moran = LOCATIONS.find((location) => location.id === "moran");
+  const pangyo = LOCATIONS.find((location) => location.id === "pangyo");
+  assert.deepEqual(moran?.openingHours.map(({ opens, closes, days }) => [opens, closes, days.length]), [["12:00", "24:00", 7]]);
+  assert.deepEqual(pangyo?.openingHours.map(({ opens, closes, days }) => [opens, closes, days.length]), [["11:00", "23:00", 5], ["12:00", "22:00", 2]]);
+  for (const locale of HOME_LOCALES) {
+    const reservation = getHomeCopy(locale).faq.items.find((item) => item.id === "reservation");
+    const text = reservation?.answer.map((segment) => segment.text).join("") ?? "";
+    for (const time of ["12:00", "24:00", "11:00", "23:00", "22:00"]) {
+      assert.ok(text.includes(time), `${locale} reservation FAQ should mention ${time}`);
     }
   }
 });
