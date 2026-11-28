@@ -486,7 +486,7 @@ test("layout declares Korean language and homepage owns Wangjing metadata", asyn
     read("app/layout.tsx"), read("lib/home-i18n/ko.ts"), read("app/page.tsx"),
   ]);
   assert.match(layout, /lang="ko"/);
-  assert.match(layout, /판교왕징 \| 판교 양꼬치·중국 양고기 다이닝/);
+  assert.match(layout, /왕징양다리양꼬치 \| 판교·모란 통양다리구이·양꼬치/);
   assert.match(koreanCopy, /대왕판교로606번길/);
   assert.match(page, /export const metadata = buildHomeMetadata\("ko"\)/);
 });

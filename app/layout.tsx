@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://xn--vr0bn4e2wh79mca68ih9mf4j.com"),
-  applicationName: "판교왕징 | 판교 양꼬치·중국 양고기 다이닝",
+  applicationName: "왕징양다리양꼬치 | 판교·모란 통양다리구이·양꼬치",
   keywords: [
     "왕징양다리양꼬치",
     "판교 통양다리구이",

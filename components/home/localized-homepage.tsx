@@ -10,7 +10,10 @@ import { SiteFooter } from "@/components/home/site-footer";
 import { SiteHeader } from "@/components/home/site-header";
 import { StorySection } from "@/components/home/story-section";
 import { getHomeCopy, getHomePath, LOCALE_CONFIG, type Locale } from "@/lib/home-i18n";
-import { buildSiteRestaurantStructuredData } from "@/lib/site-structured-data";
+import {
+  buildSiteFaqStructuredData,
+  buildSiteRestaurantStructuredData,
+} from "@/lib/site-structured-data";
 
 type LocalizedHomepageProps = { locale: Locale };
 
@@ -18,6 +21,7 @@ export function LocalizedHomepage({ locale }: LocalizedHomepageProps) {
   const copy = getHomeCopy(locale);
   const homePath = getHomePath(locale);
   const structuredData = buildSiteRestaurantStructuredData(locale, copy.structuredData);
+  const faqStructuredData = buildSiteFaqStructuredData(locale, copy.faq);
 
   return (
     <>
@@ -25,6 +29,12 @@ export function LocalizedHomepage({ locale }: LocalizedHomepageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqStructuredData).replace(/</g, "\\u003c"),
         }}
       />
       <div lang={LOCALE_CONFIG[locale].htmlLang}>

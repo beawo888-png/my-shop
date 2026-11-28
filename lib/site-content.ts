@@ -11,6 +11,19 @@ export type MenuItem = {
   image: string;
   alt: string;
 };
+export type DayOfWeek =
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday"
+  | "Saturday"
+  | "Sunday";
+export type OpeningHours = {
+  days: readonly DayOfWeek[];
+  opens: string;
+  closes: string;
+};
 export type Location = {
   id: "moran" | "pangyo";
   areaLabel: string;
@@ -29,10 +42,28 @@ export type Location = {
   reviewUrl: string;
   kakaoReviewUrl: string;
   googleReviewUrl: string;
+  openingHours: readonly OpeningHours[];
 };
 
+const EVERY_DAY: readonly DayOfWeek[] = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
+
+/** 공식 채널 — 구조화 데이터 sameAs에 함께 넣는다. 푸터 링크와 같은 주소. */
+export const BRAND_CHANNELS = [
+  "https://www.instagram.com/wangjingyangdali_official/",
+  "https://www.youtube.com/@wangjing_lamb",
+  "https://www.tiktok.com/@wangjing_lamb",
+] as const;
+
 export const SITE = {
-  name: "판교왕징",
+  name: "왕징양다리양꼬치",
   hanja: "王京",
   phoneDisplay: "0507-1313-5688",
   phoneHref: "tel:050713135688",
@@ -78,6 +109,7 @@ export const LOCATIONS: Location[] = [
     kakaoReviewUrl: "https://place.map.kakao.com/1387600612#review",
     googleReviewUrl:
       "https://www.google.com/maps/search/?api=1&query=왕징양다리양꼬치 모란본점 경기 성남시 중원구 둔촌대로151번길 48",
+    openingHours: [{ days: EVERY_DAY, opens: "12:00", closes: "24:00" }],
   },
   {
     id: "pangyo",
@@ -101,6 +133,14 @@ export const LOCATIONS: Location[] = [
     kakaoReviewUrl: "https://place.map.kakao.com/1537703881#review",
     googleReviewUrl:
       "https://www.google.com/maps/search/?api=1&query=왕징양다리양꼬치 판교점 경기 성남시 분당구 대왕판교로606번길 10",
+    openingHours: [
+      {
+        days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        opens: "11:00",
+        closes: "23:00",
+      },
+      { days: ["Saturday", "Sunday"], opens: "12:00", closes: "22:00" },
+    ],
   },
 ];
 
@@ -116,7 +156,7 @@ export const MENU_ITEMS: MenuItem[] = [
     price: "15,000원",
     description: "숯불에 구워 육즙과 불향을 살린 왕징의 대표 메뉴",
     image: "/images/wangjing/spicy-skewers.png",
-    alt: "숯불 위에서 굽고 있는 판교왕징 양꼬치",
+    alt: "숯불 위에서 굽고 있는 왕징양다리양꼬치 양꼬치",
   },
   {
     name: "양갈비살꼬치",
